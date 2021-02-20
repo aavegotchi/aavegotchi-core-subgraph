@@ -1,0 +1,18 @@
+{
+  "name": "aavegotchi-subgraph",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ juanmardefago/aavegotchi-mumbai",
+    "deploy-dev": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ juanmardefago/aavegotchi-mumbai",
+    "create-local": "graph create --node http://localhost:8020/ juanmardefago/aavegotchi-mumbai",
+    "remove-local": "graph remove --node http://localhost:8020/ juanmardefago/aavegotchi-mumbai",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 juanmardefago/aavegotchi-mumbai"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.19.0",
+    "@graphprotocol/graph-ts": "0.19.0"
+  }
+}

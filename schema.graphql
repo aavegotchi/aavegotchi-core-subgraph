@@ -1,0 +1,36 @@
+type Aavegotchi @entity {
+  "Aavegotchi id is composed by <PORTAL-ID>-<GOTCHI-OPTION>"
+  id: ID!
+
+  owner: User!
+
+  portal: Portal!
+
+  status: String!
+}
+
+type Portal @entity {
+  id: ID!
+
+  buyer: User!
+
+  owner: User!
+
+  possibleGotchis: [Aavegotchi!]! @derivedFrom(field:"portal")
+
+  selectedGotchi: Aavegotchi
+
+  status: String!
+}
+
+type User @entity {
+  id: ID!
+
+  portalsBought: [Portal!]! @derivedFrom(field:"buyer")
+
+  portalsOwned: [Portal!]! @derivedFrom(field:"owner")
+
+  gotchisOwned: [Aavegotchi!]! @derivedFrom(field:"owner")
+
+  portals: [Portal!]! @derivedFrom(field:"owner")
+}
