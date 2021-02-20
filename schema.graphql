@@ -7,6 +7,16 @@ type Aavegotchi @entity {
   portal: Portal!
 
   status: String!
+
+  randomNumber: BigInt!
+
+  numericTraits: [BigInt!]!
+
+  numericTraitsUint: BigInt!
+
+  collateralType: Bytes!
+
+  minimumStake: BigInt!
 }
 
 type Portal @entity {

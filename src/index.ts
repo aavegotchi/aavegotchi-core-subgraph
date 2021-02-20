@@ -1,3 +1,4 @@
 export {
-  handleBuyPortals
+  handleBuyPortals,
+  handlePortalOpened
 } from "./mappings/diamond";
