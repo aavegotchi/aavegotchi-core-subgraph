@@ -8,9 +8,9 @@ dataSources:
     name: AavegotchiDiamond
     network: mumbai
     source:
-      address: "0x0baba1ad5be3a5c0a66e7ac838a129bf948f1ea4"
+      address: "0x4CCc739AC855081fb5BA18e1F2f4a00B6dA69850"
       abi: AavegotchiDiamond
-      startBlock: 10732589
+      startBlock: 10537821
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
