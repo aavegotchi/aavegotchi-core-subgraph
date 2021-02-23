@@ -1,12 +1,10 @@
-type Aavegotchi @entity {
-  "Aavegotchi id is composed by <PORTAL-ID>-<GOTCHI-OPTION>"
+type AavegotchiOption @entity {
+  "AavegotchiOption id is composed by <PORTAL-ID>-<GOTCHI-OPTION>"
   id: ID!
 
   owner: User!
 
   portal: Portal!
-
-  status: String!
 
   randomNumber: BigInt!
 
@@ -19,6 +17,54 @@ type Aavegotchi @entity {
   minimumStake: BigInt!
 }
 
+type Aavegotchi @entity {
+  id: ID!
+
+  owner: User!
+
+  portal: Portal!
+
+  hauntId: BigInt!
+
+  name: String!
+
+  randomNumber: BigInt!
+
+  status: BigInt!
+
+  numericTraits: [BigInt!]!
+
+  modifiedNumericTraits: [BigInt!]!
+
+  equippedWearables: [BigInt!]!
+
+  collateral: Bytes!
+
+  escrow: Bytes!
+
+  stakedAmount: BigInt!
+
+  minimumStake: BigInt!
+
+  kinship: BigInt! #The kinship value of this Aavegotchi. Default is 50.
+
+  lastInteracted: BigInt!
+
+  experience: BigInt! #How much XP this Aavegotchi has accrued. Begins at 0.
+
+  toNextLevel: BigInt!
+
+  usedSkillPoints: BigInt! #number of skill points used
+
+  level: BigInt! #the current aavegotchi level
+
+  baseRarityScore: BigInt!
+
+  modifiedRarityScore: BigInt!
+
+  locked: Boolean!
+}
+
 type Portal @entity {
   id: ID!
 
@@ -26,9 +72,9 @@ type Portal @entity {
 
   owner: User!
 
-  possibleGotchis: [Aavegotchi!]! @derivedFrom(field:"portal")
+  options: [AavegotchiOption!]! @derivedFrom(field: "portal")
 
-  selectedGotchi: Aavegotchi
+  gotchi: Aavegotchi
 
   status: String!
 }
@@ -36,11 +82,9 @@ type Portal @entity {
 type User @entity {
   id: ID!
 
-  portalsBought: [Portal!]! @derivedFrom(field:"buyer")
+  portalsBought: [Portal!]! @derivedFrom(field: "buyer")
 
-  portalsOwned: [Portal!]! @derivedFrom(field:"owner")
+  gotchisOwned: [Aavegotchi!]! @derivedFrom(field: "owner")
 
-  gotchisOwned: [Aavegotchi!]! @derivedFrom(field:"owner")
-
-  portals: [Portal!]! @derivedFrom(field:"owner")
+  portalsOwned: [Portal!]! @derivedFrom(field: "owner")
 }

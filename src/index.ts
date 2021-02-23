@@ -1,4 +1,5 @@
 export {
   handleBuyPortals,
-  handlePortalOpened
+  handlePortalOpened,
+  handleClaimAavegotchi
 } from "./mappings/diamond";

@@ -1,4 +1,4 @@
-import { Aavegotchi, Portal, User } from "../../../generated/schema";
+import { Aavegotchi, AavegotchiOption, Portal, User } from "../../../generated/schema";
 import { BigInt } from "@graphprotocol/graph-ts";
 
 export function getOrCreatePortal(
@@ -12,6 +12,19 @@ export function getOrCreatePortal(
   }
 
   return portal as Portal;
+}
+
+export function getOrCreateAavegotchiOption(
+  id: String,
+  createIfNotFound: boolean = true
+): AavegotchiOption {
+  let option = AavegotchiOption.load(id);
+
+  if (option == null && createIfNotFound) {
+    option = new AavegotchiOption(id);
+  }
+
+  return option as AavegotchiOption;
 }
 
 export function getOrCreateAavegotchi(

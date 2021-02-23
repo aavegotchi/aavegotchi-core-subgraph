@@ -26,6 +26,8 @@ dataSources:
           handler: handleBuyPortals
         - event: PortalOpened(indexed uint256)
           handler: handlePortalOpened
+        - event: ClaimAavegotchi(indexed uint256)
+          handler: handleClaimAavegotchi
 # templates:
 #   - name: ERC20
 #     kind: ethereum/contract
