@@ -1,5 +1,9 @@
+import {
+  AavegotchiDiamond
+} from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
+
 import { Aavegotchi, AavegotchiOption, Portal, User } from "../../../generated/schema";
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, ethereum, log } from "@graphprotocol/graph-ts";
 
 export function getOrCreatePortal(
   id: String,
@@ -51,4 +55,47 @@ export function getOrCreateUser(
   }
 
   return user as User;
+}
+
+export function updateAavegotchiInfo(
+  gotchi: Aavegotchi,
+  id: BigInt,
+  event: ethereum.Event
+): Aavegotchi {
+  let contract = AavegotchiDiamond.bind(event.address);
+  let response = contract.try_getAavegotchi(id);
+
+  if (!response.reverted) {
+    let gotchiInfo = response.value;
+
+    gotchi.name = gotchiInfo.name;
+    gotchi.randomNumber = gotchiInfo.randomNumber;
+    gotchi.status = gotchiInfo.status;
+    gotchi.numericTraits = gotchiInfo.numericTraits;
+    gotchi.modifiedNumericTraits = gotchiInfo.modifiedNumericTraits;
+    gotchi.equippedWearables = gotchiInfo.equippedWearables;
+    gotchi.collateral = gotchiInfo.collateral;
+    gotchi.escrow = gotchiInfo.escrow;
+    gotchi.stakedAmount = gotchiInfo.stakedAmount;
+    gotchi.minimumStake = gotchiInfo.minimumStake;
+
+    gotchi.kinship = gotchiInfo.kinship;
+    gotchi.lastInteracted = gotchiInfo.lastInteracted;
+    gotchi.experience = gotchiInfo.experience;
+    gotchi.toNextLevel = gotchiInfo.toNextLevel;
+    gotchi.usedSkillPoints = gotchiInfo.usedSkillPoints;
+    gotchi.level = gotchiInfo.level;
+    gotchi.hauntId = gotchiInfo.hauntId;
+    gotchi.baseRarityScore = gotchiInfo.baseRarityScore;
+    gotchi.modifiedRarityScore = gotchiInfo.modifiedRarityScore;
+    gotchi.locked = gotchiInfo.locked;
+  } else {
+    log.warning("Aavegotchi {} couldn't be updated at block: {} tx_hash: {}", [
+      id.toString(),
+      event.block.number.toString(),
+      event.transaction.hash.toHexString()
+    ]);
+  }
+
+  return gotchi as Aavegotchi;
 }

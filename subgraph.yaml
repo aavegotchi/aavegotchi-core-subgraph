@@ -1,4 +1,4 @@
-specVersion: 0.0.2
+specVersion: 0.0.3
 description: Aavegotchi mumbai subgraph
 repository:
 schema:
@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: AavegotchiDiamond
-    network: mumbai
+    network: matic
     source:
-      address: "0x4CCc739AC855081fb5BA18e1F2f4a00B6dA69850"
+      address: "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
       abi: AavegotchiDiamond
-      startBlock: 10537821
+      startBlock: 11500000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -24,10 +24,26 @@ dataSources:
       eventHandlers:
         - event: BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
           handler: handleBuyPortals
+        - event: Xingyun(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleXingyun
         - event: PortalOpened(indexed uint256)
           handler: handlePortalOpened
         - event: ClaimAavegotchi(indexed uint256)
           handler: handleClaimAavegotchi
+        - event: IncreaseStake(indexed uint256,uint256)
+          handler: handleIncreaseStake
+        - event: DecreaseStake(indexed uint256,uint256)
+          handler: handleDecreaseStake
+        - event: SpendSkillpoints(indexed uint256,int16[4])
+          handler: handleSpendSkillpoints
+        - event: EquipWearables(indexed uint256,uint16[16],uint16[16])
+          handler: handleEquipWearables
+        - event: SetAavegotchiName(indexed uint256,string,string)
+          handler: handleSetAavegotchiName
+        - event: UseConsumables(indexed uint256,uint256[],uint256[])
+          handler: handleUseConsumables
+        - event: GrantExperience(uint256[],uint256[])
+          handler: handleGrantExperience
 # templates:
 #   - name: ERC20
 #     kind: ethereum/contract
@@ -47,15 +63,11 @@ dataSources:
 #       eventHandlers:
 #         - event: Transfer(indexed address,indexed address,uint256)
 #           handler: handleTransfer
-  # - AddCollateralType((address,(uint256,bytes3,bytes3,bytes3,uint8,uint8,uint16,bool)))
-  # - AddItemType((string,string,uint256,uint8[],string,uint96,uint32,uint32,uint8,uint16,bool,uint32,uint8,bool,uint8,int8,uint32,uint32))
-  # - AddWearableSet((string,uint8[],uint256,uint256))
+  # - AddCollateralType((address,(int16[6],bytes3,bytes3,bytes3,uint8,uint8,uint16,bool)))
+  # - AddItemType((string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))
+  # - AddWearableSet((string,uint8[],uint16[],int8[5]))
   # - AddedAavegotchiBatch(indexed address,uint256[])
   # - AddedItemsBatch(indexed address,uint256[],uint256[])
-  # - Approval(indexed address,indexed address,indexed uint256)
-  # - Approval(indexed address,indexed address,indexed uint256)
-  # - Approval(indexed address,indexed address,indexed uint256)
-  # - ApprovalForAll(indexed address,indexed address,bool)
   # - BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
   # - ChangedListingFee(uint256)
   # - ClaimAavegotchi(indexed uint256)
@@ -68,12 +80,12 @@ dataSources:
   # - ERC1155ListingCancelled(indexed uint256)
   # - ERC721ExecutedListing(indexed uint256,indexed address,address,address,uint256,indexed uint256,uint256,uint256)
   # - ERC721ListingAdd(indexed uint256,indexed address,address,uint256,indexed uint256,uint256)
-  # - EquipWearables(indexed uint256,uint256,uint256)
+  # - EquipWearables(indexed uint256,uint16[16],uint16[16])
   # - ExperienceTransfer(indexed uint256,indexed uint256,uint256)
   # - GameManagerTransferred(indexed address,indexed address)
-  # - GrantExperience(uint256[],uint32[])
+  # - GrantExperience(uint256[],uint256[])
   # - IncreaseStake(indexed uint256,uint256)
-  # - ItemTypeMaxQuantity(uint256[],uint32[])
+  # - ItemTypeMaxQuantity(uint256[],uint256[])
   # - LockAavegotchi(indexed uint256,uint256)
   # - MetaTransactionExecuted(address,address,bytes)
   # - OpenPortals(uint256[])
@@ -82,28 +94,10 @@ dataSources:
   # - PurchaseItemsWithVouchers(indexed address,indexed address,uint256[],uint256[])
   # - SetAavegotchiName(indexed uint256,string,string)
   # - SetBatchId(indexed uint256,uint256[])
-  # - SpendSkillpoints(indexed uint256,int8[4])
-  # - StoreSvg((bytes32,uint256[])[])
-  # - Transfer(indexed address,indexed address,indexed uint256)
-  # - Transfer(indexed address,indexed address,indexed uint256)
-  # - Transfer(indexed address,indexed address,indexed uint256)
-  # - Transfer(indexed address,indexed address,indexed uint256)
-  # - Transfer(indexed address,indexed address,indexed uint256)
-  # - Transfer(indexed address,indexed address,indexed uint256)
-  # - TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
-  # - TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
-  # - TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
-  # - TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
-  # - TransferFromParent(indexed address,indexed uint256,indexed uint256,uint256)
-  # - TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
-  # - TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
-  # - TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
-  # - TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+  # - SpendSkillpoints(indexed uint256,int16[4])
   # - TransferToParent(indexed address,indexed uint256,indexed uint256,uint256)
-  # - TransferToParent(indexed address,indexed uint256,indexed uint256,uint256)
-  # - URI(string,indexed uint256)
   # - UnLockAavegotchi(indexed uint256,uint256)
-  # - UpdateCollateralModifiers(uint256,uint256)
+  # - UpdateCollateralModifiers(int16[6],int16[6])
   # - UseConsumables(indexed uint256,uint256[],uint256[])
   # - VrfRandomNumber(indexed uint256,uint256,uint256)
   # - WithdrawnBatch(indexed address,uint256[])

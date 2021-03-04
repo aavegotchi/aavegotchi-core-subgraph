@@ -1,5 +1,13 @@
 export {
   handleBuyPortals,
   handlePortalOpened,
-  handleClaimAavegotchi
+  handleClaimAavegotchi,
+  handleDecreaseStake,
+  handleIncreaseStake,
+  handleSpendSkillpoints,
+  handleEquipWearables,
+  handleUseConsumables,
+  handleSetAavegotchiName,
+  handleGrantExperience,
+  handleXingyun
 } from "./mappings/diamond";

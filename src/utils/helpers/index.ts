@@ -2,5 +2,6 @@ export {
   getOrCreateUser,
   getOrCreatePortal,
   getOrCreateAavegotchi,
-  getOrCreateAavegotchiOption
+  getOrCreateAavegotchiOption,
+  updateAavegotchiInfo
 } from "./diamond";

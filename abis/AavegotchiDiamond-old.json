@@ -1,606 +1,53 @@
 [
   {
+    "anonymous": false,
     "inputs": [
-      { "internalType": "address", "name": "_owner", "type": "address" }
-    ],
-    "name": "allAavegotchisOfOwner",
-    "outputs": [
       {
-        "components": [
-          { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
-          { "internalType": "string", "name": "name", "type": "string" },
-          { "internalType": "address", "name": "owner", "type": "address" },
-          {
-            "internalType": "uint256",
-            "name": "randomNumber",
-            "type": "uint256"
-          },
-          { "internalType": "uint256", "name": "status", "type": "uint256" },
-          {
-            "internalType": "int16[6]",
-            "name": "numericTraits",
-            "type": "int16[6]"
-          },
-          {
-            "internalType": "int16[6]",
-            "name": "modifiedNumericTraits",
-            "type": "int16[6]"
-          },
-          {
-            "internalType": "uint16[16]",
-            "name": "equippedWearables",
-            "type": "uint16[16]"
-          },
-          {
-            "internalType": "address",
-            "name": "collateral",
-            "type": "address"
-          },
-          { "internalType": "address", "name": "escrow", "type": "address" },
-          {
-            "internalType": "uint256",
-            "name": "stakedAmount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "minimumStake",
-            "type": "uint256"
-          },
-          { "internalType": "uint256", "name": "kinship", "type": "uint256" },
-          {
-            "internalType": "uint256",
-            "name": "lastInteracted",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "experience",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "toNextLevel",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "usedSkillPoints",
-            "type": "uint256"
-          },
-          { "internalType": "uint256", "name": "level", "type": "uint256" },
-          { "internalType": "uint256", "name": "hauntId", "type": "uint256" },
-          {
-            "internalType": "uint256",
-            "name": "baseRarityScore",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "modifiedRarityScore",
-            "type": "uint256"
-          },
-          { "internalType": "bool", "name": "locked", "type": "bool" },
-          {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "balance",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "itemId",
-                "type": "uint256"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "string",
-                    "name": "name",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "description",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "author",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "int8[6]",
-                    "name": "traitModifiers",
-                    "type": "int8[6]"
-                  },
-                  {
-                    "internalType": "bool[16]",
-                    "name": "slotPositions",
-                    "type": "bool[16]"
-                  },
-                  {
-                    "internalType": "uint8[]",
-                    "name": "allowedCollaterals",
-                    "type": "uint8[]"
-                  },
-                  {
-                    "components": [
-                      { "internalType": "uint8", "name": "x", "type": "uint8" },
-                      { "internalType": "uint8", "name": "y", "type": "uint8" },
-                      {
-                        "internalType": "uint8",
-                        "name": "width",
-                        "type": "uint8"
-                      },
-                      {
-                        "internalType": "uint8",
-                        "name": "height",
-                        "type": "uint8"
-                      }
-                    ],
-                    "internalType": "struct Dimensions",
-                    "name": "dimensions",
-                    "type": "tuple"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "ghstPrice",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "maxQuantity",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "totalQuantity",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint32",
-                    "name": "svgId",
-                    "type": "uint32"
-                  },
-                  {
-                    "internalType": "uint8",
-                    "name": "rarityScoreModifier",
-                    "type": "uint8"
-                  },
-                  {
-                    "internalType": "bool",
-                    "name": "canPurchaseWithGhst",
-                    "type": "bool"
-                  },
-                  {
-                    "internalType": "uint16",
-                    "name": "minLevel",
-                    "type": "uint16"
-                  },
-                  {
-                    "internalType": "bool",
-                    "name": "canBeTransferred",
-                    "type": "bool"
-                  },
-                  {
-                    "internalType": "uint8",
-                    "name": "category",
-                    "type": "uint8"
-                  },
-                  {
-                    "internalType": "int16",
-                    "name": "kinshipBonus",
-                    "type": "int16"
-                  },
-                  {
-                    "internalType": "uint32",
-                    "name": "experienceBonus",
-                    "type": "uint32"
-                  }
-                ],
-                "internalType": "struct ItemType",
-                "name": "itemType",
-                "type": "tuple"
-              }
-            ],
-            "internalType": "struct ItemTypeIO[]",
-            "name": "items",
-            "type": "tuple[]"
-          }
-        ],
-        "internalType": "struct AavegotchiInfo[]",
-        "name": "aavegotchiInfos_",
-        "type": "tuple[]"
+        "indexed": true,
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_approved",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
+    "name": "Approval",
+    "type": "event"
   },
   {
+    "anonymous": false,
     "inputs": [
-      { "internalType": "address", "name": "_approved", "type": "address" },
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
-    ],
-    "name": "approve",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_owner", "type": "address" }
-    ],
-    "name": "balanceOf",
-    "outputs": [
-      { "internalType": "uint256", "name": "balance_", "type": "uint256" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
-    ],
-    "name": "getAavegotchi",
-    "outputs": [
       {
-        "components": [
-          { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
-          { "internalType": "string", "name": "name", "type": "string" },
-          { "internalType": "address", "name": "owner", "type": "address" },
-          {
-            "internalType": "uint256",
-            "name": "randomNumber",
-            "type": "uint256"
-          },
-          { "internalType": "uint256", "name": "status", "type": "uint256" },
-          {
-            "internalType": "int16[6]",
-            "name": "numericTraits",
-            "type": "int16[6]"
-          },
-          {
-            "internalType": "int16[6]",
-            "name": "modifiedNumericTraits",
-            "type": "int16[6]"
-          },
-          {
-            "internalType": "uint16[16]",
-            "name": "equippedWearables",
-            "type": "uint16[16]"
-          },
-          {
-            "internalType": "address",
-            "name": "collateral",
-            "type": "address"
-          },
-          { "internalType": "address", "name": "escrow", "type": "address" },
-          {
-            "internalType": "uint256",
-            "name": "stakedAmount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "minimumStake",
-            "type": "uint256"
-          },
-          { "internalType": "uint256", "name": "kinship", "type": "uint256" },
-          {
-            "internalType": "uint256",
-            "name": "lastInteracted",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "experience",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "toNextLevel",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "usedSkillPoints",
-            "type": "uint256"
-          },
-          { "internalType": "uint256", "name": "level", "type": "uint256" },
-          { "internalType": "uint256", "name": "hauntId", "type": "uint256" },
-          {
-            "internalType": "uint256",
-            "name": "baseRarityScore",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "modifiedRarityScore",
-            "type": "uint256"
-          },
-          { "internalType": "bool", "name": "locked", "type": "bool" },
-          {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "balance",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "itemId",
-                "type": "uint256"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "string",
-                    "name": "name",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "description",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "author",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "int8[6]",
-                    "name": "traitModifiers",
-                    "type": "int8[6]"
-                  },
-                  {
-                    "internalType": "bool[16]",
-                    "name": "slotPositions",
-                    "type": "bool[16]"
-                  },
-                  {
-                    "internalType": "uint8[]",
-                    "name": "allowedCollaterals",
-                    "type": "uint8[]"
-                  },
-                  {
-                    "components": [
-                      { "internalType": "uint8", "name": "x", "type": "uint8" },
-                      { "internalType": "uint8", "name": "y", "type": "uint8" },
-                      {
-                        "internalType": "uint8",
-                        "name": "width",
-                        "type": "uint8"
-                      },
-                      {
-                        "internalType": "uint8",
-                        "name": "height",
-                        "type": "uint8"
-                      }
-                    ],
-                    "internalType": "struct Dimensions",
-                    "name": "dimensions",
-                    "type": "tuple"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "ghstPrice",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "maxQuantity",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "totalQuantity",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint32",
-                    "name": "svgId",
-                    "type": "uint32"
-                  },
-                  {
-                    "internalType": "uint8",
-                    "name": "rarityScoreModifier",
-                    "type": "uint8"
-                  },
-                  {
-                    "internalType": "bool",
-                    "name": "canPurchaseWithGhst",
-                    "type": "bool"
-                  },
-                  {
-                    "internalType": "uint16",
-                    "name": "minLevel",
-                    "type": "uint16"
-                  },
-                  {
-                    "internalType": "bool",
-                    "name": "canBeTransferred",
-                    "type": "bool"
-                  },
-                  {
-                    "internalType": "uint8",
-                    "name": "category",
-                    "type": "uint8"
-                  },
-                  {
-                    "internalType": "int16",
-                    "name": "kinshipBonus",
-                    "type": "int16"
-                  },
-                  {
-                    "internalType": "uint32",
-                    "name": "experienceBonus",
-                    "type": "uint32"
-                  }
-                ],
-                "internalType": "struct ItemType",
-                "name": "itemType",
-                "type": "tuple"
-              }
-            ],
-            "internalType": "struct ItemTypeIO[]",
-            "name": "items",
-            "type": "tuple[]"
-          }
-        ],
-        "internalType": "struct AavegotchiInfo",
-        "name": "aavegotchiInfo_",
-        "type": "tuple"
+        "indexed": true,
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "_approved",
+        "type": "bool"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
-    ],
-    "name": "getApproved",
-    "outputs": [
-      { "internalType": "address", "name": "approved_", "type": "address" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_owner", "type": "address" },
-      { "internalType": "address", "name": "_operator", "type": "address" }
-    ],
-    "name": "isApprovedForAll",
-    "outputs": [
-      { "internalType": "bool", "name": "approved_", "type": "bool" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "name",
-    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
-    ],
-    "name": "ownerOf",
-    "outputs": [
-      { "internalType": "address", "name": "owner_", "type": "address" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_from", "type": "address" },
-      { "internalType": "address", "name": "_to", "type": "address" },
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
-    ],
-    "name": "safeTransferFrom",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_from", "type": "address" },
-      { "internalType": "address", "name": "_to", "type": "address" },
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" },
-      { "internalType": "bytes", "name": "_data", "type": "bytes" }
-    ],
-    "name": "safeTransferFrom",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_operator", "type": "address" },
-      { "internalType": "bool", "name": "_approved", "type": "bool" }
-    ],
-    "name": "setApprovalForAll",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "symbol",
-    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "_index", "type": "uint256" }
-    ],
-    "name": "tokenByIndex",
-    "outputs": [
-      { "internalType": "uint256", "name": "tokenId_", "type": "uint256" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_owner", "type": "address" }
-    ],
-    "name": "tokenIdsOfOwner",
-    "outputs": [
-      { "internalType": "uint32[]", "name": "tokenIds_", "type": "uint32[]" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_owner", "type": "address" },
-      { "internalType": "uint256", "name": "_index", "type": "uint256" }
-    ],
-    "name": "tokenOfOwnerByIndex",
-    "outputs": [
-      { "internalType": "uint256", "name": "tokenId_", "type": "uint256" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
-    ],
-    "name": "tokenURI",
-    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
-    "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "totalSupply",
-    "outputs": [
-      { "internalType": "uint256", "name": "totalSupply_", "type": "uint256" }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_from", "type": "address" },
-      { "internalType": "address", "name": "_to", "type": "address" },
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
-    ],
-    "name": "transferFrom",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "name": "ApprovalForAll",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -689,12 +136,74 @@
       },
       {
         "indexed": false,
-        "internalType": "int16[4]",
+        "internalType": "int8[4]",
         "name": "_values",
-        "type": "int16[4]"
+        "type": "int8[4]"
       }
     ],
     "name": "SpendSkillpoints",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "Transfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_value",
+        "type": "uint256"
+      }
+    ],
+    "name": "TransferSingle",
     "type": "event"
   },
   {
@@ -718,7 +227,7 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_experience", "type": "uint256" }
+      { "internalType": "uint32", "name": "_experience", "type": "uint32" }
     ],
     "name": "aavegotchiLevel",
     "outputs": [
@@ -738,6 +247,118 @@
   },
   {
     "inputs": [
+      { "internalType": "address", "name": "_owner", "type": "address" }
+    ],
+    "name": "allAavegotchiIdsOfOwner",
+    "outputs": [
+      { "internalType": "uint256[]", "name": "tokenIds_", "type": "uint256[]" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_owner", "type": "address" }
+    ],
+    "name": "allAavegotchisOfOwner",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+          { "internalType": "string", "name": "name", "type": "string" },
+          { "internalType": "address", "name": "owner", "type": "address" },
+          {
+            "internalType": "uint256",
+            "name": "randomNumber",
+            "type": "uint256"
+          },
+          { "internalType": "uint256", "name": "status", "type": "uint256" },
+          {
+            "internalType": "int256[6]",
+            "name": "numericTraits",
+            "type": "int256[6]"
+          },
+          {
+            "internalType": "int256[6]",
+            "name": "modifiedNumericTraits",
+            "type": "int256[6]"
+          },
+          {
+            "internalType": "uint256[16]",
+            "name": "equippedWearables",
+            "type": "uint256[16]"
+          },
+          {
+            "internalType": "address",
+            "name": "collateral",
+            "type": "address"
+          },
+          { "internalType": "address", "name": "escrow", "type": "address" },
+          {
+            "internalType": "uint256",
+            "name": "stakedAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minimumStake",
+            "type": "uint256"
+          },
+          { "internalType": "uint256", "name": "kinship", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "lastInteracted",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "experience",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "toNextLevel",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "usedSkillPoints",
+            "type": "uint256"
+          },
+          { "internalType": "uint256", "name": "level", "type": "uint256" },
+          { "internalType": "uint256", "name": "hauntId", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "baseRarityScore",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "modifiedRarityScore",
+            "type": "uint256"
+          },
+          { "internalType": "bool", "name": "locked", "type": "bool" }
+        ],
+        "internalType": "struct AavegotchiInfo[]",
+        "name": "aavegotchiInfos_",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_approved", "type": "address" },
+      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+    ],
+    "name": "approve",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
     ],
     "name": "availableSkillPoints",
@@ -747,11 +368,18 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "int16[6]",
-        "name": "_numericTraits",
-        "type": "int16[6]"
-      }
+      { "internalType": "address", "name": "_owner", "type": "address" }
+    ],
+    "name": "balanceOf",
+    "outputs": [
+      { "internalType": "uint256", "name": "balance_", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_numericTraits", "type": "uint256" }
     ],
     "name": "baseRarityScore",
     "outputs": [
@@ -775,19 +403,15 @@
     "inputs": [],
     "name": "currentHaunt",
     "outputs": [
-      { "internalType": "uint256", "name": "hauntId_", "type": "uint256" },
+      { "internalType": "uint16", "name": "hauntId_", "type": "uint16" },
       {
         "components": [
           {
-            "internalType": "uint256",
+            "internalType": "uint24",
             "name": "hauntMaxSize",
-            "type": "uint256"
+            "type": "uint24"
           },
-          {
-            "internalType": "uint256",
-            "name": "portalPrice",
-            "type": "uint256"
-          },
+          { "internalType": "uint96", "name": "portalPrice", "type": "uint96" },
           { "internalType": "bytes3", "name": "bodyColor", "type": "bytes3" },
           { "internalType": "uint24", "name": "totalCount", "type": "uint24" }
         ],
@@ -803,13 +427,111 @@
     "inputs": [
       { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
     ],
-    "name": "getNumericTraits",
+    "name": "getAavegotchi",
     "outputs": [
       {
-        "internalType": "int16[6]",
-        "name": "numericTraits_",
-        "type": "int16[6]"
+        "components": [
+          { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+          { "internalType": "string", "name": "name", "type": "string" },
+          { "internalType": "address", "name": "owner", "type": "address" },
+          {
+            "internalType": "uint256",
+            "name": "randomNumber",
+            "type": "uint256"
+          },
+          { "internalType": "uint256", "name": "status", "type": "uint256" },
+          {
+            "internalType": "int256[6]",
+            "name": "numericTraits",
+            "type": "int256[6]"
+          },
+          {
+            "internalType": "int256[6]",
+            "name": "modifiedNumericTraits",
+            "type": "int256[6]"
+          },
+          {
+            "internalType": "uint256[16]",
+            "name": "equippedWearables",
+            "type": "uint256[16]"
+          },
+          {
+            "internalType": "address",
+            "name": "collateral",
+            "type": "address"
+          },
+          { "internalType": "address", "name": "escrow", "type": "address" },
+          {
+            "internalType": "uint256",
+            "name": "stakedAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "minimumStake",
+            "type": "uint256"
+          },
+          { "internalType": "uint256", "name": "kinship", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "lastInteracted",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "experience",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "toNextLevel",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "usedSkillPoints",
+            "type": "uint256"
+          },
+          { "internalType": "uint256", "name": "level", "type": "uint256" },
+          { "internalType": "uint256", "name": "hauntId", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "baseRarityScore",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "modifiedRarityScore",
+            "type": "uint256"
+          },
+          { "internalType": "bool", "name": "locked", "type": "bool" }
+        ],
+        "internalType": "struct AavegotchiInfo",
+        "name": "aavegotchiInfo_",
+        "type": "tuple"
       }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+    ],
+    "name": "getApproved",
+    "outputs": [
+      { "internalType": "address", "name": "approved_", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+    ],
+    "name": "getNumericTraits",
+    "outputs": [
+      { "internalType": "uint256", "name": "numericTraits_", "type": "uint256" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -834,6 +556,18 @@
   },
   {
     "inputs": [
+      { "internalType": "address", "name": "_owner", "type": "address" },
+      { "internalType": "address", "name": "_operator", "type": "address" }
+    ],
+    "name": "isApprovedForAll",
+    "outputs": [
+      { "internalType": "bool", "name": "approved_", "type": "bool" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
     ],
     "name": "kinship",
@@ -850,11 +584,29 @@
     "name": "modifiedTraitsAndRarityScore",
     "outputs": [
       {
-        "internalType": "int16[6]",
+        "internalType": "int256[6]",
         "name": "numericTraits_",
-        "type": "int16[6]"
+        "type": "int256[6]"
       },
       { "internalType": "uint256", "name": "rarityScore_", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "name",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+    ],
+    "name": "ownerOf",
+    "outputs": [
+      { "internalType": "address", "name": "owner_", "type": "address" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -873,9 +625,14 @@
             "type": "uint256"
           },
           {
-            "internalType": "int16[6]",
+            "internalType": "int256[]",
             "name": "numericTraits",
-            "type": "int16[6]"
+            "type": "int256[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "numericTraitsUint",
+            "type": "uint256"
           },
           {
             "internalType": "address",
@@ -888,7 +645,7 @@
             "type": "uint256"
           }
         ],
-        "internalType": "struct PortalAavegotchiTraitsIO[10]",
+        "internalType": "struct AavegotchiFacet.PortalAavegotchiTraitsIO[10]",
         "name": "portalAavegotchiTraits_",
         "type": "tuple[10]"
       }
@@ -898,15 +655,11 @@
   },
   {
     "inputs": [
-      {
-        "internalType": "int16[6]",
-        "name": "_numericTraits",
-        "type": "int16[6]"
-      }
+      { "internalType": "uint256", "name": "_numericTraits", "type": "uint256" }
     ],
     "name": "rarityMultiplier",
     "outputs": [
-      { "internalType": "uint256", "name": "multiplier_", "type": "uint256" }
+      { "internalType": "uint256", "name": "multiplier", "type": "uint256" }
     ],
     "stateMutability": "pure",
     "type": "function"
@@ -934,12 +687,35 @@
           },
           { "internalType": "address", "name": "pixelCraft", "type": "address" }
         ],
-        "internalType": "struct AavegotchiGameFacet.RevenueSharesIO",
+        "internalType": "struct AavegotchiFacet.RevenueSharesIO",
         "name": "",
         "type": "tuple"
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_from", "type": "address" },
+      { "internalType": "address", "name": "_to", "type": "address" },
+      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+    ],
+    "name": "safeTransferFrom",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_from", "type": "address" },
+      { "internalType": "address", "name": "_to", "type": "address" },
+      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" },
+      { "internalType": "bytes", "name": "_data", "type": "bytes" }
+    ],
+    "name": "safeTransferFrom",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -954,8 +730,18 @@
   },
   {
     "inputs": [
+      { "internalType": "address", "name": "_operator", "type": "address" },
+      { "internalType": "bool", "name": "_approved", "type": "bool" }
+    ],
+    "name": "setApprovalForAll",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "uint256", "name": "_tokenId", "type": "uint256" },
-      { "internalType": "int16[4]", "name": "_values", "type": "int16[4]" }
+      { "internalType": "int8[4]", "name": "_values", "type": "int8[4]" }
     ],
     "name": "spendSkillPoints",
     "outputs": [],
@@ -963,8 +749,44 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "symbol",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
     "inputs": [
-      { "internalType": "uint256", "name": "_experience", "type": "uint256" }
+      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+    ],
+    "name": "tokenURI",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalSupply",
+    "outputs": [
+      { "internalType": "uint256", "name": "totalSupply_", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_from", "type": "address" },
+      { "internalType": "address", "name": "_to", "type": "address" },
+      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+    ],
+    "name": "transferFrom",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint32", "name": "_experience", "type": "uint32" }
     ],
     "name": "xpUntilNextLevel",
     "outputs": [
@@ -1023,6 +845,93 @@
       {
         "indexed": true,
         "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_approved",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "Approval",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "Transfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "_ids",
+        "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "_values",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "TransferBatch",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "owner",
         "type": "address"
       },
@@ -1070,8 +979,8 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_user", "type": "address" },
-      { "internalType": "bytes", "name": "_depositData", "type": "bytes" }
+      { "internalType": "address", "name": "user", "type": "address" },
+      { "internalType": "bytes", "name": "depositData", "type": "bytes" }
     ],
     "name": "deposit",
     "outputs": [],
@@ -1109,6 +1018,31 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_approved",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "Approval",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -1174,6 +1108,31 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "Transfer",
+    "type": "event"
+  },
+  {
     "inputs": [
       { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
     ],
@@ -1206,9 +1165,9 @@
           {
             "components": [
               {
-                "internalType": "int16[6]",
+                "internalType": "uint256",
                 "name": "modifiers",
-                "type": "int16[6]"
+                "type": "uint256"
               },
               {
                 "internalType": "bytes3",
@@ -1298,9 +1257,9 @@
           {
             "components": [
               {
-                "internalType": "int16[6]",
+                "internalType": "uint256",
                 "name": "modifiers",
-                "type": "int16[6]"
+                "type": "uint256"
               },
               {
                 "internalType": "bytes3",
@@ -1366,9 +1325,9 @@
           {
             "components": [
               {
-                "internalType": "int16[6]",
+                "internalType": "uint256",
                 "name": "modifiers",
-                "type": "int16[6]"
+                "type": "uint256"
               },
               {
                 "internalType": "bytes3",
@@ -1417,70 +1376,56 @@
     "inputs": [
       {
         "components": [
-          { "internalType": "string", "name": "name", "type": "string" },
           { "internalType": "string", "name": "description", "type": "string" },
           { "internalType": "string", "name": "author", "type": "string" },
           {
-            "internalType": "int8[6]",
+            "internalType": "uint256",
             "name": "traitModifiers",
-            "type": "int8[6]"
-          },
-          {
-            "internalType": "bool[16]",
-            "name": "slotPositions",
-            "type": "bool[16]"
+            "type": "uint256"
           },
           {
             "internalType": "uint8[]",
             "name": "allowedCollaterals",
             "type": "uint8[]"
           },
-          {
-            "components": [
-              { "internalType": "uint8", "name": "x", "type": "uint8" },
-              { "internalType": "uint8", "name": "y", "type": "uint8" },
-              { "internalType": "uint8", "name": "width", "type": "uint8" },
-              { "internalType": "uint8", "name": "height", "type": "uint8" }
-            ],
-            "internalType": "struct Dimensions",
-            "name": "dimensions",
-            "type": "tuple"
-          },
-          { "internalType": "uint256", "name": "ghstPrice", "type": "uint256" },
-          {
-            "internalType": "uint256",
-            "name": "maxQuantity",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "totalQuantity",
-            "type": "uint256"
-          },
+          { "internalType": "string", "name": "name", "type": "string" },
+          { "internalType": "uint96", "name": "ghstPrice", "type": "uint96" },
           { "internalType": "uint32", "name": "svgId", "type": "uint32" },
+          { "internalType": "uint32", "name": "maxQuantity", "type": "uint32" },
           {
             "internalType": "uint8",
             "name": "rarityScoreModifier",
             "type": "uint8"
           },
           {
+            "internalType": "uint16",
+            "name": "slotPositions",
+            "type": "uint16"
+          },
+          {
             "internalType": "bool",
             "name": "canPurchaseWithGhst",
             "type": "bool"
           },
-          { "internalType": "uint16", "name": "minLevel", "type": "uint16" },
+          {
+            "internalType": "uint32",
+            "name": "totalQuantity",
+            "type": "uint32"
+          },
+          { "internalType": "uint8", "name": "minLevel", "type": "uint8" },
           {
             "internalType": "bool",
             "name": "canBeTransferred",
             "type": "bool"
           },
           { "internalType": "uint8", "name": "category", "type": "uint8" },
-          { "internalType": "int16", "name": "kinshipBonus", "type": "int16" },
+          { "internalType": "int8", "name": "kinshipBonus", "type": "int8" },
           {
             "internalType": "uint32",
             "name": "experienceBonus",
             "type": "uint32"
-          }
+          },
+          { "internalType": "uint32", "name": "dimensions", "type": "uint32" }
         ],
         "indexed": false,
         "internalType": "struct ItemType",
@@ -1503,14 +1448,14 @@
             "type": "uint8[]"
           },
           {
-            "internalType": "uint16[]",
+            "internalType": "uint256",
             "name": "wearableIds",
-            "type": "uint16[]"
+            "type": "uint256"
           },
           {
-            "internalType": "int8[5]",
+            "internalType": "uint256",
             "name": "traitsBonuses",
-            "type": "int8[5]"
+            "type": "uint256"
           }
         ],
         "indexed": false,
@@ -1621,9 +1566,9 @@
       },
       {
         "indexed": false,
-        "internalType": "uint256[]",
+        "internalType": "uint32[]",
         "name": "_xpValues",
-        "type": "uint256[]"
+        "type": "uint32[]"
       }
     ],
     "name": "GrantExperience",
@@ -1640,9 +1585,9 @@
       },
       {
         "indexed": false,
-        "internalType": "uint256[]",
+        "internalType": "uint32[]",
         "name": "_maxQuanities",
-        "type": "uint256[]"
+        "type": "uint32[]"
       }
     ],
     "name": "ItemTypeMaxQuantity",
@@ -1652,16 +1597,53 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "int16[6]",
-        "name": "_oldModifiers",
-        "type": "int16[6]"
+        "indexed": true,
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
       },
       {
         "indexed": false,
-        "internalType": "int16[6]",
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_value",
+        "type": "uint256"
+      }
+    ],
+    "name": "TransferSingle",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_oldModifiers",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
         "name": "_newModifiers",
-        "type": "int16[6]"
+        "type": "uint256"
       }
     ],
     "name": "UpdateCollateralModifiers",
@@ -1679,9 +1661,9 @@
           {
             "components": [
               {
-                "internalType": "int16[6]",
+                "internalType": "uint256",
                 "name": "modifiers",
-                "type": "int16[6]"
+                "type": "uint256"
               },
               {
                 "internalType": "bytes3",
@@ -1730,70 +1712,56 @@
     "inputs": [
       {
         "components": [
-          { "internalType": "string", "name": "name", "type": "string" },
           { "internalType": "string", "name": "description", "type": "string" },
           { "internalType": "string", "name": "author", "type": "string" },
           {
-            "internalType": "int8[6]",
+            "internalType": "uint256",
             "name": "traitModifiers",
-            "type": "int8[6]"
-          },
-          {
-            "internalType": "bool[16]",
-            "name": "slotPositions",
-            "type": "bool[16]"
+            "type": "uint256"
           },
           {
             "internalType": "uint8[]",
             "name": "allowedCollaterals",
             "type": "uint8[]"
           },
-          {
-            "components": [
-              { "internalType": "uint8", "name": "x", "type": "uint8" },
-              { "internalType": "uint8", "name": "y", "type": "uint8" },
-              { "internalType": "uint8", "name": "width", "type": "uint8" },
-              { "internalType": "uint8", "name": "height", "type": "uint8" }
-            ],
-            "internalType": "struct Dimensions",
-            "name": "dimensions",
-            "type": "tuple"
-          },
-          { "internalType": "uint256", "name": "ghstPrice", "type": "uint256" },
-          {
-            "internalType": "uint256",
-            "name": "maxQuantity",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "totalQuantity",
-            "type": "uint256"
-          },
+          { "internalType": "string", "name": "name", "type": "string" },
+          { "internalType": "uint96", "name": "ghstPrice", "type": "uint96" },
           { "internalType": "uint32", "name": "svgId", "type": "uint32" },
+          { "internalType": "uint32", "name": "maxQuantity", "type": "uint32" },
           {
             "internalType": "uint8",
             "name": "rarityScoreModifier",
             "type": "uint8"
           },
           {
+            "internalType": "uint16",
+            "name": "slotPositions",
+            "type": "uint16"
+          },
+          {
             "internalType": "bool",
             "name": "canPurchaseWithGhst",
             "type": "bool"
           },
-          { "internalType": "uint16", "name": "minLevel", "type": "uint16" },
+          {
+            "internalType": "uint32",
+            "name": "totalQuantity",
+            "type": "uint32"
+          },
+          { "internalType": "uint8", "name": "minLevel", "type": "uint8" },
           {
             "internalType": "bool",
             "name": "canBeTransferred",
             "type": "bool"
           },
           { "internalType": "uint8", "name": "category", "type": "uint8" },
-          { "internalType": "int16", "name": "kinshipBonus", "type": "int16" },
+          { "internalType": "int8", "name": "kinshipBonus", "type": "int8" },
           {
             "internalType": "uint32",
             "name": "experienceBonus",
             "type": "uint32"
-          }
+          },
+          { "internalType": "uint32", "name": "dimensions", "type": "uint32" }
         ],
         "internalType": "struct ItemType[]",
         "name": "_itemTypes",
@@ -1809,70 +1777,56 @@
     "inputs": [
       {
         "components": [
-          { "internalType": "string", "name": "name", "type": "string" },
           { "internalType": "string", "name": "description", "type": "string" },
           { "internalType": "string", "name": "author", "type": "string" },
           {
-            "internalType": "int8[6]",
+            "internalType": "uint256",
             "name": "traitModifiers",
-            "type": "int8[6]"
-          },
-          {
-            "internalType": "bool[16]",
-            "name": "slotPositions",
-            "type": "bool[16]"
+            "type": "uint256"
           },
           {
             "internalType": "uint8[]",
             "name": "allowedCollaterals",
             "type": "uint8[]"
           },
-          {
-            "components": [
-              { "internalType": "uint8", "name": "x", "type": "uint8" },
-              { "internalType": "uint8", "name": "y", "type": "uint8" },
-              { "internalType": "uint8", "name": "width", "type": "uint8" },
-              { "internalType": "uint8", "name": "height", "type": "uint8" }
-            ],
-            "internalType": "struct Dimensions",
-            "name": "dimensions",
-            "type": "tuple"
-          },
-          { "internalType": "uint256", "name": "ghstPrice", "type": "uint256" },
-          {
-            "internalType": "uint256",
-            "name": "maxQuantity",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "totalQuantity",
-            "type": "uint256"
-          },
+          { "internalType": "string", "name": "name", "type": "string" },
+          { "internalType": "uint96", "name": "ghstPrice", "type": "uint96" },
           { "internalType": "uint32", "name": "svgId", "type": "uint32" },
+          { "internalType": "uint32", "name": "maxQuantity", "type": "uint32" },
           {
             "internalType": "uint8",
             "name": "rarityScoreModifier",
             "type": "uint8"
           },
           {
+            "internalType": "uint16",
+            "name": "slotPositions",
+            "type": "uint16"
+          },
+          {
             "internalType": "bool",
             "name": "canPurchaseWithGhst",
             "type": "bool"
           },
-          { "internalType": "uint16", "name": "minLevel", "type": "uint16" },
+          {
+            "internalType": "uint32",
+            "name": "totalQuantity",
+            "type": "uint32"
+          },
+          { "internalType": "uint8", "name": "minLevel", "type": "uint8" },
           {
             "internalType": "bool",
             "name": "canBeTransferred",
             "type": "bool"
           },
           { "internalType": "uint8", "name": "category", "type": "uint8" },
-          { "internalType": "int16", "name": "kinshipBonus", "type": "int16" },
+          { "internalType": "int8", "name": "kinshipBonus", "type": "int8" },
           {
             "internalType": "uint32",
             "name": "experienceBonus",
             "type": "uint32"
-          }
+          },
+          { "internalType": "uint32", "name": "dimensions", "type": "uint32" }
         ],
         "internalType": "struct ItemType[]",
         "name": "_itemTypes",
@@ -1905,14 +1859,14 @@
             "type": "uint8[]"
           },
           {
-            "internalType": "uint16[]",
+            "internalType": "uint256",
             "name": "wearableIds",
-            "type": "uint16[]"
+            "type": "uint256"
           },
           {
-            "internalType": "int8[5]",
+            "internalType": "uint256",
             "name": "traitsBonuses",
-            "type": "int8[5]"
+            "type": "uint256"
           }
         ],
         "internalType": "struct WearableSet[]",
@@ -1948,7 +1902,7 @@
   {
     "inputs": [
       { "internalType": "uint256[]", "name": "_tokenIds", "type": "uint256[]" },
-      { "internalType": "uint256[]", "name": "_xpValues", "type": "uint256[]" }
+      { "internalType": "uint32[]", "name": "_xpValues", "type": "uint32[]" }
     ],
     "name": "grantExperience",
     "outputs": [],
@@ -2000,7 +1954,7 @@
         "name": "_collateralType",
         "type": "address"
       },
-      { "internalType": "int16[6]", "name": "_modifiers", "type": "int16[6]" }
+      { "internalType": "uint256", "name": "_modifiers", "type": "uint256" }
     ],
     "name": "updateCollateralModifiers",
     "outputs": [],
@@ -2011,9 +1965,9 @@
     "inputs": [
       { "internalType": "uint256[]", "name": "_itemIds", "type": "uint256[]" },
       {
-        "internalType": "uint256[]",
+        "internalType": "uint32[]",
         "name": "_maxQuantities",
-        "type": "uint256[]"
+        "type": "uint32[]"
       }
     ],
     "name": "updateItemTypeMaxQuantity",
@@ -2474,25 +2428,6 @@
         "type": "address"
       },
       {
-        "internalType": "uint256[]",
-        "name": "_erc1155TypeIds",
-        "type": "uint256[]"
-      },
-      { "internalType": "address", "name": "_owner", "type": "address" }
-    ],
-    "name": "updateBatchERC1155Listing",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_erc1155TokenAddress",
-        "type": "address"
-      },
-      {
         "internalType": "uint256",
         "name": "_erc1155TypeId",
         "type": "uint256"
@@ -2689,6 +2624,7 @@
             "name": "timePurchased",
             "type": "uint256"
           },
+          { "internalType": "bool", "name": "sold", "type": "bool" },
           { "internalType": "bool", "name": "cancelled", "type": "bool" }
         ],
         "internalType": "struct ERC721Listing",
@@ -2707,19 +2643,19 @@
           },
           { "internalType": "uint256", "name": "status", "type": "uint256" },
           {
-            "internalType": "int16[6]",
+            "internalType": "int256[6]",
             "name": "numericTraits",
-            "type": "int16[6]"
+            "type": "int256[6]"
           },
           {
-            "internalType": "int16[6]",
+            "internalType": "int256[6]",
             "name": "modifiedNumericTraits",
-            "type": "int16[6]"
+            "type": "int256[6]"
           },
           {
-            "internalType": "uint16[16]",
+            "internalType": "uint256[16]",
             "name": "equippedWearables",
-            "type": "uint16[16]"
+            "type": "uint256[16]"
           },
           {
             "internalType": "address",
@@ -2770,135 +2706,7 @@
             "name": "modifiedRarityScore",
             "type": "uint256"
           },
-          { "internalType": "bool", "name": "locked", "type": "bool" },
-          {
-            "components": [
-              {
-                "internalType": "uint256",
-                "name": "balance",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "itemId",
-                "type": "uint256"
-              },
-              {
-                "components": [
-                  {
-                    "internalType": "string",
-                    "name": "name",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "description",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "string",
-                    "name": "author",
-                    "type": "string"
-                  },
-                  {
-                    "internalType": "int8[6]",
-                    "name": "traitModifiers",
-                    "type": "int8[6]"
-                  },
-                  {
-                    "internalType": "bool[16]",
-                    "name": "slotPositions",
-                    "type": "bool[16]"
-                  },
-                  {
-                    "internalType": "uint8[]",
-                    "name": "allowedCollaterals",
-                    "type": "uint8[]"
-                  },
-                  {
-                    "components": [
-                      { "internalType": "uint8", "name": "x", "type": "uint8" },
-                      { "internalType": "uint8", "name": "y", "type": "uint8" },
-                      {
-                        "internalType": "uint8",
-                        "name": "width",
-                        "type": "uint8"
-                      },
-                      {
-                        "internalType": "uint8",
-                        "name": "height",
-                        "type": "uint8"
-                      }
-                    ],
-                    "internalType": "struct Dimensions",
-                    "name": "dimensions",
-                    "type": "tuple"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "ghstPrice",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "maxQuantity",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "totalQuantity",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint32",
-                    "name": "svgId",
-                    "type": "uint32"
-                  },
-                  {
-                    "internalType": "uint8",
-                    "name": "rarityScoreModifier",
-                    "type": "uint8"
-                  },
-                  {
-                    "internalType": "bool",
-                    "name": "canPurchaseWithGhst",
-                    "type": "bool"
-                  },
-                  {
-                    "internalType": "uint16",
-                    "name": "minLevel",
-                    "type": "uint16"
-                  },
-                  {
-                    "internalType": "bool",
-                    "name": "canBeTransferred",
-                    "type": "bool"
-                  },
-                  {
-                    "internalType": "uint8",
-                    "name": "category",
-                    "type": "uint8"
-                  },
-                  {
-                    "internalType": "int16",
-                    "name": "kinshipBonus",
-                    "type": "int16"
-                  },
-                  {
-                    "internalType": "uint32",
-                    "name": "experienceBonus",
-                    "type": "uint32"
-                  }
-                ],
-                "internalType": "struct ItemType",
-                "name": "itemType",
-                "type": "tuple"
-              }
-            ],
-            "internalType": "struct ItemTypeIO[]",
-            "name": "items",
-            "type": "tuple[]"
-          }
+          { "internalType": "bool", "name": "locked", "type": "bool" }
         ],
         "internalType": "struct AavegotchiInfo",
         "name": "aavegotchiInfo_",
@@ -2960,6 +2768,7 @@
                 "name": "timePurchased",
                 "type": "uint256"
               },
+              { "internalType": "bool", "name": "sold", "type": "bool" },
               { "internalType": "bool", "name": "cancelled", "type": "bool" }
             ],
             "internalType": "struct ERC721Listing",
@@ -2986,19 +2795,19 @@
                 "type": "uint256"
               },
               {
-                "internalType": "int16[6]",
+                "internalType": "int256[6]",
                 "name": "numericTraits",
-                "type": "int16[6]"
+                "type": "int256[6]"
               },
               {
-                "internalType": "int16[6]",
+                "internalType": "int256[6]",
                 "name": "modifiedNumericTraits",
-                "type": "int16[6]"
+                "type": "int256[6]"
               },
               {
-                "internalType": "uint16[16]",
+                "internalType": "uint256[16]",
                 "name": "equippedWearables",
-                "type": "uint16[16]"
+                "type": "uint256[16]"
               },
               {
                 "internalType": "address",
@@ -3061,143 +2870,7 @@
                 "name": "modifiedRarityScore",
                 "type": "uint256"
               },
-              { "internalType": "bool", "name": "locked", "type": "bool" },
-              {
-                "components": [
-                  {
-                    "internalType": "uint256",
-                    "name": "balance",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "itemId",
-                    "type": "uint256"
-                  },
-                  {
-                    "components": [
-                      {
-                        "internalType": "string",
-                        "name": "name",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "description",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "author",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "int8[6]",
-                        "name": "traitModifiers",
-                        "type": "int8[6]"
-                      },
-                      {
-                        "internalType": "bool[16]",
-                        "name": "slotPositions",
-                        "type": "bool[16]"
-                      },
-                      {
-                        "internalType": "uint8[]",
-                        "name": "allowedCollaterals",
-                        "type": "uint8[]"
-                      },
-                      {
-                        "components": [
-                          {
-                            "internalType": "uint8",
-                            "name": "x",
-                            "type": "uint8"
-                          },
-                          {
-                            "internalType": "uint8",
-                            "name": "y",
-                            "type": "uint8"
-                          },
-                          {
-                            "internalType": "uint8",
-                            "name": "width",
-                            "type": "uint8"
-                          },
-                          {
-                            "internalType": "uint8",
-                            "name": "height",
-                            "type": "uint8"
-                          }
-                        ],
-                        "internalType": "struct Dimensions",
-                        "name": "dimensions",
-                        "type": "tuple"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "ghstPrice",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "maxQuantity",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "totalQuantity",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint32",
-                        "name": "svgId",
-                        "type": "uint32"
-                      },
-                      {
-                        "internalType": "uint8",
-                        "name": "rarityScoreModifier",
-                        "type": "uint8"
-                      },
-                      {
-                        "internalType": "bool",
-                        "name": "canPurchaseWithGhst",
-                        "type": "bool"
-                      },
-                      {
-                        "internalType": "uint16",
-                        "name": "minLevel",
-                        "type": "uint16"
-                      },
-                      {
-                        "internalType": "bool",
-                        "name": "canBeTransferred",
-                        "type": "bool"
-                      },
-                      {
-                        "internalType": "uint8",
-                        "name": "category",
-                        "type": "uint8"
-                      },
-                      {
-                        "internalType": "int16",
-                        "name": "kinshipBonus",
-                        "type": "int16"
-                      },
-                      {
-                        "internalType": "uint32",
-                        "name": "experienceBonus",
-                        "type": "uint32"
-                      }
-                    ],
-                    "internalType": "struct ItemType",
-                    "name": "itemType",
-                    "type": "tuple"
-                  }
-                ],
-                "internalType": "struct ItemTypeIO[]",
-                "name": "items",
-                "type": "tuple[]"
-              }
+              { "internalType": "bool", "name": "locked", "type": "bool" }
             ],
             "internalType": "struct AavegotchiInfo",
             "name": "aavegotchiInfo_",
@@ -3264,6 +2937,7 @@
             "name": "timePurchased",
             "type": "uint256"
           },
+          { "internalType": "bool", "name": "sold", "type": "bool" },
           { "internalType": "bool", "name": "cancelled", "type": "bool" }
         ],
         "internalType": "struct ERC721Listing",
@@ -3320,6 +2994,7 @@
             "name": "timePurchased",
             "type": "uint256"
           },
+          { "internalType": "bool", "name": "sold", "type": "bool" },
           { "internalType": "bool", "name": "cancelled", "type": "bool" }
         ],
         "internalType": "struct ERC721Listing",
@@ -3368,6 +3043,7 @@
             "name": "timePurchased",
             "type": "uint256"
           },
+          { "internalType": "bool", "name": "sold", "type": "bool" },
           { "internalType": "bool", "name": "cancelled", "type": "bool" }
         ],
         "internalType": "struct ERC721Listing[]",
@@ -3431,6 +3107,7 @@
                 "name": "timePurchased",
                 "type": "uint256"
               },
+              { "internalType": "bool", "name": "sold", "type": "bool" },
               { "internalType": "bool", "name": "cancelled", "type": "bool" }
             ],
             "internalType": "struct ERC721Listing",
@@ -3457,19 +3134,19 @@
                 "type": "uint256"
               },
               {
-                "internalType": "int16[6]",
+                "internalType": "int256[6]",
                 "name": "numericTraits",
-                "type": "int16[6]"
+                "type": "int256[6]"
               },
               {
-                "internalType": "int16[6]",
+                "internalType": "int256[6]",
                 "name": "modifiedNumericTraits",
-                "type": "int16[6]"
+                "type": "int256[6]"
               },
               {
-                "internalType": "uint16[16]",
+                "internalType": "uint256[16]",
                 "name": "equippedWearables",
-                "type": "uint16[16]"
+                "type": "uint256[16]"
               },
               {
                 "internalType": "address",
@@ -3532,143 +3209,7 @@
                 "name": "modifiedRarityScore",
                 "type": "uint256"
               },
-              { "internalType": "bool", "name": "locked", "type": "bool" },
-              {
-                "components": [
-                  {
-                    "internalType": "uint256",
-                    "name": "balance",
-                    "type": "uint256"
-                  },
-                  {
-                    "internalType": "uint256",
-                    "name": "itemId",
-                    "type": "uint256"
-                  },
-                  {
-                    "components": [
-                      {
-                        "internalType": "string",
-                        "name": "name",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "description",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "string",
-                        "name": "author",
-                        "type": "string"
-                      },
-                      {
-                        "internalType": "int8[6]",
-                        "name": "traitModifiers",
-                        "type": "int8[6]"
-                      },
-                      {
-                        "internalType": "bool[16]",
-                        "name": "slotPositions",
-                        "type": "bool[16]"
-                      },
-                      {
-                        "internalType": "uint8[]",
-                        "name": "allowedCollaterals",
-                        "type": "uint8[]"
-                      },
-                      {
-                        "components": [
-                          {
-                            "internalType": "uint8",
-                            "name": "x",
-                            "type": "uint8"
-                          },
-                          {
-                            "internalType": "uint8",
-                            "name": "y",
-                            "type": "uint8"
-                          },
-                          {
-                            "internalType": "uint8",
-                            "name": "width",
-                            "type": "uint8"
-                          },
-                          {
-                            "internalType": "uint8",
-                            "name": "height",
-                            "type": "uint8"
-                          }
-                        ],
-                        "internalType": "struct Dimensions",
-                        "name": "dimensions",
-                        "type": "tuple"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "ghstPrice",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "maxQuantity",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "totalQuantity",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint32",
-                        "name": "svgId",
-                        "type": "uint32"
-                      },
-                      {
-                        "internalType": "uint8",
-                        "name": "rarityScoreModifier",
-                        "type": "uint8"
-                      },
-                      {
-                        "internalType": "bool",
-                        "name": "canPurchaseWithGhst",
-                        "type": "bool"
-                      },
-                      {
-                        "internalType": "uint16",
-                        "name": "minLevel",
-                        "type": "uint16"
-                      },
-                      {
-                        "internalType": "bool",
-                        "name": "canBeTransferred",
-                        "type": "bool"
-                      },
-                      {
-                        "internalType": "uint8",
-                        "name": "category",
-                        "type": "uint8"
-                      },
-                      {
-                        "internalType": "int16",
-                        "name": "kinshipBonus",
-                        "type": "int16"
-                      },
-                      {
-                        "internalType": "uint32",
-                        "name": "experienceBonus",
-                        "type": "uint32"
-                      }
-                    ],
-                    "internalType": "struct ItemType",
-                    "name": "itemType",
-                    "type": "tuple"
-                  }
-                ],
-                "internalType": "struct ItemTypeIO[]",
-                "name": "items",
-                "type": "tuple[]"
-              }
+              { "internalType": "bool", "name": "locked", "type": "bool" }
             ],
             "internalType": "struct AavegotchiInfo",
             "name": "aavegotchiInfo_",
@@ -3722,6 +3263,7 @@
             "name": "timePurchased",
             "type": "uint256"
           },
+          { "internalType": "bool", "name": "sold", "type": "bool" },
           { "internalType": "bool", "name": "cancelled", "type": "bool" }
         ],
         "internalType": "struct ERC721Listing[]",
@@ -3762,18 +3304,117 @@
       },
       {
         "indexed": false,
-        "internalType": "uint16[16]",
+        "internalType": "uint256",
         "name": "_oldWearables",
-        "type": "uint16[16]"
+        "type": "uint256"
       },
       {
         "indexed": false,
-        "internalType": "uint16[16]",
+        "internalType": "uint256",
         "name": "_newWearables",
-        "type": "uint16[16]"
+        "type": "uint256"
       }
     ],
     "name": "EquipWearables",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "Transfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "_ids",
+        "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "_values",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "TransferBatch",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_value",
+        "type": "uint256"
+      }
+    ],
+    "name": "TransferSingle",
     "type": "event"
   },
   {
@@ -3805,6 +3446,25 @@
       }
     ],
     "name": "TransferToParent",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_value",
+        "type": "string"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      }
+    ],
+    "name": "URI",
     "type": "event"
   },
   {
@@ -3875,11 +3535,110 @@
   },
   {
     "inputs": [
+      { "internalType": "address", "name": "_account", "type": "address" }
+    ],
+    "name": "balancesWithItemTypes",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256[]",
+            "name": "balances",
+            "type": "uint256[]"
+          },
+          {
+            "components": [
+              {
+                "internalType": "string",
+                "name": "description",
+                "type": "string"
+              },
+              { "internalType": "string", "name": "author", "type": "string" },
+              {
+                "internalType": "uint256",
+                "name": "traitModifiers",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint8[]",
+                "name": "allowedCollaterals",
+                "type": "uint8[]"
+              },
+              { "internalType": "string", "name": "name", "type": "string" },
+              {
+                "internalType": "uint96",
+                "name": "ghstPrice",
+                "type": "uint96"
+              },
+              { "internalType": "uint32", "name": "svgId", "type": "uint32" },
+              {
+                "internalType": "uint32",
+                "name": "maxQuantity",
+                "type": "uint32"
+              },
+              {
+                "internalType": "uint8",
+                "name": "rarityScoreModifier",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint16",
+                "name": "slotPositions",
+                "type": "uint16"
+              },
+              {
+                "internalType": "bool",
+                "name": "canPurchaseWithGhst",
+                "type": "bool"
+              },
+              {
+                "internalType": "uint32",
+                "name": "totalQuantity",
+                "type": "uint32"
+              },
+              { "internalType": "uint8", "name": "minLevel", "type": "uint8" },
+              {
+                "internalType": "bool",
+                "name": "canBeTransferred",
+                "type": "bool"
+              },
+              { "internalType": "uint8", "name": "category", "type": "uint8" },
+              {
+                "internalType": "int8",
+                "name": "kinshipBonus",
+                "type": "int8"
+              },
+              {
+                "internalType": "uint32",
+                "name": "experienceBonus",
+                "type": "uint32"
+              },
+              {
+                "internalType": "uint32",
+                "name": "dimensions",
+                "type": "uint32"
+              }
+            ],
+            "internalType": "struct ItemType[]",
+            "name": "itemTypes",
+            "type": "tuple[]"
+          }
+        ],
+        "internalType": "struct ItemsFacet.BalanceItemTypeIO",
+        "name": "output_",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "uint256", "name": "_tokenId", "type": "uint256" },
       {
-        "internalType": "uint16[16]",
+        "internalType": "uint256",
         "name": "_equippedWearables",
-        "type": "uint16[16]"
+        "type": "uint256"
       }
     ],
     "name": "equipWearables",
@@ -3894,9 +3653,9 @@
     "name": "equippedWearables",
     "outputs": [
       {
-        "internalType": "uint16[16]",
+        "internalType": "uint256[16]",
         "name": "wearableIds_",
-        "type": "uint16[16]"
+        "type": "uint256[16]"
       }
     ],
     "stateMutability": "view",
@@ -3910,72 +3669,61 @@
     "outputs": [
       {
         "components": [
-          { "internalType": "string", "name": "name", "type": "string" },
-          { "internalType": "string", "name": "description", "type": "string" },
-          { "internalType": "string", "name": "author", "type": "string" },
           {
-            "internalType": "int8[6]",
+            "internalType": "int256[]",
             "name": "traitModifiers",
-            "type": "int8[6]"
-          },
-          {
-            "internalType": "bool[16]",
-            "name": "slotPositions",
-            "type": "bool[16]"
+            "type": "int256[]"
           },
           {
             "internalType": "uint8[]",
             "name": "allowedCollaterals",
             "type": "uint8[]"
           },
-          {
-            "components": [
-              { "internalType": "uint8", "name": "x", "type": "uint8" },
-              { "internalType": "uint8", "name": "y", "type": "uint8" },
-              { "internalType": "uint8", "name": "width", "type": "uint8" },
-              { "internalType": "uint8", "name": "height", "type": "uint8" }
-            ],
-            "internalType": "struct Dimensions",
-            "name": "dimensions",
-            "type": "tuple"
-          },
-          { "internalType": "uint256", "name": "ghstPrice", "type": "uint256" },
-          {
-            "internalType": "uint256",
-            "name": "maxQuantity",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "totalQuantity",
-            "type": "uint256"
-          },
+          { "internalType": "string", "name": "name", "type": "string" },
+          { "internalType": "uint96", "name": "ghstPrice", "type": "uint96" },
           { "internalType": "uint32", "name": "svgId", "type": "uint32" },
+          { "internalType": "uint32", "name": "maxQuantity", "type": "uint32" },
           {
             "internalType": "uint8",
             "name": "rarityScoreModifier",
             "type": "uint8"
           },
           {
+            "internalType": "bool[]",
+            "name": "slotPositions",
+            "type": "bool[]"
+          },
+          {
             "internalType": "bool",
             "name": "canPurchaseWithGhst",
             "type": "bool"
           },
-          { "internalType": "uint16", "name": "minLevel", "type": "uint16" },
+          {
+            "internalType": "uint32",
+            "name": "totalQuantity",
+            "type": "uint32"
+          },
+          { "internalType": "uint8", "name": "minLevel", "type": "uint8" },
           {
             "internalType": "bool",
             "name": "canBeTransferred",
             "type": "bool"
           },
           { "internalType": "uint8", "name": "category", "type": "uint8" },
-          { "internalType": "int16", "name": "kinshipBonus", "type": "int16" },
+          { "internalType": "int8", "name": "kinshipBonus", "type": "int8" },
           {
             "internalType": "uint32",
             "name": "experienceBonus",
             "type": "uint32"
-          }
+          },
+          { "internalType": "uint256", "name": "x", "type": "uint256" },
+          { "internalType": "uint256", "name": "y", "type": "uint256" },
+          { "internalType": "uint256", "name": "width", "type": "uint256" },
+          { "internalType": "uint256", "name": "height", "type": "uint256" },
+          { "internalType": "string", "name": "description", "type": "string" },
+          { "internalType": "string", "name": "author", "type": "string" }
         ],
-        "internalType": "struct ItemType",
+        "internalType": "struct ItemsFacet.ItemTypeIO",
         "name": "itemType_",
         "type": "tuple"
       }
@@ -3991,72 +3739,61 @@
     "outputs": [
       {
         "components": [
-          { "internalType": "string", "name": "name", "type": "string" },
-          { "internalType": "string", "name": "description", "type": "string" },
-          { "internalType": "string", "name": "author", "type": "string" },
           {
-            "internalType": "int8[6]",
+            "internalType": "int256[]",
             "name": "traitModifiers",
-            "type": "int8[6]"
-          },
-          {
-            "internalType": "bool[16]",
-            "name": "slotPositions",
-            "type": "bool[16]"
+            "type": "int256[]"
           },
           {
             "internalType": "uint8[]",
             "name": "allowedCollaterals",
             "type": "uint8[]"
           },
-          {
-            "components": [
-              { "internalType": "uint8", "name": "x", "type": "uint8" },
-              { "internalType": "uint8", "name": "y", "type": "uint8" },
-              { "internalType": "uint8", "name": "width", "type": "uint8" },
-              { "internalType": "uint8", "name": "height", "type": "uint8" }
-            ],
-            "internalType": "struct Dimensions",
-            "name": "dimensions",
-            "type": "tuple"
-          },
-          { "internalType": "uint256", "name": "ghstPrice", "type": "uint256" },
-          {
-            "internalType": "uint256",
-            "name": "maxQuantity",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "totalQuantity",
-            "type": "uint256"
-          },
+          { "internalType": "string", "name": "name", "type": "string" },
+          { "internalType": "uint96", "name": "ghstPrice", "type": "uint96" },
           { "internalType": "uint32", "name": "svgId", "type": "uint32" },
+          { "internalType": "uint32", "name": "maxQuantity", "type": "uint32" },
           {
             "internalType": "uint8",
             "name": "rarityScoreModifier",
             "type": "uint8"
           },
           {
+            "internalType": "bool[]",
+            "name": "slotPositions",
+            "type": "bool[]"
+          },
+          {
             "internalType": "bool",
             "name": "canPurchaseWithGhst",
             "type": "bool"
           },
-          { "internalType": "uint16", "name": "minLevel", "type": "uint16" },
+          {
+            "internalType": "uint32",
+            "name": "totalQuantity",
+            "type": "uint32"
+          },
+          { "internalType": "uint8", "name": "minLevel", "type": "uint8" },
           {
             "internalType": "bool",
             "name": "canBeTransferred",
             "type": "bool"
           },
           { "internalType": "uint8", "name": "category", "type": "uint8" },
-          { "internalType": "int16", "name": "kinshipBonus", "type": "int16" },
+          { "internalType": "int8", "name": "kinshipBonus", "type": "int8" },
           {
             "internalType": "uint32",
             "name": "experienceBonus",
             "type": "uint32"
-          }
+          },
+          { "internalType": "uint256", "name": "x", "type": "uint256" },
+          { "internalType": "uint256", "name": "y", "type": "uint256" },
+          { "internalType": "uint256", "name": "width", "type": "uint256" },
+          { "internalType": "uint256", "name": "height", "type": "uint256" },
+          { "internalType": "string", "name": "description", "type": "string" },
+          { "internalType": "string", "name": "author", "type": "string" }
         ],
-        "internalType": "struct ItemType[]",
+        "internalType": "struct ItemsFacet.ItemTypeIO[]",
         "name": "itemTypes_",
         "type": "tuple[]"
       }
@@ -4079,17 +3816,17 @@
             "type": "uint8[]"
           },
           {
-            "internalType": "uint16[]",
+            "internalType": "uint256[16]",
             "name": "wearableIds",
-            "type": "uint16[]"
+            "type": "uint256[16]"
           },
           {
-            "internalType": "int8[5]",
+            "internalType": "int256[5]",
             "name": "traitsBonuses",
-            "type": "int8[5]"
+            "type": "int256[5]"
           }
         ],
-        "internalType": "struct WearableSet",
+        "internalType": "struct ItemsFacet.WearableSetIO",
         "name": "wearableSet_",
         "type": "tuple"
       }
@@ -4110,17 +3847,17 @@
             "type": "uint8[]"
           },
           {
-            "internalType": "uint16[]",
+            "internalType": "uint256[16]",
             "name": "wearableIds",
-            "type": "uint16[]"
+            "type": "uint256[16]"
           },
           {
-            "internalType": "int8[5]",
+            "internalType": "int256[5]",
             "name": "traitsBonuses",
-            "type": "int8[5]"
+            "type": "int256[5]"
           }
         ],
-        "internalType": "struct WearableSet[]",
+        "internalType": "struct ItemsFacet.WearableSetIO[]",
         "name": "wearableSets_",
         "type": "tuple[]"
       }
@@ -4134,15 +3871,7 @@
     ],
     "name": "itemBalances",
     "outputs": [
-      {
-        "components": [
-          { "internalType": "uint256", "name": "itemId", "type": "uint256" },
-          { "internalType": "uint256", "name": "balance", "type": "uint256" }
-        ],
-        "internalType": "struct ItemsFacet.ItemIdIO[]",
-        "name": "bals_",
-        "type": "tuple[]"
-      }
+      { "internalType": "uint256[]", "name": "bals_", "type": "uint256[]" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -4158,15 +3887,7 @@
     ],
     "name": "itemBalancesOfToken",
     "outputs": [
-      {
-        "components": [
-          { "internalType": "uint256", "name": "itemId", "type": "uint256" },
-          { "internalType": "uint256", "name": "balance", "type": "uint256" }
-        ],
-        "internalType": "struct ItemsFacet.ItemIdIO[]",
-        "name": "bals_",
-        "type": "tuple[]"
-      }
+      { "internalType": "uint256[]", "name": "bals_", "type": "uint256[]" }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -4180,102 +3901,27 @@
       },
       { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
     ],
-    "name": "itemBalancesOfTokenWithTypes",
+    "name": "itemBalancesOfTokenWithSlots",
     "outputs": [
       {
         "components": [
-          { "internalType": "uint256", "name": "balance", "type": "uint256" },
           { "internalType": "uint256", "name": "itemId", "type": "uint256" },
+          { "internalType": "uint256", "name": "balance", "type": "uint256" },
           {
-            "components": [
-              { "internalType": "string", "name": "name", "type": "string" },
-              {
-                "internalType": "string",
-                "name": "description",
-                "type": "string"
-              },
-              { "internalType": "string", "name": "author", "type": "string" },
-              {
-                "internalType": "int8[6]",
-                "name": "traitModifiers",
-                "type": "int8[6]"
-              },
-              {
-                "internalType": "bool[16]",
-                "name": "slotPositions",
-                "type": "bool[16]"
-              },
-              {
-                "internalType": "uint8[]",
-                "name": "allowedCollaterals",
-                "type": "uint8[]"
-              },
-              {
-                "components": [
-                  { "internalType": "uint8", "name": "x", "type": "uint8" },
-                  { "internalType": "uint8", "name": "y", "type": "uint8" },
-                  { "internalType": "uint8", "name": "width", "type": "uint8" },
-                  { "internalType": "uint8", "name": "height", "type": "uint8" }
-                ],
-                "internalType": "struct Dimensions",
-                "name": "dimensions",
-                "type": "tuple"
-              },
-              {
-                "internalType": "uint256",
-                "name": "ghstPrice",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "maxQuantity",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "totalQuantity",
-                "type": "uint256"
-              },
-              { "internalType": "uint32", "name": "svgId", "type": "uint32" },
-              {
-                "internalType": "uint8",
-                "name": "rarityScoreModifier",
-                "type": "uint8"
-              },
-              {
-                "internalType": "bool",
-                "name": "canPurchaseWithGhst",
-                "type": "bool"
-              },
-              {
-                "internalType": "uint16",
-                "name": "minLevel",
-                "type": "uint16"
-              },
-              {
-                "internalType": "bool",
-                "name": "canBeTransferred",
-                "type": "bool"
-              },
-              { "internalType": "uint8", "name": "category", "type": "uint8" },
-              {
-                "internalType": "int16",
-                "name": "kinshipBonus",
-                "type": "int16"
-              },
-              {
-                "internalType": "uint32",
-                "name": "experienceBonus",
-                "type": "uint32"
-              }
-            ],
-            "internalType": "struct ItemType",
-            "name": "itemType",
-            "type": "tuple"
-          }
+            "internalType": "uint256[]",
+            "name": "slotPositions",
+            "type": "uint256[]"
+          },
+          { "internalType": "string", "name": "name", "type": "string" },
+          {
+            "internalType": "int256[]",
+            "name": "traitModifiers",
+            "type": "int256[]"
+          },
+          { "internalType": "uint256", "name": "minLevel", "type": "uint256" }
         ],
-        "internalType": "struct ItemTypeIO[]",
-        "name": "itemBalancesOfTokenWithTypes_",
+        "internalType": "struct ItemsFacet.ItemBalanceWithSlotsIO[]",
+        "name": "itemBalanceWithSlots_",
         "type": "tuple[]"
       }
     ],
@@ -4286,102 +3932,27 @@
     "inputs": [
       { "internalType": "address", "name": "_owner", "type": "address" }
     ],
-    "name": "itemBalancesWithTypes",
+    "name": "itemBalancesWithSlots",
     "outputs": [
       {
         "components": [
-          { "internalType": "uint256", "name": "balance", "type": "uint256" },
           { "internalType": "uint256", "name": "itemId", "type": "uint256" },
+          { "internalType": "uint256", "name": "balance", "type": "uint256" },
           {
-            "components": [
-              { "internalType": "string", "name": "name", "type": "string" },
-              {
-                "internalType": "string",
-                "name": "description",
-                "type": "string"
-              },
-              { "internalType": "string", "name": "author", "type": "string" },
-              {
-                "internalType": "int8[6]",
-                "name": "traitModifiers",
-                "type": "int8[6]"
-              },
-              {
-                "internalType": "bool[16]",
-                "name": "slotPositions",
-                "type": "bool[16]"
-              },
-              {
-                "internalType": "uint8[]",
-                "name": "allowedCollaterals",
-                "type": "uint8[]"
-              },
-              {
-                "components": [
-                  { "internalType": "uint8", "name": "x", "type": "uint8" },
-                  { "internalType": "uint8", "name": "y", "type": "uint8" },
-                  { "internalType": "uint8", "name": "width", "type": "uint8" },
-                  { "internalType": "uint8", "name": "height", "type": "uint8" }
-                ],
-                "internalType": "struct Dimensions",
-                "name": "dimensions",
-                "type": "tuple"
-              },
-              {
-                "internalType": "uint256",
-                "name": "ghstPrice",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "maxQuantity",
-                "type": "uint256"
-              },
-              {
-                "internalType": "uint256",
-                "name": "totalQuantity",
-                "type": "uint256"
-              },
-              { "internalType": "uint32", "name": "svgId", "type": "uint32" },
-              {
-                "internalType": "uint8",
-                "name": "rarityScoreModifier",
-                "type": "uint8"
-              },
-              {
-                "internalType": "bool",
-                "name": "canPurchaseWithGhst",
-                "type": "bool"
-              },
-              {
-                "internalType": "uint16",
-                "name": "minLevel",
-                "type": "uint16"
-              },
-              {
-                "internalType": "bool",
-                "name": "canBeTransferred",
-                "type": "bool"
-              },
-              { "internalType": "uint8", "name": "category", "type": "uint8" },
-              {
-                "internalType": "int16",
-                "name": "kinshipBonus",
-                "type": "int16"
-              },
-              {
-                "internalType": "uint32",
-                "name": "experienceBonus",
-                "type": "uint32"
-              }
-            ],
-            "internalType": "struct ItemType",
-            "name": "itemType",
-            "type": "tuple"
-          }
+            "internalType": "uint256[]",
+            "name": "slotPositions",
+            "type": "uint256[]"
+          },
+          { "internalType": "string", "name": "name", "type": "string" },
+          {
+            "internalType": "int256[]",
+            "name": "traitModifiers",
+            "type": "int256[]"
+          },
+          { "internalType": "uint256", "name": "minLevel", "type": "uint256" }
         ],
-        "internalType": "struct ItemTypeIO[]",
-        "name": "output_",
+        "internalType": "struct ItemsFacet.ItemBalanceWithSlotsIO[]",
+        "name": "itemBalanceWithSlots_",
         "type": "tuple[]"
       }
     ],
@@ -4427,18 +3998,140 @@
     "type": "function"
   },
   {
+    "anonymous": false,
     "inputs": [
-      { "internalType": "address", "name": "_fromContract", "type": "address" },
-      { "internalType": "uint256", "name": "_fromTokenId", "type": "uint256" },
-      { "internalType": "address", "name": "_toContract", "type": "address" },
-      { "internalType": "uint256", "name": "_toTokenId", "type": "uint256" },
-      { "internalType": "uint256[]", "name": "_ids", "type": "uint256[]" },
-      { "internalType": "uint256[]", "name": "_values", "type": "uint256[]" }
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "_ids",
+        "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "_values",
+        "type": "uint256[]"
+      }
     ],
-    "name": "batchTransferAsChild",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "name": "TransferBatch",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_fromContract",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_fromTokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_tokenTypeId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_value",
+        "type": "uint256"
+      }
+    ],
+    "name": "TransferFromParent",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_value",
+        "type": "uint256"
+      }
+    ],
+    "name": "TransferSingle",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_toContract",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_toTokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_tokenTypeId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_value",
+        "type": "uint256"
+      }
+    ],
+    "name": "TransferToParent",
+    "type": "event"
   },
   {
     "inputs": [
@@ -4449,19 +4142,6 @@
       { "internalType": "uint256[]", "name": "_values", "type": "uint256[]" }
     ],
     "name": "batchTransferFromParent",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_from", "type": "address" },
-      { "internalType": "address", "name": "_toContract", "type": "address" },
-      { "internalType": "uint256", "name": "_toTokenId", "type": "uint256" },
-      { "internalType": "uint256[]", "name": "_ids", "type": "uint256[]" },
-      { "internalType": "uint256[]", "name": "_values", "type": "uint256[]" }
-    ],
-    "name": "batchTransferToParent",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -4624,7 +4304,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_buyer",
+        "name": "_from",
         "type": "address"
       },
       {
@@ -4661,7 +4341,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_buyer",
+        "name": "_from",
         "type": "address"
       },
       {
@@ -4684,6 +4364,68 @@
       }
     ],
     "name": "PurchaseItemsWithVouchers",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "Transfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "_ids",
+        "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "_values",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "TransferBatch",
     "type": "event"
   },
   {
@@ -4710,6 +4452,23 @@
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "components": [
+          { "internalType": "bytes32", "name": "svgType", "type": "bytes32" },
+          { "internalType": "uint256[]", "name": "sizes", "type": "uint256[]" }
+        ],
+        "indexed": false,
+        "internalType": "struct LibSvg.SvgTypeAndSizes[]",
+        "name": "_typesAndSizes",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "StoreSvg",
+    "type": "event"
   },
   {
     "inputs": [
@@ -4812,31 +4571,20 @@
   {
     "inputs": [
       { "internalType": "uint256", "name": "_newFee", "type": "uint256" },
-      { "internalType": "bytes32", "name": "_keyHash", "type": "bytes32" },
-      {
-        "internalType": "address",
-        "name": "_vrfCoordinator",
-        "type": "address"
-      },
-      { "internalType": "address", "name": "_link", "type": "address" }
+      { "internalType": "bytes32", "name": "_keyHash", "type": "bytes32" }
     ],
-    "name": "changeVrf",
+    "name": "changeVRFFee",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "keyHash",
-    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "link",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
+    "inputs": [
+      { "internalType": "uint256[]", "name": "_tokenIds", "type": "uint256[]" }
+    ],
+    "name": "drawRandomNumbers",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -4878,11 +4626,29 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "vrfCoordinator",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "Transfer",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -4924,8 +4690,7 @@
   {
     "inputs": [
       { "internalType": "address", "name": "_to", "type": "address" },
-      { "internalType": "uint256", "name": "_ghst", "type": "uint256" },
-      { "internalType": "bytes32", "name": "_hash", "type": "bytes32" }
+      { "internalType": "uint256", "name": "_ghst", "type": "uint256" }
     ],
     "name": "xingyun",
     "outputs": [],

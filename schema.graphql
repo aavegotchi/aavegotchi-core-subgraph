@@ -8,9 +8,7 @@ type AavegotchiOption @entity {
 
   randomNumber: BigInt!
 
-  numericTraits: [BigInt!]!
-
-  numericTraitsUint: BigInt!
+  numericTraits: [Int!]!
 
   collateralType: Bytes!
 
@@ -22,7 +20,7 @@ type Aavegotchi @entity {
 
   owner: User!
 
-  portal: Portal!
+  portal: Portal! @derivedFrom(field:"gotchi")
 
   hauntId: BigInt!
 
@@ -32,11 +30,11 @@ type Aavegotchi @entity {
 
   status: BigInt!
 
-  numericTraits: [BigInt!]!
+  numericTraits: [Int!]!
 
-  modifiedNumericTraits: [BigInt!]!
+  modifiedNumericTraits: [Int!]!
 
-  equippedWearables: [BigInt!]!
+  equippedWearables: [Int!]!
 
   collateral: Bytes!
 
