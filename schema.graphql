@@ -20,7 +20,7 @@ type Aavegotchi @entity {
 
   owner: User!
 
-  portal: Portal! @derivedFrom(field:"gotchi")
+  portal: Portal! @derivedFrom(field: "gotchi")
 
   hauntId: BigInt!
 
@@ -45,17 +45,13 @@ type Aavegotchi @entity {
   minimumStake: BigInt!
 
   kinship: BigInt! #The kinship value of this Aavegotchi. Default is 50.
-
   lastInteracted: BigInt!
 
   experience: BigInt! #How much XP this Aavegotchi has accrued. Begins at 0.
-
   toNextLevel: BigInt!
 
   usedSkillPoints: BigInt! #number of skill points used
-
   level: BigInt! #the current aavegotchi level
-
   baseRarityScore: BigInt!
 
   modifiedRarityScore: BigInt!
@@ -86,3 +82,36 @@ type User @entity {
 
   portalsOwned: [Portal!]! @derivedFrom(field: "owner")
 }
+
+type ERC721Listing @entity {
+  id: ID!
+  category: BigInt! # 0 = Closed Portal, 1 = VRF Pending, 2 = Open Portal, 3 = Aavegotchi
+  erc721TokenAddress: Bytes! # The token address of the NFT
+  tokenId: BigInt! # The token ID of the NFT
+  seller: Bytes! # The creator of the listing
+  timeCreated: BigInt! # Time at which listed was created
+  timePurchased: BigInt! # Time when the listing was purchased
+  cancelled: Boolean! # If the listing is cancelled
+  priceInWei: BigInt! # How much the listing is (in GHST)
+}
+
+type ERC1155Listing @entity {
+  id: ID!
+  category: BigInt! # 0 = Wearable, #1 = Badge, #2 = Consumable, #3 = Ticket
+  erc1155TokenAddress: Bytes!
+  erc1155TypeId: BigInt!
+  seller: Bytes!
+  priceInWei: BigInt!
+  quantity: BigInt!
+  cancelled: Boolean!
+  timeCreated: BigInt! # Time at which listed was created
+  timeLastPurchased: BigInt! # Time when the listing was purchased
+  sold: Boolean!
+}
+
+#type Statistics @entity {
+# id: ID!
+# portalsClosed: BigInt!
+# portalsOpened: BigInt!
+# aavegotchisClaimed: BigInt!
+#}

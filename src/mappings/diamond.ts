@@ -10,16 +10,26 @@ import {
   SetAavegotchiName,
   GrantExperience,
   AavegotchiDiamond,
-  Xingyun
+  Xingyun,
+  ERC721ExecutedListing,
+  ERC721ListingAdd,
+  ERC1155ListingAdd,
+  ERC1155ExecutedListing,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
   getOrCreatePortal,
   getOrCreateAavegotchiOption,
   getOrCreateAavegotchi,
-  updateAavegotchiInfo
+  updateAavegotchiInfo,
 } from "../utils/helpers";
 import { BigInt, log } from "@graphprotocol/graph-ts";
+import {
+  getOrCreateERC1155Listing,
+  getOrCreateERC721Listing,
+  updateERC1155ListingInfo,
+  updateERC721ListingInfo,
+} from "../utils/helpers/diamond";
 
 // - event: BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
 //   handler: handleBuyPortals
@@ -98,7 +108,7 @@ export function handlePortalOpened(event: PortalOpened): void {
 
       gotchi.save();
       log.warning("Saved possible gotchi number {}", [
-        BigInt.fromI32(i).toString()
+        BigInt.fromI32(i).toString(),
       ]);
     }
   }
@@ -204,4 +214,119 @@ export function handleGrantExperience(event: GrantExperience): void {
 
     gotchi.save();
   }
+}
+
+//ERC721 Transfer
+export function handleTransfer(event: Transfer): void {}
+
+//ERC1155 Transfers
+export function handleTransferSingle(event: TransferSingle): void {}
+
+export function handleTransferBatch(event: TransferBatch): void {}
+
+//ERC721 Marketplace Facet
+
+/* 
+-event:  ERC721ListingAdd(
+        uint256 indexed listingId,
+        address indexed seller,
+        address erc721TokenAddress,
+        uint256 erc721TokenId,
+        uint256 indexed category,
+        uint256 time
+    );
+-handler: handleERC721ListingAdd
+*/
+
+export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
+  let listing = getOrCreateERC721Listing(event.params.listingId.toString());
+  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+
+  listing.save();
+}
+
+/* -event: ERC721ExecutedListing(
+        uint256 indexed listingId,
+        address indexed seller,
+        address buyer,
+        address erc721TokenAddress,
+        uint256 erc721TokenId,
+        uint256 indexed category,
+        uint256 priceInWei,
+        uint256 time
+    );
+    */
+//handler: handleERC721ExecutedListing
+
+export function handleERC721ExecutedListing(
+  event: ERC721ExecutedListing
+): void {
+  let listing = getOrCreateERC721Listing(event.params.listingId.toString());
+
+  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+  listing.save();
+}
+
+/*
+event: ERC721ListingCancelled(uint256 indexed listingId, uint256 category, uint256 time);
+handler: handleERC721ListingCancelled
+
+CANNOT IMPLEMENT due to not being in ABI
+
+export function handleERC721ListingCancelled(event:ERC721ListingCancelled):void {}
+*/
+
+/*
+event: ERC721ListingRemoved(uint256 indexed listingId, uint256 category, uint256 time);
+handler:handleERC721ListingRemoved
+CANNOT IMPLEMENT due to not being in ABI
+
+export function handleERC721ListingRemoved(event:ERC721ListingRemoved):void{}
+*/
+
+/* ERC1155 MARKETPLACE */
+
+/*
+-event: ERC1155ListingAdd(
+  uint256 indexed listingId,
+  address indexed seller,
+  address erc1155TokenAddress,
+  uint256 erc1155TypeId,
+  uint256 indexed category,
+  uint256 quantity,
+  uint256 priceInWei,
+  uint256 time
+
+-handler: handleERC1155ListingAdd
+*/
+
+export function handleERC1155ListingAdd(event: ERC1155ListingAdd): void {
+  let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
+  listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
+
+  listing.save();
+}
+
+/*
+-event: ERC1155ExecutedListing(
+        uint256 indexed listingId,
+        address indexed seller,
+        address buyer,
+        address erc1155TokenAddress,
+        uint256 erc1155TypeId,
+        uint256 indexed category,
+        uint256 _quantity,
+        uint256 priceInWei,
+        uint256 time
+    )
+-handler: handleERC1155ExecutedListing
+    */
+
+export function handleERC1155ExecutedListing(
+  event: ERC1155ExecutedListing
+): void {
+  let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
+  listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
+
+  listing.save();
 }
