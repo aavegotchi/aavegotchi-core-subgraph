@@ -92,7 +92,7 @@ export function updateERC721ListingInfo(
   listing: ERC721Listing,
   listingID: BigInt,
   event: ethereum.Event
-) {
+): ERC721Listing {
   let contract = AavegotchiDiamond.bind(event.address);
   let response = contract.try_getERC721Listing(listingID);
 
@@ -120,7 +120,7 @@ export function updateERC1155ListingInfo(
   listing: ERC1155Listing,
   listingID: BigInt,
   event: ethereum.Event
-) {
+): ERC1155Listing {
   let contract = AavegotchiDiamond.bind(event.address);
   let response = contract.try_getERC1155Listing(listingID);
 
