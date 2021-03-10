@@ -13,8 +13,15 @@ import {
   Xingyun,
   ERC721ExecutedListing,
   ERC721ListingAdd,
+  ERC721ListingCancelled,
+  ERC721ListingRemoved,
   ERC1155ListingAdd,
   ERC1155ExecutedListing,
+  ERC1155ListingCancelled,
+  ERC1155ListingRemoved,
+  Transfer,
+  TransferSingle,
+  TransferBatch,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -217,9 +224,14 @@ export function handleGrantExperience(event: GrantExperience): void {
 }
 
 //ERC721 Transfer
-export function handleTransfer(event: Transfer): void {}
+export function handleTransfer(event: Transfer): void {
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
+  gotchi.owner = event.params._to.toHexString();
+  gotchi.save();
+}
 
 //ERC1155 Transfers
+/*
 export function handleTransferSingle(event: TransferSingle): void {}
 
 export function handleTransferBatch(event: TransferBatch): void {}
@@ -270,19 +282,28 @@ export function handleERC721ExecutedListing(
 /*
 event: ERC721ListingCancelled(uint256 indexed listingId, uint256 category, uint256 time);
 handler: handleERC721ListingCancelled
-
-CANNOT IMPLEMENT due to not being in ABI
-
-export function handleERC721ListingCancelled(event:ERC721ListingCancelled):void {}
 */
+
+export function handleERC721ListingCancelled(
+  event: ERC721ListingCancelled
+): void {
+  let listing = getOrCreateERC721Listing(event.params.listingId.toString());
+
+  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+  listing.save();
+}
 
 /*
 event: ERC721ListingRemoved(uint256 indexed listingId, uint256 category, uint256 time);
 handler:handleERC721ListingRemoved
-CANNOT IMPLEMENT due to not being in ABI
-
-export function handleERC721ListingRemoved(event:ERC721ListingRemoved):void{}
 */
+
+export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
+  let listing = getOrCreateERC721Listing(event.params.listingId.toString());
+
+  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+  listing.save();
+}
 
 /* ERC1155 MARKETPLACE */
 
@@ -324,6 +345,24 @@ export function handleERC1155ListingAdd(event: ERC1155ListingAdd): void {
 
 export function handleERC1155ExecutedListing(
   event: ERC1155ExecutedListing
+): void {
+  let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
+  listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
+
+  listing.save();
+}
+
+export function handleERC1155ListingCancelled(
+  event: ERC1155ListingCancelled
+): void {
+  let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
+  listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
+
+  listing.save();
+}
+
+export function handleERC1155ListingRemoved(
+  event: ERC1155ListingRemoved
 ): void {
   let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
   listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
