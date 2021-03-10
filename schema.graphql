@@ -90,8 +90,8 @@ type ERC721Listing @entity {
   tokenId: BigInt! # The token ID of the NFT
   seller: Bytes! # The creator of the listing
   timeCreated: BigInt! # Time at which listed was created
-  timePurchased: BigInt! # Time when the listing was purchased
-  cancelled: Boolean! # If the listing is cancelled
+  timePurchased: BigInt # Time when the listing was purchased
+  cancelled: Boolean # If the listing is cancelled
   priceInWei: BigInt! # How much the listing is (in GHST)
 }
 

@@ -135,6 +135,7 @@ export function updateERC1155ListingInfo(
     listing.priceInWei = listingInfo.priceInWei;
     listing.sold = listingInfo.sold;
     listing.cancelled = listingInfo.cancelled;
+    listing.quantity = listingInfo.quantity;
   } else {
     log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
       listingID.toString(),
