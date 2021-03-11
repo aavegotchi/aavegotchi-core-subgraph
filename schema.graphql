@@ -25,6 +25,7 @@ type Aavegotchi @entity {
   hauntId: BigInt!
 
   name: String!
+  nameLowerCase: String!
 
   randomNumber: BigInt!
 

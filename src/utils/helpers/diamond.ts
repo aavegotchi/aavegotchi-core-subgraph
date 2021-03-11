@@ -163,6 +163,7 @@ export function updateAavegotchiInfo(
     let gotchiInfo = response.value;
 
     gotchi.name = gotchiInfo.name;
+    gotchi.nameLowerCase = gotchiInfo.name.toLowerCase();
     gotchi.randomNumber = gotchiInfo.randomNumber;
     gotchi.status = gotchiInfo.status;
     gotchi.numericTraits = gotchiInfo.numericTraits;
