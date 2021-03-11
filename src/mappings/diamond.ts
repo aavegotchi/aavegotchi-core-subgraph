@@ -1,4 +1,6 @@
 import {
+  AavegotchiDiamond,
+  AavegotchiInteract,
   BuyPortals,
   PortalOpened,
   ClaimAavegotchi,
@@ -9,7 +11,6 @@ import {
   EquipWearables,
   SetAavegotchiName,
   GrantExperience,
-  AavegotchiDiamond,
   Xingyun,
   ERC721ExecutedListing,
   ERC721ListingAdd,
@@ -21,7 +22,7 @@ import {
   ERC1155ListingRemoved,
   Transfer,
   TransferSingle,
-  TransferBatch,
+  TransferBatch
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -29,36 +30,45 @@ import {
   getOrCreateAavegotchiOption,
   getOrCreateAavegotchi,
   updateAavegotchiInfo,
-} from "../utils/helpers";
-import { BigInt, log } from "@graphprotocol/graph-ts";
-import {
+  getStatisticEntity,
   getOrCreateERC1155Listing,
   getOrCreateERC721Listing,
   updateERC1155ListingInfo,
-  updateERC721ListingInfo,
+  updateERC721ListingInfo
 } from "../utils/helpers/diamond";
+import {
+  BIGINT_ONE,
+  PORTAL_STATUS_BOUGHT,
+  PORTAL_STATUS_OPENED,
+  PORTAL_STATUS_CLAIMED
+} from "../utils/constants";
+import { BigInt, log } from "@graphprotocol/graph-ts";
 
 // - event: BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
 //   handler: handleBuyPortals
 
 export function handleBuyPortals(event: BuyPortals): void {
-  log.warning("[BUY PORTAL] Called", []);
   let buyer = getOrCreateUser(event.params._from.toHexString());
   let owner = getOrCreateUser(event.params._to.toHexString());
+  let stats = getStatisticEntity();
 
   let baseId = event.params._tokenId;
 
   for (let i = 0; i < event.params._numAavegotchisToPurchase.toI32(); i++) {
     let portal = getOrCreatePortal(baseId.plus(BigInt.fromI32(i)).toString());
 
-    portal.status = "Bought";
+    portal.status = PORTAL_STATUS_BOUGHT;
     portal.owner = owner.id;
     portal.buyer = buyer.id;
 
     portal.save();
-    log.warning("[BUY PORTAL] Created and saved portal {}", [portal.id]);
   }
 
+  stats.portalsBought = stats.portalsBought.plus(
+    event.params._numAavegotchisToPurchase
+  );
+
+  stats.save();
   buyer.save();
   owner.save();
 }
@@ -67,23 +77,27 @@ export function handleBuyPortals(event: BuyPortals): void {
 //   handler: handleXingyun
 
 export function handleXingyun(event: Xingyun): void {
-  log.warning("[Xingyun] Called", []);
   let buyer = getOrCreateUser(event.params._from.toHexString());
   let owner = getOrCreateUser(event.params._to.toHexString());
+  let stats = getStatisticEntity();
 
   let baseId = event.params._tokenId;
 
   for (let i = 0; i < event.params._numAavegotchisToPurchase.toI32(); i++) {
     let portal = getOrCreatePortal(baseId.plus(BigInt.fromI32(i)).toString());
 
-    portal.status = "Bought";
+    portal.status = PORTAL_STATUS_BOUGHT;
     portal.owner = owner.id;
     portal.buyer = buyer.id;
 
     portal.save();
-    log.warning("[BUY PORTAL] Created and saved portal {}", [portal.id]);
   }
 
+  stats.portalsBought = stats.portalsBought.plus(
+    event.params._numAavegotchisToPurchase
+  );
+
+  stats.save();
   buyer.save();
   owner.save();
 }
@@ -95,8 +109,7 @@ export function handlePortalOpened(event: PortalOpened): void {
   let contract = AavegotchiDiamond.bind(event.address);
   let portal = getOrCreatePortal(event.params.tokenId.toString());
   let response = contract.try_portalAavegotchiTraits(event.params.tokenId);
-
-  log.warning("[PORTAL OPENED] Using portal {}", [portal.id]);
+  let stats = getStatisticEntity();
 
   if (!response.reverted) {
     let array = response.value;
@@ -114,13 +127,14 @@ export function handlePortalOpened(event: PortalOpened): void {
       gotchi.minimumStake = possibleAavegotchiTraits.minimumStake;
 
       gotchi.save();
-      log.warning("Saved possible gotchi number {}", [
-        BigInt.fromI32(i).toString(),
-      ]);
     }
   }
 
-  portal.status = "Opened";
+  portal.status = PORTAL_STATUS_OPENED;
+
+  stats.portalsOpened = stats.portalsOpened.plus(BIGINT_ONE);
+
+  stats.save();
   portal.save();
 }
 
@@ -129,15 +143,18 @@ export function handlePortalOpened(event: PortalOpened): void {
 
 export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
   let portal = getOrCreatePortal(event.params._tokenId.toString());
-
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
-  gotchi.owner = portal.owner;
+  let stats = getStatisticEntity();
 
+  gotchi.owner = portal.owner;
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
   portal.gotchi = gotchi.id;
-  portal.status = "Claimed";
+  portal.status = PORTAL_STATUS_CLAIMED;
 
+  stats.aavegotchisClaimed = stats.aavegotchisClaimed.plus(BIGINT_ONE);
+
+  stats.save();
   gotchi.save();
   portal.save();
 }
@@ -223,6 +240,18 @@ export function handleGrantExperience(event: GrantExperience): void {
   }
 }
 
+// - event: AavegotchiInteract(indexed uint256,uint256)
+//   handler: handleAavegotchiInteract
+
+export function handleAavegotchiInteract(event: AavegotchiInteract): void {
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
+
+  gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+  gotchi.timesInteracted = gotchi.timesInteracted.plus(BIGINT_ONE);
+
+  gotchi.save();
+}
+
 //ERC721 Transfer
 export function handleTransfer(event: Transfer): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
@@ -238,7 +267,7 @@ export function handleTransferBatch(event: TransferBatch): void {}
 
 //ERC721 Marketplace Facet
 
-/* 
+/*
 -event:  ERC721ListingAdd(
         uint256 indexed listingId,
         address indexed seller,

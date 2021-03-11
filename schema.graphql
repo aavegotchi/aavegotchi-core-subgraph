@@ -46,6 +46,7 @@ type Aavegotchi @entity {
 
   kinship: BigInt! #The kinship value of this Aavegotchi. Default is 50.
   lastInteracted: BigInt!
+  timesInteracted: BigInt!
 
   experience: BigInt! #How much XP this Aavegotchi has accrued. Begins at 0.
   toNextLevel: BigInt!
@@ -59,6 +60,12 @@ type Aavegotchi @entity {
   locked: Boolean!
 }
 
+enum PortalStatus {
+  Bought
+  Opened
+  Claimed
+}
+
 type Portal @entity {
   id: ID!
 
@@ -70,7 +77,7 @@ type Portal @entity {
 
   gotchi: Aavegotchi
 
-  status: String!
+  status: PortalStatus!
 }
 
 type User @entity {
@@ -109,9 +116,16 @@ type ERC1155Listing @entity {
   sold: Boolean!
 }
 
-#type Statistics @entity {
-# id: ID!
-# portalsClosed: BigInt!
-# portalsOpened: BigInt!
-# aavegotchisClaimed: BigInt!
-#}
+type Statistic @entity {
+  "There will be a single Statistic entity with id = '0'"
+  id: ID!
+
+  "Total amount of portals that have been bought."
+  portalsBought: BigInt!
+
+  "Total amount of portals that have been opened"
+  portalsOpened: BigInt!
+
+  "Total amount of Aavegotchis claimed"
+  aavegotchisClaimed: BigInt!
+}

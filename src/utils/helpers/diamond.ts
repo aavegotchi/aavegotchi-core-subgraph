@@ -7,7 +7,9 @@ import {
   ERC1155Listing,
   Portal,
   User,
+  Statistic
 } from "../../../generated/schema";
+import { BIGINT_ZERO } from "../constants";
 import { BigInt, ethereum, log } from "@graphprotocol/graph-ts";
 
 export function getOrCreatePortal(
@@ -44,6 +46,7 @@ export function getOrCreateAavegotchi(
 
   if (gotchi == null && createIfNotFound) {
     gotchi = new Aavegotchi(id);
+    gotchi.timesInteracted = BIGINT_ZERO;
   }
 
   return gotchi as Aavegotchi;
@@ -109,7 +112,7 @@ export function updateERC721ListingInfo(
     log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
       listingID.toString(),
       event.block.number.toString(),
-      event.transaction.hash.toHexString(),
+      event.transaction.hash.toHexString()
     ]);
   }
 
@@ -140,7 +143,7 @@ export function updateERC1155ListingInfo(
     log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
       listingID.toString(),
       event.block.number.toString(),
-      event.transaction.hash.toHexString(),
+      event.transaction.hash.toHexString()
     ]);
   }
 
@@ -183,9 +186,25 @@ export function updateAavegotchiInfo(
     log.warning("Aavegotchi {} couldn't be updated at block: {} tx_hash: {}", [
       id.toString(),
       event.block.number.toString(),
-      event.transaction.hash.toHexString(),
+      event.transaction.hash.toHexString()
     ]);
   }
 
   return gotchi as Aavegotchi;
+}
+
+export function getStatisticEntity(): Statistic {
+  let stats = Statistic.load("0");
+
+  if (stats == null) {
+    stats = new Statistic("0");
+
+    stats.portalsBought = BIGINT_ZERO;
+    stats.portalsOpened = BIGINT_ZERO;
+    stats.aavegotchisClaimed = BIGINT_ZERO;
+
+    stats.save();
+  }
+
+  return stats as Statistic;
 }

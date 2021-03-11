@@ -2,6 +2,9 @@ import { BigDecimal, BigInt, Address } from "@graphprotocol/graph-ts";
 import { toDecimal } from "./decimals";
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+export const PORTAL_STATUS_BOUGHT = "Bought";
+export const PORTAL_STATUS_OPENED = "Opened";
+export const PORTAL_STATUS_CLAIMED = "Claimed";
 export let BIGINT_ZERO = BigInt.fromI32(0);
 export let BIGINT_ONE = BigInt.fromI32(1);
 export let BIGDECIMAL_ZERO = new BigDecimal(BIGINT_ZERO);

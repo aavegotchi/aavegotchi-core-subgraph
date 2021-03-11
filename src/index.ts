@@ -10,6 +10,7 @@ export {
   handleSetAavegotchiName,
   handleGrantExperience,
   handleXingyun,
+  handleAavegotchiInteract,
   handleTransfer,
   //erc1155 marketplace
   handleERC1155ExecutedListing,
