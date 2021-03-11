@@ -22,7 +22,7 @@ import {
   ERC1155ListingRemoved,
   Transfer,
   TransferSingle,
-  TransferBatch
+  TransferBatch,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -34,13 +34,13 @@ import {
   getOrCreateERC1155Listing,
   getOrCreateERC721Listing,
   updateERC1155ListingInfo,
-  updateERC721ListingInfo
+  updateERC721ListingInfo,
 } from "../utils/helpers/diamond";
 import {
   BIGINT_ONE,
   PORTAL_STATUS_BOUGHT,
   PORTAL_STATUS_OPENED,
-  PORTAL_STATUS_CLAIMED
+  PORTAL_STATUS_CLAIMED,
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
 
@@ -306,6 +306,12 @@ export function handleERC721ExecutedListing(
 
   listing = updateERC721ListingInfo(listing, event.params.listingId, event);
   listing.save();
+
+  let stats = getStatisticEntity();
+  stats.erc721TotalVolume = stats.erc721TotalVolume.plus(
+    event.params.priceInWei
+  );
+  stats.save();
 }
 
 /*
@@ -379,6 +385,13 @@ export function handleERC1155ExecutedListing(
   listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
 
   listing.save();
+
+  let stats = getStatisticEntity();
+  let volume = event.params.priceInWei.times(event.params._quantity);
+  stats.erc1155ActiveListingCount = stats.erc1155ActiveListingCount.plus(
+    volume
+  );
+  stats.save();
 }
 
 export function handleERC1155ListingCancelled(

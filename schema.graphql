@@ -128,4 +128,9 @@ type Statistic @entity {
 
   "Total amount of Aavegotchis claimed"
   aavegotchisClaimed: BigInt!
+
+  erc721ActiveListingCount: BigInt! #Total # of active ERC721 Listings
+  erc1155ActiveListingCount: BigInt! #Total # of active ERC1155 Listings
+  erc721TotalVolume: BigInt! #Total traded volume in GHST
+  erc1155TotalVolume: BigInt! #Total traded volume in GHST
 }

@@ -203,6 +203,10 @@ export function getStatisticEntity(): Statistic {
     stats.portalsBought = BIGINT_ZERO;
     stats.portalsOpened = BIGINT_ZERO;
     stats.aavegotchisClaimed = BIGINT_ZERO;
+    stats.erc721ActiveListingCount = BIGINT_ZERO;
+    stats.erc1155ActiveListingCount = BIGINT_ZERO;
+    stats.erc721TotalVolume = BIGINT_ZERO;
+    stats.erc1155TotalVolume = BIGINT_ZERO;
 
     stats.save();
   }
