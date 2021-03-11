@@ -244,19 +244,21 @@ export function handleGrantExperience(event: GrantExperience): void {
 //   handler: handleAavegotchiInteract
 
 export function handleAavegotchiInteract(event: AavegotchiInteract): void {
-  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
+  /*let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
 
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
   gotchi.timesInteracted = gotchi.timesInteracted.plus(BIGINT_ONE);
 
   gotchi.save();
+  */
 }
 
 //ERC721 Transfer
 export function handleTransfer(event: Transfer): void {
-  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
+  /*let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
   gotchi.owner = event.params._to.toHexString();
   gotchi.save();
+  */
 }
 
 //ERC1155 Transfers
