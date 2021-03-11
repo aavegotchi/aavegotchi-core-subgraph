@@ -7,7 +7,7 @@ import {
   ERC1155Listing,
   Portal,
   User,
-  Statistic
+  Statistic,
 } from "../../../generated/schema";
 import { BIGINT_ZERO } from "../constants";
 import { BigInt, ethereum, log } from "@graphprotocol/graph-ts";
@@ -108,11 +108,12 @@ export function updateERC721ListingInfo(
     listing.timeCreated = listingInfo.timeCreated;
     listing.timePurchased = listingInfo.timePurchased;
     listing.priceInWei = listingInfo.priceInWei;
+    listing.cancelled = listingInfo.cancelled;
   } else {
     log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
       listingID.toString(),
       event.block.number.toString(),
-      event.transaction.hash.toHexString()
+      event.transaction.hash.toHexString(),
     ]);
   }
 
@@ -143,7 +144,7 @@ export function updateERC1155ListingInfo(
     log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
       listingID.toString(),
       event.block.number.toString(),
-      event.transaction.hash.toHexString()
+      event.transaction.hash.toHexString(),
     ]);
   }
 
@@ -186,7 +187,7 @@ export function updateAavegotchiInfo(
     log.warning("Aavegotchi {} couldn't be updated at block: {} tx_hash: {}", [
       id.toString(),
       event.block.number.toString(),
-      event.transaction.hash.toHexString()
+      event.transaction.hash.toHexString(),
     ]);
   }
 
