@@ -388,9 +388,7 @@ export function handleERC1155ExecutedListing(
 
   let stats = getStatisticEntity();
   let volume = event.params.priceInWei.times(event.params._quantity);
-  stats.erc1155ActiveListingCount = stats.erc1155ActiveListingCount.plus(
-    volume
-  );
+  stats.erc1155TotalVolume = stats.erc1155TotalVolume.plus(volume);
   stats.save();
 }
 
