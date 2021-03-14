@@ -18,7 +18,7 @@ type AavegotchiOption @entity {
 type Aavegotchi @entity {
   id: ID!
 
-  owner: User!
+  owner: User
 
   portal: Portal! @derivedFrom(field: "gotchi")
 
@@ -59,6 +59,14 @@ type Aavegotchi @entity {
   modifiedRarityScore: BigInt!
 
   locked: Boolean!
+
+  listings: [ERC721Listing!]! @derivedFrom(field:"gotchi")
+
+  "Block in which the Aavegotchi entity was created"
+  createdAt: BigInt
+
+  "Block in which the Aavegotchi was claimed. Should coincide with createdAt"
+  claimedAt: BigInt
 }
 
 enum PortalStatus {
@@ -79,6 +87,12 @@ type Portal @entity {
   gotchi: Aavegotchi
 
   status: PortalStatus!
+
+  boughtAt: BigInt
+
+  openedAt: BigInt
+
+  claimedAt: BigInt
 }
 
 type User @entity {
@@ -101,6 +115,9 @@ type ERC721Listing @entity {
   timePurchased: BigInt # Time when the listing was purchased
   cancelled: Boolean # If the listing is cancelled
   priceInWei: BigInt! # How much the listing is (in GHST)
+
+  gotchi: Aavegotchi # If the listing is for a gotchi, this will be populated
+  portal: Portal # If the listing is for a portal, this will be populated
 }
 
 type ERC1155Listing @entity {

@@ -40,6 +40,7 @@ export function getOrCreateAavegotchiOption(
 
 export function getOrCreateAavegotchi(
   id: string,
+  event: ethereum.Event,
   createIfNotFound: boolean = true
 ): Aavegotchi {
   let gotchi = Aavegotchi.load(id);
@@ -47,6 +48,7 @@ export function getOrCreateAavegotchi(
   if (gotchi == null && createIfNotFound) {
     gotchi = new Aavegotchi(id);
     gotchi.timesInteracted = BIGINT_ZERO;
+    gotchi.createdAt = event.block.number;
   }
 
   return gotchi as Aavegotchi;

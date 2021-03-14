@@ -22,8 +22,9 @@ import {
   ERC1155ListingRemoved,
   Transfer,
   TransferSingle,
-  TransferBatch,
+  TransferBatch
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
+import { Aavegotchi } from "../../generated/schema";
 import {
   getOrCreateUser,
   getOrCreatePortal,
@@ -34,13 +35,13 @@ import {
   getOrCreateERC1155Listing,
   getOrCreateERC721Listing,
   updateERC1155ListingInfo,
-  updateERC721ListingInfo,
+  updateERC721ListingInfo
 } from "../utils/helpers/diamond";
 import {
   BIGINT_ONE,
   PORTAL_STATUS_BOUGHT,
   PORTAL_STATUS_OPENED,
-  PORTAL_STATUS_CLAIMED,
+  PORTAL_STATUS_CLAIMED
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
 
@@ -87,6 +88,7 @@ export function handleXingyun(event: Xingyun): void {
     let portal = getOrCreatePortal(baseId.plus(BigInt.fromI32(i)).toString());
 
     portal.status = PORTAL_STATUS_BOUGHT;
+    portal.boughtAt = event.block.number;
     portal.owner = owner.id;
     portal.buyer = buyer.id;
 
@@ -131,6 +133,7 @@ export function handlePortalOpened(event: PortalOpened): void {
   }
 
   portal.status = PORTAL_STATUS_OPENED;
+  portal.openedAt = event.block.number;
 
   stats.portalsOpened = stats.portalsOpened.plus(BIGINT_ONE);
 
@@ -143,14 +146,16 @@ export function handlePortalOpened(event: PortalOpened): void {
 
 export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
   let portal = getOrCreatePortal(event.params._tokenId.toString());
-  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
   let stats = getStatisticEntity();
 
-  gotchi.owner = portal.owner;
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+  gotchi.owner = portal.owner;
+  gotchi.claimedAt = event.block.number;
 
   portal.gotchi = gotchi.id;
   portal.status = PORTAL_STATUS_CLAIMED;
+  portal.claimedAt = event.block.number;
 
   stats.aavegotchisClaimed = stats.aavegotchisClaimed.plus(BIGINT_ONE);
 
@@ -163,7 +168,7 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
 //   handler: handleIncreaseStake
 
 export function handleIncreaseStake(event: IncreaseStake): void {
-  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
 
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
@@ -174,7 +179,7 @@ export function handleIncreaseStake(event: IncreaseStake): void {
 //   handler: handleDecreaseStake
 
 export function handleDecreaseStake(event: DecreaseStake): void {
-  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
 
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
@@ -185,7 +190,7 @@ export function handleDecreaseStake(event: DecreaseStake): void {
 //   handler: handleSpendSkillpoints
 
 export function handleSpendSkillpoints(event: SpendSkillpoints): void {
-  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
 
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
@@ -196,7 +201,7 @@ export function handleSpendSkillpoints(event: SpendSkillpoints): void {
 //   handler: handleEquipWearables
 
 export function handleEquipWearables(event: EquipWearables): void {
-  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
 
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
@@ -207,7 +212,7 @@ export function handleEquipWearables(event: EquipWearables): void {
 //   handler: handleSetAavegotchiName
 
 export function handleSetAavegotchiName(event: SetAavegotchiName): void {
-  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
 
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
@@ -218,7 +223,7 @@ export function handleSetAavegotchiName(event: SetAavegotchiName): void {
 //   handler: handleUseConsumables
 
 export function handleUseConsumables(event: UseConsumables): void {
-  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
 
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
@@ -230,9 +235,9 @@ export function handleUseConsumables(event: UseConsumables): void {
 
 export function handleGrantExperience(event: GrantExperience): void {
   let ids = event.params._tokenIds;
-  let gotchi = getOrCreateAavegotchi(ids[0].toString());
+  let gotchi: Aavegotchi;
   for (let i = 0; i < ids.length; i++) {
-    gotchi = getOrCreateAavegotchi(ids[i].toString());
+    gotchi = getOrCreateAavegotchi(ids[i].toString(), event);
 
     gotchi = updateAavegotchiInfo(gotchi, ids[i], event);
 
@@ -244,18 +249,28 @@ export function handleGrantExperience(event: GrantExperience): void {
 //   handler: handleAavegotchiInteract
 
 export function handleAavegotchiInteract(event: AavegotchiInteract): void {
-  /*let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
+  if (event.params._tokenId.toString() == "9215") {
+    log.warning("[INTERACT] 9215 interaction at block {}", [
+      event.block.number.toString()
+    ]);
+  }
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
 
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
   gotchi.timesInteracted = gotchi.timesInteracted.plus(BIGINT_ONE);
 
   gotchi.save();
-  */
+  if (event.params._tokenId.toString() == "9215") {
+    log.warning("[INTERACT] 9215 saved at block {}, createdAt {}", [
+      event.block.number.toString(),
+      gotchi.createdAt.toString()
+    ]);
+  }
 }
 
 //ERC721 Transfer
 export function handleTransfer(event: Transfer): void {
-  /*let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString());
+  /*let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
   gotchi.owner = event.params._to.toHexString();
   gotchi.save();
   */
@@ -284,6 +299,12 @@ export function handleTransferBatch(event: TransferBatch): void {}
 export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
   listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+
+  if (listing.category == BigInt.fromI32(3)) {
+    listing.gotchi = event.params.erc721TokenId.toString();
+  } else {
+    listing.portal = event.params.erc721TokenId.toString();
+  }
 
   listing.save();
 }
