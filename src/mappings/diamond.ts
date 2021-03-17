@@ -22,7 +22,8 @@ import {
   ERC1155ListingRemoved,
   Transfer,
   TransferSingle,
-  TransferBatch
+  TransferBatch,
+  AddItemType,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { Aavegotchi } from "../../generated/schema";
 import {
@@ -35,13 +36,15 @@ import {
   getOrCreateERC1155Listing,
   getOrCreateERC721Listing,
   updateERC1155ListingInfo,
-  updateERC721ListingInfo
+  updateERC721ListingInfo,
+  getOrCreateItemType,
+  updateItemTypeInfo,
 } from "../utils/helpers/diamond";
 import {
   BIGINT_ONE,
   PORTAL_STATUS_BOUGHT,
   PORTAL_STATUS_OPENED,
-  PORTAL_STATUS_CLAIMED
+  PORTAL_STATUS_CLAIMED,
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
 
@@ -130,6 +133,12 @@ export function handlePortalOpened(event: PortalOpened): void {
 
       gotchi.save();
     }
+  }
+
+  //Add portal hauntId
+  let portalResponse = contract.try_getAavegotchi(event.params.tokenId);
+  if (!response.reverted) {
+    portal.hauntId = portalResponse.value.hauntId;
   }
 
   portal.status = PORTAL_STATUS_OPENED;
@@ -251,7 +260,7 @@ export function handleGrantExperience(event: GrantExperience): void {
 export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   if (event.params._tokenId.toString() == "9215") {
     log.warning("[INTERACT] 9215 interaction at block {}", [
-      event.block.number.toString()
+      event.block.number.toString(),
     ]);
   }
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
@@ -263,17 +272,16 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   if (event.params._tokenId.toString() == "9215") {
     log.warning("[INTERACT] 9215 saved at block {}, createdAt {}", [
       event.block.number.toString(),
-      gotchi.createdAt.toString()
+      gotchi.createdAt.toString(),
     ]);
   }
 }
 
 //ERC721 Transfer
 export function handleTransfer(event: Transfer): void {
-  /*let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
   gotchi.owner = event.params._to.toHexString();
   gotchi.save();
-  */
 }
 
 //ERC1155 Transfers
@@ -431,4 +439,12 @@ export function handleERC1155ListingRemoved(
   listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
 
   listing.save();
+}
+
+//ERC1155 Item Types
+
+export function handleAddItemType(event: AddItemType): void {
+  let itemType = getOrCreateItemType(event.params._itemType.svgId.toString());
+  itemType = updateItemTypeInfo(itemType, event.params._itemType.svgId, event);
+  itemType.save();
 }

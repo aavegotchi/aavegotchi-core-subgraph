@@ -60,7 +60,7 @@ type Aavegotchi @entity {
 
   locked: Boolean!
 
-  listings: [ERC721Listing!]! @derivedFrom(field:"gotchi")
+  listings: [ERC721Listing!]! @derivedFrom(field: "gotchi")
 
   "Block in which the Aavegotchi entity was created"
   createdAt: BigInt
@@ -79,6 +79,8 @@ type Portal @entity {
   id: ID!
 
   buyer: User!
+
+  hauntId: BigInt!
 
   owner: User!
 
@@ -115,7 +117,6 @@ type ERC721Listing @entity {
   timePurchased: BigInt # Time when the listing was purchased
   cancelled: Boolean # If the listing is cancelled
   priceInWei: BigInt! # How much the listing is (in GHST)
-
   gotchi: Aavegotchi # If the listing is for a gotchi, this will be populated
   portal: Portal # If the listing is for a portal, this will be populated
 }
@@ -151,4 +152,23 @@ type Statistic @entity {
   erc1155ActiveListingCount: BigInt! #Total # of active ERC1155 Listings
   erc721TotalVolume: BigInt! #Total traded volume in GHST
   erc1155TotalVolume: BigInt! #Total traded volume in GHST
+}
+
+type ItemType @entity {
+  id: ID!
+  name: String!
+  desc: String
+  author: String
+  # traitModifiers: [BigInt!]
+  #slotPositions: [Boolean!]
+  # ghstPrice: BigInt!
+  #maxQuantity: BigInt!
+  #totalQuantity: BigInt!
+  #rarityScoreModifier: BigInt!
+  #canPurchaseWithGhst: Boolean!
+  #minLevel: BigInt
+  #canBeTransferred: Boolean!
+  #category: BigInt!
+  #kinshipBonus: BigInt
+  #experienceBonus: BigInt
 }

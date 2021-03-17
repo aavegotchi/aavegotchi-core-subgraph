@@ -22,4 +22,6 @@ export {
   handleERC721ListingAdd,
   handleERC721ListingCancelled,
   handleERC721ListingRemoved,
+  //item types
+  handleAddItemType,
 } from "./mappings/diamond";

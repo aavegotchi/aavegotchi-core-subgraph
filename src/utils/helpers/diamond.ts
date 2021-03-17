@@ -8,6 +8,7 @@ import {
   Portal,
   User,
   Statistic,
+  ItemType,
 } from "../../../generated/schema";
 import { BIGINT_ZERO } from "../constants";
 import { BigInt, ethereum, log } from "@graphprotocol/graph-ts";
@@ -91,6 +92,19 @@ export function getOrCreateERC1155Listing(
   }
 
   return listing as ERC1155Listing;
+}
+
+export function getOrCreateItemType(
+  id: string,
+  createIfNotFound: boolean = true
+): ItemType {
+  let itemType = ItemType.load(id);
+
+  if (itemType == null && createIfNotFound) {
+    itemType = new ItemType(id);
+  }
+
+  return itemType as ItemType;
 }
 
 export function updateERC721ListingInfo(
@@ -195,6 +209,52 @@ export function updateAavegotchiInfo(
   }
 
   return gotchi as Aavegotchi;
+}
+
+export function updateItemTypeInfo(
+  itemType: ItemType,
+  itemId: BigInt,
+  event: ethereum.Event
+): ItemType {
+  //let contract = AavegotchiDiamond.bind(event.address);
+  //let response = contract.try_getItemType(itemId);
+
+  log.warning("Adding item type {}", [itemId.toString()]);
+
+  //if (!response.reverted) {
+  //  let itemInfo = response.value;
+  itemType.name = itemType.name;
+  itemType.desc = itemType.desc;
+  itemType.author = itemType.author;
+
+  // let traitModifiers: BigInt[] = [];
+  // itemInfo.traitModifiers.forEach((mod) => {
+  //   traitModifiers.push(BigInt.fromI32(mod));
+  // });
+  // itemType.traitModifiers = traitModifiers;
+  /*
+    itemType.slotPositions = itemInfo.slotPositions;
+    itemType.ghstPrice = itemInfo.ghstPrice;
+    itemType.maxQuantity = itemInfo.maxQuantity;
+    itemType.totalQuantity = itemInfo.totalQuantity;
+    itemType.rarityScoreModifier = BigInt.fromI32(itemInfo.rarityScoreModifier);
+    itemType.canPurchaseWithGhst = itemInfo.canPurchaseWithGhst;
+    itemType.minLevel = BigInt.fromI32(itemInfo.minLevel);
+    itemType.canBeTransferred = itemInfo.canBeTransferred;
+    itemType.category = BigInt.fromI32(itemInfo.category);
+    itemType.kinshipBonus = BigInt.fromI32(itemInfo.kinshipBonus);
+    itemType.experienceBonus = itemInfo.experienceBonus;
+    */
+  // } /*else {
+  /* log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
+      itemType.id.toString(),
+      event.block.number.toString(),
+      event.transaction.hash.toHexString(),
+    ]);
+   // */
+  //  }
+
+  return itemType as ItemType;
 }
 
 export function getStatisticEntity(): Statistic {
