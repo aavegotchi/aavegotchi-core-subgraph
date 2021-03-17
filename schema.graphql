@@ -159,16 +159,16 @@ type ItemType @entity {
   name: String!
   desc: String
   author: String
-  # traitModifiers: [BigInt!]
-  #slotPositions: [Boolean!]
-  # ghstPrice: BigInt!
-  #maxQuantity: BigInt!
-  #totalQuantity: BigInt!
-  #rarityScoreModifier: BigInt!
-  #canPurchaseWithGhst: Boolean!
-  #minLevel: BigInt
-  #canBeTransferred: Boolean!
-  #category: BigInt!
-  #kinshipBonus: BigInt
-  #experienceBonus: BigInt
+  traitModifiers: [Int!]
+  slotPositions: [Boolean!]
+  ghstPrice: BigInt!
+  maxQuantity: BigInt!
+  totalQuantity: BigInt!
+  rarityScoreModifier: Int!
+  canPurchaseWithGhst: Boolean!
+  minLevel: Int
+  canBeTransferred: Boolean!
+  category: Int!
+  kinshipBonus: Int
+  experienceBonus: BigInt
 }

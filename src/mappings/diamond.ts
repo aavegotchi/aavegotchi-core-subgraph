@@ -23,7 +23,7 @@ import {
   Transfer,
   TransferSingle,
   TransferBatch,
-  AddItemType,
+  AddItemType
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { Aavegotchi } from "../../generated/schema";
 import {
@@ -38,13 +38,13 @@ import {
   updateERC1155ListingInfo,
   updateERC721ListingInfo,
   getOrCreateItemType,
-  updateItemTypeInfo,
+  updateItemTypeInfo
 } from "../utils/helpers/diamond";
 import {
   BIGINT_ONE,
   PORTAL_STATUS_BOUGHT,
   PORTAL_STATUS_OPENED,
-  PORTAL_STATUS_CLAIMED,
+  PORTAL_STATUS_CLAIMED
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
 
@@ -52,6 +52,7 @@ import { BigInt, log } from "@graphprotocol/graph-ts";
 //   handler: handleBuyPortals
 
 export function handleBuyPortals(event: BuyPortals): void {
+  let contract = AavegotchiDiamond.bind(event.address);
   let buyer = getOrCreateUser(event.params._from.toHexString());
   let owner = getOrCreateUser(event.params._to.toHexString());
   let stats = getStatisticEntity();
@@ -59,7 +60,14 @@ export function handleBuyPortals(event: BuyPortals): void {
   let baseId = event.params._tokenId;
 
   for (let i = 0; i < event.params._numAavegotchisToPurchase.toI32(); i++) {
-    let portal = getOrCreatePortal(baseId.plus(BigInt.fromI32(i)).toString());
+    let id = baseId.plus(BigInt.fromI32(i));
+    let portal = getOrCreatePortal(id.toString());
+
+    //Add portal hauntId
+    let portalResponse = contract.try_getAavegotchi(id);
+    if (!portalResponse.reverted) {
+      portal.hauntId = portalResponse.value.hauntId;
+    }
 
     portal.status = PORTAL_STATUS_BOUGHT;
     portal.owner = owner.id;
@@ -81,6 +89,7 @@ export function handleBuyPortals(event: BuyPortals): void {
 //   handler: handleXingyun
 
 export function handleXingyun(event: Xingyun): void {
+  let contract = AavegotchiDiamond.bind(event.address);
   let buyer = getOrCreateUser(event.params._from.toHexString());
   let owner = getOrCreateUser(event.params._to.toHexString());
   let stats = getStatisticEntity();
@@ -88,7 +97,14 @@ export function handleXingyun(event: Xingyun): void {
   let baseId = event.params._tokenId;
 
   for (let i = 0; i < event.params._numAavegotchisToPurchase.toI32(); i++) {
-    let portal = getOrCreatePortal(baseId.plus(BigInt.fromI32(i)).toString());
+    let id = baseId.plus(BigInt.fromI32(i));
+    let portal = getOrCreatePortal(id.toString());
+
+    //Add portal hauntId
+    let portalResponse = contract.try_getAavegotchi(id);
+    if (!portalResponse.reverted) {
+      portal.hauntId = portalResponse.value.hauntId;
+    }
 
     portal.status = PORTAL_STATUS_BOUGHT;
     portal.boughtAt = event.block.number;
@@ -133,12 +149,6 @@ export function handlePortalOpened(event: PortalOpened): void {
 
       gotchi.save();
     }
-  }
-
-  //Add portal hauntId
-  let portalResponse = contract.try_getAavegotchi(event.params.tokenId);
-  if (!response.reverted) {
-    portal.hauntId = portalResponse.value.hauntId;
   }
 
   portal.status = PORTAL_STATUS_OPENED;
@@ -260,7 +270,7 @@ export function handleGrantExperience(event: GrantExperience): void {
 export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   if (event.params._tokenId.toString() == "9215") {
     log.warning("[INTERACT] 9215 interaction at block {}", [
-      event.block.number.toString(),
+      event.block.number.toString()
     ]);
   }
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
@@ -272,7 +282,7 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   if (event.params._tokenId.toString() == "9215") {
     log.warning("[INTERACT] 9215 saved at block {}, createdAt {}", [
       event.block.number.toString(),
-      gotchi.createdAt.toString(),
+      gotchi.createdAt.toString()
     ]);
   }
 }
