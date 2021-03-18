@@ -8,7 +8,7 @@ import {
   Portal,
   User,
   Statistic,
-  ItemType
+  ItemType,
 } from "../../../generated/schema";
 import { BIGINT_ZERO } from "../constants";
 import { BigInt, ethereum, log } from "@graphprotocol/graph-ts";
@@ -125,11 +125,20 @@ export function updateERC721ListingInfo(
     listing.timePurchased = listingInfo.timePurchased;
     listing.priceInWei = listingInfo.priceInWei;
     listing.cancelled = listingInfo.cancelled;
+
+    let aavegotchiResponse = contract.try_getAavegotchi(
+      listingInfo.erc721TokenId
+    );
+
+    if (!aavegotchiResponse.reverted) {
+      let aavegotchiInfo = aavegotchiResponse.value;
+      listing.hauntId = aavegotchiInfo.hauntId;
+    }
   } else {
     log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
       listingID.toString(),
       event.block.number.toString(),
-      event.transaction.hash.toHexString()
+      event.transaction.hash.toHexString(),
     ]);
   }
 
@@ -156,11 +165,17 @@ export function updateERC1155ListingInfo(
     listing.sold = listingInfo.sold;
     listing.cancelled = listingInfo.cancelled;
     listing.quantity = listingInfo.quantity;
+
+    let itemTypeResponse = contract.try_getItemType(listingInfo.erc1155TypeId);
+
+    if (!itemTypeResponse.reverted) {
+      listing.itemTypeQuantity = itemTypeResponse.value.maxQuantity;
+    }
   } else {
     log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
       listingID.toString(),
       event.block.number.toString(),
-      event.transaction.hash.toHexString()
+      event.transaction.hash.toHexString(),
     ]);
   }
 
@@ -204,7 +219,7 @@ export function updateAavegotchiInfo(
     log.warning("Aavegotchi {} couldn't be updated at block: {} tx_hash: {}", [
       id.toString(),
       event.block.number.toString(),
-      event.transaction.hash.toHexString()
+      event.transaction.hash.toHexString(),
     ]);
   }
 
@@ -244,7 +259,7 @@ export function updateItemTypeInfo(
     log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
       itemType.id.toString(),
       event.block.number.toString(),
-      event.transaction.hash.toHexString()
+      event.transaction.hash.toHexString(),
     ]);
   }
 
