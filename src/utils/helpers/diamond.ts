@@ -126,13 +126,25 @@ export function updateERC721ListingInfo(
     listing.priceInWei = listingInfo.priceInWei;
     listing.cancelled = listingInfo.cancelled;
 
-    let aavegotchiResponse = contract.try_getAavegotchi(
-      listingInfo.erc721TokenId
-    );
+    if (listing.category.toI32() <= 2) {
+      let portal = getOrCreatePortal(
+        listingInfo.erc721TokenId.toString(),
+        false
+      );
 
-    if (!aavegotchiResponse.reverted) {
-      let aavegotchiInfo = aavegotchiResponse.value;
-      listing.hauntId = aavegotchiInfo.hauntId;
+      if (portal) {
+        listing.hauntId = portal.hauntId;
+      }
+    } else {
+      let aavegotchi = getOrCreateAavegotchi(
+        listingInfo.erc721TokenId.toString(),
+        event,
+        false
+      );
+
+      if (aavegotchi) {
+        listing.hauntId = aavegotchi.hauntId;
+      }
     }
   } else {
     log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
@@ -143,6 +155,27 @@ export function updateERC721ListingInfo(
   }
 
   return listing as ERC721Listing;
+}
+
+function itemMaxQuantityToRarity(bigInt: BigInt): string {
+  let quantity = bigInt.toI32();
+  if (quantity >= 1000) return "common";
+  if (quantity >= 500) return "uncommon";
+  if (quantity >= 250) return "rare";
+  if (quantity >= 100) return "legendary";
+  if (quantity >= 10) return "mythical";
+  if (quantity >= 1) return "godlike";
+  return "void";
+}
+function ticketTypeToRarity(bigInt: BigInt): string {
+  let ticketType = bigInt.toI32();
+  if (ticketType === 0) return "common";
+  if (ticketType === 1) return "uncommon";
+  if (ticketType === 2) return "rare";
+  if (ticketType === 3) return "legendary";
+  if (ticketType === 4) return "mythical";
+  if (ticketType === 5) return "godlike";
+  return "void";
 }
 
 export function updateERC1155ListingInfo(
@@ -166,10 +199,21 @@ export function updateERC1155ListingInfo(
     listing.cancelled = listingInfo.cancelled;
     listing.quantity = listingInfo.quantity;
 
-    let itemTypeResponse = contract.try_getItemType(listingInfo.erc1155TypeId);
+    //tickets
+    if (listing.category.toI32() === 3) {
+      let rarityLevel = ticketTypeToRarity(listing.erc1155TypeId);
+      listing.rarityLevel = rarityLevel;
 
-    if (!itemTypeResponse.reverted) {
-      listing.itemTypeQuantity = itemTypeResponse.value.maxQuantity;
+      //items
+    } else {
+      let itemType = getOrCreateItemType(
+        listingInfo.erc1155TypeId.toString(),
+        false
+      );
+
+      if (itemType) {
+        listing.rarityLevel = itemMaxQuantityToRarity(itemType.maxQuantity);
+      }
     }
   } else {
     log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
@@ -279,6 +323,11 @@ export function getStatisticEntity(): Statistic {
     stats.erc1155ActiveListingCount = BIGINT_ZERO;
     stats.erc721TotalVolume = BIGINT_ZERO;
     stats.erc1155TotalVolume = BIGINT_ZERO;
+
+    //new
+    stats.totalWearablesVolume = BIGINT_ZERO;
+    stats.totalConsumablesVolume = BIGINT_ZERO;
+    stats.totalTicketsVolume = BIGINT_ZERO;
 
     stats.save();
   }

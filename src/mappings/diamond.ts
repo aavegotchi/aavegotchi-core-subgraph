@@ -23,7 +23,7 @@ import {
   Transfer,
   TransferSingle,
   TransferBatch,
-  AddItemType
+  AddItemType,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { Aavegotchi } from "../../generated/schema";
 import {
@@ -38,13 +38,13 @@ import {
   updateERC1155ListingInfo,
   updateERC721ListingInfo,
   getOrCreateItemType,
-  updateItemTypeInfo
+  updateItemTypeInfo,
 } from "../utils/helpers/diamond";
 import {
   BIGINT_ONE,
   PORTAL_STATUS_BOUGHT,
   PORTAL_STATUS_OPENED,
-  PORTAL_STATUS_CLAIMED
+  PORTAL_STATUS_CLAIMED,
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
 
@@ -270,7 +270,7 @@ export function handleGrantExperience(event: GrantExperience): void {
 export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   if (event.params._tokenId.toString() == "9215") {
     log.warning("[INTERACT] 9215 interaction at block {}", [
-      event.block.number.toString()
+      event.block.number.toString(),
     ]);
   }
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
@@ -282,7 +282,7 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   if (event.params._tokenId.toString() == "9215") {
     log.warning("[INTERACT] 9215 saved at block {}, createdAt {}", [
       event.block.number.toString(),
-      gotchi.createdAt.toString()
+      gotchi.createdAt.toString(),
     ]);
   }
 }
@@ -430,6 +430,14 @@ export function handleERC1155ExecutedListing(
   let stats = getStatisticEntity();
   let volume = event.params.priceInWei.times(event.params._quantity);
   stats.erc1155TotalVolume = stats.erc1155TotalVolume.plus(volume);
+
+  if (listing.category === BigInt.fromI32(0))
+    stats.totalWearablesVolume = stats.totalWearablesVolume.plus(volume);
+  else if (listing.category === BigInt.fromI32(2))
+    stats.totalConsumablesVolume = stats.totalConsumablesVolume.plus(volume);
+  else if (listing.category === BigInt.fromI32(3))
+    stats.totalTicketsVolume = stats.totalTicketsVolume.plus(volume);
+
   stats.save();
 }
 

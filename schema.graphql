@@ -119,7 +119,7 @@ type ERC721Listing @entity {
   priceInWei: BigInt! # How much the listing is (in GHST)
   gotchi: Aavegotchi # If the listing is for a gotchi, this will be populated
   portal: Portal # If the listing is for a portal, this will be populated
-  hauntId: BigInt!
+  hauntId: BigInt
 }
 
 type ERC1155Listing @entity {
@@ -134,8 +134,7 @@ type ERC1155Listing @entity {
   timeCreated: BigInt! # Time at which listed was created
   timeLastPurchased: BigInt! # Time when the listing was purchased
   sold: Boolean!
-
-  itemTypeQuantity: BigInt!
+  rarityLevel: String
 }
 
 type Statistic @entity {
@@ -155,6 +154,10 @@ type Statistic @entity {
   erc1155ActiveListingCount: BigInt! #Total # of active ERC1155 Listings
   erc721TotalVolume: BigInt! #Total traded volume in GHST
   erc1155TotalVolume: BigInt! #Total traded volume in GHST
+  #new
+  totalWearablesVolume: BigInt!
+  totalConsumablesVolume: BigInt!
+  totalTicketsVolume: BigInt!
 }
 
 type ItemType @entity {
