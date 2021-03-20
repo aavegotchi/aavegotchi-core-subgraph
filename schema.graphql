@@ -13,6 +13,8 @@ type AavegotchiOption @entity {
   collateralType: Bytes!
 
   minimumStake: BigInt!
+
+  baseRarityScore: BigInt!
 }
 
 type Aavegotchi @entity {
@@ -85,6 +87,8 @@ type Portal @entity {
   owner: User!
 
   options: [AavegotchiOption!]! @derivedFrom(field: "portal")
+
+  listings: [ERC721Listing!]! @derivedFrom(field: "portal")
 
   gotchi: Aavegotchi
 
