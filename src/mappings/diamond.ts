@@ -23,7 +23,7 @@ import {
   Transfer,
   TransferSingle,
   TransferBatch,
-  AddItemType,
+  AddItemType
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { Aavegotchi } from "../../generated/schema";
 import {
@@ -38,13 +38,13 @@ import {
   updateERC1155ListingInfo,
   updateERC721ListingInfo,
   getOrCreateItemType,
-  updateItemTypeInfo,
+  updateItemTypeInfo
 } from "../utils/helpers/diamond";
 import {
   BIGINT_ONE,
   PORTAL_STATUS_BOUGHT,
   PORTAL_STATUS_OPENED,
-  PORTAL_STATUS_CLAIMED,
+  PORTAL_STATUS_CLAIMED
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
 
@@ -270,7 +270,7 @@ export function handleGrantExperience(event: GrantExperience): void {
 export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   if (event.params._tokenId.toString() == "9215") {
     log.warning("[INTERACT] 9215 interaction at block {}", [
-      event.block.number.toString(),
+      event.block.number.toString()
     ]);
   }
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
@@ -282,16 +282,36 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   if (event.params._tokenId.toString() == "9215") {
     log.warning("[INTERACT] 9215 saved at block {}, createdAt {}", [
       event.block.number.toString(),
-      gotchi.createdAt.toString(),
+      gotchi.createdAt.toString()
     ]);
   }
 }
 
 //ERC721 Transfer
 export function handleTransfer(event: Transfer): void {
-  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
-  gotchi.owner = event.params._to.toHexString();
-  gotchi.save();
+  let id = event.params._tokenId.toString();
+  let newOwner = getOrCreateUser(event.params._to.toHexString());
+  let gotchi = getOrCreateAavegotchi(id, event, false);
+
+  // ERC721 transfer can be portal or gotchi based, so we have to check it.
+  if (gotchi != null) {
+    gotchi.owner = newOwner.id;
+    gotchi.save();
+  } else {
+    let portal = getOrCreatePortal(id, false);
+
+    if (portal != null) {
+      portal.owner = newOwner.id;
+      portal.save();
+    } else {
+      log.warning(
+        "ERC721 Transfer for tokenId {} didn't have a portal or gotchi already created",
+        [id]
+      );
+    }
+  }
+
+  newOwner.save();
 }
 
 //ERC1155 Transfers
