@@ -14,7 +14,7 @@ type AavegotchiOption @entity {
 
   minimumStake: BigInt!
 
-  baseRarityScore: BigInt!
+  baseRarityScore: Int!
 }
 
 type Aavegotchi @entity {

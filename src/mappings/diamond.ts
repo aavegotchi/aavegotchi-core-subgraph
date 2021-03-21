@@ -23,7 +23,7 @@ import {
   Transfer,
   TransferSingle,
   TransferBatch,
-  AddItemType,
+  AddItemType
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { Aavegotchi } from "../../generated/schema";
 import {
@@ -38,13 +38,13 @@ import {
   updateERC1155ListingInfo,
   updateERC721ListingInfo,
   getOrCreateItemType,
-  updateItemTypeInfo,
+  updateItemTypeInfo
 } from "../utils/helpers/diamond";
 import {
   BIGINT_ONE,
   PORTAL_STATUS_BOUGHT,
   PORTAL_STATUS_OPENED,
-  PORTAL_STATUS_CLAIMED,
+  PORTAL_STATUS_CLAIMED
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
 
@@ -126,10 +126,7 @@ export function handleXingyun(event: Xingyun): void {
 // - event: PortalOpened(indexed uint256)
 //   handler: handlePortalOpened
 
-/*
-function calculateBaseRarityScore(
-  numericTraits: AavegotchiDiamond__portalAavegotchiTraitsResultPortalAavegotchiTraits_Struct
-): BigInt {
+function calculateBaseRarityScore(numericTraits: Array<i32>): i32 {
   let rarityScore = 0;
 
   for (let index = 0; index < numericTraits.length; index++) {
@@ -139,9 +136,8 @@ function calculateBaseRarityScore(
     else rarityScore = rarityScore + (element + 1);
   }
 
-  return BigInt.fromI32(rarityScore);
+  return rarityScore;
 }
-*/
 
 export function handlePortalOpened(event: PortalOpened): void {
   let contract = AavegotchiDiamond.bind(event.address);
@@ -163,11 +159,10 @@ export function handlePortalOpened(event: PortalOpened): void {
       gotchi.numericTraits = possibleAavegotchiTraits.numericTraits;
       gotchi.collateralType = possibleAavegotchiTraits.collateralType;
       gotchi.minimumStake = possibleAavegotchiTraits.minimumStake;
-
       //calculate base rarity score
-      //gotchi.baseRarityScore = calculateBaseRarityScore(
-      //  possibleAavegotchiTraits
-      // );
+      gotchi.baseRarityScore = calculateBaseRarityScore(gotchi.numericTraits);
+
+      gotchi.save();
     }
   }
 
@@ -288,23 +283,12 @@ export function handleGrantExperience(event: GrantExperience): void {
 //   handler: handleAavegotchiInteract
 
 export function handleAavegotchiInteract(event: AavegotchiInteract): void {
-  if (event.params._tokenId.toString() == "9215") {
-    log.warning("[INTERACT] 9215 interaction at block {}", [
-      event.block.number.toString(),
-    ]);
-  }
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
 
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
   gotchi.timesInteracted = gotchi.timesInteracted.plus(BIGINT_ONE);
 
   gotchi.save();
-  if (event.params._tokenId.toString() == "9215") {
-    log.warning("[INTERACT] 9215 saved at block {}, createdAt {}", [
-      event.block.number.toString(),
-      gotchi.createdAt.toString(),
-    ]);
-  }
 }
 
 //ERC721 Transfer
