@@ -88,8 +88,6 @@ type Portal @entity {
 
   options: [AavegotchiOption!]! @derivedFrom(field: "portal")
 
-  listings: [ERC721Listing!]! @derivedFrom(field: "portal")
-
   gotchi: Aavegotchi
 
   status: PortalStatus!
