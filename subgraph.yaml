@@ -66,10 +66,11 @@ dataSources:
           handler: handleERC1155ListingRemoved
         - event: AddItemType((string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))
           handler: handleAddItemType
+        - event: AddWearableSet((string,uint8[],uint16[],int8[5]))
+          handler: handleAddWearableSet
   # - AavegotchiInteract(indexed uint256,uint256)
   # - AddCollateralType((address,(int16[6],bytes3,bytes3,bytes3,uint8,uint8,uint16,bool)))
   # - AddItemType((string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))
-  # - AddWearableSet((string,uint8[],uint16[],int8[5]))
   # - AddedAavegotchiBatch(indexed address,uint256[])
   # - AddedItemsBatch(indexed address,uint256[],uint256[])
   # - Approval(indexed address,indexed address,indexed uint256)

@@ -23,7 +23,8 @@ import {
   Transfer,
   TransferSingle,
   TransferBatch,
-  AddItemType
+  AddItemType,
+  AddWearableSet,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { Aavegotchi } from "../../generated/schema";
 import {
@@ -38,13 +39,14 @@ import {
   updateERC1155ListingInfo,
   updateERC721ListingInfo,
   getOrCreateItemType,
-  updateItemTypeInfo
+  updateItemTypeInfo,
+  getOrCreateWearableSet,
 } from "../utils/helpers/diamond";
 import {
   BIGINT_ONE,
   PORTAL_STATUS_BOUGHT,
   PORTAL_STATUS_OPENED,
-  PORTAL_STATUS_CLAIMED
+  PORTAL_STATUS_CLAIMED,
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
 
@@ -126,6 +128,7 @@ export function handleXingyun(event: Xingyun): void {
 // - event: PortalOpened(indexed uint256)
 //   handler: handlePortalOpened
 
+//@ts-ignore
 function calculateBaseRarityScore(numericTraits: Array<i32>): i32 {
   let rarityScore = 0;
 
@@ -489,4 +492,14 @@ export function handleAddItemType(event: AddItemType): void {
   let itemType = getOrCreateItemType(event.params._itemType.svgId.toString());
   itemType = updateItemTypeInfo(itemType, event.params._itemType.svgId, event);
   itemType.save();
+}
+
+export function handleAddWearableSet(event: AddWearableSet): void {
+  let set = getOrCreateWearableSet(event.params._wearableSet.name);
+  set.name = event.params._wearableSet.name;
+  set.traitBonuses = event.params._wearableSet.traitsBonuses;
+  set.wearableIds = event.params._wearableSet.wearableIds;
+  set.allowedCollaterals = event.params._wearableSet.allowedCollaterals;
+
+  set.save();
 }

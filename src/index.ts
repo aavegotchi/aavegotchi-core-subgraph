@@ -24,4 +24,5 @@ export {
   handleERC721ListingRemoved,
   //item types
   handleAddItemType,
+  handleAddWearableSet,
 } from "./mappings/diamond";

@@ -136,7 +136,7 @@ type ERC1155Listing @entity {
   timeCreated: BigInt! # Time at which listed was created
   timeLastPurchased: BigInt! # Time when the listing was purchased
   sold: Boolean!
-  rarityLevel: String
+  rarityLevel: BigInt
 }
 
 type Statistic @entity {
@@ -179,4 +179,12 @@ type ItemType @entity {
   category: Int!
   kinshipBonus: Int
   experienceBonus: BigInt
+}
+
+type WearableSet @entity {
+  id: ID!
+  name: String!
+  allowedCollaterals: [Int!]
+  wearableIds: [Int!]
+  traitBonuses: [Int!]
 }

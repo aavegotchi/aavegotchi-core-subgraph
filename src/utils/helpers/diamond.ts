@@ -9,6 +9,7 @@ import {
   User,
   Statistic,
   ItemType,
+  WearableSet,
 } from "../../../generated/schema";
 import { BIGINT_ZERO } from "../constants";
 import { BigInt, ethereum, log } from "@graphprotocol/graph-ts";
@@ -107,6 +108,19 @@ export function getOrCreateItemType(
   return itemType as ItemType;
 }
 
+export function getOrCreateWearableSet(
+  id: string,
+  createIfNotFound: boolean = true
+): WearableSet {
+  let set = WearableSet.load(id);
+
+  if (set == null && createIfNotFound) {
+    set = new WearableSet(id);
+  }
+
+  return set as WearableSet;
+}
+
 export function updateERC721ListingInfo(
   listing: ERC721Listing,
   listingID: BigInt,
@@ -157,25 +171,16 @@ export function updateERC721ListingInfo(
   return listing as ERC721Listing;
 }
 
-function itemMaxQuantityToRarity(bigInt: BigInt): string {
+//@ts-ignore
+function itemMaxQuantityToRarity(bigInt: BigInt): BigInt {
   let quantity = bigInt.toI32();
-  if (quantity >= 1000) return "common";
-  if (quantity >= 500) return "uncommon";
-  if (quantity >= 250) return "rare";
-  if (quantity >= 100) return "legendary";
-  if (quantity >= 10) return "mythical";
-  if (quantity >= 1) return "godlike";
-  return "void";
-}
-function ticketTypeToRarity(bigInt: BigInt): string {
-  let ticketType = bigInt.toI32();
-  if (ticketType === 0) return "common";
-  if (ticketType === 1) return "uncommon";
-  if (ticketType === 2) return "rare";
-  if (ticketType === 3) return "legendary";
-  if (ticketType === 4) return "mythical";
-  if (ticketType === 5) return "godlike";
-  return "void";
+  if (quantity >= 1000) return BigInt.fromI32(0);
+  if (quantity >= 500) return BigInt.fromI32(1);
+  if (quantity >= 250) return BigInt.fromI32(2);
+  if (quantity >= 100) return BigInt.fromI32(3);
+  if (quantity >= 10) return BigInt.fromI32(4);
+  if (quantity >= 1) return BigInt.fromI32(5);
+  return BigInt.fromI32(0);
 }
 
 export function updateERC1155ListingInfo(
@@ -201,7 +206,7 @@ export function updateERC1155ListingInfo(
 
     //tickets
     if (listing.category.toI32() === 3) {
-      let rarityLevel = ticketTypeToRarity(listing.erc1155TypeId);
+      let rarityLevel = listing.erc1155TypeId;
       listing.rarityLevel = rarityLevel;
 
       //items
