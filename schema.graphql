@@ -38,6 +38,10 @@ type Aavegotchi @entity {
   modifiedNumericTraits: [Int!]!
 
   equippedWearables: [Int!]!
+ # equippedSetName: String
+ # equippedSetTraitBonuses:[Int!]
+ # rarityScoreWithSet:BigInt!
+ # numericTraitsWithSet:[Int!]
 
   collateral: Bytes!
 

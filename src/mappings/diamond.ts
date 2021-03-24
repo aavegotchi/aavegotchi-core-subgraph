@@ -49,6 +49,7 @@ import {
   PORTAL_STATUS_CLAIMED,
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
+import { modifyWithAavegotchiSets } from "../utils/wearableSets";
 
 // - event: BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
 //   handler: handleBuyPortals
@@ -241,6 +242,13 @@ export function handleEquipWearables(event: EquipWearables): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
 
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+
+ // let foundSet = modifyWithAavegotchiSets(gotchi.equippedWearables,gotchi.modifiedNumericTraits,gotchi.modifiedRarityScore.toI32())
+
+ // gotchi.equippedSetName = foundSet.setFound.name
+ // gotchi.equippedSetTraitBonuses = foundSet.setFound.traitsBonuses
+ // gotchi.rarityScoreWithSet = BigInt.fromI32(foundSet.rarityScore)
+ // gotchi.numericTraitsWithSet = foundSet.traits
 
   gotchi.save();
 }
