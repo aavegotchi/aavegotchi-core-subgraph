@@ -41,6 +41,8 @@ import {
   getOrCreateItemType,
   updateItemTypeInfo,
   getOrCreateWearableSet,
+  getOrCreateERC1155Purchase,
+  updateERC1155PurchaseInfo,
 } from "../utils/helpers/diamond";
 import {
   BIGINT_ONE,
@@ -49,7 +51,7 @@ import {
   PORTAL_STATUS_CLAIMED,
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
-import { modifyWithAavegotchiSets } from "../utils/wearableSets";
+//import { modifyWithAavegotchiSets } from "../utils/wearableSets";
 
 // - event: BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
 //   handler: handleBuyPortals
@@ -381,6 +383,7 @@ export function handleERC721ExecutedListing(
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
 
   listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+  listing.buyer = event.params.buyer
   listing.save();
 
   let stats = getStatisticEntity();
@@ -459,9 +462,17 @@ export function handleERC1155ExecutedListing(
 ): void {
   let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
   listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
-
   listing.save();
 
+
+  //Create new ERC1155Purchase
+  let purchaseID = event.params.listingId.toString() + "_" + event.params.buyer.toHexString() + "_" + event.params.time.toString()
+  let purchase = getOrCreateERC1155Purchase(purchaseID, event.params.buyer)
+  purchase = updateERC1155PurchaseInfo(purchase,event.params.listingId,event)
+  purchase.save()
+ 
+  
+  //Update Stats
   let stats = getStatisticEntity();
   let volume = event.params.priceInWei.times(event.params._quantity);
   stats.erc1155TotalVolume = stats.erc1155TotalVolume.plus(volume);
@@ -503,6 +514,15 @@ export function handleAddItemType(event: AddItemType): void {
 }
 
 export function handleAddWearableSet(event: AddWearableSet): void {
+
+  //ID is the concatenation of all the wearables inside
+ /* let setID = ""
+  for (let index = 0; index < event.params._wearableSet.wearableIds.length; index++) {
+    const element = event.params._wearableSet.wearableIds[index];
+    setID = setID.concat(element)
+    
+  }
+  */
   let set = getOrCreateWearableSet(event.params._wearableSet.name);
   set.name = event.params._wearableSet.name;
   set.traitBonuses = event.params._wearableSet.traitsBonuses;

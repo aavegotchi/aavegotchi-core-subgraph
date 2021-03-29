@@ -1,4 +1,4 @@
-import { AavegotchiDiamond } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
+import { AavegotchiDiamond, ERC1155ExecutedListing, ERC721ExecutedListing, ERC721ListingAdd, ERC721ListingCancelled } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
 
 import {
   Aavegotchi,
@@ -10,9 +10,10 @@ import {
   Statistic,
   ItemType,
   WearableSet,
+  ERC1155Purchase,
 } from "../../../generated/schema";
 import { BIGINT_ZERO } from "../constants";
-import { BigInt, ethereum, log } from "@graphprotocol/graph-ts";
+import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 
 export function getOrCreatePortal(
   id: string,
@@ -93,6 +94,20 @@ export function getOrCreateERC1155Listing(
   }
 
   return listing as ERC1155Listing;
+}
+
+export function getOrCreateERC1155Purchase(
+  id: string,
+  buyer:Address,
+  createIfNotFound: boolean = true
+): ERC1155Purchase {
+  let listing = ERC1155Purchase.load(id);
+
+  if (listing == null && createIfNotFound) {
+    listing = new ERC1155Purchase(id);
+  }
+
+  return listing as ERC1155Purchase;
 }
 
 export function getOrCreateItemType(
@@ -229,6 +244,55 @@ export function updateERC1155ListingInfo(
   }
 
   return listing as ERC1155Listing;
+}
+
+export function updateERC1155PurchaseInfo(
+  listing: ERC1155Purchase,
+  listingID: BigInt,
+  event: ERC1155ExecutedListing
+): ERC1155Purchase {
+  let contract = AavegotchiDiamond.bind(event.address);
+  let response = contract.try_getERC1155Listing(listingID);
+
+  if (!response.reverted) {
+    let listingInfo = response.value;
+    listing.category = listingInfo.category;
+    listing.erc1155TokenAddress = listingInfo.erc1155TokenAddress;
+    listing.erc1155TypeId = listingInfo.erc1155TypeId;
+    listing.seller = listingInfo.seller;
+    listing.timeCreated = listingInfo.timeCreated;
+    listing.timeLastPurchased = listingInfo.timeLastPurchased;
+    listing.priceInWei = listingInfo.priceInWei;
+    listing.sold = listingInfo.sold;
+    listing.cancelled = listingInfo.cancelled;
+    listing.quantity = listingInfo.quantity;
+    listing.buyer = event.params.buyer
+
+    //tickets
+    if (listing.category.toI32() === 3) {
+      let rarityLevel = listing.erc1155TypeId;
+      listing.rarityLevel = rarityLevel;
+
+      //items
+    } else {
+      let itemType = getOrCreateItemType(
+        listingInfo.erc1155TypeId.toString(),
+        false
+      );
+
+      if (itemType) {
+        listing.rarityLevel = itemMaxQuantityToRarity(itemType.maxQuantity);
+      }
+    }
+  } else {
+    log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
+      listingID.toString(),
+      event.block.number.toString(),
+      event.transaction.hash.toHexString(),
+    ]);
+  }
+
+  return listing as ERC1155Purchase;
 }
 
 export function updateAavegotchiInfo(

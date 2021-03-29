@@ -119,6 +119,7 @@ type ERC721Listing @entity {
   erc721TokenAddress: Bytes! # The token address of the NFT
   tokenId: BigInt! # The token ID of the NFT
   seller: Bytes! # The creator of the listing
+  buyer:Bytes
   timeCreated: BigInt! # Time at which listed was created
   timePurchased: BigInt # Time when the listing was purchased
   cancelled: Boolean # If the listing is cancelled
@@ -134,6 +135,22 @@ type ERC1155Listing @entity {
   erc1155TokenAddress: Bytes!
   erc1155TypeId: BigInt!
   seller: Bytes!
+  priceInWei: BigInt!
+  quantity: BigInt!
+  cancelled: Boolean!
+  timeCreated: BigInt! # Time at which listed was created
+  timeLastPurchased: BigInt! # Time when the listing was purchased
+  sold: Boolean!
+  rarityLevel: BigInt
+}
+
+type ERC1155Purchase @entity {
+  id: ID!
+  category: BigInt! # 0 = Wearable, #1 = Badge, #2 = Consumable, #3 = Ticket
+  erc1155TokenAddress: Bytes!
+  erc1155TypeId: BigInt!
+  seller: Bytes!
+  buyer:Bytes!
   priceInWei: BigInt!
   quantity: BigInt!
   cancelled: Boolean!
