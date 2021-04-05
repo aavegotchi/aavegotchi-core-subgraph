@@ -127,6 +127,10 @@ type ERC721Listing @entity {
   gotchi: Aavegotchi # If the listing is for a gotchi, this will be populated
   portal: Portal # If the listing is for a portal, this will be populated
   hauntId: BigInt
+  kinship:BigInt
+  baseRarityScore:BigInt
+  modifiedRarityScore:BigInt
+  equippedWearables:[Int!]
 }
 
 type ERC1155Listing @entity {
@@ -146,6 +150,7 @@ type ERC1155Listing @entity {
 
 type ERC1155Purchase @entity {
   id: ID!
+  listingID:BigInt!
   category: BigInt! # 0 = Wearable, #1 = Badge, #2 = Consumable, #3 = Ticket
   erc1155TokenAddress: Bytes!
   erc1155TypeId: BigInt!
@@ -185,6 +190,7 @@ type Statistic @entity {
 
 type ItemType @entity {
   id: ID!
+  svgId:BigInt!
   name: String!
   desc: String
   author: String

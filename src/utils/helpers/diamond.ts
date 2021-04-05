@@ -155,6 +155,7 @@ export function updateERC721ListingInfo(
     listing.priceInWei = listingInfo.priceInWei;
     listing.cancelled = listingInfo.cancelled;
 
+
     if (listing.category.toI32() <= 2) {
       let portal = getOrCreatePortal(
         listingInfo.erc721TokenId.toString(),
@@ -173,6 +174,11 @@ export function updateERC721ListingInfo(
 
       if (aavegotchi) {
         listing.hauntId = aavegotchi.hauntId;
+        listing.kinship = aavegotchi.kinship
+        listing.baseRarityScore = aavegotchi.baseRarityScore
+        listing.modifiedRarityScore = aavegotchi.modifiedRarityScore
+        listing.equippedWearables = aavegotchi.equippedWearables
+  
       }
     }
   } else {
@@ -257,6 +263,7 @@ export function updateERC1155PurchaseInfo(
   if (!response.reverted) {
     let listingInfo = response.value;
     listing.category = listingInfo.category;
+    listing.listingID = event.params.listingId
     listing.erc1155TokenAddress = listingInfo.erc1155TokenAddress;
     listing.erc1155TypeId = listingInfo.erc1155TypeId;
     listing.seller = listingInfo.seller;
@@ -265,8 +272,9 @@ export function updateERC1155PurchaseInfo(
     listing.priceInWei = listingInfo.priceInWei;
     listing.sold = listingInfo.sold;
     listing.cancelled = listingInfo.cancelled;
-    listing.quantity = listingInfo.quantity;
+    listing.quantity = event.params._quantity
     listing.buyer = event.params.buyer
+
 
     //tickets
     if (listing.category.toI32() === 3) {
@@ -307,7 +315,6 @@ export function updateAavegotchiInfo(
     let gotchiInfo = response.value;
 
     gotchi.name = gotchiInfo.name;
-    // gotchi.nameLowerCase = gotchiInfo.name.toLowerCase();
     gotchi.randomNumber = gotchiInfo.randomNumber;
     gotchi.status = gotchiInfo.status;
     gotchi.numericTraits = gotchiInfo.numericTraits;
@@ -352,6 +359,7 @@ export function updateItemTypeInfo(
   if (!response.reverted) {
     let itemInfo = response.value;
     itemType.name = itemInfo.name;
+    itemType.svgId = itemId
     itemType.desc = itemInfo.description;
     itemType.author = itemInfo.author;
 
