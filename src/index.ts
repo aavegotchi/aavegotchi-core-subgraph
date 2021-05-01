@@ -9,6 +9,7 @@ export {
   handleUseConsumables,
   handleSetAavegotchiName,
   handleGrantExperience,
+  handleExperienceTransfer,
   handleXingyun,
   handleAavegotchiInteract,
   handleTransfer,
@@ -24,5 +25,10 @@ export {
   handleERC721ListingRemoved,
   //item types
   handleAddItemType,
+  handlePurchaseItemsWithGhst,
+  handleMigrateVouchers,
+  handleItemTypeMaxQuantity,
+  handlePurchaseItemsWithVouchers,
   handleAddWearableSet,
+  handleUpdateWearableSet,
 } from "./mappings/diamond";

@@ -20,6 +20,8 @@ type AavegotchiOption @entity {
 type Aavegotchi @entity {
   id: ID!
 
+  gotchiId: BigInt
+
   owner: User
 
   portal: Portal! @derivedFrom(field: "gotchi")
@@ -37,11 +39,17 @@ type Aavegotchi @entity {
 
   modifiedNumericTraits: [Int!]!
 
+  withSetsNumericTraits: [Int!]
+
   equippedWearables: [Int!]!
- # equippedSetName: String
- # equippedSetTraitBonuses:[Int!]
- # rarityScoreWithSet:BigInt!
- # numericTraitsWithSet:[Int!]
+  equippedSetID: BigInt
+  equippedSetName: String
+
+  possibleSets: BigInt
+  # equippedSetName: String
+  # equippedSetTraitBonuses:[Int!]
+  # rarityScoreWithSet:BigInt!
+  # numericTraitsWithSet:[Int!]
 
   collateral: Bytes!
 
@@ -64,6 +72,8 @@ type Aavegotchi @entity {
 
   modifiedRarityScore: BigInt!
 
+  withSetsRarityScore: BigInt
+
   locked: Boolean!
 
   listings: [ERC721Listing!]! @derivedFrom(field: "gotchi")
@@ -73,6 +83,8 @@ type Aavegotchi @entity {
 
   "Block in which the Aavegotchi was claimed. Should coincide with createdAt"
   claimedAt: BigInt
+
+  timesTraded: BigInt!
 }
 
 enum PortalStatus {
@@ -83,6 +95,8 @@ enum PortalStatus {
 
 type Portal @entity {
   id: ID!
+
+  gotchiId: BigInt
 
   buyer: User!
 
@@ -101,6 +115,8 @@ type Portal @entity {
   openedAt: BigInt
 
   claimedAt: BigInt
+
+  timesTraded: BigInt!
 }
 
 type User @entity {
@@ -119,7 +135,7 @@ type ERC721Listing @entity {
   erc721TokenAddress: Bytes! # The token address of the NFT
   tokenId: BigInt! # The token ID of the NFT
   seller: Bytes! # The creator of the listing
-  buyer:Bytes
+  buyer: Bytes
   timeCreated: BigInt! # Time at which listed was created
   timePurchased: BigInt # Time when the listing was purchased
   cancelled: Boolean # If the listing is cancelled
@@ -127,10 +143,10 @@ type ERC721Listing @entity {
   gotchi: Aavegotchi # If the listing is for a gotchi, this will be populated
   portal: Portal # If the listing is for a portal, this will be populated
   hauntId: BigInt
-  kinship:BigInt
-  baseRarityScore:BigInt
-  modifiedRarityScore:BigInt
-  equippedWearables:[Int!]
+  kinship: BigInt
+  baseRarityScore: BigInt
+  modifiedRarityScore: BigInt
+  equippedWearables: [Int!]
 }
 
 type ERC1155Listing @entity {
@@ -150,18 +166,18 @@ type ERC1155Listing @entity {
 
 type ERC1155Purchase @entity {
   id: ID!
-  listingID:BigInt!
+  listingID: BigInt!
   category: BigInt! # 0 = Wearable, #1 = Badge, #2 = Consumable, #3 = Ticket
   erc1155TokenAddress: Bytes!
   erc1155TypeId: BigInt!
   seller: Bytes!
-  buyer:Bytes!
+  buyer: Bytes!
   priceInWei: BigInt!
   quantity: BigInt!
-  cancelled: Boolean!
-  timeCreated: BigInt! # Time at which listed was created
+  #cancelled: Boolean!
+  # timeCreated: BigInt! # Time at which listed was created
   timeLastPurchased: BigInt! # Time when the listing was purchased
-  sold: Boolean!
+  #sold: Boolean!
   rarityLevel: BigInt
 }
 
@@ -190,7 +206,7 @@ type Statistic @entity {
 
 type ItemType @entity {
   id: ID!
-  svgId:BigInt!
+  svgId: BigInt!
   name: String!
   desc: String
   author: String
@@ -215,3 +231,8 @@ type WearableSet @entity {
   wearableIds: [Int!]
   traitBonuses: [Int!]
 }
+
+#type Upgrade @entity {
+#  id: ID!
+#  calldata:
+#}

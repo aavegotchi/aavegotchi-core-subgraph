@@ -21,12 +21,16 @@ import {
   ERC1155ListingCancelled,
   ERC1155ListingRemoved,
   Transfer,
-  TransferSingle,
-  TransferBatch,
   AddItemType,
   AddWearableSet,
+  PurchaseItemsWithGhst,
+  PurchaseItemsWithVouchers,
+  DiamondCut,
+  MigrateVouchers,
+  UpdateWearableSet,
+  ItemTypeMaxQuantity,
+  ExperienceTransfer,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
-import { Aavegotchi } from "../../generated/schema";
 import {
   getOrCreateUser,
   getOrCreatePortal,
@@ -39,7 +43,6 @@ import {
   updateERC1155ListingInfo,
   updateERC721ListingInfo,
   getOrCreateItemType,
-  updateItemTypeInfo,
   getOrCreateWearableSet,
   getOrCreateERC1155Purchase,
   updateERC1155PurchaseInfo,
@@ -49,12 +52,9 @@ import {
   PORTAL_STATUS_BOUGHT,
   PORTAL_STATUS_OPENED,
   PORTAL_STATUS_CLAIMED,
+  BIGINT_ZERO,
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
-//import { modifyWithAavegotchiSets } from "../utils/wearableSets";
-
-// - event: BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
-//   handler: handleBuyPortals
 
 export function handleBuyPortals(event: BuyPortals): void {
   let contract = AavegotchiDiamond.bind(event.address);
@@ -75,6 +75,7 @@ export function handleBuyPortals(event: BuyPortals): void {
     }
 
     portal.status = PORTAL_STATUS_BOUGHT;
+    portal.gotchiId = event.params._tokenId;
     portal.owner = owner.id;
     portal.buyer = buyer.id;
 
@@ -90,9 +91,6 @@ export function handleBuyPortals(event: BuyPortals): void {
   owner.save();
 }
 
-// - event: Xingyun(indexed address,indexed address,uint256,uint256,uint256)
-//   handler: handleXingyun
-
 export function handleXingyun(event: Xingyun): void {
   let contract = AavegotchiDiamond.bind(event.address);
   let buyer = getOrCreateUser(event.params._from.toHexString());
@@ -105,16 +103,13 @@ export function handleXingyun(event: Xingyun): void {
     let id = baseId.plus(BigInt.fromI32(i));
     let portal = getOrCreatePortal(id.toString());
 
-    //Add portal hauntId
-    let portalResponse = contract.try_getAavegotchi(id);
-    if (!portalResponse.reverted) {
-      portal.hauntId = portalResponse.value.hauntId;
-    }
-
+    portal.hauntId = BIGINT_ONE;
     portal.status = PORTAL_STATUS_BOUGHT;
+    portal.gotchiId = event.params._tokenId;
     portal.boughtAt = event.block.number;
     portal.owner = owner.id;
     portal.buyer = buyer.id;
+    portal.timesTraded = BIGINT_ZERO;
 
     portal.save();
   }
@@ -192,6 +187,7 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
   gotchi.owner = portal.owner;
   gotchi.claimedAt = event.block.number;
+  gotchi.gotchiId = event.params._tokenId;
 
   portal.gotchi = gotchi.id;
   portal.status = PORTAL_STATUS_CLAIMED;
@@ -210,8 +206,7 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
 export function handleIncreaseStake(event: IncreaseStake): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
 
-  gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-
+  gotchi.stakedAmount = gotchi.stakedAmount.plus(event.params._stakeAmount);
   gotchi.save();
 }
 
@@ -221,7 +216,7 @@ export function handleIncreaseStake(event: IncreaseStake): void {
 export function handleDecreaseStake(event: DecreaseStake): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
 
-  gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+  gotchi.stakedAmount = gotchi.stakedAmount.minus(event.params._reduceAmount);
 
   gotchi.save();
 }
@@ -234,6 +229,8 @@ export function handleSpendSkillpoints(event: SpendSkillpoints): void {
 
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
+  //Then update withSetsNumericTraits
+
   gotchi.save();
 }
 
@@ -245,12 +242,112 @@ export function handleEquipWearables(event: EquipWearables): void {
 
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
- // let foundSet = modifyWithAavegotchiSets(gotchi.equippedWearables,gotchi.modifiedNumericTraits,gotchi.modifiedRarityScore.toI32())
+  let contract = AavegotchiDiamond.bind(event.address);
 
- // gotchi.equippedSetName = foundSet.setFound.name
- // gotchi.equippedSetTraitBonuses = foundSet.setFound.traitsBonuses
- // gotchi.rarityScoreWithSet = BigInt.fromI32(foundSet.rarityScore)
- // gotchi.numericTraitsWithSet = foundSet.traits
+  let bigInts = new Array<BigInt>(gotchi.equippedWearables.length);
+  let equippedWearables = gotchi.equippedWearables;
+
+  for (let index = 0; index < equippedWearables.length; index++) {
+    let element = equippedWearables[index];
+    bigInts.push(BigInt.fromI32(element));
+  }
+
+  let equippedSets = contract.try_findWearableSets(bigInts);
+
+  if (!equippedSets.reverted) {
+    log.warning("Equipped sets for GotchiID {} length {}", [
+      event.params._tokenId.toString(),
+      BigInt.fromI32(equippedSets.value.length).toString(),
+    ]);
+
+    if (equippedSets.value.length > 0) {
+      //Find the best set
+      let foundSetIDs = equippedSets.value;
+
+      //Retrieve sets from onchain
+      let getSetTypes = contract.try_getWearableSets();
+
+      if (!getSetTypes.reverted) {
+        let setTypes = getSetTypes.value;
+
+        let bestSetID = 0;
+        let highestBRSBonus = 0;
+
+        //Iterate through all the possible equipped sets
+        for (let index = 0; index < foundSetIDs.length; index++) {
+          let setID = foundSetIDs[index];
+          let setInfo = setTypes[setID.toI32()];
+          let traitBonuses = setInfo.traitsBonuses;
+
+          let brsBonus = traitBonuses[0];
+
+          if (brsBonus >= highestBRSBonus) {
+            highestBRSBonus = brsBonus;
+            bestSetID = setID.toI32();
+          } else {
+          }
+        }
+
+        log.warning("Best set: for GotchiID {} {} {}", [
+          gotchi.gotchiId.toString(),
+          setTypes[bestSetID].name,
+          bestSetID.toString(),
+        ]);
+
+        let setBonuses = setTypes[bestSetID].traitsBonuses;
+
+        //Add the set bonuses on to the modified numeric traits (which already include wearable bonuses, but not rarityScore modifiers)
+        let brsBonus = setBonuses[0];
+
+        let beforeSetBonus = calculateBaseRarityScore(
+          gotchi.modifiedNumericTraits
+        );
+
+        //Before modifying
+        let withSetsNumericTraits = gotchi.modifiedNumericTraits;
+
+        //Add in the individual bonuses
+        for (let index = 0; index < 4; index++) {
+          withSetsNumericTraits[index] =
+            withSetsNumericTraits[index] + setBonuses[index + 1];
+        }
+
+        //Get the post-set bonus
+        let afterSetBonus = calculateBaseRarityScore(withSetsNumericTraits);
+
+        //Get the difference
+        let bonusDifference = afterSetBonus - beforeSetBonus;
+
+        //Update the traits
+        gotchi.withSetsNumericTraits = withSetsNumericTraits;
+
+        //Add on the bonus differences to the modified rarity score
+        gotchi.withSetsRarityScore = gotchi.modifiedRarityScore
+          .plus(BigInt.fromI32(bonusDifference))
+          .plus(BigInt.fromI32(brsBonus));
+
+        //Equip the set
+        gotchi.equippedSetID = BigInt.fromI32(bestSetID);
+
+        //Set the name
+        gotchi.equippedSetName = setTypes[bestSetID].name;
+      }
+
+      gotchi.possibleSets = BigInt.fromI32(equippedSets.value.length);
+    } else {
+      gotchi.equippedSetID = null;
+      gotchi.equippedSetName = "";
+      gotchi.withSetsRarityScore = gotchi.modifiedRarityScore;
+      gotchi.withSetsNumericTraits = gotchi.modifiedNumericTraits;
+    }
+  } else {
+    gotchi.withSetsRarityScore = gotchi.modifiedRarityScore;
+    gotchi.withSetsNumericTraits = gotchi.modifiedNumericTraits;
+    log.warning("Find wearable sets reverted at block: {} tx_hash: {}", [
+      event.block.number.toString(),
+      event.transaction.hash.toHexString(),
+    ]);
+  }
 
   gotchi.save();
 }
@@ -261,7 +358,7 @@ export function handleEquipWearables(event: EquipWearables): void {
 export function handleSetAavegotchiName(event: SetAavegotchiName): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
 
-  gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+  gotchi.name = event.params._newName;
 
   gotchi.save();
 }
@@ -282,14 +379,45 @@ export function handleUseConsumables(event: UseConsumables): void {
 
 export function handleGrantExperience(event: GrantExperience): void {
   let ids = event.params._tokenIds;
-  let gotchi: Aavegotchi;
-  for (let i = 0; i < ids.length; i++) {
-    gotchi = getOrCreateAavegotchi(ids[i].toString(), event);
+  let xpAmounts = event.params._xpValues;
 
-    gotchi = updateAavegotchiInfo(gotchi, ids[i], event);
+  for (let i = 0; i < ids.length; i++) {
+    let tokenID = ids[i];
+    let xpAmount = xpAmounts[i];
+
+    let gotchi = getOrCreateAavegotchi(tokenID.toString(), event);
+
+    gotchi.experience = gotchi.experience.plus(xpAmount);
+
+    if (gotchi.experience.gt(BigInt.fromI32(490050))) {
+      gotchi.level = BigInt.fromI32(99);
+    } else {
+      //@ts-ignore
+      let level = (Math.sqrt(2 * gotchi.experience.toI32()) / 10) as i32;
+      gotchi.level = BigInt.fromI32(level + 1);
+    }
 
     gotchi.save();
   }
+}
+
+export function handleExperienceTransfer(event: ExperienceTransfer): void {
+  let tokenID = event.params._toTokenId;
+  let xpAmount = event.params.experience;
+
+  let gotchi = getOrCreateAavegotchi(tokenID.toString(), event);
+
+  gotchi.experience = gotchi.experience.plus(xpAmount);
+
+  if (gotchi.experience.gt(BigInt.fromI32(490050))) {
+    gotchi.level = BigInt.fromI32(99);
+  } else {
+    //@ts-ignore
+    let level = (Math.sqrt(2 * gotchi.experience.toI32()) / 10) as i32;
+    gotchi.level = BigInt.fromI32(level + 1);
+  }
+
+  gotchi.save();
 }
 
 // - event: AavegotchiInteract(indexed uint256,uint256)
@@ -382,9 +510,26 @@ export function handleERC721ExecutedListing(
 ): void {
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
 
-  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
-  listing.buyer = event.params.buyer
+  listing.buyer = event.params.buyer;
+  listing.timePurchased = event.params.time;
   listing.save();
+
+  //Portal -- update number of times traded
+  if (event.params.category.lt(BigInt.fromI32(3))) {
+    let portal = getOrCreatePortal(event.params.erc721TokenId.toString());
+    portal.timesTraded = portal.timesTraded.plus(BIGINT_ONE);
+    portal.save();
+  }
+
+  //Aavegotchi -- update number of times traded
+  else if (event.params.category.equals(BigInt.fromI32(3))) {
+    let gotchi = getOrCreateAavegotchi(
+      event.params.erc721TokenId.toString(),
+      event
+    );
+    gotchi.timesTraded = gotchi.timesTraded.plus(BIGINT_ONE);
+    gotchi.save();
+  }
 
   let stats = getStatisticEntity();
   stats.erc721TotalVolume = stats.erc721TotalVolume.plus(
@@ -403,7 +548,7 @@ export function handleERC721ListingCancelled(
 ): void {
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
 
-  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+  listing.cancelled = true;
   listing.save();
 }
 
@@ -415,28 +560,16 @@ handler:handleERC721ListingRemoved
 export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
 
-  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+  listing.cancelled = true;
   listing.save();
 }
 
-/* ERC1155 MARKETPLACE */
-
-/*
--event: ERC1155ListingAdd(
-  uint256 indexed listingId,
-  address indexed seller,
-  address erc1155TokenAddress,
-  uint256 erc1155TypeId,
-  uint256 indexed category,
-  uint256 quantity,
-  uint256 priceInWei,
-  uint256 time
-
--handler: handleERC1155ListingAdd
-*/
-
 export function handleERC1155ListingAdd(event: ERC1155ListingAdd): void {
-  let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
+  let listing = getOrCreateERC1155Listing(
+    event.params.listingId.toString(),
+    true
+  );
+
   listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
 
   listing.save();
@@ -461,20 +594,45 @@ export function handleERC1155ExecutedListing(
   event: ERC1155ExecutedListing
 ): void {
   let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
+  let listingUpdateInfo = event.params;
+
+  /*
+
+  log.warning("Updating executed listing {} old quantity: {} new quantity: ", [
+    event.params.listingId.toString(),
+    listing.quantity.toString(),
+    event.params._quantity.toString(),
+  ]);
+
+
+
+  //Reduce the quantity of the listing
+  listing.quantity = listing.quantity.minus(listingUpdateInfo._quantity);
+  listing.timeLastPurchased = event.block.timestamp;
+  listing.sold = true;
+  */
+
   listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
+
   listing.save();
 
-
   //Create new ERC1155Purchase
-  let purchaseID = event.params.listingId.toString() + "_" + event.params.buyer.toHexString() + "_" + event.params.time.toString()
-  let purchase = getOrCreateERC1155Purchase(purchaseID, event.params.buyer)
-  purchase = updateERC1155PurchaseInfo(purchase,event.params.listingId,event)
-  purchase.save()
- 
-  
+  let purchaseID =
+    listingUpdateInfo.listingId.toString() +
+    "_" +
+    listingUpdateInfo.buyer.toHexString() +
+    "_" +
+    event.block.timestamp.toString();
+  let purchase = getOrCreateERC1155Purchase(
+    purchaseID,
+    listingUpdateInfo.buyer
+  );
+  purchase = updateERC1155PurchaseInfo(purchase, event);
+  purchase.save();
+
   //Update Stats
   let stats = getStatisticEntity();
-  let volume = event.params.priceInWei.times(event.params._quantity);
+  let volume = listingUpdateInfo.priceInWei.times(listingUpdateInfo._quantity);
   stats.erc1155TotalVolume = stats.erc1155TotalVolume.plus(volume);
 
   if (listing.category.toI32() === 0)
@@ -491,7 +649,8 @@ export function handleERC1155ListingCancelled(
   event: ERC1155ListingCancelled
 ): void {
   let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
-  listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
+
+  listing.cancelled = true;
 
   listing.save();
 }
@@ -500,7 +659,8 @@ export function handleERC1155ListingRemoved(
   event: ERC1155ListingRemoved
 ): void {
   let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
-  listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
+
+  listing.cancelled = true;
 
   listing.save();
 }
@@ -509,25 +669,126 @@ export function handleERC1155ListingRemoved(
 
 export function handleAddItemType(event: AddItemType): void {
   let itemType = getOrCreateItemType(event.params._itemType.svgId.toString());
-  itemType = updateItemTypeInfo(itemType, event.params._itemType.svgId, event);
+
+  let itemInfo = event.params._itemType;
+
+  itemType.name = itemInfo.name;
+  itemType.svgId = itemInfo.svgId;
+  itemType.desc = itemInfo.description;
+  itemType.author = itemInfo.author;
+
+  itemType.traitModifiers = itemInfo.traitModifiers;
+
+  itemType.slotPositions = itemInfo.slotPositions;
+  itemType.ghstPrice = itemInfo.ghstPrice;
+  itemType.maxQuantity = itemInfo.maxQuantity;
+  itemType.totalQuantity = itemInfo.totalQuantity;
+  itemType.rarityScoreModifier = itemInfo.rarityScoreModifier;
+  itemType.canPurchaseWithGhst = itemInfo.canPurchaseWithGhst;
+  itemType.minLevel = itemInfo.minLevel;
+  itemType.canBeTransferred = itemInfo.canBeTransferred;
+  itemType.category = itemInfo.category;
+  itemType.kinshipBonus = itemInfo.kinshipBonus;
+  itemType.experienceBonus = itemInfo.experienceBonus;
+
   itemType.save();
 }
 
-export function handleAddWearableSet(event: AddWearableSet): void {
+export function handleItemTypeMaxQuantity(event: ItemTypeMaxQuantity): void {
+  let itemIds = event.params._itemIds;
+  let quantities = event.params._maxQuanities;
 
-  //ID is the concatenation of all the wearables inside
- /* let setID = ""
-  for (let index = 0; index < event.params._wearableSet.wearableIds.length; index++) {
-    const element = event.params._wearableSet.wearableIds[index];
-    setID = setID.concat(element)
-    
+  for (let index = 0; index < itemIds.length; index++) {
+    let itemId = itemIds[index];
+    let maxQuantity = quantities[index];
+
+    let itemType = getOrCreateItemType(itemId.toString());
+    itemType.maxQuantity = maxQuantity;
+    itemType.save();
   }
-  */
+}
+
+export function handlePurchaseItemsWithGhst(
+  event: PurchaseItemsWithGhst
+): void {
+  let itemIds = event.params._itemIds;
+  let quantities = event.params._quantities;
+
+  for (let index = 0; index < itemIds.length; index++) {
+    let itemId = itemIds[index];
+    let quantity = quantities[index];
+
+    let itemType = getOrCreateItemType(itemId.toString());
+    itemType.totalQuantity = itemType.totalQuantity.plus(quantity);
+    itemType.save();
+  }
+}
+
+export function handlePurchaseItemsWithVouchers(
+  event: PurchaseItemsWithVouchers
+): void {
+  let itemIds = event.params._itemIds;
+  let quantities = event.params._quantities;
+
+  for (let index = 0; index < itemIds.length; index++) {
+    let itemId = itemIds[index];
+    let quantity = quantities[index];
+
+    let itemType = getOrCreateItemType(itemId.toString());
+    itemType.totalQuantity = itemType.totalQuantity.plus(quantity);
+    itemType.save();
+  }
+}
+
+export function handleMigrateVouchers(event: MigrateVouchers): void {
+  let itemIds = event.params._ids;
+  let quantities = event.params._values;
+
+  for (let index = 0; index < itemIds.length; index++) {
+    let itemId = itemIds[index];
+    let quantity = quantities[index];
+
+    let itemType = getOrCreateItemType(itemId.toString());
+    itemType.totalQuantity = itemType.totalQuantity.plus(quantity);
+    itemType.save();
+  }
+}
+
+export function handleAddWearableSet(event: AddWearableSet): void {
   let set = getOrCreateWearableSet(event.params._wearableSet.name);
-  set.name = event.params._wearableSet.name;
-  set.traitBonuses = event.params._wearableSet.traitsBonuses;
-  set.wearableIds = event.params._wearableSet.wearableIds;
-  set.allowedCollaterals = event.params._wearableSet.allowedCollaterals;
+  let setInfo = event.params._wearableSet;
+
+  set.name = setInfo.name;
+  set.traitBonuses = setInfo.traitsBonuses;
+  set.wearableIds = setInfo.wearableIds;
+  set.allowedCollaterals = setInfo.allowedCollaterals;
 
   set.save();
 }
+
+export function handleUpdateWearableSet(event: UpdateWearableSet): void {
+  let setInfo = event.params._wearableSet;
+
+  let set = getOrCreateWearableSet(event.params._wearableSet.name);
+  set.name = setInfo.name;
+  set.traitBonuses = setInfo.traitsBonuses;
+  set.wearableIds = setInfo.wearableIds;
+  set.allowedCollaterals = setInfo.allowedCollaterals;
+
+  set.save();
+}
+
+//Upgrades
+
+/*
+export function handleDiamondCut(event: DiamondCut): void {
+  for (let index = 0; index < event.params._diamondCut.length; index++) {
+    let upgrade = getOrCreateUpgrade(event.transaction.hash.toHexString());
+    const cut = event.params._diamondCut[index];
+  }
+
+  upgrade.call;
+  let diamond = event.params._diamondCut[0];
+  diamond.facetAddress;
+}
+*/

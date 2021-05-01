@@ -1,6 +1,17 @@
 [
   {
     "inputs": [
+      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+    ],
+    "name": "aavegotchiClaimTime",
+    "outputs": [
+      { "internalType": "uint256", "name": "claimTime_", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "address", "name": "_owner", "type": "address" }
     ],
     "name": "allAavegotchisOfOwner",
@@ -1354,6 +1365,20 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_collateralToken",
+        "type": "address"
+      },
+      { "internalType": "uint8", "name": "_svgId", "type": "uint8" }
+    ],
+    "name": "setCollateralEyeShapeSvgId",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -1665,6 +1690,43 @@
       }
     ],
     "name": "UpdateCollateralModifiers",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_setId",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          { "internalType": "string", "name": "name", "type": "string" },
+          {
+            "internalType": "uint8[]",
+            "name": "allowedCollaterals",
+            "type": "uint8[]"
+          },
+          {
+            "internalType": "uint16[]",
+            "name": "wearableIds",
+            "type": "uint16[]"
+          },
+          {
+            "internalType": "int8[5]",
+            "name": "traitsBonuses",
+            "type": "int8[5]"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct WearableSet",
+        "name": "_wearableSet",
+        "type": "tuple"
+      }
+    ],
+    "name": "UpdateWearableSet",
     "type": "event"
   },
   {
@@ -2017,6 +2079,38 @@
       }
     ],
     "name": "updateItemTypeMaxQuantity",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256[]", "name": "_setIds", "type": "uint256[]" },
+      {
+        "components": [
+          { "internalType": "string", "name": "name", "type": "string" },
+          {
+            "internalType": "uint8[]",
+            "name": "allowedCollaterals",
+            "type": "uint8[]"
+          },
+          {
+            "internalType": "uint16[]",
+            "name": "wearableIds",
+            "type": "uint16[]"
+          },
+          {
+            "internalType": "int8[5]",
+            "name": "traitsBonuses",
+            "type": "int8[5]"
+          }
+        ],
+        "internalType": "struct WearableSet[]",
+        "name": "_wearableSets",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "updateWearableSets",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -2444,6 +2538,32 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "erc1155TokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "erc1155TypeId",
+            "type": "uint256"
+          },
+          { "internalType": "uint256", "name": "category", "type": "uint256" }
+        ],
+        "internalType": "struct ERC1155MarketplaceFacet.Category[]",
+        "name": "_categories",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "setERC1155Categories",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -3930,6 +4050,25 @@
   },
   {
     "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "_wearableIds",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "findWearableSets",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "wearableSetIds_",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "uint256", "name": "_itemId", "type": "uint256" }
     ],
     "name": "getItemType",
@@ -4424,6 +4563,20 @@
     "type": "function"
   },
   {
+    "inputs": [
+      { "internalType": "uint256", "name": "_wearableId", "type": "uint256" },
+      {
+        "internalType": "bool[16]",
+        "name": "_slotPositions",
+        "type": "bool[16]"
+      }
+    ],
+    "name": "setWearableSlotPositions",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "totalWearableSets",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -4490,6 +4643,32 @@
     "name": "batchTransferToParent",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "uint256[]", "name": "", "type": "uint256[]" },
+      { "internalType": "uint256[]", "name": "", "type": "uint256[]" },
+      { "internalType": "bytes", "name": "", "type": "bytes" }
+    ],
+    "name": "onERC1155BatchReceived",
+    "outputs": [{ "internalType": "bytes4", "name": "", "type": "bytes4" }],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "uint256", "name": "", "type": "uint256" },
+      { "internalType": "uint256", "name": "", "type": "uint256" },
+      { "internalType": "bytes", "name": "", "type": "bytes" }
+    ],
+    "name": "onERC1155Received",
+    "outputs": [{ "internalType": "bytes4", "name": "", "type": "bytes4" }],
+    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -4644,6 +4823,56 @@
     "name": "BuyPortals",
     "type": "event"
   },
+
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_numAavegotchisToPurchase",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_totalPrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "Xingyun",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_to", "type": "address" },
+      { "internalType": "uint256", "name": "_ghst", "type": "uint256" },
+      { "internalType": "bytes32", "name": "_hash", "type": "bytes32" }
+    ],
+    "name": "xingyun",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+
   {
     "anonymous": false,
     "inputs": [
@@ -4713,6 +4942,43 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_buyer",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "_itemIds",
+        "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "_quantities",
+        "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_totalPrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "PurchaseTransferItemsWithGhst",
+    "type": "event"
+  },
+  {
     "inputs": [
       { "internalType": "address", "name": "_to", "type": "address" },
       { "internalType": "uint256", "name": "_ghst", "type": "uint256" }
@@ -4739,6 +5005,31 @@
   },
   {
     "inputs": [
+      { "internalType": "address", "name": "_to", "type": "address" },
+      { "internalType": "uint256[]", "name": "_itemIds", "type": "uint256[]" },
+      {
+        "internalType": "uint256[]",
+        "name": "_quantities",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "purchaseTransferItemsWithGhst",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "_svgType", "type": "bytes32" },
+      { "internalType": "uint256", "name": "_numLayers", "type": "uint256" }
+    ],
+    "name": "deleteLastSvgLayers",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
     ],
     "name": "getAavegotchiSvg",
@@ -4757,6 +5048,28 @@
   },
   {
     "inputs": [
+      { "internalType": "bytes32", "name": "_svgType", "type": "bytes32" },
+      { "internalType": "uint256", "name": "_itemId", "type": "uint256" }
+    ],
+    "name": "getSvg",
+    "outputs": [{ "internalType": "string", "name": "svg_", "type": "string" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "_svgType", "type": "bytes32" },
+      { "internalType": "uint256[]", "name": "_itemIds", "type": "uint256[]" }
+    ],
+    "name": "getSvgs",
+    "outputs": [
+      { "internalType": "string[]", "name": "svgs_", "type": "string[]" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
     ],
     "name": "portalAavegotchisSvg",
@@ -4764,6 +5077,43 @@
       { "internalType": "string[10]", "name": "svg_", "type": "string[10]" }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256[]", "name": "_itemIds", "type": "uint256[]" },
+      {
+        "components": [
+          { "internalType": "uint8", "name": "x", "type": "uint8" },
+          { "internalType": "uint8", "name": "y", "type": "uint8" },
+          { "internalType": "uint8", "name": "width", "type": "uint8" },
+          { "internalType": "uint8", "name": "height", "type": "uint8" }
+        ],
+        "internalType": "struct Dimensions[]",
+        "name": "_dimensions",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "setItemsDimensions",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "sleeveId", "type": "uint256" },
+          { "internalType": "uint256", "name": "wearableId", "type": "uint256" }
+        ],
+        "internalType": "struct SvgFacet.Sleeve[]",
+        "name": "_sleeves",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "setSleeves",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -4785,44 +5135,20 @@
     "type": "function"
   },
   {
-    "anonymous": false,
     "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "_owner",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256[]",
-        "name": "_ids",
-        "type": "uint256[]"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256[]",
-        "name": "_values",
-        "type": "uint256[]"
-      }
-    ],
-    "name": "MigrateVouchers",
-    "type": "event"
-  },
-  {
-    "inputs": [
+      { "internalType": "string", "name": "_svg", "type": "string" },
       {
         "components": [
-          { "internalType": "address", "name": "owner", "type": "address" },
+          { "internalType": "bytes32", "name": "svgType", "type": "bytes32" },
           { "internalType": "uint256[]", "name": "ids", "type": "uint256[]" },
-          { "internalType": "uint256[]", "name": "values", "type": "uint256[]" }
+          { "internalType": "uint256[]", "name": "sizes", "type": "uint256[]" }
         ],
-        "internalType": "struct VoucherMigrationFacet.VouchersOwner[]",
-        "name": "_vouchersOwners",
+        "internalType": "struct LibSvg.SvgTypeAndIdsAndSizes[]",
+        "name": "_typesAndIdsAndSizes",
         "type": "tuple[]"
       }
     ],
-    "name": "migrateVouchers",
+    "name": "updateSvg",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -4959,44 +5285,39 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_from",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "_to",
+        "name": "_owner",
         "type": "address"
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
+        "internalType": "uint256[]",
+        "name": "_ids",
+        "type": "uint256[]"
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "_numAavegotchisToPurchase",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_totalPrice",
-        "type": "uint256"
+        "internalType": "uint256[]",
+        "name": "_values",
+        "type": "uint256[]"
       }
     ],
-    "name": "Xingyun",
+    "name": "MigrateVouchers",
     "type": "event"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_to", "type": "address" },
-      { "internalType": "uint256", "name": "_ghst", "type": "uint256" },
-      { "internalType": "bytes32", "name": "_hash", "type": "bytes32" }
+      {
+        "components": [
+          { "internalType": "address", "name": "owner", "type": "address" },
+          { "internalType": "uint256[]", "name": "ids", "type": "uint256[]" },
+          { "internalType": "uint256[]", "name": "values", "type": "uint256[]" }
+        ],
+        "internalType": "struct VoucherMigrationFacet.VouchersOwner[]",
+        "name": "_vouchersOwners",
+        "type": "tuple[]"
+      }
     ],
-    "name": "xingyun",
+    "name": "migrateVouchers",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -5166,6 +5487,24 @@
       }
     ],
     "name": "StoreSvg",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "components": [
+          { "internalType": "bytes32", "name": "svgType", "type": "bytes32" },
+          { "internalType": "uint256[]", "name": "ids", "type": "uint256[]" },
+          { "internalType": "uint256[]", "name": "sizes", "type": "uint256[]" }
+        ],
+        "indexed": false,
+        "internalType": "struct LibSvg.SvgTypeAndIdsAndSizes[]",
+        "name": "_typesAndIdsAndSizes",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "UpdateSvg",
     "type": "event"
   },
   {

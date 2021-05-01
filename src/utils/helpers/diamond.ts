@@ -1,4 +1,10 @@
-import { AavegotchiDiamond, ERC1155ExecutedListing, ERC721ExecutedListing, ERC721ListingAdd, ERC721ListingCancelled } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
+import {
+  AavegotchiDiamond,
+  ERC1155ExecutedListing,
+  ERC721ExecutedListing,
+  ERC721ListingAdd,
+  ERC721ListingCancelled,
+} from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
 
 import {
   Aavegotchi,
@@ -23,6 +29,7 @@ export function getOrCreatePortal(
 
   if (portal == null && createIfNotFound) {
     portal = new Portal(id);
+    portal.timesTraded = BIGINT_ZERO;
   }
 
   return portal as Portal;
@@ -52,6 +59,7 @@ export function getOrCreateAavegotchi(
     gotchi = new Aavegotchi(id);
     gotchi.timesInteracted = BIGINT_ZERO;
     gotchi.createdAt = event.block.number;
+    gotchi.timesTraded = BIGINT_ZERO;
   }
 
   return gotchi as Aavegotchi;
@@ -98,7 +106,7 @@ export function getOrCreateERC1155Listing(
 
 export function getOrCreateERC1155Purchase(
   id: string,
-  buyer:Address,
+  buyer: Address,
   createIfNotFound: boolean = true
 ): ERC1155Purchase {
   let listing = ERC1155Purchase.load(id);
@@ -136,6 +144,20 @@ export function getOrCreateWearableSet(
   return set as WearableSet;
 }
 
+/*
+export function getOrCreateUpgrade(
+  id: string,
+  createIfNotFound: boolean = true
+): Upgrade {
+  let upgrade = Upgrade.load(id);
+  if (upgrade == null && createIfNotFound) {
+    upgrade = new Upgrade(id);
+  }
+
+  return upgrade as Upgrade;
+}
+*/
+
 export function updateERC721ListingInfo(
   listing: ERC721Listing,
   listingID: BigInt,
@@ -155,7 +177,6 @@ export function updateERC721ListingInfo(
     listing.priceInWei = listingInfo.priceInWei;
     listing.cancelled = listingInfo.cancelled;
 
-
     if (listing.category.toI32() <= 2) {
       let portal = getOrCreatePortal(
         listingInfo.erc721TokenId.toString(),
@@ -174,11 +195,10 @@ export function updateERC721ListingInfo(
 
       if (aavegotchi) {
         listing.hauntId = aavegotchi.hauntId;
-        listing.kinship = aavegotchi.kinship
-        listing.baseRarityScore = aavegotchi.baseRarityScore
-        listing.modifiedRarityScore = aavegotchi.modifiedRarityScore
-        listing.equippedWearables = aavegotchi.equippedWearables
-  
+        listing.kinship = aavegotchi.kinship;
+        listing.baseRarityScore = aavegotchi.baseRarityScore;
+        listing.modifiedRarityScore = aavegotchi.modifiedRarityScore;
+        listing.equippedWearables = aavegotchi.equippedWearables;
       }
     }
   } else {
@@ -254,50 +274,35 @@ export function updateERC1155ListingInfo(
 
 export function updateERC1155PurchaseInfo(
   listing: ERC1155Purchase,
-  listingID: BigInt,
   event: ERC1155ExecutedListing
 ): ERC1155Purchase {
-  let contract = AavegotchiDiamond.bind(event.address);
-  let response = contract.try_getERC1155Listing(listingID);
+  let listingInfo = event.params;
 
-  if (!response.reverted) {
-    let listingInfo = response.value;
-    listing.category = listingInfo.category;
-    listing.listingID = event.params.listingId
-    listing.erc1155TokenAddress = listingInfo.erc1155TokenAddress;
-    listing.erc1155TypeId = listingInfo.erc1155TypeId;
-    listing.seller = listingInfo.seller;
-    listing.timeCreated = listingInfo.timeCreated;
-    listing.timeLastPurchased = listingInfo.timeLastPurchased;
-    listing.priceInWei = listingInfo.priceInWei;
-    listing.sold = listingInfo.sold;
-    listing.cancelled = listingInfo.cancelled;
-    listing.quantity = event.params._quantity
-    listing.buyer = event.params.buyer
+  listing.category = listingInfo.category;
+  listing.listingID = listingInfo.listingId;
+  listing.erc1155TokenAddress = listingInfo.erc1155TokenAddress;
+  listing.erc1155TypeId = listingInfo.erc1155TypeId;
+  listing.seller = listingInfo.seller;
+  listing.timeLastPurchased = listingInfo.time;
+  listing.priceInWei = listingInfo.priceInWei;
+  listing.quantity = event.params._quantity;
+  listing.buyer = event.params.buyer;
 
+  //tickets
+  if (listing.category.equals(BigInt.fromI32(3))) {
+    let rarityLevel = listingInfo.erc1155TypeId;
+    listing.rarityLevel = rarityLevel;
 
-    //tickets
-    if (listing.category.toI32() === 3) {
-      let rarityLevel = listing.erc1155TypeId;
-      listing.rarityLevel = rarityLevel;
-
-      //items
-    } else {
-      let itemType = getOrCreateItemType(
-        listingInfo.erc1155TypeId.toString(),
-        false
-      );
-
-      if (itemType) {
-        listing.rarityLevel = itemMaxQuantityToRarity(itemType.maxQuantity);
-      }
-    }
+    //items
   } else {
-    log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
-      listingID.toString(),
-      event.block.number.toString(),
-      event.transaction.hash.toHexString(),
-    ]);
+    let itemType = getOrCreateItemType(
+      listingInfo.erc1155TypeId.toString(),
+      false
+    );
+
+    if (itemType) {
+      listing.rarityLevel = itemMaxQuantityToRarity(itemType.maxQuantity);
+    }
   }
 
   return listing as ERC1155Purchase;
@@ -319,6 +324,7 @@ export function updateAavegotchiInfo(
     gotchi.status = gotchiInfo.status;
     gotchi.numericTraits = gotchiInfo.numericTraits;
     gotchi.modifiedNumericTraits = gotchiInfo.modifiedNumericTraits;
+
     gotchi.equippedWearables = gotchiInfo.equippedWearables;
     gotchi.collateral = gotchiInfo.collateral;
     gotchi.escrow = gotchiInfo.escrow;
@@ -334,6 +340,12 @@ export function updateAavegotchiInfo(
     gotchi.hauntId = gotchiInfo.hauntId;
     gotchi.baseRarityScore = gotchiInfo.baseRarityScore;
     gotchi.modifiedRarityScore = gotchiInfo.modifiedRarityScore;
+
+    if (gotchi.withSetsRarityScore == null) {
+      gotchi.withSetsRarityScore = gotchiInfo.modifiedRarityScore;
+      gotchi.withSetsNumericTraits = gotchiInfo.modifiedNumericTraits;
+    }
+
     gotchi.locked = gotchiInfo.locked;
   } else {
     log.warning("Aavegotchi {} couldn't be updated at block: {} tx_hash: {}", [
@@ -359,7 +371,7 @@ export function updateItemTypeInfo(
   if (!response.reverted) {
     let itemInfo = response.value;
     itemType.name = itemInfo.name;
-    itemType.svgId = itemId
+    itemType.svgId = itemId;
     itemType.desc = itemInfo.description;
     itemType.author = itemInfo.author;
 
