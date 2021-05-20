@@ -387,14 +387,18 @@ export function handleGrantExperience(event: GrantExperience): void {
 
     let gotchi = getOrCreateAavegotchi(tokenID.toString(), event);
 
-    gotchi.experience = gotchi.experience.plus(xpAmount);
-
-    if (gotchi.experience.gt(BigInt.fromI32(490050))) {
-      gotchi.level = BigInt.fromI32(99);
+    if (gotchi.owner === "0x0000000000000000000000000000000000000000") {
+      //Don't do anything, this aavegotchi has been sacrificed
     } else {
-      //@ts-ignore
-      let level = (Math.sqrt(2 * gotchi.experience.toI32()) / 10) as i32;
-      gotchi.level = BigInt.fromI32(level + 1);
+      gotchi.experience = gotchi.experience.plus(xpAmount);
+
+      if (gotchi.experience.gt(BigInt.fromI32(490050))) {
+        gotchi.level = BigInt.fromI32(99);
+      } else {
+        //@ts-ignore
+        let level = (Math.sqrt(2 * gotchi.experience.toI32()) / 10) as i32;
+        gotchi.level = BigInt.fromI32(level + 1);
+      }
     }
 
     gotchi.save();
