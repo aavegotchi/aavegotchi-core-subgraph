@@ -379,10 +379,14 @@ export function handleUseConsumables(event: UseConsumables): void {
 
 export function handleGrantExperience(event: GrantExperience): void {
   let ids = event.params._tokenIds;
-  let xpAmounts = event.params._xpValues;
+  //let xpAmounts = event.params._xpValues;
 
   for (let i = 0; i < ids.length; i++) {
     let tokenID = ids[i];
+
+    let gotchi = getOrCreateAavegotchi(tokenID.toString(), event);
+    gotchi = updateAavegotchiInfo(gotchi, tokenID, event);
+    /*
     let xpAmount = xpAmounts[i];
 
     let gotchi = getOrCreateAavegotchi(tokenID.toString(), event);
@@ -400,6 +404,7 @@ export function handleGrantExperience(event: GrantExperience): void {
         gotchi.level = BigInt.fromI32(level + 1);
       }
     }
+    */
 
     gotchi.save();
   }
