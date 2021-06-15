@@ -605,22 +605,6 @@ export function handleERC1155ExecutedListing(
   let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
   let listingUpdateInfo = event.params;
 
-  /*
-
-  log.warning("Updating executed listing {} old quantity: {} new quantity: ", [
-    event.params.listingId.toString(),
-    listing.quantity.toString(),
-    event.params._quantity.toString(),
-  ]);
-
-
-
-  //Reduce the quantity of the listing
-  listing.quantity = listing.quantity.minus(listingUpdateInfo._quantity);
-  listing.timeLastPurchased = event.block.timestamp;
-  listing.sold = true;
-  */
-
   listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
 
   listing.save();
@@ -659,7 +643,7 @@ export function handleERC1155ListingCancelled(
 ): void {
   let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
 
-  listing.cancelled = true;
+  listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
 
   listing.save();
 }
@@ -669,7 +653,7 @@ export function handleERC1155ListingRemoved(
 ): void {
   let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
 
-  listing.cancelled = true;
+  listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
 
   listing.save();
 }
