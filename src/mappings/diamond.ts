@@ -446,23 +446,17 @@ export function handleTransfer(event: Transfer): void {
   let id = event.params._tokenId.toString();
   let newOwner = getOrCreateUser(event.params._to.toHexString());
   let gotchi = getOrCreateAavegotchi(id, event, false);
+  let portal = getOrCreatePortal(id, false);
 
   // ERC721 transfer can be portal or gotchi based, so we have to check it.
-  if (gotchi != null) {
+  if (gotchi) {
     gotchi.owner = newOwner.id;
     gotchi.save();
-  } else {
-    let portal = getOrCreatePortal(id, false);
+  }
 
-    if (portal != null) {
-      portal.owner = newOwner.id;
-      portal.save();
-    } else {
-      log.warning(
-        "ERC721 Transfer for tokenId {} didn't have a portal or gotchi already created",
-        [id]
-      );
-    }
+  if (portal) {
+    portal.owner = newOwner.id;
+    portal.save();
   }
 
   newOwner.save();
