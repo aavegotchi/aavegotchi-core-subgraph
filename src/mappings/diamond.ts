@@ -25,13 +25,11 @@ import {
   AddWearableSet,
   PurchaseItemsWithGhst,
   PurchaseItemsWithVouchers,
-  DiamondCut,
   MigrateVouchers,
   UpdateWearableSet,
   ItemTypeMaxQuantity,
   ExperienceTransfer,
   ItemModifiersSet,
-  WearableSlotPositionsSet__Params,
   WearableSlotPositionsSet,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
