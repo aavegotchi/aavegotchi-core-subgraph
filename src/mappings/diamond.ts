@@ -30,6 +30,9 @@ import {
   UpdateWearableSet,
   ItemTypeMaxQuantity,
   ExperienceTransfer,
+  ItemModifiersSet,
+  WearableSlotPositionsSet__Params,
+  WearableSlotPositionsSet,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -763,6 +766,19 @@ export function handleUpdateWearableSet(event: UpdateWearableSet): void {
   set.allowedCollaterals = setInfo.allowedCollaterals;
 
   set.save();
+}
+
+export function handleItemModifiersSet(event: ItemModifiersSet): void {
+  let itemType = getOrCreateItemType(event.params._wearableId.toString());
+  itemType.traitModifiers = event.params._traitModifiers;
+  itemType.rarityScoreModifier = event.params._rarityScoreModifier;
+  itemType.save();
+}
+
+export function handleWearableSlotPositionsSet(event: WearableSlotPositionsSet): void {
+  let itemType = getOrCreateItemType(event.params._wearableId.toString());
+  itemType.slotPositions = event.params._slotPositions;
+  itemType.save();
 }
 
 //Upgrades
