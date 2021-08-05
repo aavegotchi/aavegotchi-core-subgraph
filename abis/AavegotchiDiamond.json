@@ -5822,5 +5822,49 @@
     ],
     "name": "Transfer",
     "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_wearableId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "int8[6]",
+        "name": "_traitModifiers",
+        "type": "int8[6]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "_rarityScoreModifier",
+        "type": "uint8"
+      }
+    ],
+    "name": "ItemModifiersSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_wearableId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool[16]",
+        "name": "_slotPositions",
+        "type": "bool[16]"
+      }
+    ],
+    "name": "WearableSlotPositionsSet",
+    "type": "event"
   }
 ]

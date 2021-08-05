@@ -80,6 +80,10 @@ dataSources:
           handler: handleItemTypeMaxQuantity
         - event: ExperienceTransfer(indexed uint256,indexed uint256,uint256)
           handler: handleExperienceTransfer
+        - event: ItemModifiersSet(uint256,int8[6],uint8)
+          handler: handleItemModifiersSet
+        - event: WearableSlotPositionsSet(uint256,bool[16])
+          handler: handleWearableSlotPositionsSet
         # - event: DiamondCut((address,uint8,bytes4[])[],address,bytes)
         #   handler: handleDiamondCut
   # - AavegotchiInteract(indexed uint256,uint256)

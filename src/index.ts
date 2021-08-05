@@ -31,4 +31,6 @@ export {
   handlePurchaseItemsWithVouchers,
   handleAddWearableSet,
   handleUpdateWearableSet,
+  handleItemModifiersSet,
+  handleWearableSlotPositionsSet
 } from "./mappings/diamond";
