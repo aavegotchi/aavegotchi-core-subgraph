@@ -1,0 +1,32 @@
+version: "3"
+services:
+  hardhat:
+    network_mode: host
+    build:
+      context: ./testEnvironment/hardhat
+    entrypoint: npx hardhat node --fork ${RPC_URL} --fork-block-number ${BLOCK_NUMBER}
+  graph-node:
+    image: graphprotocol/graph-node
+    network_mode: host
+    depends_on:
+      - ipfs
+      - postgres
+    environment:
+      postgres_host: "127.0.0.1"
+      postgres_user: graph-node
+      postgres_pass: let-me-in
+      postgres_db: graph-node
+      ipfs: "127.0.0.1:5001"
+      ethereum: "matic:http://127.0.0.1:8545"
+      GRAPH_LOG: info
+  ipfs:
+    network_mode: host
+    image: ipfs/go-ipfs:v0.4.23
+  postgres:
+    network_mode: host
+    image: postgres
+    command: ["postgres", "-cshared_preload_libraries=pg_stat_statements"]
+    environment:
+      POSTGRES_USER: graph-node
+      POSTGRES_PASSWORD: let-me-in
+      POSTGRES_DB: graph-node
