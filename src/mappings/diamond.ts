@@ -31,6 +31,7 @@ import {
   ExperienceTransfer,
   ItemModifiersSet,
   WearableSlotPositionsSet,
+  MintPortals,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -777,6 +778,37 @@ export function handleWearableSlotPositionsSet(event: WearableSlotPositionsSet):
   let itemType = getOrCreateItemType(event.params._wearableId.toString());
   itemType.slotPositions = event.params._slotPositions;
   itemType.save();
+}
+
+export function handleMintPortals(event: MintPortals): void {
+  let buyer = getOrCreateUser(event.params._from.toHexString());
+  let owner = getOrCreateUser(event.params._to.toHexString());
+  let stats = getStatisticEntity();
+
+  let baseId = event.params._tokenId;
+
+  for (let i = 0; i < event.params._numAavegotchisToPurchase.toI32(); i++) {
+    let id = baseId.plus(BigInt.fromI32(i));
+    let portal = getOrCreatePortal(id.toString());
+
+    portal.hauntId = event.params._hauntId;
+    portal.status = PORTAL_STATUS_BOUGHT;
+    portal.gotchiId = event.params._tokenId;
+    portal.boughtAt = event.block.number;
+    portal.owner = owner.id;
+    portal.buyer = buyer.id;
+    portal.timesTraded = BIGINT_ZERO;
+
+    portal.save();
+  }
+
+  stats.portalsBought = stats.portalsBought.plus(
+    event.params._numAavegotchisToPurchase
+  );
+
+  stats.save();
+  buyer.save();
+  owner.save();
 }
 
 //Upgrades
