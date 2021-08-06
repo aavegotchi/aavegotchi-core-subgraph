@@ -33,18 +33,18 @@ const fetchSubgraphs = createApolloFetch({uri: config.graphUrl})
 
 async function startTestEnvironment(blockNumber) {
     // patch subgraph 
-    await patching.replace(
-        path.join(srcDir, "subgraph.yaml"),
-        "BLOCKPLACEHOLDER",
-        blockNumber
-    );
+    // await patching.replace(
+    //     path.join(srcDir, "subgraph.yaml"),
+    //     "BLOCKPLACEHOLDER",
+    //     blockNumber
+    // );
 
-    await patching.replace(
-        path.join(srcDir, "testEnvironment/.env.test"),
-        "BLOCKPLACEHOLDER",
-        blockNumber
-    );
-    exec(`sudo docker-compose --env-file ./.env up -d `, console.log)
+    // await patching.replace(
+    //     path.join(srcDir, "./.env.test"),
+    //     "BLOCKPLACEHOLDER",
+    //     blockNumber
+    // );
+    exec(`sudo docker-compose -f ./testEnvironment/docker-compose.yml --env-file ./.env up -d `, console.log)
 
     // @todo: optimize
     await new Promise((resolve) => {

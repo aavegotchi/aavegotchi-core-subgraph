@@ -3,7 +3,7 @@ services:
   hardhat:
     network_mode: host
     build:
-      context: ./testEnvironment/hardhat
+      context: ./hardhat
     entrypoint: npx hardhat node --fork ${RPC_URL} --fork-block-number ${BLOCK_NUMBER}
   graph-node:
     image: graphprotocol/graph-node

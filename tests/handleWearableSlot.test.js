@@ -12,7 +12,7 @@ let result1, result2;
 describe("handleWearableSlot", () => {
     beforeAll(async() => {
         // start test environment and fork block 17000000
-        await startTestEnvironment(17000000);
+        // await startTestEnvironment(17000000);
         result1 = await executeQuery(query)
         // todo: execute transaction
         result2 = await executeQuery(query)
