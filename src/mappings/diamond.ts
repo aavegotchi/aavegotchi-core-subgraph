@@ -54,6 +54,7 @@ import {
   PORTAL_STATUS_OPENED,
   PORTAL_STATUS_CLAIMED,
   BIGINT_ZERO,
+  STATUS_AAVEGOTCHI,
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
 
@@ -435,10 +436,14 @@ export function handleExperienceTransfer(event: ExperienceTransfer): void {
 
 export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
-
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-  gotchi.timesInteracted = gotchi.timesInteracted.plus(BIGINT_ONE);
 
+  // dont count interactions with portals
+  if(gotchi.status !== STATUS_AAVEGOTCHI) {
+    return;
+  }
+
+  gotchi.timesInteracted = gotchi.timesInteracted.plus(BIGINT_ONE);
   gotchi.save();
 }
 
