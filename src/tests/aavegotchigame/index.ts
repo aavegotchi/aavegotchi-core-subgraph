@@ -1,5 +1,5 @@
-import { handleInteractTests } from "./handleInteract";
+import { handleMintPortalsTests } from "./handleMintPortals";
 
 export function runAllAavegotchiGameTests(): void {
-    handleInteractTests();
+    handleMintPortalsTests();
 }
