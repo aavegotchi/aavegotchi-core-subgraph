@@ -441,7 +441,8 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
   // dont count interactions with portals
-  if(gotchi.status !== STATUS_AAVEGOTCHI) {
+  if(gotchi.status != STATUS_AAVEGOTCHI) {
+    gotchi.save();
     return;
   }
 
