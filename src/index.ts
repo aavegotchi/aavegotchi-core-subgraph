@@ -35,4 +35,4 @@ export {
   handleWearableSlotPositionsSet
 } from "./mappings/diamond";
 
-export { runTests } from "./tests/aavegotchi.test";
+// export { runTests } from "./tests/aavegotchi.test";
