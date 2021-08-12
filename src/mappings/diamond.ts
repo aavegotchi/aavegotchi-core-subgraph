@@ -490,7 +490,12 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
   listing = updateERC721ListingInfo(listing, event.params.listingId, event);
 
   if (listing.category == BigInt.fromI32(3)) {
-    listing.gotchi = event.params.erc721TokenId.toString();
+    let gotchi = getOrCreateAavegotchi(event.params.erc721TokenId.toString(), event);
+    gotchi = updateAavegotchiInfo(gotchi, event.params.erc721TokenId, event);
+    gotchi.save();
+
+    listing.gotchi = gotchi.id;
+    listing.experience = gotchi.experience;
   } else {
     listing.portal = event.params.erc721TokenId.toString();
   }
