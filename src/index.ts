@@ -33,5 +33,5 @@ export {
   handleUpdateWearableSet,
   handleItemModifiersSet,
   handleWearableSlotPositionsSet,
-  runTests
-} from "./mappings/diamond";
+} from // runTests
+"./mappings/diamond";

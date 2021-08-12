@@ -59,7 +59,7 @@ import {
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
 
-export { runTests } from "../tests/aavegotchi.test";
+// export { runTests } from "../tests/aavegotchi.test";
 
 export function handleBuyPortals(event: BuyPortals): void {
   let contract = AavegotchiDiamond.bind(event.address);
