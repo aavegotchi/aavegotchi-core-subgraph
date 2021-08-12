@@ -61,7 +61,6 @@ type Aavegotchi @entity {
 
   kinship: BigInt! #The kinship value of this Aavegotchi. Default is 50.
   lastInteracted: BigInt!
-  timesInteracted: BigInt!
 
   experience: BigInt! #How much XP this Aavegotchi has accrued. Begins at 0.
   toNextLevel: BigInt!

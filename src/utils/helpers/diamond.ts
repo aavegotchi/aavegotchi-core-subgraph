@@ -57,7 +57,6 @@ export function getOrCreateAavegotchi(
 
   if (gotchi == null && createIfNotFound) {
     gotchi = new Aavegotchi(id);
-    gotchi.timesInteracted = BIGINT_ZERO;
     gotchi.createdAt = event.block.number;
     gotchi.timesTraded = BIGINT_ZERO;
   }

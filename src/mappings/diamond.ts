@@ -441,13 +441,6 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
-  // dont count interactions with portals
-  if(gotchi.status != STATUS_AAVEGOTCHI) {
-    gotchi.save();
-    return;
-  }
-
-  gotchi.timesInteracted = gotchi.timesInteracted.plus(BIGINT_ONE);
   gotchi.save();
 }
 
@@ -782,7 +775,9 @@ export function handleItemModifiersSet(event: ItemModifiersSet): void {
   itemType.save();
 }
 
-export function handleWearableSlotPositionsSet(event: WearableSlotPositionsSet): void {
+export function handleWearableSlotPositionsSet(
+  event: WearableSlotPositionsSet
+): void {
   let itemType = getOrCreateItemType(event.params._wearableId.toString());
   itemType.slotPositions = event.params._slotPositions;
   itemType.save();
