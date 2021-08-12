@@ -515,6 +515,7 @@ export function handleERC721ExecutedListing(
   event: ERC721ExecutedListing
 ): void {
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
+  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
 
   listing.buyer = event.params.buyer;
   listing.timePurchased = event.params.time;
@@ -553,6 +554,7 @@ export function handleERC721ListingCancelled(
   event: ERC721ListingCancelled
 ): void {
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
+  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
 
   listing.cancelled = true;
   listing.save();
@@ -565,6 +567,7 @@ handler:handleERC721ListingRemoved
 
 export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
+  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
 
   listing.cancelled = true;
   listing.save();
