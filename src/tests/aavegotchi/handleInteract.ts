@@ -2,7 +2,7 @@ import { test, assert, clearStore, createMockedFunction } from "matchstick-as/as
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
 import { handleAavegotchiInteract } from "../../mappings/diamond";
 import { AavegotchiInteract } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
-import { BIGINT_ONE } from "../../utils/constants";
+import { BIGINT_ONE, CONTRACT_ADDRESS } from "../../utils/constants";
 import { getAavegotchiMock } from "../../utils/helpers/mocks";
 
 export function handleInteractTests(): void {
@@ -14,7 +14,7 @@ export function handleInteractTests(): void {
         let _tokenId = new ethereum.EventParam();
         _tokenId.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
         event.parameters.push(_tokenId);
-        let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
+        let contractAddress = Address.fromString(CONTRACT_ADDRESS);
         event.address = contractAddress
 
         // create mock for updateAavegotchi and getAavegotchi
@@ -30,7 +30,7 @@ export function handleInteractTests(): void {
         handleAavegotchiInteract(event);
 
         // assert and clear store
-        assert.fieldEquals("Aavegotchi", "1", "timesInteracted", "1");
+        assert.fieldEquals("Aavegotchi", "1", "lastInteracted", "1");
         clearStore();
     })
 
@@ -41,7 +41,7 @@ export function handleInteractTests(): void {
         let _tokenId = new ethereum.EventParam();
         _tokenId.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
         event.parameters.push(_tokenId);
-        let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
+        let contractAddress = Address.fromString(CONTRACT_ADDRESS);
         event.address = contractAddress
 
         // create mock for updateAavegotchi and getAavegotchi
@@ -57,7 +57,7 @@ export function handleInteractTests(): void {
         handleAavegotchiInteract(event);
 
         // assert and clear store
-        assert.fieldEquals("Aavegotchi", "1", "timesInteracted", "0");
+        assert.fieldEquals("Aavegotchi", "1", "lastInteracted", "1");
         clearStore();
     })
 }

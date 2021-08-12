@@ -55,11 +55,8 @@ import {
   PORTAL_STATUS_OPENED,
   PORTAL_STATUS_CLAIMED,
   BIGINT_ZERO,
-  STATUS_AAVEGOTCHI,
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
-
-export { runTests } from "../tests/aavegotchi.test";
 
 export function handleBuyPortals(event: BuyPortals): void {
   let contract = AavegotchiDiamond.bind(event.address);
@@ -792,7 +789,6 @@ export function handleMintPortals(event: MintPortals): void {
   let stats = getStatisticEntity();
 
   let baseId = event.params._tokenId;
-
   for (let i = 0; i < event.params._numAavegotchisToPurchase.toI32(); i++) {
     let id = baseId.plus(BigInt.fromI32(i));
     let portal = getOrCreatePortal(id.toString());

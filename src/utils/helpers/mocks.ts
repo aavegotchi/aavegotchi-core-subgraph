@@ -1,7 +1,7 @@
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { BIGINT_ONE } from "../constants";
+import { BIGINT_ONE, CONTRACT_ADDRESS } from "../constants";
 
-let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
+let contractAddress = Address.fromString(CONTRACT_ADDRESS);
 
 export function getAavegotchiMock(status: BigInt = BigInt.fromI32(3)): ethereum.Value[]  {
 
