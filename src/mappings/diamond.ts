@@ -59,8 +59,6 @@ import {
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
 
-// export { runTests } from "../tests/aavegotchi.test";
-
 export function handleBuyPortals(event: BuyPortals): void {
   let contract = AavegotchiDiamond.bind(event.address);
   let buyer = getOrCreateUser(event.params._from.toHexString());
@@ -525,6 +523,11 @@ export function handleERC721ExecutedListing(
   if (event.params.category.lt(BigInt.fromI32(3))) {
     let portal = getOrCreatePortal(event.params.erc721TokenId.toString());
     portal.timesTraded = portal.timesTraded.plus(BIGINT_ONE);
+
+    // add to historical prices
+    let historicalPrices = portal.historicalPrices;
+    historicalPrices.push(event.params.priceInWei);
+    portal.historicalPrices = historicalPrices;
     portal.save();
   }
 
@@ -535,6 +538,11 @@ export function handleERC721ExecutedListing(
       event
     );
     gotchi.timesTraded = gotchi.timesTraded.plus(BIGINT_ONE);
+
+    // add to historical prices
+    let historicalPrices = gotchi.historicalPrices;
+    historicalPrices.push(event.params.priceInWei);
+    gotchi.historicalPrices = historicalPrices;
     gotchi.save();
   }
 
