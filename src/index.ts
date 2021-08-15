@@ -36,4 +36,4 @@ export {
 } from // runTests
 "./mappings/diamond";
 
-export { runTests } from "./tests/aavegotchi.test";
+// export { runTests } from "./tests/aavegotchi.test";
