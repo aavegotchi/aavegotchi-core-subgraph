@@ -86,18 +86,23 @@ export function getMintPortalsEvent(): MintPortals {
     event.parameters = new Array<ethereum.EventParam>();
     let _from = new ethereum.EventParam();
     _from.value = ethereum.Value.fromAddress(Address.fromString("0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7"));
+    event.parameters.push(_from)
     
     let _to = new ethereum.EventParam();
     _to.value = ethereum.Value.fromAddress(Address.fromString(CONTRACT_ADDRESS));
-    
+    event.parameters.push(_to)
+
     let _tokenId = new ethereum.EventParam();
     _tokenId.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    event.parameters.push(_tokenId)
     
     let _numAavegotchisToPurchase = new ethereum.EventParam();
     _numAavegotchisToPurchase.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    event.parameters.push(_numAavegotchisToPurchase)
     
     let _hauntId = new ethereum.EventParam();
     _hauntId.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    event.parameters.push(_hauntId)
     
     event.address = Address.fromString(CONTRACT_ADDRESS);
 

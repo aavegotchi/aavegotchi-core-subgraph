@@ -1,4 +1,3 @@
-export { runTests } from "./tests/aavegotchi.test";
 export {
   handleBuyPortals,
   handlePortalOpened,
@@ -35,3 +34,5 @@ export {
   handleItemModifiersSet,
   handleWearableSlotPositionsSet,
 } from "./mappings/diamond";
+
+// export { runTests } from "./tests/aavegotchi.test";
