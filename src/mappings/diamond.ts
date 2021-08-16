@@ -370,10 +370,17 @@ export function handleSetAavegotchiName(event: SetAavegotchiName): void {
 
 export function handleUseConsumables(event: UseConsumables): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
-
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-
   gotchi.save();
+
+  // maintain consumed
+  let itemTypes = event.params._itemIds;
+  let quantities = event.params._quantities;
+  for (let i = 0; i < event.params._itemIds.length; i++) {
+    let itemType = getOrCreateItemType(itemTypes[i].toString());
+    itemType.consumed += quantities[i];
+    itemType.save();
+  }
 }
 
 // - event: GrantExperience(uint256[],uint32[])
@@ -522,6 +529,11 @@ export function handleERC721ExecutedListing(
   if (event.params.category.lt(BigInt.fromI32(3))) {
     let portal = getOrCreatePortal(event.params.erc721TokenId.toString());
     portal.timesTraded = portal.timesTraded.plus(BIGINT_ONE);
+
+    // add to historical prices
+    let historicalPrices = portal.historicalPrices;
+    historicalPrices.push(event.params.priceInWei);
+    portal.historicalPrices = historicalPrices;
     portal.save();
   }
 
@@ -532,6 +544,11 @@ export function handleERC721ExecutedListing(
       event
     );
     gotchi.timesTraded = gotchi.timesTraded.plus(BIGINT_ONE);
+
+    // add to historical prices
+    let historicalPrices = gotchi.historicalPrices;
+    historicalPrices.push(event.params.priceInWei);
+    gotchi.historicalPrices = historicalPrices;
     gotchi.save();
   }
 
