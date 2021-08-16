@@ -2,8 +2,9 @@ import { test, assert, clearStore, createMockedFunction } from "matchstick-as/as
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
 import { handleERC721ExecutedListing } from "../../mappings/diamond";
 import { BIGINT_ONE } from "../../utils/constants";
-import { getERC721ListingExecutedEvent, getERC721ListingMock } from "../../utils/helpers/mocks";
+import { getERC721ListingMock } from "../../utils/helpers/mocks";
 import { getOrCreatePortal } from "../../utils/helpers/diamond";
+import { getERC721ListingExecutedEvent } from "../../utils/helpers/events";
 
 export function handleERC721ExecutedListingTests(): void {
 

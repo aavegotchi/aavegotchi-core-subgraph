@@ -378,7 +378,7 @@ export function handleUseConsumables(event: UseConsumables): void {
   let quantities = event.params._quantities;
   for (let i = 0; i < event.params._itemIds.length; i++) {
     let itemType = getOrCreateItemType(itemTypes[i].toString());
-    itemType.consumed += quantities[i];
+    itemType.consumed = itemType.consumed.plus(quantities[i]);
     itemType.save();
   }
 }

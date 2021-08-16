@@ -128,6 +128,7 @@ export function getOrCreateItemType(
 
   if (itemType == null && createIfNotFound) {
     itemType = new ItemType(id);
+    itemType.consumed = BigInt.fromI32(0);
   }
 
   return itemType as ItemType;
