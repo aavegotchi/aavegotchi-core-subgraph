@@ -221,6 +221,7 @@ type ItemType @entity {
   category: Int!
   kinshipBonus: Int
   experienceBonus: BigInt
+  consumed: BigInt
 }
 
 type WearableSet @entity {

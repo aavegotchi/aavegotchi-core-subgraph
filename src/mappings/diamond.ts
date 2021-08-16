@@ -59,8 +59,6 @@ import {
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
 
-// export { runTests } from "../tests/aavegotchi.test";
-
 export function handleBuyPortals(event: BuyPortals): void {
   let contract = AavegotchiDiamond.bind(event.address);
   let buyer = getOrCreateUser(event.params._from.toHexString());
@@ -373,10 +371,17 @@ export function handleSetAavegotchiName(event: SetAavegotchiName): void {
 
 export function handleUseConsumables(event: UseConsumables): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
-
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-
   gotchi.save();
+
+  // maintain consumed
+  let itemTypes = event.params._itemIds;
+  let quantities = event.params._quantities;
+  for (let i = 0; i < event.params._itemIds.length; i++) {
+    let itemType = getOrCreateItemType(itemTypes[i].toString());
+    itemType.consumed += quantities[i];
+    itemType.save();
+  }
 }
 
 // - event: GrantExperience(uint256[],uint32[])
