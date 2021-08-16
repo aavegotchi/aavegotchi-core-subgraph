@@ -62,6 +62,7 @@ export function getOrCreateAavegotchi(
     gotchi.createdAt = event.block.number;
     gotchi.timesTraded = BIGINT_ZERO;
     gotchi.historicalPrices = [];
+    gotchi.lastInteracted = BIGINT_ZERO;
   }
 
   return gotchi as Aavegotchi;

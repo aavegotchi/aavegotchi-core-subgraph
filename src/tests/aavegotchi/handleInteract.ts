@@ -51,13 +51,13 @@ export function handleInteractTests(): void {
             "getAavegotchi(uint256):((uint256,string,address,uint256,uint256,int16[6],int16[6],uint16[16],address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,bool,(uint256,uint256,(string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))[]))"
         )
         .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
-        .returns(getAavegotchiMock(BigInt.fromI32(2)))
+        .reverts()
 
         // execute handler with event
         handleAavegotchiInteract(event);
 
         // assert and clear store
-        assert.fieldEquals("Aavegotchi", "1", "lastInteracted", "1");
+        assert.fieldEquals("Aavegotchi", "1", "lastInteracted", "0");
         clearStore();
     })
 }
