@@ -84,6 +84,8 @@ type Aavegotchi @entity {
   claimedAt: BigInt
 
   timesTraded: BigInt!
+
+  historicalPrices: [BigInt!]
 }
 
 enum PortalStatus {
@@ -116,6 +118,8 @@ type Portal @entity {
   claimedAt: BigInt
 
   timesTraded: BigInt!
+
+  historicalPrices: [BigInt!]
 }
 
 type User @entity {
