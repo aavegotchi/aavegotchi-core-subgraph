@@ -30,6 +30,8 @@ export function getOrCreatePortal(
   if (portal == null && createIfNotFound) {
     portal = new Portal(id);
     portal.timesTraded = BIGINT_ZERO;
+    portal.historicalPrices = [];
+    portal.hauntId = BIGINT_ZERO;
   }
 
   return portal as Portal;
@@ -59,6 +61,7 @@ export function getOrCreateAavegotchi(
     gotchi = new Aavegotchi(id);
     gotchi.createdAt = event.block.number;
     gotchi.timesTraded = BIGINT_ZERO;
+    gotchi.historicalPrices = [];
   }
 
   return gotchi as Aavegotchi;

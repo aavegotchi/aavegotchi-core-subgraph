@@ -32,6 +32,7 @@ export {
   handleAddWearableSet,
   handleUpdateWearableSet,
   handleItemModifiersSet,
-  handleWearableSlotPositionsSet,
-} from // runTests
-"./mappings/diamond";
+  handleWearableSlotPositionsSet, // runTests
+} from "./mappings/diamond";
+
+// export { runTests } from "./tests/aavegotchi.test";
