@@ -1,3 +1,11 @@
+type _Schema_
+  @fulltext(
+    name: "aavegotchiSearch"
+    language: en
+    algorithm: rank
+    include: [{ entity: "Aavegotchi", fields: [{ name: "name" }] }]
+  )
+
 type AavegotchiOption @entity {
   "AavegotchiOption id is composed by <PORTAL-ID>-<GOTCHI-OPTION>"
   id: ID!
