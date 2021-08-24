@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="./styles/graphdoc.css" />
+    <title>Boolean</title>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700" rel="stylesheet"><link type="text/css" rel="stylesheet" href="./assets/code.css" /><link type="text/css" rel="stylesheet" href="./assets/require-by.css" />
+</head>
+<body class="slds-scrollable--y">
+    <nav class="slds-grid slds-grid--vertical slds-col--rule-right">
+        <header class="slds-p-around--medium slds-col slds-shrik slds-grow-none">
+            <button class="slds-button slds-button--icon slds-float--right js-toggle-navigation less-than-medium">
+                <i class="material-icons">close</i>
+            </button>
+                <h3 class="slds-text-heading--medium"><a href="./">GraphQL Schema</a></h3>
+            <div class="slds-p-top--small">
+                <input id="type-search" type="text" placeholder="Search a type" autofocus="" class="slds-input" />
+            </div>
+        </header>
+        <div id="navication-scroll" class="slds-scrollable--y slds-col slds-grow">
+<div class="slds-grid slds-grid--vertical slds-navigation-list--vertical">
+    <h4 class="slds-text-title--caps slds-p-around--medium">Schema</h4>
+    <ul>
+        <li  title="Query">
+            <a href="query.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                Query
+            </a>
+        </li>
+        <li  title="Subscription">
+            <a href="subscription.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                Subscription
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="slds-grid slds-grid--vertical slds-navigation-list--vertical">
+    <h4 class="slds-text-title--caps slds-p-around--medium">Scalars</h4>
+    <ul>
+        <li  title="BigDecimal">
+            <a href="bigdecimal.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                BigDecimal
+            </a>
+        </li>
+        <li  title="BigInt">
+            <a href="bigint.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                BigInt
+            </a>
+        </li>
+        <li class="slds-is-active" title="Boolean">
+            <a href="boolean.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                Boolean
+            </a>
+        </li>
+        <li  title="Bytes">
+            <a href="bytes.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                Bytes
+            </a>
+        </li>
+        <li  title="ID">
+            <a href="id.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                ID
+            </a>
+        </li>
+        <li  title="Int">
+            <a href="int.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                Int
+            </a>
+        </li>
+        <li  title="String">
+            <a href="string.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                String
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="slds-grid slds-grid--vertical slds-navigation-list--vertical">
+    <h4 class="slds-text-title--caps slds-p-around--medium">Enums</h4>
+    <ul>
+        <li  title="Aavegotchi_orderBy">
+            <a href="aavegotchi_orderby.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                Aavegotchi_orderBy
+            </a>
+        </li>
+        <li  title="AavegotchiOption_orderBy">
+            <a href="aavegotchioption_orderby.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                AavegotchiOption_orderBy
+            </a>
+        </li>
+        <li  title="ERC1155Listing_orderBy">
+            <a href="erc1155listing_orderby.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                ERC1155Listing_orderBy
+            </a>
+        </li>
+        <li  title="ERC1155Purchase_orderBy">
+            <a href="erc1155purchase_orderby.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                ERC1155Purchase_orderBy
+            </a>
+        </li>
+        <li  title="ERC721Listing_orderBy">
+            <a href="erc721listing_orderby.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                ERC721Listing_orderBy
+            </a>
+        </li>
+        <li  title="ItemType_orderBy">
+            <a href="itemtype_orderby.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                ItemType_orderBy
+            </a>
+        </li>
+        <li  title="OrderDirection">
+            <a href="orderdirection.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                OrderDirection
+            </a>
+        </li>
+        <li  title="Portal_orderBy">
+            <a href="portal_orderby.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                Portal_orderBy
+            </a>
+        </li>
+        <li  title="PortalStatus">
+            <a href="portalstatus.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                PortalStatus
+            </a>
+        </li>
+        <li  title="Statistic_orderBy">
+            <a href="statistic_orderby.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                Statistic_orderBy
+            </a>
+        </li>
+        <li  title="User_orderBy">
+            <a href="user_orderby.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                User_orderBy
+            </a>
+        </li>
+        <li  title="WearableSet_orderBy">
+            <a href="wearableset_orderby.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                WearableSet_orderBy
+            </a>
+        </li>
+        <li  title="_SubgraphErrorPolicy_">
+            <a href="_subgrapherrorpolicy_.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                _SubgraphErrorPolicy_
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="slds-grid slds-grid--vertical slds-navigation-list--vertical">
+    <h4 class="slds-text-title--caps slds-p-around--medium">Objects</h4>
+    <ul>
+        <li  title="Aavegotchi">
+            <a href="aavegotchi.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                Aavegotchi
+            </a>
+        </li>
+        <li  title="AavegotchiOption">
+            <a href="aavegotchioption.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                AavegotchiOption
+            </a>
+        </li>
+        <li  title="ERC1155Listing">
+            <a href="erc1155listing.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                ERC1155Listing
+            </a>
+        </li>
+        <li  title="ERC1155Purchase">
+            <a href="erc1155purchase.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                ERC1155Purchase
+            </a>
+        </li>
+        <li  title="ERC721Listing">
+            <a href="erc721listing.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                ERC721Listing
+            </a>
+        </li>
+        <li  title="ItemType">
+            <a href="itemtype.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                ItemType
+            </a>
+        </li>
+        <li  title="Portal">
+            <a href="portal.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                Portal
+            </a>
+        </li>
+        <li  title="Statistic">
+            <a href="statistic.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                Statistic
+            </a>
+        </li>
+        <li  title="User">
+            <a href="user.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                User
+            </a>
+        </li>
+        <li  title="WearableSet">
+            <a href="wearableset.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                WearableSet
+            </a>
+        </li>
+        <li  title="_Block_">
+            <a href="_block_.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                _Block_
+            </a>
+        </li>
+        <li  title="_Meta_">
+            <a href="_meta_.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                _Meta_
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="slds-grid slds-grid--vertical slds-navigation-list--vertical">
+    <h4 class="slds-text-title--caps slds-p-around--medium">Input Objects</h4>
+    <ul>
+        <li  title="Aavegotchi_filter">
+            <a href="aavegotchi_filter.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                Aavegotchi_filter
+            </a>
+        </li>
+        <li  title="AavegotchiOption_filter">
+            <a href="aavegotchioption_filter.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                AavegotchiOption_filter
+            </a>
+        </li>
+        <li  title="Block_height">
+            <a href="block_height.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                Block_height
+            </a>
+        </li>
+        <li  title="ERC1155Listing_filter">
+            <a href="erc1155listing_filter.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                ERC1155Listing_filter
+            </a>
+        </li>
+        <li  title="ERC1155Purchase_filter">
+            <a href="erc1155purchase_filter.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                ERC1155Purchase_filter
+            </a>
+        </li>
+        <li  title="ERC721Listing_filter">
+            <a href="erc721listing_filter.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                ERC721Listing_filter
+            </a>
+        </li>
+        <li  title="ItemType_filter">
+            <a href="itemtype_filter.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                ItemType_filter
+            </a>
+        </li>
+        <li  title="Portal_filter">
+            <a href="portal_filter.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                Portal_filter
+            </a>
+        </li>
+        <li  title="Statistic_filter">
+            <a href="statistic_filter.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                Statistic_filter
+            </a>
+        </li>
+        <li  title="User_filter">
+            <a href="user_filter.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                User_filter
+            </a>
+        </li>
+        <li  title="WearableSet_filter">
+            <a href="wearableset_filter.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                WearableSet_filter
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="slds-grid slds-grid--vertical slds-navigation-list--vertical">
+    <h4 class="slds-text-title--caps slds-p-around--medium">Directives</h4>
+    <ul>
+        <li  title="derivedFrom">
+            <a href="derivedfrom.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                derivedFrom
+            </a>
+        </li>
+        <li  title="entity">
+            <a href="entity.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                entity
+            </a>
+        </li>
+        <li  title="subgraphId">
+            <a href="subgraphid.doc.html" class="slds-navigation-list--vertical__action slds-text-link--reset slds-truncate">
+                subgraphId
+            </a>
+        </li>
+    </ul>
+</div>
+        </div>
+    </nav>
+    <main><section class="title slds-theme--inverse">
+    <div class="container slds-grid">
+        <div>
+        <button class="slds-button js-toggle-navigation less-than-medium">
+            <i class="material-icons slds-button__icon slds-button__icon--left">menu</i>
+            <span class="slds-text-title--caps">Types<span>
+        </button>
+        </div>
+        </div>
+    </div>
+    <div class="container">
+        <p class="slds-text-title--caps slds-text-color--weak">SCALAR</p>
+        <h1 class="slds-text-heading--large">Boolean</h1>
+        <div class="slds-text-body--regular"></div>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <h2 id="graphql-schema-definition" class="graphdoc-section__title slds-text-heading--medium slds-m-top--small">
+            <a href="#graphql-schema-definition">
+                <i class="material-icons">link</i>
+            </a>
+            GraphQL Schema definition
+        </h2>
+        <code class="highlight"><ul class="code" style="padding-left:28px"><li><span class="keyword operator ts">scalar</span> <span class="identifier">Boolean</span></li></ul></code>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <h2 id="require-by" class="graphdoc-section__title slds-text-heading--medium slds-m-top--small">
+            <a href="#require-by">
+                <i class="material-icons">link</i>
+            </a>
+            Require by
+        </h2>
+        <ul class="require-by"><li><a href="aavegotchi.doc.html" title="Aavegotchi - ">Aavegotchi<em>null</em></a><li><li><a href="aavegotchi_filter.doc.html" title="Aavegotchi_filter - ">Aavegotchi_filter<em>null</em></a><li><li><a href="erc1155listing.doc.html" title="ERC1155Listing - ">ERC1155Listing<em>null</em></a><li><li><a href="erc1155listing_filter.doc.html" title="ERC1155Listing_filter - ">ERC1155Listing_filter<em>null</em></a><li><li><a href="erc721listing.doc.html" title="ERC721Listing - ">ERC721Listing<em>null</em></a><li><li><a href="erc721listing_filter.doc.html" title="ERC721Listing_filter - ">ERC721Listing_filter<em>null</em></a><li><li><a href="itemtype.doc.html" title="ItemType - ">ItemType<em>null</em></a><li><li><a href="itemtype_filter.doc.html" title="ItemType_filter - ">ItemType_filter<em>null</em></a><li><li><a href="_meta_.doc.html" title="_Meta_ - The type for the top-level _meta field">_Meta_<em>The type for the top-level _meta field</em></a><li></ul>
+    </div>
+</section>
+<footer>
+<div class="container slds-p-around--large">
+    <p class="slds-text-align--right slds-text-title--caps">
+        Generated with <a href="https://github.com/2fd/graphdoc#readme" target="_blank">graphdoc 2.4.0</a>
+    </p>
+</div>
+</footer>
+</main>
+    <script src="./scripts/focus-active.js"></script>
+    <script src="./scripts/filter-types.js"></script>
+    <script src="./scripts/toggle-navigation.js"></script>
+</body>
