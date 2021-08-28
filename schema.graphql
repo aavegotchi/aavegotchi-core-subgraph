@@ -150,6 +150,7 @@ type ERC721Listing @entity {
   baseRarityScore: BigInt
   modifiedRarityScore: BigInt
   equippedWearables: [Int!]
+  blockCreated: BigInt
 }
 
 type ERC1155Listing @entity {
