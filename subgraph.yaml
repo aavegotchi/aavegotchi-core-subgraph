@@ -15,7 +15,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ./src/index.ts
+      file: ./src/mappings/diamond.ts
       entities:
         - User
       abis:
@@ -64,6 +64,8 @@ dataSources:
           handler: handleERC1155ListingCancelled
         - event: ERC1155ListingRemoved(indexed uint256,uint256,uint256)
           handler: handleERC1155ListingRemoved
+        - event: UpdateERC1155Listing(indexed uint256,uint256,uint256,uint256)
+          handler: handleERC1155ListingUpdated
         - event: AddItemType((string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))
           handler: handleAddItemType
         - event: AddWearableSet((string,uint8[],uint16[],int8[5]))
