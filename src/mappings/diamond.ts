@@ -836,8 +836,7 @@ export function handleMintPortals(event: MintPortals): void {
 
 export function handleERC1155ListingUpdated(event: UpdateERC1155Listing): void {
   let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
-  listing.quantity = event.params.quantity;
-  listing.priceInWei = event.params.priceInWei;
+  listing = updateERC1155ListingInfo(listing, event.params.listingId, event)
   listing.save();
 }
 
