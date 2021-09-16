@@ -1,5 +1,5 @@
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { ERC721ExecutedListing, MintPortals } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
+import { ERC721ExecutedListing, ERC721ListingAdd, MintPortals, UpdateERC1155Listing } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { BIGINT_ONE, CONTRACT_ADDRESS } from "../constants";
 
 export function getMintPortalsEvent(): MintPortals {
@@ -73,6 +73,73 @@ export function getERC721ListingExecutedEvent(categoryId: BigInt  = BigInt.fromI
     time.name = "BigInt"
     time.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
     event.parameters.push(time);
+    let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
+    event.address = contractAddress
+    return event;
+}
+
+export function getERC1155ListingUpdateEvent(_listingId: BigInt = BIGINT_ONE): UpdateERC1155Listing {
+    let event = new UpdateERC1155Listing();
+    event.parameters = new Array<ethereum.EventParam>();
+    event.block.number = BIGINT_ONE;
+
+    let listingId = new ethereum.EventParam();
+    listingId.name = "BigInt"
+    listingId.value = ethereum.Value.fromUnsignedBigInt(_listingId)
+    event.parameters.push(listingId);
+
+    let price = new ethereum.EventParam();
+    price.name = "BigInt"
+    price.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    event.parameters.push(price);
+
+
+    let quantity = new ethereum.EventParam();
+    quantity.name = "BigInt"
+    quantity.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    event.parameters.push(quantity);
+
+
+    let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
+    event.address = contractAddress
+    return event;
+}
+
+export function getERC721ListingAddEvent(categoryId: BigInt): ERC721ListingAdd {
+    let event = new ERC721ListingAdd();
+    event.parameters = new Array<ethereum.EventParam>();
+    event.block.number = BIGINT_ONE;
+
+    let listingId = new ethereum.EventParam();
+    listingId.name = "BigInt"
+    listingId.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    event.parameters.push(listingId);
+
+    let seller = new ethereum.EventParam();
+    seller.name = "address"
+    seller.value = ethereum.Value.fromAddress(Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d"))
+    event.parameters.push(seller);
+
+    let erc721TokenAddress = new ethereum.EventParam();
+    erc721TokenAddress.name = "address"
+    erc721TokenAddress.value = ethereum.Value.fromAddress(Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d"))
+    event.parameters.push(erc721TokenAddress);
+
+    let erc721TokenId = new ethereum.EventParam();
+    erc721TokenId.name = "BigInt"
+    erc721TokenId.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    event.parameters.push(erc721TokenId);
+
+    let category = new ethereum.EventParam();
+    category.name = "BigInt"
+    category.value = ethereum.Value.fromUnsignedBigInt(categoryId)
+    event.parameters.push(category);
+    
+    let time = new ethereum.EventParam();
+    time.name = "BigInt"
+    time.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    event.parameters.push(time);
+    
     let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
     event.address = contractAddress
     return event;
