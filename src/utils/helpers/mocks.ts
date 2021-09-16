@@ -1,5 +1,5 @@
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { ERC721ExecutedListing, ERC721ListingAdd } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
+import { ERC721ExecutedListing, ERC721ListingAdd, UpdateERC1155Listing } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { BIGINT_ONE } from "../constants";
 
 let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
@@ -118,6 +118,33 @@ export function getERC721ListingExecutedEvent(categoryId: BigInt): ERC721Execute
     time.name = "BigInt"
     time.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
     event.parameters.push(time);
+    let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
+    event.address = contractAddress
+    return event;
+}
+
+export function getERC1155ListingUpdateEvent(): UpdateERC1155Listing {
+    let event = new UpdateERC1155Listing();
+    event.parameters = new Array<ethereum.EventParam>();
+    event.block.number = BIGINT_ONE;
+
+    let listingId = new ethereum.EventParam();
+    listingId.name = "BigInt"
+    listingId.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    event.parameters.push(listingId);
+
+    let price = new ethereum.EventParam();
+    price.name = "BigInt"
+    price.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    event.parameters.push(price);
+
+
+    let quantity = new ethereum.EventParam();
+    quantity.name = "BigInt"
+    quantity.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    event.parameters.push(quantity);
+
+
     let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
     event.address = contractAddress
     return event;

@@ -32,6 +32,7 @@ import {
   ItemModifiersSet,
   WearableSlotPositionsSet,
   MintPortals,
+  UpdateERC1155Listing,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -833,6 +834,12 @@ export function handleMintPortals(event: MintPortals): void {
   owner.save();
 }
 
+export function handleERC1155ListingUpdated(event: UpdateERC1155Listing): void {
+  let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
+  listing = updateERC1155ListingInfo(listing, event.params.listingId, event)
+  listing.save();
+}
+
 //Upgrades
 
 /*
@@ -847,3 +854,4 @@ export function handleDiamondCut(event: DiamondCut): void {
   diamond.facetAddress;
 }
 */
+// export { runTests } from "../tests/aavegotchi.test";
