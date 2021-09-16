@@ -852,4 +852,4 @@ export function handleDiamondCut(event: DiamondCut): void {
   diamond.facetAddress;
 }
 */
-export { runTests } from "../tests/aavegotchi.test";
+// export { runTests } from "../tests/aavegotchi.test";
