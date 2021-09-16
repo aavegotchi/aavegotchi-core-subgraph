@@ -209,8 +209,7 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
 
 export function handleIncreaseStake(event: IncreaseStake): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
-
-  gotchi.stakedAmount = gotchi.stakedAmount.plus(event.params._stakeAmount);
+  gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
   gotchi.save();
 }
 
@@ -219,9 +218,7 @@ export function handleIncreaseStake(event: IncreaseStake): void {
 
 export function handleDecreaseStake(event: DecreaseStake): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
-
-  gotchi.stakedAmount = gotchi.stakedAmount.minus(event.params._reduceAmount);
-
+  gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
   gotchi.save();
 }
 
@@ -230,11 +227,7 @@ export function handleDecreaseStake(event: DecreaseStake): void {
 
 export function handleSpendSkillpoints(event: SpendSkillpoints): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
-
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-
-  //Then update withSetsNumericTraits
-
   gotchi.save();
 }
 
@@ -361,9 +354,7 @@ export function handleEquipWearables(event: EquipWearables): void {
 
 export function handleSetAavegotchiName(event: SetAavegotchiName): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
-
-  gotchi.name = event.params._newName;
-
+  gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
   gotchi.save();
 }
 
@@ -380,7 +371,7 @@ export function handleUseConsumables(event: UseConsumables): void {
   let quantities = event.params._quantities;
   for (let i = 0; i < event.params._itemIds.length; i++) {
     let itemType = getOrCreateItemType(itemTypes[i].toString());
-    itemType.consumed += quantities[i];
+    itemType.consumed = itemType.consumed.plus(quantities[i]);
     itemType.save();
   }
 }
@@ -423,20 +414,9 @@ export function handleGrantExperience(event: GrantExperience): void {
 
 export function handleExperienceTransfer(event: ExperienceTransfer): void {
   let tokenID = event.params._toTokenId;
-  let xpAmount = event.params.experience;
 
   let gotchi = getOrCreateAavegotchi(tokenID.toString(), event);
-
-  gotchi.experience = gotchi.experience.plus(xpAmount);
-
-  if (gotchi.experience.gt(BigInt.fromI32(490050))) {
-    gotchi.level = BigInt.fromI32(99);
-  } else {
-    //@ts-ignore
-    let level = (Math.sqrt(2 * gotchi.experience.toI32()) / 10) as i32;
-    gotchi.level = BigInt.fromI32(level + 1);
-  }
-
+  gotchi = updateAavegotchiInfo(gotchi, tokenID, event)
   gotchi.save();
 }
 
@@ -446,7 +426,6 @@ export function handleExperienceTransfer(event: ExperienceTransfer): void {
 export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-
   gotchi.save();
 }
 
