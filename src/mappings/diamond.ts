@@ -361,9 +361,7 @@ export function handleEquipWearables(event: EquipWearables): void {
 
 export function handleSetAavegotchiName(event: SetAavegotchiName): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
-
-  gotchi.name = event.params._newName;
-
+  gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
   gotchi.save();
 }
 
