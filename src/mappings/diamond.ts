@@ -493,7 +493,6 @@ export function handleTransferBatch(event: TransferBatch): void {}
 
 export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
-  listing.blockCreated = event.block.number;
   listing = updateERC721ListingInfo(listing, event.params.listingId, event);
 
   if (listing.category == BigInt.fromI32(3)) {

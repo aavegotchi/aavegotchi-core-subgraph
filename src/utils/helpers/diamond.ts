@@ -88,6 +88,8 @@ export function getOrCreateERC721Listing(
 
   if (listing == null && createIfNotFound) {
     listing = new ERC721Listing(id);
+    listing.blockCreated = BIGINT_ZERO;
+    listing.timeCreated = BIGINT_ZERO;
   }
 
   return listing as ERC721Listing;
@@ -178,6 +180,10 @@ export function updateERC721ListingInfo(
     listing.timePurchased = listingInfo.timePurchased;
     listing.priceInWei = listingInfo.priceInWei;
     listing.cancelled = listingInfo.cancelled;
+
+    if(listing.blockCreated.equals(BIGINT_ZERO)) {
+      listing.blockCreated = event.block.number;
+    }
 
     if (listing.category.toI32() <= 2) {
       let portal = getOrCreatePortal(
