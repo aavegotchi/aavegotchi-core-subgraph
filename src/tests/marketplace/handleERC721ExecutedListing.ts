@@ -7,7 +7,7 @@ import { getOrCreatePortal } from "../../utils/helpers/diamond";
 
 export function handleERC721ExecutedListingTests(): void {
 
-    test("handleERC721ExecutedListing - should add price to historicalPrices of aavegotchi if listing is aavegotchi", () => {
+    test("handleERC721Listing - should add price to historicalPrices of aavegotchi if listing is aavegotchi", () => {
         // prepare event
         let event = getERC721ListingExecutedEvent(BigInt.fromI32(3))
 
@@ -28,7 +28,7 @@ export function handleERC721ExecutedListingTests(): void {
         clearStore();
     })
 
-    test("handleERC721ExecutedListing - should add price to historicalPrices of portal if listing is portal", () => {
+    test("handleERC721Listing - should add price to historicalPrices of portal if listing is portal", () => {
         // prepare event
         let event = getERC721ListingExecutedEvent(BigInt.fromI32(1))
         let portal = getOrCreatePortal("1", true);
@@ -51,7 +51,7 @@ export function handleERC721ExecutedListingTests(): void {
         clearStore();
     })
 
-    test("handleERC721ExecutedListing - should set blockCreated to block number when listing gets created",  () => {
+    test("handleERC721Listing - should set blockCreated to block number when listing gets created",  () => {
                // prepare event
         let event = getERC721ListingAddEvent(BigInt.fromI32(3))
 
@@ -68,7 +68,7 @@ export function handleERC721ExecutedListingTests(): void {
         clearStore();
     })
 
-    test("handleERC721ExecutedListing - reorg: should set block created if cancel events happens before add",  () => {
+    test("handleERC721Listing - reorg: should set block created if cancel events happens before add",  () => {
         // prepare event
         let event = getERC721ListingCancelledEvent(BigInt.fromI32(3))
 
