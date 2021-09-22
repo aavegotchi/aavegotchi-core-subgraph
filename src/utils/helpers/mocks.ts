@@ -1,5 +1,5 @@
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { ERC721ExecutedListing, ERC721ListingAdd, UpdateERC1155Listing } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
+import { ERC721ExecutedListing, ERC721ListingAdd, ERC721ListingCancelled, UpdateERC1155Listing } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { BIGINT_ONE } from "../constants";
 
 let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
@@ -174,6 +174,32 @@ export function getERC721ListingAddEvent(categoryId: BigInt): ERC721ListingAdd {
     erc721TokenId.name = "BigInt"
     erc721TokenId.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
     event.parameters.push(erc721TokenId);
+
+    let category = new ethereum.EventParam();
+    category.name = "BigInt"
+    category.value = ethereum.Value.fromUnsignedBigInt(categoryId)
+    event.parameters.push(category);
+    
+    let time = new ethereum.EventParam();
+    time.name = "BigInt"
+    time.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    event.parameters.push(time);
+    
+    let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
+    event.address = contractAddress
+    return event;
+}
+
+
+export function getERC721ListingCancelledEvent(categoryId: BigInt): ERC721ListingCancelled {
+    let event = new ERC721ListingCancelled();
+    event.parameters = new Array<ethereum.EventParam>();
+    event.block.number = BIGINT_ONE;
+
+    let listingId = new ethereum.EventParam();
+    listingId.name = "BigInt"
+    listingId.value = ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    event.parameters.push(listingId);
 
     let category = new ethereum.EventParam();
     category.name = "BigInt"
