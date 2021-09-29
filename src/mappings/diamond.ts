@@ -57,7 +57,6 @@ import {
   PORTAL_STATUS_OPENED,
   PORTAL_STATUS_CLAIMED,
   BIGINT_ZERO,
-  STATUS_AAVEGOTCHI,
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
 
