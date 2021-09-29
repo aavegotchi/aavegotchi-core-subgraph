@@ -33,6 +33,7 @@ import {
   WearableSlotPositionsSet,
   MintPortals,
   UpdateERC1155Listing,
+  RemoveExperience,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -412,11 +413,22 @@ export function handleGrantExperience(event: GrantExperience): void {
   }
 }
 
+export function handleRemoveExperience(event: RemoveExperience): void {
+  let ids = event.params._tokenIds;
+  for (let i = 0; i < ids.length; i++) {
+    let tokenID = ids[i];
+    let gotchi = getOrCreateAavegotchi(tokenID.toString(), event);
+    gotchi = updateAavegotchiInfo(gotchi, tokenID, event);
+
+    gotchi.save();
+  }
+}
+
 export function handleExperienceTransfer(event: ExperienceTransfer): void {
   let tokenID = event.params._toTokenId;
 
   let gotchi = getOrCreateAavegotchi(tokenID.toString(), event);
-  gotchi = updateAavegotchiInfo(gotchi, tokenID, event)
+  gotchi = updateAavegotchiInfo(gotchi, tokenID, event);
   gotchi.save();
 }
 
@@ -814,7 +826,7 @@ export function handleMintPortals(event: MintPortals): void {
 
 export function handleERC1155ListingUpdated(event: UpdateERC1155Listing): void {
   let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
-  listing = updateERC1155ListingInfo(listing, event.params.listingId, event)
+  listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
   listing.save();
 }
 

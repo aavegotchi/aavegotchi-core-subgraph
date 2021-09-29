@@ -1,5 +1,30 @@
 [
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "_approved",
+        "type": "bool"
+      }
+    ],
+    "name": "PetOperatorApprovalForAll",
+    "type": "event"
+  },
+  {
     "inputs": [
       { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
     ],
@@ -493,6 +518,18 @@
     "type": "function"
   },
   {
+    "inputs": [
+      { "internalType": "address", "name": "_owner", "type": "address" },
+      { "internalType": "address", "name": "_operator", "type": "address" }
+    ],
+    "name": "isPetOperatorForAll",
+    "outputs": [
+      { "internalType": "bool", "name": "approved_", "type": "bool" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "name",
     "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
@@ -508,6 +545,18 @@
       { "internalType": "address", "name": "owner_", "type": "address" }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_from", "type": "address" },
+      { "internalType": "address", "name": "_to", "type": "address" },
+      { "internalType": "uint256[]", "name": "_tokenIds", "type": "uint256[]" },
+      { "internalType": "bytes", "name": "_data", "type": "bytes" }
+    ],
+    "name": "safeBatchTransferFrom",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -539,6 +588,16 @@
       { "internalType": "bool", "name": "_approved", "type": "bool" }
     ],
     "name": "setApprovalForAll",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_operator", "type": "address" },
+      { "internalType": "bool", "name": "_approved", "type": "bool" }
+    ],
+    "name": "setPetOperatorForAll",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -975,6 +1034,33 @@
   },
   {
     "inputs": [
+      { "internalType": "address", "name": "_owner", "type": "address" },
+      { "internalType": "uint256", "name": "_count", "type": "uint256" },
+      { "internalType": "uint256", "name": "_skip", "type": "uint256" },
+      { "internalType": "bool", "name": "all", "type": "bool" }
+    ],
+    "name": "tokenIdsWithKinship",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+          { "internalType": "uint256", "name": "kinship", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "lastInteracted",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct AavegotchiGameFacet.TokenIdsWithKinship[]",
+        "name": "tokenIdsWithKinship_",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "uint256", "name": "_experience", "type": "uint256" }
     ],
     "name": "xpUntilNextLevel",
@@ -1203,6 +1289,7 @@
   },
   {
     "inputs": [
+      { "internalType": "uint256", "name": "_hauntId", "type": "uint256" },
       { "internalType": "uint256", "name": "_collateralId", "type": "uint256" }
     ],
     "name": "collateralInfo",
@@ -1263,7 +1350,9 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      { "internalType": "uint256", "name": "_hauntId", "type": "uint256" }
+    ],
     "name": "collaterals",
     "outputs": [
       {
@@ -1297,6 +1386,17 @@
   },
   {
     "inputs": [],
+    "name": "getAllCollateralTypes",
+    "outputs": [
+      { "internalType": "address[]", "name": "", "type": "address[]" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_hauntId", "type": "uint256" }
+    ],
     "name": "getCollateralInfo",
     "outputs": [
       {
@@ -1622,17 +1722,36 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "previousGameManager",
+        "name": "gameManager_",
         "type": "address"
       },
       {
         "indexed": true,
+        "internalType": "uint256",
+        "name": "limit_",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "refreshTime_",
+        "type": "uint256"
+      }
+    ],
+    "name": "GameManagerAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "address",
-        "name": "newGameManager",
+        "name": "gameManager_",
         "type": "address"
       }
     ],
-    "name": "GameManagerTransferred",
+    "name": "GameManagerRemoved",
     "type": "event"
   },
   {
@@ -1658,6 +1777,57 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newItemManager_",
+        "type": "address"
+      }
+    ],
+    "name": "ItemManagerAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "itemManager_",
+        "type": "address"
+      }
+    ],
+    "name": "ItemManagerRemoved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_wearableId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "int8[6]",
+        "name": "_traitModifiers",
+        "type": "int8[6]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "_rarityScoreModifier",
+        "type": "uint8"
+      }
+    ],
+    "name": "ItemModifiersSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": false,
         "internalType": "uint256[]",
         "name": "_itemIds",
@@ -1671,6 +1841,25 @@
       }
     ],
     "name": "ItemTypeMaxQuantity",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "_tokenIds",
+        "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "_xpValues",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "RemoveExperience",
     "type": "event"
   },
   {
@@ -1730,7 +1919,27 @@
     "type": "event"
   },
   {
+    "anonymous": false,
     "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_wearableId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool[16]",
+        "name": "_slotPositions",
+        "type": "bool[16]"
+      }
+    ],
+    "name": "WearableSlotPositionsSet",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_hauntId", "type": "uint256" },
       {
         "components": [
           {
@@ -1784,6 +1993,33 @@
       }
     ],
     "name": "addCollateralTypes",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "_newGameManagers",
+        "type": "address[]"
+      },
+      { "internalType": "uint256[]", "name": "_limits", "type": "uint256[]" }
+    ],
+    "name": "addGameManagers",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "_newItemManagers",
+        "type": "address[]"
+      }
+    ],
+    "name": "addItemManagers",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -2001,9 +2237,143 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "gameManager",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint24",
+            "name": "_hauntMaxSize",
+            "type": "uint24"
+          },
+          {
+            "internalType": "uint96",
+            "name": "_portalPrice",
+            "type": "uint96"
+          },
+          { "internalType": "bytes3", "name": "_bodyColor", "type": "bytes3" },
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "collateralType",
+                "type": "address"
+              },
+              {
+                "components": [
+                  {
+                    "internalType": "int16[6]",
+                    "name": "modifiers",
+                    "type": "int16[6]"
+                  },
+                  {
+                    "internalType": "bytes3",
+                    "name": "primaryColor",
+                    "type": "bytes3"
+                  },
+                  {
+                    "internalType": "bytes3",
+                    "name": "secondaryColor",
+                    "type": "bytes3"
+                  },
+                  {
+                    "internalType": "bytes3",
+                    "name": "cheekColor",
+                    "type": "bytes3"
+                  },
+                  { "internalType": "uint8", "name": "svgId", "type": "uint8" },
+                  {
+                    "internalType": "uint8",
+                    "name": "eyeShapeSvgId",
+                    "type": "uint8"
+                  },
+                  {
+                    "internalType": "uint16",
+                    "name": "conversionRate",
+                    "type": "uint16"
+                  },
+                  { "internalType": "bool", "name": "delisted", "type": "bool" }
+                ],
+                "internalType": "struct AavegotchiCollateralTypeInfo",
+                "name": "collateralTypeInfo",
+                "type": "tuple"
+              }
+            ],
+            "internalType": "struct AavegotchiCollateralTypeIO[]",
+            "name": "_collateralTypes",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "string",
+            "name": "_collateralSvg",
+            "type": "string"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "svgType",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256[]",
+                "name": "sizes",
+                "type": "uint256[]"
+              }
+            ],
+            "internalType": "struct LibSvg.SvgTypeAndSizes[]",
+            "name": "_collateralTypesAndSizes",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "string",
+            "name": "_eyeShapeSvg",
+            "type": "string"
+          },
+          {
+            "components": [
+              {
+                "internalType": "bytes32",
+                "name": "svgType",
+                "type": "bytes32"
+              },
+              {
+                "internalType": "uint256[]",
+                "name": "sizes",
+                "type": "uint256[]"
+              }
+            ],
+            "internalType": "struct LibSvg.SvgTypeAndSizes[]",
+            "name": "_eyeShapeTypesAndSizes",
+            "type": "tuple[]"
+          }
+        ],
+        "internalType": "struct DAOFacet.CreateHauntPayload",
+        "name": "_payload",
+        "type": "tuple"
+      }
+    ],
+    "name": "createHauntWithPayload",
+    "outputs": [
+      { "internalType": "uint256", "name": "hauntId_", "type": "uint256" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_manager", "type": "address" }
+    ],
+    "name": "gameManagerBalance",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_manager", "type": "address" }
+    ],
+    "name": "gameManagerRefreshTime",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -2019,6 +2389,15 @@
   },
   {
     "inputs": [
+      { "internalType": "address", "name": "_manager", "type": "address" }
+    ],
+    "name": "isGameManager",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "address", "name": "_to", "type": "address" },
       { "internalType": "uint256[]", "name": "_itemIds", "type": "uint256[]" },
       {
@@ -2028,6 +2407,42 @@
       }
     ],
     "name": "mintItems",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256[]", "name": "_tokenIds", "type": "uint256[]" },
+      { "internalType": "uint256[]", "name": "_xpValues", "type": "uint256[]" }
+    ],
+    "name": "removeExperience",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "_gameManagers",
+        "type": "address[]"
+      }
+    ],
+    "name": "removeGameManagers",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "_itemManagers",
+        "type": "address[]"
+      }
+    ],
+    "name": "removeItemManagers",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -2048,9 +2463,33 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_gameManager", "type": "address" }
+      { "internalType": "uint256", "name": "_wearableId", "type": "uint256" },
+      {
+        "internalType": "int8[6]",
+        "name": "_traitModifiers",
+        "type": "int8[6]"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_rarityScoreModifier",
+        "type": "uint8"
+      }
     ],
-    "name": "setGameManager",
+    "name": "setItemTraitModifiersAndRarityModifier",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_wearableId", "type": "uint256" },
+      {
+        "internalType": "bool[16]",
+        "name": "_slotPositions",
+        "type": "bool[16]"
+      }
+    ],
+    "name": "setWearableSlotPositions",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -3907,6 +4346,150 @@
         "type": "uint256"
       },
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_erc20Contract",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_depositAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Erc20Deposited",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_erc20Contract",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_transferAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "TransferEscrow",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256[]", "name": "_tokenIds", "type": "uint256[]" },
+      {
+        "internalType": "address[]",
+        "name": "_erc20Contracts",
+        "type": "address[]"
+      },
+      { "internalType": "uint256[]", "name": "_values", "type": "uint256[]" }
+    ],
+    "name": "batchDepositERC20",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256[]", "name": "_tokenIds", "type": "uint256[]" },
+      { "internalType": "uint256[]", "name": "_values", "type": "uint256[]" }
+    ],
+    "name": "batchDepositGHST",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" },
+      {
+        "internalType": "address",
+        "name": "_erc20Contract",
+        "type": "address"
+      },
+      { "internalType": "uint256", "name": "_value", "type": "uint256" }
+    ],
+    "name": "depositERC20",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" },
+      { "internalType": "address", "name": "_erc20Contract", "type": "address" }
+    ],
+    "name": "escrowBalance",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" },
+      {
+        "internalType": "address",
+        "name": "_erc20Contract",
+        "type": "address"
+      },
+      { "internalType": "address", "name": "_recipient", "type": "address" },
+      {
+        "internalType": "uint256",
+        "name": "_transferAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "transferEscrow",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
         "indexed": false,
         "internalType": "uint16[16]",
         "name": "_oldWearables",
@@ -4024,7 +4607,7 @@
       { "internalType": "uint256", "name": "_tokenId", "type": "uint256" },
       {
         "internalType": "uint16[16]",
-        "name": "_equippedWearables",
+        "name": "_wearablesToEquip",
         "type": "uint16[16]"
       }
     ],
@@ -4563,20 +5146,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      { "internalType": "uint256", "name": "_wearableId", "type": "uint256" },
-      {
-        "internalType": "bool[16]",
-        "name": "_slotPositions",
-        "type": "bool[16]"
-      }
-    ],
-    "name": "setWearableSlotPositions",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "totalWearableSets",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
@@ -4605,6 +5174,7 @@
     "stateMutability": "nonpayable",
     "type": "function"
   },
+
   {
     "inputs": [
       { "internalType": "address", "name": "_fromContract", "type": "address" },
@@ -4641,6 +5211,29 @@
       { "internalType": "uint256[]", "name": "_values", "type": "uint256[]" }
     ],
     "name": "batchTransferToParent",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_to", "type": "address" },
+      { "internalType": "uint256[]", "name": "_itemIds", "type": "uint256[]" },
+      { "internalType": "uint256[]", "name": "_values", "type": "uint256[]" }
+    ],
+    "name": "extractItemsFromDiamond",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_to", "type": "address" },
+      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" },
+      { "internalType": "uint256[]", "name": "_itemIds", "type": "uint256[]" },
+      { "internalType": "uint256[]", "name": "_values", "type": "uint256[]" }
+    ],
+    "name": "extractItemsFromSacrificedGotchi",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -4823,7 +5416,6 @@
     "name": "BuyPortals",
     "type": "event"
   },
-
   {
     "anonymous": false,
     "inputs": [
@@ -4861,18 +5453,44 @@
     "name": "Xingyun",
     "type": "event"
   },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_to", "type": "address" },
-      { "internalType": "uint256", "name": "_ghst", "type": "uint256" },
-      { "internalType": "bytes32", "name": "_hash", "type": "bytes32" }
-    ],
-    "name": "xingyun",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
 
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_numAavegotchisToPurchase",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_hauntId",
+        "type": "uint256"
+      }
+    ],
+    "name": "MintPortals",
+    "type": "event"
+  },
   {
     "anonymous": false,
     "inputs": [
@@ -4991,6 +5609,16 @@
   {
     "inputs": [
       { "internalType": "address", "name": "_to", "type": "address" },
+      { "internalType": "uint256", "name": "_amount", "type": "uint256" }
+    ],
+    "name": "mintPortals",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_to", "type": "address" },
       { "internalType": "uint256[]", "name": "_itemIds", "type": "uint256[]" },
       {
         "internalType": "uint256[]",
@@ -5081,6 +5709,30 @@
   },
   {
     "inputs": [
+      { "internalType": "uint256", "name": "_hauntId", "type": "uint256" },
+      {
+        "internalType": "address",
+        "name": "_collateralType",
+        "type": "address"
+      },
+      {
+        "internalType": "int16[6]",
+        "name": "_numericTraits",
+        "type": "int16[6]"
+      },
+      {
+        "internalType": "uint16[16]",
+        "name": "equippedWearables",
+        "type": "uint16[16]"
+      }
+    ],
+    "name": "previewAavegotchi",
+    "outputs": [{ "internalType": "string", "name": "ag_", "type": "string" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "uint256[]", "name": "_itemIds", "type": "uint256[]" },
       {
         "components": [
@@ -5149,6 +5801,83 @@
       }
     ],
     "name": "updateSvg",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+    ],
+    "name": "getAavegotchiSideSvgs",
+    "outputs": [
+      { "internalType": "string[]", "name": "ag_", "type": "string[]" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_itemId", "type": "uint256" }
+    ],
+    "name": "getItemSvgs",
+    "outputs": [
+      { "internalType": "string[]", "name": "svg_", "type": "string[]" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_hauntId", "type": "uint256" },
+      {
+        "internalType": "address",
+        "name": "_collateralType",
+        "type": "address"
+      },
+      {
+        "internalType": "int16[6]",
+        "name": "_numericTraits",
+        "type": "int16[6]"
+      },
+      {
+        "internalType": "uint16[16]",
+        "name": "equippedWearables",
+        "type": "uint16[16]"
+      }
+    ],
+    "name": "previewSideAavegotchi",
+    "outputs": [
+      { "internalType": "string[]", "name": "ag_", "type": "string[]" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "itemId", "type": "uint256" },
+          { "internalType": "string", "name": "side", "type": "string" },
+          {
+            "components": [
+              { "internalType": "uint8", "name": "x", "type": "uint8" },
+              { "internalType": "uint8", "name": "y", "type": "uint8" },
+              { "internalType": "uint8", "name": "width", "type": "uint8" },
+              { "internalType": "uint8", "name": "height", "type": "uint8" }
+            ],
+            "internalType": "struct Dimensions",
+            "name": "dimensions",
+            "type": "tuple"
+          }
+        ],
+        "internalType": "struct SvgViewsFacet.SideViewDimensionsArgs[]",
+        "name": "_sideViewDimensions",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "setSideViewDimensions",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -5821,87 +6550,6 @@
       }
     ],
     "name": "Transfer",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_wearableId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "int8[6]",
-        "name": "_traitModifiers",
-        "type": "int8[6]"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint8",
-        "name": "_rarityScoreModifier",
-        "type": "uint8"
-      }
-    ],
-    "name": "ItemModifiersSet",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_wearableId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool[16]",
-        "name": "_slotPositions",
-        "type": "bool[16]"
-      }
-    ],
-    "name": "WearableSlotPositionsSet",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "_from",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "_to",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_numAavegotchisToPurchase",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_hauntId",
-        "type": "uint256"
-      }
-    ],
-    "name": "MintPortals",
     "type": "event"
   }
 ]
