@@ -487,8 +487,10 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
 
   if (listing.category == BigInt.fromI32(3)) {
     listing.gotchi = event.params.erc721TokenId.toString();
-  } else {
+  } else if (listing.category.lt(BigInt.fromI32(3))) {
     listing.portal = event.params.erc721TokenId.toString();
+  } else {
+    //handle external contracts
   }
 
   listing.save();
