@@ -153,10 +153,14 @@ type ERC721Listing @entity {
   equippedWearables: [Int!]
   blockCreated: BigInt!
 
-  fudBoost: BigInt # boost for parcels
-  fomoBoost: BigInt # boost for parcels
-  alphaBoost: BigInt # boost for parcels
-  kekBoost: BigInt # boost for parcels
+  fudBoost: BigInt # boost of parcels
+  fomoBoost: BigInt # boost of parcels
+  alphaBoost: BigInt # boost of parcels
+  kekBoost: BigInt # boost of parcels
+  district: BigInt # district of parcel
+  coordinateX: BigInt # coordinate x of parcel
+  coordinateY: BigInt # coordinate y of parcel
+  size: BigInt # size of parcel
 }
 
 type ERC1155Listing @entity {

@@ -502,6 +502,12 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
     listing.fomoBoost = parcel.fomoBoost;
     listing.alphaBoost = parcel.alphaBoost;
     listing.kekBoost = parcel.kekBoost;
+
+    listing.district = parcel.district;
+    listing.size = parcel.size;
+
+    listing.coordinateX = parcel.coordinateX;
+    listing.coordinateY = parcel.coordinateY;
   } else {
     //handle external contracts
   }
