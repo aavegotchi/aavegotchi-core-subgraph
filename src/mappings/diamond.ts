@@ -104,18 +104,19 @@ export function handleXingyun(event: Xingyun): void {
   let baseId = event.params._tokenId;
 
   for (let i = 0; i < event.params._numAavegotchisToPurchase.toI32(); i++) {
-    let id = baseId.plus(BigInt.fromI32(i));
-    let portal = getOrCreatePortal(id.toString());
+    let portal = getOrCreatePortal(baseId.toString());
 
     portal.hauntId = BIGINT_ONE;
     portal.status = PORTAL_STATUS_BOUGHT;
-    portal.gotchiId = event.params._tokenId;
+    portal.gotchiId = baseId;
     portal.boughtAt = event.block.number;
     portal.owner = owner.id;
     portal.buyer = buyer.id;
     portal.timesTraded = BIGINT_ZERO;
 
     portal.save();
+
+    baseId = baseId.plus(BIGINT_ONE)
   }
 
   stats.portalsBought = stats.portalsBought.plus(
@@ -126,9 +127,6 @@ export function handleXingyun(event: Xingyun): void {
   buyer.save();
   owner.save();
 }
-
-// - event: PortalOpened(indexed uint256)
-//   handler: handlePortalOpened
 
 //@ts-ignore
 function calculateBaseRarityScore(numericTraits: Array<i32>): i32 {
@@ -144,6 +142,8 @@ function calculateBaseRarityScore(numericTraits: Array<i32>): i32 {
   return rarityScore;
 }
 
+// - event: PortalOpened(indexed uint256)
+//   handler: handlePortalOpened
 export function handlePortalOpened(event: PortalOpened): void {
   let contract = AavegotchiDiamond.bind(event.address);
   let portal = getOrCreatePortal(event.params.tokenId.toString());
@@ -800,20 +800,19 @@ export function handleMintPortals(event: MintPortals): void {
   let stats = getStatisticEntity();
 
   let baseId = event.params._tokenId;
-
   for (let i = 0; i < event.params._numAavegotchisToPurchase.toI32(); i++) {
-    let id = baseId.plus(BigInt.fromI32(i));
-    let portal = getOrCreatePortal(id.toString());
+    let portal = getOrCreatePortal(baseId.toString());
 
     portal.hauntId = event.params._hauntId;
     portal.status = PORTAL_STATUS_BOUGHT;
-    portal.gotchiId = event.params._tokenId;
+    portal.gotchiId = baseId;
     portal.boughtAt = event.block.number;
     portal.owner = owner.id;
     portal.buyer = buyer.id;
     portal.timesTraded = BIGINT_ZERO;
 
     portal.save();
+    baseId = baseId.plus(BIGINT_ONE);
   }
 
   stats.portalsBought = stats.portalsBought.plus(
