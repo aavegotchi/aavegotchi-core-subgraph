@@ -21,6 +21,8 @@ dataSources:
       abis:
         - name: AavegotchiDiamond
           file: ./abis/AavegotchiDiamond.json
+        - name: RealmDiamond
+          file: ./abis/RealmDiamond.json
       eventHandlers:
         - event: BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
           handler: handleBuyPortals
@@ -149,3 +151,28 @@ dataSources:
   # - WithdrawnItems(indexed address,uint256[],uint256[])
   # - Xingyun(indexed address,indexed address,uint256,uint256,uint256)
   # -
+  - kind: ethereum/contract
+    name: RealmDiamond
+    network: matic
+    source:
+      address: "0x1D0360BaC7299C86Ec8E99d0c1C9A95FEfaF2a11"
+      abi: RealmDiamond
+      startBlock: 20667840
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - MintParcel
+        - Transfer
+      abis:
+        - name: RealmDiamond
+          file: ./abis/RealmDiamond.json
+      eventHandlers:
+        - event: MintParcel(indexed address,indexed uint256)
+          handler: handleMintParcel
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransferParcel
+        - event: ResyncParcel(uint256)
+          handler: handleResyncParcel
+      file: ./src/mappings/diamond.ts

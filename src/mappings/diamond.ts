@@ -50,6 +50,7 @@ import {
   getOrCreateWearableSet,
   getOrCreateERC1155Purchase,
   updateERC1155PurchaseInfo,
+  getOrCreateParcel,
 } from "../utils/helpers/diamond";
 import {
   BIGINT_ONE,
@@ -58,7 +59,11 @@ import {
   PORTAL_STATUS_CLAIMED,
   BIGINT_ZERO,
 } from "../utils/constants";
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { Address, BigInt, log } from "@graphprotocol/graph-ts";
+
+import { Parcel } from "../../generated/schema";
+import { RealmDiamond, MintParcel, ResyncParcel } from "../../generated/RealmDiamond/RealmDiamond";
+
 
 export function handleBuyPortals(event: BuyPortals): void {
   let contract = AavegotchiDiamond.bind(event.address);
@@ -489,6 +494,21 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
     listing.gotchi = event.params.erc721TokenId.toString();
   } else if (listing.category.lt(BigInt.fromI32(3))) {
     listing.portal = event.params.erc721TokenId.toString();
+  } else if (listing.category == BigInt.fromI32(4)) {
+    listing.parcel = event.params.erc721TokenId.toString();
+    
+    let parcel = Parcel.load(event.params.erc721TokenId.toString());
+    listing.fudBoost = parcel.fudBoost;
+    listing.fomoBoost = parcel.fomoBoost;
+    listing.alphaBoost = parcel.alphaBoost;
+    listing.kekBoost = parcel.kekBoost;
+
+    listing.district = parcel.district;
+    listing.size = parcel.size;
+
+    listing.coordinateX = parcel.coordinateX;
+    listing.coordinateY = parcel.coordinateY;
+    listing.parcelHash = parcel.parcelHash
   } else {
     //handle external contracts
   }
@@ -544,6 +564,32 @@ export function handleERC721ExecutedListing(
     historicalPrices.push(event.params.priceInWei);
     gotchi.historicalPrices = historicalPrices;
     gotchi.save();
+  }
+
+  else if (event.params.category == BigInt.fromI32(4)) {
+    let listing = getOrCreateERC721Listing(event.params.listingId.toString());
+    listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+
+    listing.buyer = event.params.buyer;
+    listing.timePurchased = event.params.time;
+    listing.save();
+
+    //Parcel -- update number of times traded
+
+    let parcel = getOrCreateParcel(
+      event.params.erc721TokenId,
+      event.params.buyer,
+      Address.fromHexString(
+        event.params.erc721TokenAddress.toHexString()
+      ) as Address
+    );
+    parcel.timesTraded = parcel.timesTraded.plus(BIGINT_ONE);
+
+    // add to historical prices
+    let historicalPrices = parcel.historicalPrices;
+    historicalPrices.push(event.params.priceInWei);
+    parcel.historicalPrices = historicalPrices;
+    parcel.save();
   }
 
   let stats = getStatisticEntity();
@@ -845,3 +891,52 @@ export function handleDiamondCut(event: DiamondCut): void {
 }
 */
 // export { runTests } from "../tests/aavegotchi.test";
+
+// Realm
+export function handleResyncParcel(event: ResyncParcel): void {
+  let parcel = Parcel.load(event.params._tokenId.toString());
+
+  let contract = RealmDiamond.bind(event.address);
+  let parcelInfo = contract.try_getParcelInfo(event.params._tokenId);
+
+  if (!parcelInfo.reverted) {
+    let parcelMetadata = parcelInfo.value;
+    parcel.parcelId = parcelMetadata.parcelId;
+    parcel.tokenId = event.params._tokenId;
+    parcel.coordinateX = parcelMetadata.coordinateX;
+    parcel.coordinateY = parcelMetadata.coordinateY;
+    parcel.district = parcelMetadata.district;
+    parcel.parcelHash = parcelMetadata.parcelAddress;
+
+    parcel.size = parcelMetadata.size;
+
+    let boostArray = parcelMetadata.boost;
+    parcel.fudBoost = boostArray[0];
+    parcel.fomoBoost = boostArray[1];
+    parcel.alphaBoost = boostArray[2];
+    parcel.kekBoost = boostArray[3];
+  }
+
+  //update auction too
+
+  // Entities can be written to the store with `.save()`
+  parcel.save();
+}
+
+export function handleTransferParcel(event: Transfer): void {
+  let user = getOrCreateUser(event.params._to.toHexString());
+  user.save();
+
+  let parcel = Parcel.load(event.params._tokenId.toString());
+  parcel.owner = user.id;
+  parcel.save();
+}
+
+export function handleMintParcel(event: MintParcel): void {
+  let parcel = getOrCreateParcel(
+    event.params._tokenId,
+    event.params._owner,
+    event.address
+  );
+  parcel.save();
+}

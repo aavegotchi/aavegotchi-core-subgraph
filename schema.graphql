@@ -130,6 +130,8 @@ type User @entity {
   gotchisOwned: [Aavegotchi!]! @derivedFrom(field: "owner")
 
   portalsOwned: [Portal!]! @derivedFrom(field: "owner")
+
+  parcelsOwned: [Parcel!]! @derivedFrom(field: "owner")
 }
 
 type ERC721Listing @entity {
@@ -145,12 +147,23 @@ type ERC721Listing @entity {
   priceInWei: BigInt! # How much the listing is (in GHST)
   gotchi: Aavegotchi # If the listing is for a gotchi, this will be populated
   portal: Portal # If the listing is for a portal, this will be populated
+  parcel: Parcel # if the listing is for a parcel, this will be populated
   hauntId: BigInt
   kinship: BigInt
   baseRarityScore: BigInt
   modifiedRarityScore: BigInt
   equippedWearables: [Int!]
   blockCreated: BigInt!
+
+  fudBoost: BigInt # boost of parcels
+  fomoBoost: BigInt # boost of parcels
+  alphaBoost: BigInt # boost of parcels
+  kekBoost: BigInt # boost of parcels
+  district: BigInt # district of parcel
+  coordinateX: BigInt # coordinate x of parcel
+  coordinateY: BigInt # coordinate y of parcel
+  size: BigInt # size of parcel
+  parcelHash: String # address/hash of parcel
 }
 
 type ERC1155Listing @entity {
@@ -235,6 +248,28 @@ type WearableSet @entity {
   allowedCollaterals: [Int!]
   wearableIds: [Int!]
   traitBonuses: [Int!]
+}
+
+type Parcel @entity {
+  id: ID!
+  tokenId: BigInt!
+  parcelId: String!
+  owner: User!
+  coordinateX: BigInt!
+  coordinateY: BigInt!
+  district: BigInt!
+  parcelHash: String!
+
+  fudBoost: BigInt!
+  fomoBoost: BigInt!
+  alphaBoost: BigInt!
+  kekBoost: BigInt!
+
+  size: BigInt!
+
+  auctionId: String
+  timesTraded: BigInt!
+  historicalPrices: [BigInt!]
 }
 
 #type Upgrade @entity {
