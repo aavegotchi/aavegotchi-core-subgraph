@@ -130,6 +130,8 @@ type User @entity {
   gotchisOwned: [Aavegotchi!]! @derivedFrom(field: "owner")
 
   portalsOwned: [Portal!]! @derivedFrom(field: "owner")
+
+  parcelsOwned: [Parcel!]! @derivedFrom(field: "owner")
 }
 
 type ERC721Listing @entity {
@@ -161,6 +163,7 @@ type ERC721Listing @entity {
   coordinateX: BigInt # coordinate x of parcel
   coordinateY: BigInt # coordinate y of parcel
   size: BigInt # size of parcel
+  parcelHash: String # address/hash of parcel
 }
 
 type ERC1155Listing @entity {
