@@ -508,6 +508,7 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
 
     listing.coordinateX = parcel.coordinateX;
     listing.coordinateY = parcel.coordinateY;
+    listing.parcelHash = parcel.parcelHash
   } else {
     //handle external contracts
   }
