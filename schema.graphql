@@ -130,6 +130,8 @@ type User @entity {
   gotchisOwned: [Aavegotchi!]! @derivedFrom(field: "owner")
 
   portalsOwned: [Portal!]! @derivedFrom(field: "owner")
+
+  parcelsOwned: [Parcel!]! @derivedFrom(field: "owner")
 }
 
 type ERC721Listing @entity {
