@@ -442,7 +442,11 @@ export function handleExperienceTransfer(event: ExperienceTransfer): void {
 export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-  gotchi.save();
+
+  // persist only if gotchi is already claimed
+  if(gotchi.status.equals(BigInt.fromI32(3))) {
+    gotchi.save();
+  }
 }
 
 //ERC721 Transfer
