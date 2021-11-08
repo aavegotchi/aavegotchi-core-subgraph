@@ -23,7 +23,7 @@ jobs:
         run: yarn build
       - name: Install Graph CLI
         run: |
-          yarn global add @graphprotocol/graph-cli
+          yarn global add @graphprotocol/graph-cli@0.23.1
           echo "$(yarn global bin)" >> $GITHUB_PATH
         shell: bash
       - name: Deploy to TheGraph Hosted Service
