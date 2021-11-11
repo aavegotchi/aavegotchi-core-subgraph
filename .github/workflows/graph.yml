@@ -23,27 +23,10 @@ jobs:
         run: yarn build
       - name: Install Graph CLI
         run: |
-          yarn global add @graphprotocol/graph-cli
+          yarn global add @graphprotocol/graph-cli@0.23.1
           echo "$(yarn global bin)" >> $GITHUB_PATH
         shell: bash
-      - name: Checkout Stakesquid Offchain Subgraph Repo
-        uses: actions/checkout@master
-        with:
-          repository: StakeSquid/offchain-subgraph
-          ssh-key: ${{secrets.SSH_PRIVATE_KEY}}
-          path: "./offchain-subgraph"
-          clean: false
-      - name: Deploy to TheGraph and sync with Stakesquid
+      - name: Deploy to TheGraph Hosted Service
         run: |
-          export deploymentId=`graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ | grep -oP 'Qm[1-9A-HJ-NP-Za-km-z]{44}'`
-          echo $deploymentId
-          cd offchain-subgraph
-          git config --global user.email "mail@aavegotchi.com"
-          git config --global user.name "Aavegotchi"
-          if [[ `less ./offchain-subgraphs.txt` != *"$deploymentId"* ]]; then
-            echo $deploymentId >> offchain-subgraphs.txt
-            git add offchain-subgraphs.txt
-            git commit -m "added new deployment of aavegotchi-core-matic"
-            git push origin main
-          fi
+          graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/
         shell: bash
