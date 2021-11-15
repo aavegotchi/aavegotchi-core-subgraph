@@ -21,12 +21,7 @@ jobs:
         run: yarn codegen
       - name: Build
         run: yarn build
-      - name: Install Graph CLI
-        run: |
-          yarn global add @graphprotocol/graph-cli@0.23.1
-          echo "$(yarn global bin)" >> $GITHUB_PATH
-        shell: bash
       - name: Deploy to TheGraph Hosted Service
         run: |
-          graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/
+          npx graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/
         shell: bash
