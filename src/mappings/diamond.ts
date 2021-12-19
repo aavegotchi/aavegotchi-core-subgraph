@@ -34,6 +34,7 @@ import {
   MintPortals,
   UpdateERC1155Listing,
   RemoveExperience,
+  UpdateItemPrice,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -880,6 +881,12 @@ export function handleERC1155ListingUpdated(event: UpdateERC1155Listing): void {
   listing.save();
 }
 
+export function handleUpdateItemPrice(event: UpdateItemPrice): void {
+  let item = getOrCreateItemType(event.params._itemId.toString());
+  item.ghstPrice = event.params._priceInWei;
+  item.save();
+}
+
 //Upgrades
 
 /*
@@ -944,3 +951,4 @@ export function handleMintParcel(event: MintParcel): void {
   );
   parcel.save();
 }
+
