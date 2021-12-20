@@ -246,7 +246,7 @@ export function handleEquipWearables(event: EquipWearables): void {
 
   let contract = AavegotchiDiamond.bind(event.address);
 
-  let bigInts = new Array<BigInt>(gotchi.equippedWearables.length);
+  let bigInts = new Array<BigInt>();
   let equippedWearables = gotchi.equippedWearables;
 
   for (let index = 0; index < equippedWearables.length; index++) {
