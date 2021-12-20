@@ -56,11 +56,10 @@ export function getOrCreateAavegotchiOption(
 export function getOrCreateAavegotchi(
   id: string,
   event: ethereum.Event,
-  createIfNotFound: boolean = true
 ): Aavegotchi {
   let gotchi = Aavegotchi.load(id);
 
-  if (gotchi == null && createIfNotFound) {
+  if (gotchi == null) {
     gotchi = new Aavegotchi(id);
     gotchi.gotchiId = BigInt.fromString(id);
     gotchi.createdAt = event.block.number;
@@ -202,8 +201,7 @@ export function updateERC721ListingInfo(
     } else {
       let aavegotchi = getOrCreateAavegotchi(
         listingInfo.erc721TokenId.toString(),
-        event,
-        false
+        event
       );
 
       if (aavegotchi) {

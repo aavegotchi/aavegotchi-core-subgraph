@@ -453,16 +453,16 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
 export function handleTransfer(event: Transfer): void {
   let id = event.params._tokenId.toString();
   let newOwner = getOrCreateUser(event.params._to.toHexString());
-  let gotchi = getOrCreateAavegotchi(id, event, false);
+  let gotchi = getOrCreateAavegotchi(id, event);
+  gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+  
   let portal = getOrCreatePortal(id, false);
 
   // ERC721 transfer can be portal or gotchi based, so we have to check it.
-  if (gotchi) {
+  if (gotchi.status.gt(BigInt.fromI32(2))) {
     gotchi.owner = newOwner.id;
     gotchi.save();
-  }
-
-  if (portal) {
+  } else {
     portal.owner = newOwner.id;
     portal.save();
   }
