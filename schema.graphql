@@ -20,7 +20,7 @@ type AavegotchiOption @entity {
 type Aavegotchi @entity {
   id: ID!
 
-  gotchiId: BigInt
+  gotchiId: BigInt!
 
   owner: User
 
@@ -29,7 +29,7 @@ type Aavegotchi @entity {
   hauntId: BigInt!
 
   name: String!
-  #nameLowerCase: String!
+  nameLowerCase: String!
 
   randomNumber: BigInt!
 
@@ -239,7 +239,7 @@ type ItemType @entity {
   category: Int!
   kinshipBonus: Int
   experienceBonus: BigInt
-  consumed: BigInt
+  consumed: BigInt!
 }
 
 type WearableSet @entity {

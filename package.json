@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "@2fd/graphdoc": "^2.4.0",
-    "@graphprotocol/graph-cli": "0.20.1",
-    "@graphprotocol/graph-ts": "0.20.1"
+    "@graphprotocol/graph-cli": "0.25.1",
+    "@graphprotocol/graph-ts": "0.24.1"
   },
   "devDependencies": {
     "matchstick-as": "^0.2.0"
