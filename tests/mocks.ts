@@ -1,6 +1,6 @@
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { ERC721ExecutedListing, ERC721ListingAdd, ERC721ListingCancelled, UpdateERC1155Listing } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
-import { BIGINT_ONE } from "../constants";
+import { ERC721ExecutedListing, ERC721ListingAdd, ERC721ListingCancelled, UpdateERC1155Listing } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
+import { BIGINT_ONE } from "../src/utils/constants";
 import { newMockEvent } from 'matchstick-as/assembly/index'
 
 let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
@@ -76,6 +76,25 @@ export function getERC721ListingMock(category: BigInt = BigInt.fromI32(3)): ethe
     let tuppleArray: ethereum.Value[] = [ethereum.Value.fromTuple(returnArr as ethereum.Tuple)]
     return tuppleArray;
 }
+
+export function getERC115ListingMock(category: BigInt = BigInt.fromI32(3)): ethereum.Value[] {
+    //getERC721Listing(uint256):((uint256,address,address,uint256,uint256,uint256,uint256,uint256,bool))
+    let returnArr: ethereum.Value[] = [
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromAddress(contractAddress),
+        ethereum.Value.fromAddress(contractAddress),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(category),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromBoolean(true),
+    ];
+
+    let tuppleArray: ethereum.Value[] = [ethereum.Value.fromTuple(returnArr as ethereum.Tuple)]
+    return tuppleArray;
+}
+
 
 
 export function getERC721ListingExecutedEvent(categoryId: BigInt): ERC721ExecutedListing {
