@@ -10,7 +10,7 @@
     "remove-local": "graph remove --node http://localhost:8020/ aavegotchi/aavegotchi-core-matic",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 aavegotchi/aavegotchi-core-matic",
     "generate-docs": "graphdoc -e https://api.thegraph.com/subgraphs/name/aavegotchi/aavegotchi-core-matic -o ./doc/schema --force",
-    "test": "graph build && ./bin/matchstick AavegotchiDiamond"
+    "test": "graph test"
   },
   "dependencies": {
     "@2fd/graphdoc": "^2.4.0",
