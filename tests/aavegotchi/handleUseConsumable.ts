@@ -1,10 +1,10 @@
 import { test, assert, clearStore, createMockedFunction } from "matchstick-as/assembly/index";
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { handleUseConsumables } from "../../mappings/diamond";
-import { UseConsumables } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
-import { BIGINT_ONE } from "../../utils/constants";
-import { getAavegotchiMock } from "../../utils/helpers/mocks";
-import { Aavegotchi } from "../../../generated/schema";
+import { handleUseConsumables } from "../../src/mappings/diamond";
+import { UseConsumables } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
+import { BIGINT_ONE } from "../../src/utils/constants";
+import { getAavegotchiMock } from "../../src/utils/helpers/mocks";
+import { Aavegotchi } from "../../generated/schema";
 
 export function handleUseConsumablesTest(): void {
 

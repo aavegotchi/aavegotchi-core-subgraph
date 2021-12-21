@@ -1,8 +1,8 @@
 import { test, assert, clearStore, createMockedFunction } from "matchstick-as/assembly/index";
 import { Address, ethereum } from "@graphprotocol/graph-ts";
-import { handleERC1155ListingUpdated } from "../../mappings/diamond";
-import { BIGINT_ONE } from "../../utils/constants";
-import { getERC1155ListingUpdateEvent, getERC721ListingMock } from "../../utils/helpers/mocks";
+import { handleERC1155ListingUpdated } from "../../src/mappings/diamond";
+import { BIGINT_ONE } from "../../src/utils/constants";
+import { getERC1155ListingUpdateEvent, getERC721ListingMock } from "../../src/utils/helpers/mocks";
 
 export function handleERC1155ListingUpdateTests(): void {
 

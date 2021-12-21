@@ -1,9 +1,9 @@
 import { test, assert, clearStore, createMockedFunction } from "matchstick-as/assembly/index";
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { handleAavegotchiInteract, handleMintPortals } from "../../mappings/diamond";
-import { AavegotchiInteract, MintPortals } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
-import { BIGINT_ONE } from "../../utils/constants";
-import { getAavegotchiMock } from "../../utils/helpers/mocks";
+import { handleAavegotchiInteract, handleMintPortals } from "../../src/mappings/diamond";
+import { AavegotchiInteract, MintPortals } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
+import { BIGINT_ONE } from "../../src/utils/constants";
+import { getAavegotchiMock } from "../../src/utils/helpers/mocks";
 
 export function handleMintPortalsTests(): void {
 
