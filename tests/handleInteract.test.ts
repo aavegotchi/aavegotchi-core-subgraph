@@ -3,17 +3,16 @@ import { Address, BigInt, ethereum, log } from "@graphprotocol/graph-ts";
 import { handleAavegotchiInteract } from "../src/mappings/diamond";
 import { AavegotchiInteract } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { Aavegotchi } from "../generated/schema";
-import { getAavegotchiMock } from "../src/utils/helpers/mocks";
-import { BIGINT_ONE } from "../src/utils/constants";
+import { BIGINT_ONE, BIGINT_ZERO } from "../src/utils/constants";
+import { getAavegotchiMock } from "./mocks";
 
 
 test("Count as interacted if gotchi is claimed", () => {
     // Initialise
     let gotchi = new Aavegotchi('1')
     gotchi.locked = false;
+    gotchi.kinship = BIGINT_ZERO;
     gotchi.save()
-
-
 
     // prepare event
     let newMockevent = newMockEvent();
@@ -39,17 +38,25 @@ test("Count as interacted if gotchi is claimed", () => {
         "getAavegotchi(uint256):((uint256,string,address,uint256,uint256,int16[6],int16[6],uint16[16],address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,bool,(uint256,uint256,(string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))[]))"
     )
     .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
-    .returns(getAavegotchiMock())
+    .returns(getAavegotchiMock(event))
 
     // execute handler with event
     handleAavegotchiInteract(event);
 
     // assert and clear store
-    assert.fieldEquals("Aavegotchi", "1", "timesInteracted", "1");
+    assert.fieldEquals("Aavegotchi", "1", "kinship", "1");
     clearStore();
 })
 
 test("Don't count as interacted if gotchi is portal", () => {
+
+    // Initialise
+    let gotchi = new Aavegotchi('1')
+    gotchi.locked = false;
+    gotchi.kinship = BIGINT_ZERO;
+    gotchi.save()
+    
+
     // prepare event
     let newMockevent = newMockEvent();
     let event = new AavegotchiInteract(
@@ -74,12 +81,12 @@ test("Don't count as interacted if gotchi is portal", () => {
         "getAavegotchi(uint256):((uint256,string,address,uint256,uint256,int16[6],int16[6],uint16[16],address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,bool,(uint256,uint256,(string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))[]))"
     )
     .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
-    .returns(getAavegotchiMock(BigInt.fromI32(2)))
+    .returns(getAavegotchiMock(event, BigInt.fromI32(2)))
 
     // execute handler with event
     handleAavegotchiInteract(event);
 
     // assert and clear store
-    assert.fieldEquals("Aavegotchi", "1", "timesInteracted", "0");
+    assert.fieldEquals("Aavegotchi", "1", "kinship", "0");
     clearStore();
 })

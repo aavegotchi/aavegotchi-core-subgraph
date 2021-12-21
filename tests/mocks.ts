@@ -5,19 +5,20 @@ import { newMockEvent } from 'matchstick-as/assembly/index'
 
 let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
 
-export function getAavegotchiMock(status: BigInt = BigInt.fromI32(3)): ethereum.Value[]  {
+export function getAavegotchiMock(event: ethereum.Event, status: BigInt = BigInt.fromI32(3)): ethereum.Value[]  {
 
-    let returnArr: ethereum.Value[] = [
+    return [
+        ethereum.Value.fromTuple(changetype<ethereum.Tuple>([
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromString("yes"),
-        ethereum.Value.fromAddress(contractAddress),
+        ethereum.Value.fromAddress(event.address),
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromUnsignedBigInt(status),
         ethereum.Value.fromSignedBigIntArray([BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE]),
         ethereum.Value.fromSignedBigIntArray([BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE]),
         ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE]),
-        ethereum.Value.fromAddress(contractAddress),
-        ethereum.Value.fromAddress(contractAddress),
+        ethereum.Value.fromAddress(event.address),
+        ethereum.Value.fromAddress(event.address),
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
@@ -53,15 +54,14 @@ export function getAavegotchiMock(status: BigInt = BigInt.fromI32(3)): ethereum.
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromSignedBigInt(BIGINT_ONE),
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
-    ];
-
-    let tuppleArray: ethereum.Value[] = [ethereum.Value.fromTuple(returnArr as ethereum.Tuple)]
-    return tuppleArray;
+    ]))]
+    
 }
 
 export function getERC721ListingMock(category: BigInt = BigInt.fromI32(3)): ethereum.Value[] {
     //getERC721Listing(uint256):((uint256,address,address,uint256,uint256,uint256,uint256,uint256,bool))
-    let returnArr: ethereum.Value[] = [
+    return [
+        ethereum.Value.fromTuple(changetype<ethereum.Tuple>([
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromAddress(contractAddress),
         ethereum.Value.fromAddress(contractAddress),
@@ -71,15 +71,13 @@ export function getERC721ListingMock(category: BigInt = BigInt.fromI32(3)): ethe
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromBoolean(true),
-    ];
-
-    let tuppleArray: ethereum.Value[] = [ethereum.Value.fromTuple(returnArr as ethereum.Tuple)]
-    return tuppleArray;
+    ]))]
 }
 
 export function getERC115ListingMock(category: BigInt = BigInt.fromI32(3)): ethereum.Value[] {
     //getERC721Listing(uint256):((uint256,address,address,uint256,uint256,uint256,uint256,uint256,bool))
-    let returnArr: ethereum.Value[] = [
+    return [
+        ethereum.Value.fromTuple(changetype<ethereum.Tuple>([
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromAddress(contractAddress),
         ethereum.Value.fromAddress(contractAddress),
@@ -89,10 +87,7 @@ export function getERC115ListingMock(category: BigInt = BigInt.fromI32(3)): ethe
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromBoolean(true),
-    ];
-
-    let tuppleArray: ethereum.Value[] = [ethereum.Value.fromTuple(returnArr as ethereum.Tuple)]
-    return tuppleArray;
+    ]))]
 }
 
 
