@@ -242,7 +242,6 @@ export function updateERC1155ListingInfo(
 ): ERC1155Listing {
   let contract = AavegotchiDiamond.bind(event.address);
   let response = contract.try_getERC1155Listing(listingID);
-
   if (!response.reverted) {
     let listingInfo = response.value;
     listing.category = listingInfo.category;

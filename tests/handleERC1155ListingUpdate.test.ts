@@ -3,8 +3,13 @@ import { Address, ethereum } from "@graphprotocol/graph-ts";
 import { handleERC1155ListingUpdated } from "../src/mappings/diamond";
 import { BIGINT_ONE } from "../src/utils/constants";
 import { getERC1155ListingUpdateEvent, getERC115ListingMock } from "./mocks";
+import { ItemType } from "../generated/schema";
 
 test("handleERC1155ListingUpdate - should update price and quantity of listing", () => {
+    // init
+    let itemType = new ItemType("1");
+    itemType.save();
+    
     // prepare event
     let event = getERC1155ListingUpdateEvent()
     
@@ -15,7 +20,21 @@ test("handleERC1155ListingUpdate - should update price and quantity of listing",
         "getERC1155Listing(uint256):((uint256,address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,bool,bool))"
     )
     .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
-    .returns(getERC115ListingMock())
+    .returns([
+        ethereum.Value.fromTuple(changetype<ethereum.Tuple>([
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromAddress(event.address),
+        ethereum.Value.fromAddress(event.address),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromBoolean(true),
+        ethereum.Value.fromBoolean(true)
+    ]))]);
 
     // execute handler with event
     handleERC1155ListingUpdated(event);

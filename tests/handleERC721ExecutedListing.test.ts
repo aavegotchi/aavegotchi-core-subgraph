@@ -17,7 +17,7 @@ test("handleERC721Listing - should add price to historicalPrices of aavegotchi i
         "getERC721Listing(uint256):((uint256,address,address,uint256,uint256,uint256,uint256,uint256,bool))"
     )
     .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
-    .returns(getERC721ListingMock())
+    .returns(getERC721ListingMock(event))
 
     // execute handler with event
     handleERC721ExecutedListing(event);
@@ -40,7 +40,7 @@ test("handleERC721Listing - should add price to historicalPrices of portal if li
         "getERC721Listing(uint256):((uint256,address,address,uint256,uint256,uint256,uint256,uint256,bool))"
     )
     .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
-    .returns(getERC721ListingMock(BigInt.fromI32(2)))
+    .returns(getERC721ListingMock(event, BigInt.fromI32(2)))
 
     // execute handler with event
     handleERC721ExecutedListing(event);
@@ -61,7 +61,7 @@ test("handleERC721Listing - should set blockCreated to block number when listing
         "getERC721Listing(uint256):((uint256,address,address,uint256,uint256,uint256,uint256,uint256,bool))"
     )
     .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
-    .returns(getERC721ListingMock())
+    .returns(getERC721ListingMock(event))
     handleERC721ListingAdd(event);
     assert.fieldEquals("ERC721Listing", "1", "blockCreated", '1');
     clearStore();
@@ -78,7 +78,7 @@ test("handleERC721Listing - reorg: should set block created if cancel events hap
         "getERC721Listing(uint256):((uint256,address,address,uint256,uint256,uint256,uint256,uint256,bool))"
     )
     .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
-    .returns(getERC721ListingMock())
+    .returns(getERC721ListingMock(event))
 
 
     handleERC721ListingCancelled(event);
