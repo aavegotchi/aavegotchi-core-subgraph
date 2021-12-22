@@ -56,12 +56,12 @@ export function getOrCreateAavegotchiOption(
 export function getOrCreateAavegotchi(
   id: string,
   event: ethereum.Event,
-  createIfNotFound: boolean = true
 ): Aavegotchi {
   let gotchi = Aavegotchi.load(id);
 
-  if (gotchi == null && createIfNotFound) {
+  if (gotchi == null) {
     gotchi = new Aavegotchi(id);
+    gotchi.gotchiId = BigInt.fromString(id);
     gotchi.createdAt = event.block.number;
     gotchi.timesTraded = BIGINT_ZERO;
     gotchi.historicalPrices = [];
@@ -133,6 +133,7 @@ export function getOrCreateItemType(
 
   if (itemType == null && createIfNotFound) {
     itemType = new ItemType(id);
+    itemType.consumed = BIGINT_ZERO;
   }
 
   return itemType as ItemType;
@@ -200,8 +201,7 @@ export function updateERC721ListingInfo(
     } else {
       let aavegotchi = getOrCreateAavegotchi(
         listingInfo.erc721TokenId.toString(),
-        event,
-        false
+        event
       );
 
       if (aavegotchi) {
@@ -242,7 +242,6 @@ export function updateERC1155ListingInfo(
 ): ERC1155Listing {
   let contract = AavegotchiDiamond.bind(event.address);
   let response = contract.try_getERC1155Listing(listingID);
-
   if (!response.reverted) {
     let listingInfo = response.value;
     listing.category = listingInfo.category;
@@ -331,6 +330,7 @@ export function updateAavegotchiInfo(
     let gotchiInfo = response.value;
 
     gotchi.name = gotchiInfo.name;
+    gotchi.nameLowerCase = gotchiInfo.name.toLowerCase();
     gotchi.randomNumber = gotchiInfo.randomNumber;
     gotchi.status = gotchiInfo.status;
     gotchi.numericTraits = gotchiInfo.numericTraits;
@@ -352,7 +352,7 @@ export function updateAavegotchiInfo(
     gotchi.baseRarityScore = gotchiInfo.baseRarityScore;
     gotchi.modifiedRarityScore = gotchiInfo.modifiedRarityScore;
 
-    if (gotchi.withSetsRarityScore == null) {
+    if (!gotchi.withSetsRarityScore) {
       gotchi.withSetsRarityScore = gotchiInfo.modifiedRarityScore;
       gotchi.withSetsNumericTraits = gotchiInfo.modifiedNumericTraits;
     }

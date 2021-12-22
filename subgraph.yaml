@@ -13,7 +13,7 @@ dataSources:
       startBlock: 11500000
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/mappings/diamond.ts
       entities:
@@ -162,7 +162,7 @@ dataSources:
       startBlock: 20667840
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
         - MintParcel
