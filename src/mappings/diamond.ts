@@ -590,9 +590,7 @@ export function handleERC721ExecutedListing(
     let parcel = getOrCreateParcel(
       event.params.erc721TokenId,
       event.params.buyer,
-      Address.fromHexString(
-        event.params.erc721TokenAddress.toHexString()
-      ) as Address
+      event.params.erc721TokenAddress
     );
     parcel.timesTraded = parcel.timesTraded.plus(BIGINT_ONE);
 
