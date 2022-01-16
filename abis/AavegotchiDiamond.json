@@ -6551,5 +6551,24 @@
     ],
     "name": "Transfer",
     "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_itemId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_priceInWei",
+        "type": "uint256"
+      }
+    ],
+    "name": "UpdateItemPrice",
+    "type": "event"
   }
 ]
