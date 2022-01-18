@@ -59,8 +59,9 @@ import {
   PORTAL_STATUS_OPENED,
   PORTAL_STATUS_CLAIMED,
   BIGINT_ZERO,
+  STATUS_AAVEGOTCHI,
 } from "../utils/constants";
-import { Address, BigInt, log } from "@graphprotocol/graph-ts";
+import { BigInt, log } from "@graphprotocol/graph-ts";
 
 import { Parcel } from "../../generated/schema";
 import { RealmDiamond, MintParcel, ResyncParcel } from "../../generated/RealmDiamond/RealmDiamond";
@@ -460,7 +461,8 @@ export function handleTransfer(event: Transfer): void {
   let portal = getOrCreatePortal(id, false);
 
   // ERC721 transfer can be portal or gotchi based, so we have to check it.
-  if (gotchi.status.gt(BigInt.fromI32(2))) {
+  // if its zero gotchi is sacrified.
+  if (gotchi.status.equals(BIGINT_ZERO) || gotchi.status.equals(STATUS_AAVEGOTCHI)) {
     gotchi.owner = newOwner.id;
     gotchi.save();
   } else {
@@ -958,4 +960,3 @@ export function handleMintParcel(event: MintParcel): void {
   );
   parcel.save();
 }
-
