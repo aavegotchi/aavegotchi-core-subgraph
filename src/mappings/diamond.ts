@@ -59,13 +59,15 @@ import {
   PORTAL_STATUS_OPENED,
   PORTAL_STATUS_CLAIMED,
   BIGINT_ZERO,
-  STATUS_AAVEGOTCHI,
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
 
 import { Parcel } from "../../generated/schema";
-import { RealmDiamond, MintParcel, ResyncParcel } from "../../generated/RealmDiamond/RealmDiamond";
-
+import {
+  RealmDiamond,
+  MintParcel,
+  ResyncParcel,
+} from "../../generated/RealmDiamond/RealmDiamond";
 
 export function handleBuyPortals(event: BuyPortals): void {
   let contract = AavegotchiDiamond.bind(event.address);
@@ -123,7 +125,7 @@ export function handleXingyun(event: Xingyun): void {
 
     portal.save();
 
-    baseId = baseId.plus(BIGINT_ONE)
+    baseId = baseId.plus(BIGINT_ONE);
   }
 
   stats.portalsBought = stats.portalsBought.plus(
@@ -446,7 +448,7 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
   // persist only if gotchi is already claimed
-  if(gotchi.status.equals(BigInt.fromI32(3))) {
+  if (gotchi.status.equals(BigInt.fromI32(3))) {
     gotchi.save();
   }
 }
@@ -457,12 +459,12 @@ export function handleTransfer(event: Transfer): void {
   let newOwner = getOrCreateUser(event.params._to.toHexString());
   let gotchi = getOrCreateAavegotchi(id, event);
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-  
+
   let portal = getOrCreatePortal(id, false);
 
   // ERC721 transfer can be portal or gotchi based, so we have to check it.
   // if its zero gotchi is sacrified.
-  if (gotchi.status.equals(BIGINT_ZERO) || gotchi.status.equals(STATUS_AAVEGOTCHI)) {
+  if (gotchi.status.gt(BigInt.fromI32(2))) {
     gotchi.owner = newOwner.id;
     gotchi.save();
   } else {
@@ -503,7 +505,7 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
     listing.portal = event.params.erc721TokenId.toString();
   } else if (listing.category == BigInt.fromI32(4)) {
     listing.parcel = event.params.erc721TokenId.toString();
-    
+
     let parcel = Parcel.load(event.params.erc721TokenId.toString())!;
     listing.fudBoost = parcel.fudBoost;
     listing.fomoBoost = parcel.fomoBoost;
@@ -515,7 +517,7 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
 
     listing.coordinateX = parcel.coordinateX;
     listing.coordinateY = parcel.coordinateY;
-    listing.parcelHash = parcel.parcelHash
+    listing.parcelHash = parcel.parcelHash;
   } else {
     //handle external contracts
   }
@@ -553,7 +555,7 @@ export function handleERC721ExecutedListing(
 
     // add to historical prices
     let historicalPrices = portal.historicalPrices;
-    if(historicalPrices == null) {
+    if (historicalPrices == null) {
       historicalPrices = new Array();
     }
     historicalPrices.push(event.params.priceInWei);
@@ -571,15 +573,13 @@ export function handleERC721ExecutedListing(
 
     // add to historical prices
     let historicalPrices = gotchi.historicalPrices;
-    if(historicalPrices == null) {
+    if (historicalPrices == null) {
       historicalPrices = new Array();
     }
     historicalPrices.push(event.params.priceInWei);
     gotchi.historicalPrices = historicalPrices;
     gotchi.save();
-  }
-
-  else if (event.params.category == BigInt.fromI32(4)) {
+  } else if (event.params.category == BigInt.fromI32(4)) {
     let listing = getOrCreateERC721Listing(event.params.listingId.toString());
     listing = updateERC721ListingInfo(listing, event.params.listingId, event);
 
@@ -598,7 +598,7 @@ export function handleERC721ExecutedListing(
 
     // add to historical prices
     let historicalPrices = parcel.historicalPrices;
-    if(historicalPrices == null) {
+    if (historicalPrices == null) {
       historicalPrices = new Array();
     }
     historicalPrices.push(event.params.priceInWei);
