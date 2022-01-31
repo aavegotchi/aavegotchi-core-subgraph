@@ -28,4 +28,22 @@ describe("Aavegotchis", () => {
     const response = compare(result.data, resultCmp.data)
     expect(response).toBe(true);
   })
+
+  it("should not contain an entity with owners: null", async () => {
+    const queryString = `
+    {
+      aavegotchis(where: {owner:null}) {
+        id
+        gotchiId
+        owner {
+          id
+        }
+      }
+    }
+    `
+
+    const {data} = await query(config.endpoint, queryString);
+    console.log(data);
+    expect(data.aavegotchis).toHaveLength(0);
+  })
 });
