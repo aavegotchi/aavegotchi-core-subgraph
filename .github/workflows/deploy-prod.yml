@@ -1,12 +1,13 @@
-name: Deploy Graph
+name: Deploy to Prod
 
 on:
-  push:
-    branches: main
+  release:
+    types: [released]
 
 jobs:
-  deploy:
+  deployProd:
     runs-on: ubuntu-latest
+    environment: Prod
     steps:
       - uses: actions/checkout@v1
       - name: Install node
@@ -21,7 +22,9 @@ jobs:
         run: yarn codegen
       - name: Build
         run: yarn build
-      - name: Deploy to TheGraph Hosted Service
+      - name: Run Unit Tests
+        run: yarn test:unit
+      - name: Deploy to Prod
         run: |
-          npx graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/
+          npx graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN_PROD}} froid1911/aavegotchi-subgraph subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node ${{secrets.GRAPH_NODE_PROD}}
         shell: bash

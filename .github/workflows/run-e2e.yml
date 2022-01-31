@@ -1,0 +1,32 @@
+name: Run E2E
+
+on:
+  push:
+    branches: main
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    environment: E2E
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Install Yarn
+        run: npm i -g yarn
+      - name: Install Libs
+        run: yarn --frozen-lockfile
+      - name: Check if Deployment is synced
+        run: yarn check-deployment
+        env:
+          RPC_URL: ${{ secrets.RPC_URL }}
+          GRAPH_URL: ${{ secrets.GRAPH_URL }}
+          GRAPH_URL_PROD: ${{ secrets.GRAPH_URL_PROD }}
+      - name: Run E2E Tests
+        run: yarn test:e2e
+        env:
+          RPC_URL: ${{ secrets.RPC_URL }}
+          GRAPH_URL: ${{ secrets.GRAPH_URL }}
+          GRAPH_URL_PROD: ${{ secrets.GRAPH_URL_PROD }}
