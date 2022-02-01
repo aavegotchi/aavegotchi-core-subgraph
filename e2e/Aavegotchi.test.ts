@@ -3,9 +3,9 @@ const config = require("./helper/config");
 const compare = require("./helper/compare");
 
 describe("Aavegotchis", () => {
-  it("should not contain an entity with claimedAt: null", async () => {
+  it("should not contain an aavegotchi entity with claimedAt: null", async () => {
     const queryString = `
-      { aavegotchis(first: 1000 where: {claimedAt: null}) {
+      { aavegotchis(first: 1000 where: {claimedAt: null, status: "3"}) {
           id
           claimedAt
       }}
@@ -29,10 +29,10 @@ describe("Aavegotchis", () => {
     expect(response).toBe(true);
   })
 
-  it("should not contain an entity with owners: null", async () => {
+  it("should not contain an aavegotchi entity with status equals 3 and owners: null", async () => {
     const queryString = `
     {
-      aavegotchis(where: {owner:null}) {
+      aavegotchis(where: {owner:null, status: "3"}) {
         id
         gotchiId
         owner {
@@ -43,7 +43,23 @@ describe("Aavegotchis", () => {
     `
 
     const {data} = await query(config.endpoint, queryString);
-    console.log(data);
+    expect(data.aavegotchis).toHaveLength(0);
+  })
+
+  it("should not contain an aavegotchi entity with status not equal 3 or 0", async () => {
+    const queryString = `
+    {
+      aavegotchis(first: 1000 where: {status_not_in: ["0", "3"]}) {
+        id
+        gotchiId
+        status
+      }
+    }
+    `
+  
+    const {data} = await query(config.endpoint, queryString);
     expect(data.aavegotchis).toHaveLength(0);
   })
 });
+
+

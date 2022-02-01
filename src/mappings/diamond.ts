@@ -59,6 +59,8 @@ import {
   PORTAL_STATUS_OPENED,
   PORTAL_STATUS_CLAIMED,
   BIGINT_ZERO,
+  STATUS_AAVEGOTCHI,
+  STATUS_SACRIFIED,
 } from "../utils/constants";
 import { BigInt, log } from "@graphprotocol/graph-ts";
 
@@ -219,7 +221,9 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
 export function handleIncreaseStake(event: IncreaseStake): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-  gotchi.save();
+  if(gotchi.status.equals(STATUS_AAVEGOTCHI)) {
+    gotchi.save();
+  }
 }
 
 // - event: DecreaseStake(indexed uint256,uint256)
@@ -228,7 +232,9 @@ export function handleIncreaseStake(event: IncreaseStake): void {
 export function handleDecreaseStake(event: DecreaseStake): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-  gotchi.save();
+  if(gotchi.status.equals(STATUS_AAVEGOTCHI)) {
+    gotchi.save();
+  }
 }
 
 // - event: SpendSkillpoints(indexed uint256,int8[4])
@@ -237,7 +243,9 @@ export function handleDecreaseStake(event: DecreaseStake): void {
 export function handleSpendSkillpoints(event: SpendSkillpoints): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-  gotchi.save();
+  if(gotchi.status.equals(STATUS_AAVEGOTCHI)) {
+    gotchi.save();
+  }
 }
 
 // - event: EquipWearables(indexed uint256,uint256,uint256)
@@ -355,7 +363,9 @@ export function handleEquipWearables(event: EquipWearables): void {
     ]);
   }
 
-  gotchi.save();
+  if(gotchi.status.equals(STATUS_AAVEGOTCHI)) {
+    gotchi.save();
+  }
 }
 
 // - event: SetAavegotchiName(indexed uint256,string,string)
@@ -364,7 +374,9 @@ export function handleEquipWearables(event: EquipWearables): void {
 export function handleSetAavegotchiName(event: SetAavegotchiName): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-  gotchi.save();
+  if(gotchi.status.equals(STATUS_AAVEGOTCHI)) {
+    gotchi.save();
+  }
 }
 
 // - event: UseConsumables(indexed uint256,uint256[],uint256[])
@@ -373,7 +385,9 @@ export function handleSetAavegotchiName(event: SetAavegotchiName): void {
 export function handleUseConsumables(event: UseConsumables): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-  gotchi.save();
+  if(gotchi.status.equals(STATUS_AAVEGOTCHI)) {
+    gotchi.save();
+  }
 
   // maintain consumed
   let itemTypes = event.params._itemIds;
@@ -417,7 +431,9 @@ export function handleGrantExperience(event: GrantExperience): void {
     }
     */
 
-    gotchi.save();
+    if(gotchi.status.equals(STATUS_AAVEGOTCHI)) {
+      gotchi.save();
+    }
   }
 }
 
@@ -448,7 +464,7 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
   // persist only if gotchi is already claimed
-  if (gotchi.status.equals(BigInt.fromI32(3))) {
+  if (gotchi.status.equals(STATUS_AAVEGOTCHI)) {
     gotchi.save();
   }
 }
@@ -464,7 +480,7 @@ export function handleTransfer(event: Transfer): void {
 
   // ERC721 transfer can be portal or gotchi based, so we have to check it.
   // if its zero gotchi is sacrified.
-  if (gotchi.status.gt(BigInt.fromI32(2))) {
+  if (gotchi.status.equals(STATUS_AAVEGOTCHI) || gotchi.status.equals(STATUS_SACRIFIED)) {
     gotchi.owner = newOwner.id;
     gotchi.save();
   } else {
