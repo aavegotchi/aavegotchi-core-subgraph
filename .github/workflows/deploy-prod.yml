@@ -26,5 +26,5 @@ jobs:
         run: yarn test:unit
       - name: Deploy to Prod
         run: |
-          npx graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN_PROD}} froid1911/aavegotchi-subgraph subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node ${{secrets.GRAPH_NODE_PROD}}
+          npx graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic --ipfs https://api.thegraph.com/ipfs/ --node ${{secrets.GRAPH_NODE}}
         shell: bash

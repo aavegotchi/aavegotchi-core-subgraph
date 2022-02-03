@@ -2,7 +2,7 @@ const query = require("./helper/query");
 const config = require("./helper/config");
 const compare = require("./helper/compare");
 
-describe("Aavegotchis", () => {
+describe("Aavegotchis E2E", () => {
   it("should not have claimedAt = null", async () => {
     const queryString = `
       { aavegotchis(first: 1000 where: {claimedAt: null}) {
@@ -63,7 +63,7 @@ describe("Aavegotchis", () => {
     expect(data.aavegotchis).toHaveLength(0);
   })
 
-  it("should have multiple gotchis sacrified", async () => {
+  it("should have multiple gotchis sacrificed", async () => {
     const queryString = `
     {
       aavegotchis(first: 1000 where: {status: "0"}) {
