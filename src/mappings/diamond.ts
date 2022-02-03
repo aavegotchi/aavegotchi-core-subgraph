@@ -61,8 +61,9 @@ import {
   BIGINT_ZERO,
   STATUS_AAVEGOTCHI,
   STATUS_SACRIFIED,
+  ZERO_ADDRESS,
 } from "../utils/constants";
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { Address, BigInt, log } from "@graphprotocol/graph-ts";
 
 import { Parcel } from "../../generated/schema";
 import {
@@ -480,7 +481,12 @@ export function handleTransfer(event: Transfer): void {
 
   // ERC721 transfer can be portal or gotchi based, so we have to check it.
   // if its zero gotchi is sacrified.
-  if (gotchi.status.equals(STATUS_AAVEGOTCHI) || gotchi.status.equals(STATUS_SACRIFIED)) {
+  
+  if(event.params._to.equals(Address.fromString(ZERO_ADDRESS))) {
+    gotchi.status = STATUS_SACRIFIED
+    gotchi.owner = ZERO_ADDRESS;
+    gotchi.save();
+  } else if (gotchi.status.equals(STATUS_AAVEGOTCHI)) {
     gotchi.owner = newOwner.id;
     gotchi.save();
   } else {

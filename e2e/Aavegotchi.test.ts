@@ -3,9 +3,9 @@ const config = require("./helper/config");
 const compare = require("./helper/compare");
 
 describe("Aavegotchis", () => {
-  it("should not contain an aavegotchi entity with claimedAt: null", async () => {
+  it("should not have claimedAt = null", async () => {
     const queryString = `
-      { aavegotchis(first: 1000 where: {claimedAt: null, status: "3"}) {
+      { aavegotchis(first: 1000 where: {claimedAt: null}) {
           id
           claimedAt
       }}
@@ -19,20 +19,22 @@ describe("Aavegotchis", () => {
     const queryString = `
       { aavegotchis(first: 1000) {
         id
-        owner
+        owner {
+          id
+        }
     }}
     `
 
     const result = await query(config.endpoint, queryString);
     const resultCmp = await query(config.endpointProd, queryString);
-    const response = compare(result.data, resultCmp.data)
+    const response = compare(resultCmp.data, result.data)
     expect(response).toBe(true);
   })
 
-  it("should not contain an aavegotchi entity with status equals 3 and owners: null", async () => {
+  it("should not have owner = null", async () => {
     const queryString = `
     {
-      aavegotchis(where: {owner:null, status: "3"}) {
+      aavegotchis(where: {owner:null}) {
         id
         gotchiId
         owner {
@@ -46,7 +48,7 @@ describe("Aavegotchis", () => {
     expect(data.aavegotchis).toHaveLength(0);
   })
 
-  it("should not contain an aavegotchi entity with status not equal 3 or 0", async () => {
+  it("should have status 0 or 3", async () => {
     const queryString = `
     {
       aavegotchis(first: 1000 where: {status_not_in: ["0", "3"]}) {
@@ -59,6 +61,24 @@ describe("Aavegotchis", () => {
   
     const {data} = await query(config.endpoint, queryString);
     expect(data.aavegotchis).toHaveLength(0);
+  })
+
+  it("should have multiple gotchis sacrified", async () => {
+    const queryString = `
+    {
+      aavegotchis(first: 1000 where: {status: "0"}) {
+        id
+        gotchiId
+        status
+        owner {
+          id
+        }
+      }
+    }
+    `
+  
+    const {data} = await query(config.endpoint, queryString);
+    expect(data.aavegotchis).not.toHaveLength(0);
   })
 });
 
