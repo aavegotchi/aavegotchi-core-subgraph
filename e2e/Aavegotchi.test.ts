@@ -63,7 +63,7 @@ describe("Aavegotchis", () => {
     expect(data.aavegotchis).toHaveLength(0);
   })
 
-  it("should have multiple gotchis sacrified", async () => {
+  it("should have multiple gotchis sacrificed", async () => {
     const queryString = `
     {
       aavegotchis(first: 1000 where: {status: "0"}) {
