@@ -60,7 +60,7 @@ import {
   PORTAL_STATUS_CLAIMED,
   BIGINT_ZERO,
   STATUS_AAVEGOTCHI,
-  STATUS_SACRIFIED,
+  STATUS_SACRIFICED,
   ZERO_ADDRESS,
 } from "../utils/constants";
 import { Address, BigInt, log } from "@graphprotocol/graph-ts";
@@ -483,7 +483,7 @@ export function handleTransfer(event: Transfer): void {
   // if its zero gotchi is sacrified.
   
   if(event.params._to.equals(Address.fromString(ZERO_ADDRESS))) {
-    gotchi.status = STATUS_SACRIFIED
+    gotchi.status = STATUS_SACRIFICED
     gotchi.owner = ZERO_ADDRESS;
     gotchi.save();
   } else if (gotchi.status.equals(STATUS_AAVEGOTCHI)) {

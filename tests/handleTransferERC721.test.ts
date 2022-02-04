@@ -2,7 +2,7 @@ import { test, assert, clearStore, newMockEvent, createMockedFunction } from "ma
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
 import { handleTransfer } from "../src/mappings/diamond";
 import { Transfer } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
-import { BIGINT_ONE, BIGINT_ZERO, STATUS_AAVEGOTCHI, STATUS_SACRIFIED } from "../src/utils/constants";
+import { BIGINT_ONE, BIGINT_ZERO, STATUS_AAVEGOTCHI, STATUS_SACRIFICED } from "../src/utils/constants";
 import { getAavegotchiMock } from "./mocks";
 import { Aavegotchi, Portal } from "../generated/schema";
 
@@ -110,7 +110,7 @@ test("handleTransferERC721 - should set owner to 0x0 of aavegotchi entity if got
         "getAavegotchi(uint256):((uint256,string,address,uint256,uint256,int16[6],int16[6],uint16[16],address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,bool,(uint256,uint256,(string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))[]))"
     )
     .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
-    .returns(getAavegotchiMock(event, STATUS_SACRIFIED))
+    .returns(getAavegotchiMock(event, STATUS_SACRIFICED))
 
     // execute handler with event
     handleTransfer(event);
