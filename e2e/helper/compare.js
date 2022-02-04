@@ -6,6 +6,7 @@ function compare(result1, result2) {
     return true;
   }
 
+  console.log(jsonDiff.diffString(result1, result2));
   return false;
 }
 

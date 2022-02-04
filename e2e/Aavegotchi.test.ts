@@ -3,7 +3,7 @@ const config = require("./helper/config");
 const compare = require("./helper/compare");
 
 describe("Aavegotchis E2E", () => {
-  it("should not have claimedAt = null", async () => {
+  it("should not have a gotchi without claimedAt attribute (null)", async () => {
     const queryString = `
       { aavegotchis(first: 1000 where: {claimedAt: null}) {
           id
@@ -31,7 +31,7 @@ describe("Aavegotchis E2E", () => {
     expect(response).toBe(true);
   })
 
-  it("should not have owner = null", async () => {
+  it("should not have an gotchi without owner(null)", async () => {
     const queryString = `
     {
       aavegotchis(where: {owner:null}) {
@@ -48,7 +48,7 @@ describe("Aavegotchis E2E", () => {
     expect(data.aavegotchis).toHaveLength(0);
   })
 
-  it("should have status 0 or 3", async () => {
+  it("should have only gotchis with status claimed(3) or sacrificed(0)", async () => {
     const queryString = `
     {
       aavegotchis(first: 1000 where: {status_not_in: ["0", "3"]}) {
@@ -63,7 +63,7 @@ describe("Aavegotchis E2E", () => {
     expect(data.aavegotchis).toHaveLength(0);
   })
 
-  it("should have multiple gotchis sacrificed", async () => {
+  it("should have multiple gotchis with status sacrificed (0)", async () => {
     const queryString = `
     {
       aavegotchis(first: 1000 where: {status: "0"}) {
