@@ -26,5 +26,5 @@ jobs:
         run: yarn test:unit
       - name: Deploy to Staging
         run: |
-          npx graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} froid1911/aavegotchi-subgraph subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node ${{secrets.GRAPH_NODE}} -l v0.0.1
+          npx graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node ${{secrets.GRAPH_NODE}} -l v0.0.1
         shell: bash
