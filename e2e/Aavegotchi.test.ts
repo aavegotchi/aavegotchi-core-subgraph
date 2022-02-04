@@ -17,7 +17,7 @@ describe("Aavegotchis E2E", () => {
 
   it("should not have different owners after upgrade", async () => {
     const queryString = `
-      { aavegotchis(first: 1000) {
+      { aavegotchis(first: 1000 orderBy: claimedAt) {
         id
         owner {
           id
