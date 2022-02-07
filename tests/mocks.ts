@@ -1,5 +1,5 @@
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { ERC721ExecutedListing, ERC721ListingAdd, ERC721ListingCancelled, UpdateERC1155Listing } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
+import { ClaimAavegotchi, ERC721ExecutedListing, ERC721ListingAdd, ERC721ListingCancelled, UpdateERC1155Listing } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { BIGINT_ONE } from "../src/utils/constants";
 import { newMockEvent } from 'matchstick-as/assembly/index'
 
@@ -220,6 +220,28 @@ export function getERC721ListingCancelledEvent(categoryId: BigInt): ERC721Listin
     let time = new ethereum.EventParam("BigInt", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
     event.parameters.push(time);
     
+    let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
+    event.address = contractAddress
+    return event;
+}
+
+
+export function getClaimAavegotchiEvent(): ClaimAavegotchi {
+    let newMockevent = newMockEvent();
+    let event = new ClaimAavegotchi(
+        newMockevent.address,
+        newMockevent.logIndex,
+        newMockevent.transactionLogIndex,
+        newMockevent.logType,
+        newMockevent.block,
+        newMockevent.transaction,
+        newMockevent.parameters
+    );
+    event.parameters = new Array<ethereum.EventParam>();
+    event.block.number = BIGINT_ONE;
+
+    event.parameters.push(new ethereum.EventParam("BigInt",  ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)));
+        
     let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
     event.address = contractAddress
     return event;
