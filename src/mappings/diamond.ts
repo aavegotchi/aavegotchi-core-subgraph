@@ -670,7 +670,7 @@ export function handleERC721ListingCancelled(
     gotchi.activeListing = null;
     gotchi.save();
   } else if(listing.category.equals(BigInt.fromI32(4))) {
-    let parcel = getOrCreateParcel(listing.tokenId, listing.seller, listing.erc721TokenAddress as Address);
+    let parcel = getOrCreateParcel(listing.tokenId, listing.seller, Address.fromString(listing.erc721TokenAddress.toHexString()));
     parcel.activeListing = null;
     parcel.save();
   }
@@ -696,7 +696,7 @@ export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
     gotchi.activeListing = null;
     gotchi.save();
   } else if(listing.category.equals(BigInt.fromI32(4))) {
-    let parcel = getOrCreateParcel(listing.tokenId, listing.seller, listing.erc721TokenAddress as Address);
+    let parcel = getOrCreateParcel(listing.tokenId, listing.seller, Address.fromString(listing.erc721TokenAddress.toHexString()));
     parcel.activeListing = null;
     parcel.save();
   }
