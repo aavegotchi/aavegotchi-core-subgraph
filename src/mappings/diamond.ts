@@ -384,6 +384,11 @@ export function handleSetAavegotchiName(event: SetAavegotchiName): void {
   if(gotchi.status.equals(STATUS_AAVEGOTCHI)) {
     gotchi.save();
   }
+
+  if(gotchi.activeListing) {
+    let listing = getOrCreateERC721Listing(gotchi.id, false)!;
+    listing.nameLowerCase = gotchi.nameLowerCase;
+  }
 }
 
 // - event: UseConsumables(indexed uint256,uint256[],uint256[])
@@ -532,6 +537,8 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
     let gotchi = getOrCreateAavegotchi(event.params.erc721TokenId.toString(), event);
     gotchi.activeListing = event.params.listingId;
     gotchi.save();
+
+    listing.nameLowerCase = gotchi.nameLowerCase;
   } else if (listing.category.lt(BigInt.fromI32(3))) {
     let portal = getOrCreatePortal(event.params.erc721TokenId.toString());
     portal.activeListing = event.params.listingId;
