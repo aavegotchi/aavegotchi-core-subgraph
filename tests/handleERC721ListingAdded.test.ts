@@ -7,7 +7,7 @@ import { getOrCreatePortal } from "../src/utils/helpers/diamond";
 import { Aavegotchi } from "../generated/schema";
 
 
-test("should add gotchi name lower case if listing is a aavegtochi", () => {
+test("should add gotchi name lower case if token is an aavegtochi", () => {
     // prepare event
     let event = getERC721ListingAddEvent(BigInt.fromI32(3))
 

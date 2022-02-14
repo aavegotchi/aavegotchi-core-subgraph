@@ -386,8 +386,9 @@ export function handleSetAavegotchiName(event: SetAavegotchiName): void {
   }
 
   if(gotchi.activeListing) {
-    let listing = getOrCreateERC721Listing(gotchi.id, false)!;
+    let listing = getOrCreateERC721Listing(gotchi.activeListing!.toString(), false);
     listing.nameLowerCase = gotchi.nameLowerCase;
+    listing.save();
   }
 }
 
