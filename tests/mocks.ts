@@ -173,22 +173,22 @@ export function getERC721ListingAddEvent(categoryId: BigInt): ERC721ListingAdd {
     event.parameters = new Array<ethereum.EventParam>();
     event.block.number = BIGINT_ONE;
 
-    let listingId = new ethereum.EventParam("BigInt", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
+    let listingId = new ethereum.EventParam("listingId", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
     event.parameters.push(listingId);
 
-    let seller = new ethereum.EventParam("address", ethereum.Value.fromAddress(Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d")));
+    let seller = new ethereum.EventParam("seller", ethereum.Value.fromAddress(Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d")));
     event.parameters.push(seller);
 
-    let erc721TokenAddress = new ethereum.EventParam("address", ethereum.Value.fromAddress(Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d")));
+    let erc721TokenAddress = new ethereum.EventParam("erc721TokenAddress", ethereum.Value.fromAddress(Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d")));
     event.parameters.push(erc721TokenAddress);
 
-    let erc721TokenId = new ethereum.EventParam("BigInt", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
+    let erc721TokenId = new ethereum.EventParam("erc721TokenId", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
     event.parameters.push(erc721TokenId);
 
-    let category = new ethereum.EventParam("BigInt", ethereum.Value.fromUnsignedBigInt(categoryId));
+    let category = new ethereum.EventParam("category", ethereum.Value.fromUnsignedBigInt(categoryId));
     event.parameters.push(category);
     
-    let time = new ethereum.EventParam("BigInt", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
+    let time = new ethereum.EventParam("time", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
     event.parameters.push(time);
     
     let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");

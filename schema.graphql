@@ -164,6 +164,8 @@ type ERC721Listing @entity {
   coordinateY: BigInt # coordinate y of parcel
   size: BigInt # size of parcel
   parcelHash: String # address/hash of parcel
+  
+  nameLowerCase: String
 }
 
 type ERC1155Listing @entity {
