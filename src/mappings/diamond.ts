@@ -209,6 +209,12 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
   portal.status = PORTAL_STATUS_CLAIMED;
   portal.claimedAt = event.block.number;
 
+  if(portal.activeListing) {
+    let listing = getOrCreateERC721Listing(portal.activeListing!.toString());
+    listing.cancelled = true;
+    listing.save();
+  }
+  
   stats.aavegotchisClaimed = stats.aavegotchisClaimed.plus(BIGINT_ONE);
 
   stats.save();
@@ -523,12 +529,20 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
 
   if (listing.category == BigInt.fromI32(3)) {
     listing.gotchi = event.params.erc721TokenId.toString();
+    let gotchi = getOrCreateAavegotchi(event.params.erc721TokenId.toString(), event);
+    gotchi.activeListing = event.params.listingId;
+    gotchi.save();
   } else if (listing.category.lt(BigInt.fromI32(3))) {
+    let portal = getOrCreatePortal(event.params.erc721TokenId.toString());
+    portal.activeListing = event.params.listingId;
+    portal.save();
     listing.portal = event.params.erc721TokenId.toString();
   } else if (listing.category == BigInt.fromI32(4)) {
     listing.parcel = event.params.erc721TokenId.toString();
 
     let parcel = Parcel.load(event.params.erc721TokenId.toString())!;
+    parcel.activeListing = event.params.listingId;
+
     listing.fudBoost = parcel.fudBoost;
     listing.fomoBoost = parcel.fomoBoost;
     listing.alphaBoost = parcel.alphaBoost;
@@ -582,6 +596,7 @@ export function handleERC721ExecutedListing(
     }
     historicalPrices.push(event.params.priceInWei);
     portal.historicalPrices = historicalPrices;
+    portal.activeListing = null;
     portal.save();
   }
 
@@ -592,7 +607,7 @@ export function handleERC721ExecutedListing(
       event
     );
     gotchi.timesTraded = gotchi.timesTraded.plus(BIGINT_ONE);
-
+    gotchi.activeListing = null;
     // add to historical prices
     let historicalPrices = gotchi.historicalPrices;
     if (historicalPrices == null) {
@@ -617,6 +632,7 @@ export function handleERC721ExecutedListing(
       event.params.erc721TokenAddress
     );
     parcel.timesTraded = parcel.timesTraded.plus(BIGINT_ONE);
+    parcel.activeListing = null;
 
     // add to historical prices
     let historicalPrices = parcel.historicalPrices;
@@ -645,6 +661,19 @@ export function handleERC721ListingCancelled(
 ): void {
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
   listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+  if(listing.category.lt(BigInt.fromI32(3))) {
+    let portal = getOrCreatePortal(listing.tokenId.toString());
+    portal.activeListing = null;
+    portal.save();
+  } else if(listing.category.equals(BigInt.fromI32(3))) {
+    let gotchi = getOrCreateAavegotchi(listing.tokenId.toString(), event);
+    gotchi.activeListing = null;
+    gotchi.save();
+  } else if(listing.category.equals(BigInt.fromI32(4))) {
+    let parcel = getOrCreateParcel(listing.tokenId, listing.seller, Address.fromString(listing.erc721TokenAddress.toHexString()));
+    parcel.activeListing = null;
+    parcel.save();
+  }
 
   listing.cancelled = true;
   listing.save();
@@ -658,7 +687,19 @@ handler:handleERC721ListingRemoved
 export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
   listing = updateERC721ListingInfo(listing, event.params.listingId, event);
-
+  if(listing.category.lt(BigInt.fromI32(3))) {
+    let portal = getOrCreatePortal(listing.tokenId.toString());
+    portal.activeListing = null;
+    portal.save();
+  } else if(listing.category.equals(BigInt.fromI32(3))) {
+    let gotchi = getOrCreateAavegotchi(listing.tokenId.toString(), event);
+    gotchi.activeListing = null;
+    gotchi.save();
+  } else if(listing.category.equals(BigInt.fromI32(4))) {
+    let parcel = getOrCreateParcel(listing.tokenId, listing.seller, Address.fromString(listing.erc721TokenAddress.toHexString()));
+    parcel.activeListing = null;
+    parcel.save();
+  }
   listing.cancelled = true;
   listing.save();
 }
