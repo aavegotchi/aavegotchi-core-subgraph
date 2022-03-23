@@ -35,6 +35,13 @@ import {
   UpdateERC1155Listing,
   RemoveExperience,
   UpdateItemPrice,
+  WhitelistCreated,
+  WhitelistUpdated,
+  GotchiLendingClaim,
+  GotchiLendingAdd,
+  GotchiLendingEnd,
+  GotchiLendingExecute,
+  GotchiLendingCancel,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -52,6 +59,9 @@ import {
   getOrCreateERC1155Purchase,
   updateERC1155PurchaseInfo,
   getOrCreateParcel,
+  createOrUpdateWhitelist,
+  getOrCreateGotchiLending,
+  updateGotchiLending,
 } from "../utils/helpers/diamond";
 import {
   BIGINT_ONE,
@@ -1023,3 +1033,44 @@ export function handleMintParcel(event: MintParcel): void {
   );
   parcel.save();
 }
+
+// Whitelist
+export function handleWhitelistCreated(event: WhitelistCreated): void {
+  createOrUpdateWhitelist(event.params.whitelistId, event);
+}
+
+export function handleWhitelistUpdated(event: WhitelistUpdated): void {
+  createOrUpdateWhitelist(event.params.whitelistId, event);
+}
+
+export function handleGotchiLendingAdd(event: GotchiLendingAdd): void {
+  let lending = getOrCreateGotchiLending(event.params.listingId);
+  lending = updateGotchiLending(lending, event);
+  lending.save();
+}
+
+export function handleGotchiLendingClaim(event: GotchiLendingClaim): void {
+  let lending = getOrCreateGotchiLending(event.params.listingId);
+  lending = updateGotchiLending(lending, event);
+  lending.save();
+}
+
+export function handleGotchiLendingEnd(event: GotchiLendingEnd): void {
+  let lending = getOrCreateGotchiLending(event.params.listingId);
+  lending = updateGotchiLending(lending, event);
+  lending.save();
+}
+
+export function handleGotchiLendingExecute(event: GotchiLendingExecute): void {
+  let lending = getOrCreateGotchiLending(event.params.listingId);
+  lending = updateGotchiLending(lending, event);
+  lending.save();
+}
+
+export function handleGotchiLendingCancel(event: GotchiLendingCancel): void {
+  let lending = getOrCreateGotchiLending(event.params.listingId);
+  lending = updateGotchiLending(lending, event);
+  lending.save();
+}
+
+

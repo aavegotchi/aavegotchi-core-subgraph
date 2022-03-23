@@ -20,6 +20,8 @@ import {
   WearableSet,
   ERC1155Purchase,
   Parcel,
+  Whitelist,
+  GotchiLending,
 } from "../../../generated/schema";
 import { BIGINT_ZERO } from "../constants";
 import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
@@ -479,4 +481,80 @@ export function getOrCreateParcel(
   }
 
   return parcel as Parcel;
+}
+
+
+// whitelist
+
+export function createOrUpdateWhitelist(id: BigInt, event: ethereum.Event) {
+  let contract = AavegotchiDiamond.bind(event.address);
+  let response = contract.try_getWhitelist(id);
+  
+  if(response.reverted) {
+    return false;
+  }
+
+  let result = response.value;
+
+  let members = result.addresses;
+  let name = result.name;
+
+  let whitelist = Whitelist.load(id.toString());
+  if(!whitelist) {
+    whitelist = new Whitelist(id.toString());
+    whitelist.name = name;
+  }
+
+  whitelist.members = members;
+  whitelist.save();
+}
+
+export function getOrCreateGotchiLending(listingId: BigInt): GotchiLending {
+    let lending = GotchiLending.load(listingId.toString());
+    if(!lending) {
+      lending = new GotchiLending(listingId.toString());
+      lending.agreed = false;
+      lending.cancelled = false;
+      lending.finished = false;
+    }
+
+    return lending;
+}
+
+export function updateGotchiLending(lending: GotchiLending, event: ethereum.Event): GotchiLending {
+  let contract = AavegotchiDiamond.bind(event.address);
+  let response = contract.try_getGotchiLendingListingInfo(BigInt.fromString(lending.id));
+  if(response.reverted) {
+    return lending;
+  }
+
+  let listingResult = response.value.value0;
+  let gotchiResult = response.value.value1;
+
+  lending.borrower = listingResult.borrower.toHexString();
+  lending.cancelled = listingResult.canceled;
+  lending.completed = listingResult.completed;
+  lending.gotchiTokenId = listingResult.erc721TokenId;
+  lending.gotchiBRS = gotchiResult.baseRarityScore;
+  lending.gotchiKinship = gotchiResult.kinship;
+
+  lending.tokensToShare = listingResult.includeList.map(e => e.toHexString());
+  lending.upfrontCost = listingResult.initialCost;
+
+  lending.lastClaimed = listingResult.lastClaimed;
+
+  lending.lender = listingResult.lender.toHexString(); 
+  lending.originalOwner = listingResult.originalOwner.toHexString();
+
+  lending.period = listingResult.period;
+
+  lending.splitOwner = listingResult.revenueSplit[0];
+  lending.splitBorrower = listingResult.revenueSplit[1];
+  lending.splitOther = listingResult.revenueSplit[2];
+
+  lending.thirdPartyAddress = listingResult.thirdParty.toHexString();
+  lending.timeAgreed = listingResult.timeAgreed;
+  lending.timeCreated = listingResult.timeCreated;
+
+  return lending;
 }
