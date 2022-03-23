@@ -278,7 +278,37 @@ type Parcel @entity {
   activeListing: BigInt
 }
 
-#type Upgrade @entity {
-#  id: ID!
-#  calldata:
-#}
+### lending
+type GotchiLending @entity {
+  id: ID!
+  rentDuration: BigInt!
+  upfrontCost: BigInt!
+  period: BigInt!
+
+  gotchi: Aavegotchi!
+
+  # gotch filter attributes
+  gotchiBRS: BigInt!
+  gotchiTokenId: BigInt!
+  # gotchiKinship: BigInt!
+
+  splitOwner: BigInt
+  splitBorrower: BigInt
+  splitOther: BigInt
+
+  tokensToShare: [String!]!
+
+  whitelist: Whitelist
+  thirdPartyAddress: String
+
+  borrower: String
+  cancelled: Boolean!
+  agreed: Boolean!
+  finished: Boolean!
+}
+
+type Whitelist @entity {
+  id: ID!
+  name: String!
+  members: [Bytes!]!
+}
