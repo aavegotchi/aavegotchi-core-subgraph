@@ -292,19 +292,27 @@ type GotchiLending @entity {
   gotchiTokenId: BigInt!
   gotchiKinship: BigInt!
 
+  # profit split
   splitOwner: BigInt
   splitBorrower: BigInt
   splitOther: BigInt
 
+  # tokens to share
   tokensToShare: [String!]!
 
   whitelist: Whitelist
   thirdPartyAddress: String
 
   borrower: String
+  lender: String
+  originalOwner: String
+
   cancelled: Boolean!
-  agreed: Boolean!
-  finished: Boolean!
+  completed: Boolean!
+  lastClaimed: BigInt
+
+  timeAgreed: BigInt
+  timeCreated: BigInt
 }
 
 type Whitelist @entity {
