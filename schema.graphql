@@ -290,7 +290,7 @@ type GotchiLending @entity {
   # gotch filter attributes
   gotchiBRS: BigInt!
   gotchiTokenId: BigInt!
-  # gotchiKinship: BigInt!
+  gotchiKinship: BigInt!
 
   splitOwner: BigInt
   splitBorrower: BigInt
