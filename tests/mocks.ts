@@ -16,7 +16,7 @@ export function getAavegotchiMock(event: ethereum.Event, status: BigInt = BigInt
         ethereum.Value.fromUnsignedBigInt(status),
         ethereum.Value.fromSignedBigIntArray([BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE]),
         ethereum.Value.fromSignedBigIntArray([BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE]),
-        ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE]),
+        ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE]),
         ethereum.Value.fromAddress(event.address),
         ethereum.Value.fromAddress(event.address),
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
@@ -75,6 +75,21 @@ export function getERC721ListingMock(event: ethereum.Event, category: BigInt = B
 }
 
 export function getERC115ListingMock(category: BigInt = BigInt.fromI32(3)): ethereum.Value[] {
+    //getERC721Listing(uint256):((uint256,address,address,uint256,uint256,uint256,uint256,uint256,bool))
+    return [(
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromAddress(contractAddress),
+        ethereum.Value.fromAddress(contractAddress),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(category),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromBoolean(true)
+    )]
+}
+
+export function findWearableSetsReturn(): ethereum.Value[] {
     //getERC721Listing(uint256):((uint256,address,address,uint256,uint256,uint256,uint256,uint256,bool))
     return [(
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
