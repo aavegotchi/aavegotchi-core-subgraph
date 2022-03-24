@@ -298,14 +298,14 @@ type GotchiLending @entity {
   splitOther: BigInt
 
   # tokens to share
-  tokensToShare: [String!]!
+  tokensToShare: [Bytes!]!
 
   whitelist: Whitelist
-  thirdPartyAddress: String
+  thirdPartyAddress: Bytes
 
-  borrower: String
-  lender: String
-  originalOwner: String
+  borrower: Bytes
+  lender: Bytes
+  originalOwner: Bytes
 
   cancelled: Boolean!
   completed: Boolean!

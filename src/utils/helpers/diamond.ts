@@ -486,12 +486,12 @@ export function getOrCreateParcel(
 
 // whitelist
 
-export function createOrUpdateWhitelist(id: BigInt, event: ethereum.Event) {
+export function createOrUpdateWhitelist(id: BigInt, event: ethereum.Event): void {
   let contract = AavegotchiDiamond.bind(event.address);
   let response = contract.try_getWhitelist(id);
   
   if(response.reverted) {
-    return false;
+    return;
   }
 
   let result = response.value;
@@ -515,7 +515,7 @@ export function getOrCreateGotchiLending(listingId: BigInt): GotchiLending {
       lending = new GotchiLending(listingId.toString());
       lending.agreed = false;
       lending.cancelled = false;
-      lending.finished = false;
+      lending.completed = false;
     }
 
     return lending;
@@ -531,20 +531,23 @@ export function updateGotchiLending(lending: GotchiLending, event: ethereum.Even
   let listingResult = response.value.value0;
   let gotchiResult = response.value.value1;
 
-  lending.borrower = listingResult.borrower.toHexString();
+  // load Gotchi
+  let gotchi = Aavegotchi.load(gotchiResult.tokenId.toString());
+
+  lending.borrower = listingResult.borrower;
   lending.cancelled = listingResult.canceled;
   lending.completed = listingResult.completed;
   lending.gotchiTokenId = listingResult.erc721TokenId;
-  lending.gotchiBRS = gotchiResult.baseRarityScore;
+  lending.gotchiBRS = gotchi.withSetsRarityScore;
   lending.gotchiKinship = gotchiResult.kinship;
 
-  lending.tokensToShare = listingResult.includeList.map(e => e.toHexString());
+  lending.tokensToShare = listingResult.includeList;
   lending.upfrontCost = listingResult.initialCost;
 
   lending.lastClaimed = listingResult.lastClaimed;
 
-  lending.lender = listingResult.lender.toHexString(); 
-  lending.originalOwner = listingResult.originalOwner.toHexString();
+  lending.lender = listingResult.lender;
+  lending.originalOwner = listingResult.originalOwner;
 
   lending.period = listingResult.period;
 
@@ -552,7 +555,7 @@ export function updateGotchiLending(lending: GotchiLending, event: ethereum.Even
   lending.splitBorrower = listingResult.revenueSplit[1];
   lending.splitOther = listingResult.revenueSplit[2];
 
-  lending.thirdPartyAddress = listingResult.thirdParty.toHexString();
+  lending.thirdPartyAddress = listingResult.thirdParty;
   lending.timeAgreed = listingResult.timeAgreed;
   lending.timeCreated = listingResult.timeCreated;
 
