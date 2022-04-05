@@ -486,12 +486,12 @@ export function getOrCreateParcel(
 
 // whitelist
 
-export function createOrUpdateWhitelist(id: BigInt, event: ethereum.Event): void {
+export function createOrUpdateWhitelist(id: BigInt, event: ethereum.Event): Whitelist | null {
   let contract = AavegotchiDiamond.bind(event.address);
   let response = contract.try_getWhitelist(id);
-  
+
   if(response.reverted) {
-    return;
+    return null;
   }
 
   let result = response.value;
@@ -502,18 +502,23 @@ export function createOrUpdateWhitelist(id: BigInt, event: ethereum.Event): void
   let whitelist = Whitelist.load(id.toString());
   if(!whitelist) {
     whitelist = new Whitelist(id.toString());
+    whitelist.ownerAddress = result.owner;
+    let user = getOrCreateUser(result.owner.toHexString());
+    user.save();
+    whitelist.owner = user.id;
     whitelist.name = name;
   }
 
-  whitelist.members = members;
+  whitelist.members = members.map<Bytes>(e => e);
+
   whitelist.save();
+  return whitelist;
 }
 
 export function getOrCreateGotchiLending(listingId: BigInt): GotchiLending {
     let lending = GotchiLending.load(listingId.toString());
     if(!lending) {
       lending = new GotchiLending(listingId.toString());
-      lending.agreed = false;
       lending.cancelled = false;
       lending.completed = false;
     }
@@ -531,17 +536,25 @@ export function updateGotchiLending(lending: GotchiLending, event: ethereum.Even
   let listingResult = response.value.value0;
   let gotchiResult = response.value.value1;
 
-  // load Gotchi
-  let gotchi = Aavegotchi.load(gotchiResult.tokenId.toString());
+  // load Gotchi & update gotchi
+  let gotchi = getOrCreateAavegotchi(gotchiResult.tokenId.toString(), event)
+  gotchi = updateAavegotchiInfo(gotchi, gotchiResult.tokenId, event)
+  if(!listingResult.completed && !listingResult.canceled) {
+    gotchi.lending = BigInt.fromString(lending.id);
+  } else {
+    gotchi.lending = null;
+  }
+  gotchi.save();
 
+  lending.gotchi = gotchi.id;
   lending.borrower = listingResult.borrower;
   lending.cancelled = listingResult.canceled;
   lending.completed = listingResult.completed;
-  lending.gotchiTokenId = listingResult.erc721TokenId;
+  lending.gotchiTokenId = BigInt.fromString(gotchi.id);
   lending.gotchiBRS = gotchi.withSetsRarityScore;
   lending.gotchiKinship = gotchiResult.kinship;
 
-  lending.tokensToShare = listingResult.includeList;
+  lending.tokensToShare = listingResult.revenueTokens.map<Bytes>(e => e);
   lending.upfrontCost = listingResult.initialCost;
 
   lending.lastClaimed = listingResult.lastClaimed;
@@ -549,11 +562,22 @@ export function updateGotchiLending(lending: GotchiLending, event: ethereum.Even
   lending.lender = listingResult.lender;
   lending.originalOwner = listingResult.originalOwner;
 
+  let whitelist = createOrUpdateWhitelist(listingResult.whitelistId, event);
+  if(whitelist === null) {
+    lending.whitelist = null;
+    lending.whitelistMembers = [];
+    lending.whitelistId = null;
+  } else {
+    lending.whitelist = whitelist.id;
+    lending.whitelistMembers = whitelist.members;
+    lending.whitelistId = BigInt.fromString(whitelist.id);
+  }
+
   lending.period = listingResult.period;
 
-  lending.splitOwner = listingResult.revenueSplit[0];
-  lending.splitBorrower = listingResult.revenueSplit[1];
-  lending.splitOther = listingResult.revenueSplit[2];
+  lending.splitOwner = BigInt.fromI32(listingResult.revenueSplit[0]);
+  lending.splitBorrower = BigInt.fromI32(listingResult.revenueSplit[1]);
+  lending.splitOther = BigInt.fromI32(listingResult.revenueSplit[2]);
 
   lending.thirdPartyAddress = listingResult.thirdParty;
   lending.timeAgreed = listingResult.timeAgreed;

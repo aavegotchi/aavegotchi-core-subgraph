@@ -42,6 +42,7 @@ import {
   GotchiLendingEnd,
   GotchiLendingExecute,
   GotchiLendingCancel,
+  AddedAavegotchiBatch,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -383,6 +384,12 @@ export function handleEquipWearables(event: EquipWearables): void {
   if(gotchi.status.equals(STATUS_AAVEGOTCHI)) {
     gotchi.save();
   }
+
+  if(gotchi.lending) {
+    let lending = getOrCreateGotchiLending(gotchi.lending!);
+    lending.gotchiBRS = gotchi.withSetsRarityScore;
+    lending.save();
+  }
 }
 
 // - event: SetAavegotchiName(indexed uint256,string,string)
@@ -479,6 +486,12 @@ export function handleExperienceTransfer(event: ExperienceTransfer): void {
 export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+
+  if(gotchi.lending) {
+    let lending = getOrCreateGotchiLending(gotchi.lending!);
+    lending.gotchiKinship = gotchi.kinship;
+    lending.save();
+  }
 
   // persist only if gotchi is already claimed
   if (gotchi.status.equals(STATUS_AAVEGOTCHI)) {
@@ -1073,4 +1086,12 @@ export function handleGotchiLendingCancel(event: GotchiLendingCancel): void {
   lending.save();
 }
 
-
+export function handleAddedAavegotchiBatch(event: AddedAavegotchiBatch): void {
+  let user = getOrCreateUser(event.params.owner.toHexString());
+  let tokenIds = event.params.tokenIds;
+  for(let i=0; i<tokenIds.length; i++) {
+    let gotchi = getOrCreateAavegotchi(tokenIds[i].toString(), event);
+    gotchi.owner = user.id;
+    gotchi.save();
+  }
+}

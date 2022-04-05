@@ -88,6 +88,8 @@ type Aavegotchi @entity {
   historicalPrices: [BigInt!]
 
   activeListing: BigInt
+
+  lending: BigInt
 }
 
 enum PortalStatus {
@@ -136,6 +138,10 @@ type User @entity {
   portalsOwned: [Portal!]! @derivedFrom(field: "owner")
 
   parcelsOwned: [Parcel!]! @derivedFrom(field: "owner")
+
+  # @todo: add whitelist and borrowed gotchis and lend gotchis
+  # borrowedGotchis: [GotchiLending!]! @derivedFrom(field: "borrower")
+  # lendGotchis: [GotchiLending!]! @derivedFrom(field: "originalOwner")
 }
 
 type ERC721Listing @entity {
@@ -288,7 +294,7 @@ type GotchiLending @entity {
   gotchi: Aavegotchi!
 
   # gotch filter attributes
-  gotchiBRS: BigInt!
+  gotchiBRS: BigInt
   gotchiTokenId: BigInt!
   gotchiKinship: BigInt!
 
@@ -301,6 +307,8 @@ type GotchiLending @entity {
   tokensToShare: [Bytes!]!
 
   whitelist: Whitelist
+  whitelistMembers: [Bytes!]!
+  whitelistId: BigInt
   thirdPartyAddress: Bytes
 
   borrower: Bytes
@@ -319,4 +327,6 @@ type Whitelist @entity {
   id: ID!
   name: String!
   members: [Bytes!]!
+  owner: User!
+  ownerAddress: Bytes!
 }

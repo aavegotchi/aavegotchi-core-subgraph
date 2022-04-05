@@ -94,19 +94,21 @@ dataSources:
           handler: handleRemoveExperience
         - event: UpdateItemPrice(uint256,uint256)
           handler: handleUpdateItemPrice
-        - event: WhitelistCreated(indexed uint256)
+        - event: AddedAavegotchiBatch(indexed address,uint256[])
+          handler: handleAddedAavegotchiBatch
+        - event: WhitelistCreated(indexed uint32)
           handler: handleWhitelistCreated
-        - event: WhitelistUpdated(indexed uint256)
+        - event: WhitelistUpdated(indexed uint32)
           handler: handleWhitelistUpdated
-        - event: GotchiLendingAdd(indexed uint256)
+        - event: GotchiLendingAdd(indexed uint32)
           handler: handleGotchiLendingAdd
-        - event: GotchiLendingClaim(indexed uint256,address[],uint256[])
+        - event: GotchiLendingClaim(indexed uint32,address[],uint256[])
           handler: handleGotchiLendingClaim
-        - event: GotchiLendingEnd(indexed uint256)
+        - event: GotchiLendingEnd(indexed uint32)
           handler: handleGotchiLendingEnd
-        - event: GotchiLendingExecute(indexed uint256)
+        - event: GotchiLendingExecute(indexed uint32)
           handler: handleGotchiLendingExecute
-        - event: GotchiLendingCancel(indexed uint256,uint256)
+        - event: GotchiLendingCancel(indexed uint32,uint256)
           handler: handleGotchiLendingCancel
         # - event: DiamondCut((address,uint8,bytes4[])[],address,bytes)
         #   handler: handleDiamondCut
