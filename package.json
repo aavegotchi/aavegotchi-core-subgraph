@@ -10,7 +10,9 @@
     "remove-local": "graph remove --node http://localhost:8020/ aavegotchi/aavegotchi-core-matic",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 aavegotchi/aavegotchi-core-matic",
     "generate-docs": "graphdoc -e https://api.thegraph.com/subgraphs/name/aavegotchi/aavegotchi-core-matic -o ./doc/schema --force",
-    "test:unit": "graph test"
+    "test:unit": "graph test",
+    "test:e2e": "jest",
+    "check-deployment": "node ./bin/checkDeployment"
   },
   "dependencies": {
     "@2fd/graphdoc": "^2.4.0",
@@ -18,6 +20,11 @@
     "@graphprotocol/graph-ts": "0.24.1"
   },
   "devDependencies": {
-    "matchstick-as": "^0.2.2"
+    "apollo-fetch": "^0.7.0",
+    "dotenv": "^15.0.0",
+    "ethers": "^5.5.4",
+    "jest": "^27.4.7",
+    "json-diff": "^0.7.1",
+    "matchstick-as": "^0.2.3"
   }
 }
