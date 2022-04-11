@@ -35,6 +35,13 @@ import {
   UpdateERC1155Listing,
   RemoveExperience,
   UpdateItemPrice,
+  GotchiLendingCancel,
+  GotchiLendingExecute,
+  GotchiLendingEnd,
+  GotchiLendingClaim,
+  GotchiLendingAdd,
+  WhitelistCreated,
+  WhitelistUpdated,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -54,6 +61,9 @@ import {
   getOrCreateParcel,
   updateAavegotchiWearables,
   calculateBaseRarityScore,
+  getOrCreateGotchiLending,
+  updateGotchiLending,
+  createOrUpdateWhitelist,
 } from "../utils/helpers/diamond";
 import {
   BIGINT_ONE,
@@ -241,6 +251,12 @@ export function handleEquipWearables(event: EquipWearables): void {
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
   updateAavegotchiWearables(gotchi, event);
+
+  if(gotchi.lending) {
+    let lending = getOrCreateGotchiLending(gotchi.lending!);
+    lending.gotchiBRS = gotchi.withSetsRarityScore;
+    lending.save();
+  }
 }
 
 // - event: SetAavegotchiName(indexed uint256,string,string)
@@ -341,6 +357,12 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   // persist only if gotchi is already claimed
   if(gotchi.status.equals(BigInt.fromI32(3))) {
     gotchi.save();
+  }
+
+  if(gotchi.lending) {
+    let lending = getOrCreateGotchiLending(gotchi.lending!);
+    lending.gotchiKinship = gotchi.kinship;
+    lending.save();
   }
 }
 
@@ -890,3 +912,41 @@ export function handleMintParcel(event: MintParcel): void {
   parcel.save();
 }
 
+// Whitelist
+export function handleWhitelistCreated(event: WhitelistCreated): void {
+  createOrUpdateWhitelist(event.params.whitelistId, event);
+}
+
+export function handleWhitelistUpdated(event: WhitelistUpdated): void {
+  createOrUpdateWhitelist(event.params.whitelistId, event);
+}
+
+export function handleGotchiLendingAdd(event: GotchiLendingAdd): void {
+  let lending = getOrCreateGotchiLending(event.params.listingId);
+  lending = updateGotchiLending(lending, event);
+  lending.save();
+}
+
+export function handleGotchiLendingClaim(event: GotchiLendingClaim): void {
+  let lending = getOrCreateGotchiLending(event.params.listingId);
+  lending = updateGotchiLending(lending, event);
+  lending.save();
+}
+
+export function handleGotchiLendingEnd(event: GotchiLendingEnd): void {
+  let lending = getOrCreateGotchiLending(event.params.listingId);
+  lending = updateGotchiLending(lending, event);
+  lending.save();
+}
+
+export function handleGotchiLendingExecute(event: GotchiLendingExecute): void {
+  let lending = getOrCreateGotchiLending(event.params.listingId);
+  lending = updateGotchiLending(lending, event);
+  lending.save();
+}
+
+export function handleGotchiLendingCancel(event: GotchiLendingCancel): void {
+  let lending = getOrCreateGotchiLending(event.params.listingId);
+  lending = updateGotchiLending(lending, event);
+  lending.save();
+}
