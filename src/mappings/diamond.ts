@@ -52,6 +52,8 @@ import {
   getOrCreateERC1155Purchase,
   updateERC1155PurchaseInfo,
   getOrCreateParcel,
+  updateAavegotchiWearables,
+  calculateBaseRarityScore,
 } from "../utils/helpers/diamond";
 import {
   BIGINT_ONE,
@@ -134,20 +136,6 @@ export function handleXingyun(event: Xingyun): void {
   owner.save();
 }
 
-//@ts-ignore
-function calculateBaseRarityScore(numericTraits: Array<i32>): i32 {
-  let rarityScore = 0;
-
-  for (let index = 0; index < numericTraits.length; index++) {
-    let element = numericTraits[index];
-
-    if (element < 50) rarityScore = rarityScore + (100 - element);
-    else rarityScore = rarityScore + (element + 1);
-  }
-
-  return rarityScore;
-}
-
 // - event: PortalOpened(indexed uint256)
 //   handler: handlePortalOpened
 export function handlePortalOpened(event: PortalOpened): void {
@@ -203,6 +191,12 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
   portal.status = PORTAL_STATUS_CLAIMED;
   portal.claimedAt = event.block.number;
 
+  if(portal.activeListing) {
+    let listing = getOrCreateERC721Listing(portal.activeListing!.toString());
+    listing.cancelled = true;
+    listing.save();
+  }
+
   stats.aavegotchisClaimed = stats.aavegotchisClaimed.plus(BIGINT_ONE);
 
   stats.save();
@@ -234,7 +228,7 @@ export function handleDecreaseStake(event: DecreaseStake): void {
 export function handleSpendSkillpoints(event: SpendSkillpoints): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-  gotchi.save();
+  updateAavegotchiWearables(gotchi, event);
 }
 
 // - event: EquipWearables(indexed uint256,uint256,uint256)
@@ -245,114 +239,7 @@ export function handleEquipWearables(event: EquipWearables): void {
 
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
-  let contract = AavegotchiDiamond.bind(event.address);
-
-  let bigInts = new Array<BigInt>();
-  let equippedWearables = gotchi.equippedWearables;
-
-  for (let index = 0; index < equippedWearables.length; index++) {
-    let element = equippedWearables[index];
-    bigInts.push(BigInt.fromI32(element));
-  }
-
-  let equippedSets = contract.try_findWearableSets(bigInts);
-
-  if (!equippedSets.reverted) {
-    log.warning("Equipped sets for GotchiID {} length {}", [
-      event.params._tokenId.toString(),
-      BigInt.fromI32(equippedSets.value.length).toString(),
-    ]);
-
-    if (equippedSets.value.length > 0) {
-      //Find the best set
-      let foundSetIDs = equippedSets.value;
-
-      //Retrieve sets from onchain
-      let getSetTypes = contract.try_getWearableSets();
-
-      if (!getSetTypes.reverted) {
-        let setTypes = getSetTypes.value;
-
-        let bestSetID = 0;
-        let highestBRSBonus = 0;
-
-        //Iterate through all the possible equipped sets
-        for (let index = 0; index < foundSetIDs.length; index++) {
-          let setID = foundSetIDs[index];
-          let setInfo = setTypes[setID.toI32()];
-          let traitBonuses = setInfo.traitsBonuses;
-
-          let brsBonus = traitBonuses[0];
-
-          if (brsBonus >= highestBRSBonus) {
-            highestBRSBonus = brsBonus;
-            bestSetID = setID.toI32();
-          } else {
-          }
-        }
-
-        log.warning("Best set: for GotchiID {} {} {}", [
-          gotchi.gotchiId.toString(),
-          setTypes[bestSetID].name,
-          bestSetID.toString(),
-        ]);
-
-        let setBonuses = setTypes[bestSetID].traitsBonuses;
-
-        //Add the set bonuses on to the modified numeric traits (which already include wearable bonuses, but not rarityScore modifiers)
-        let brsBonus = setBonuses[0];
-
-        let beforeSetBonus = calculateBaseRarityScore(
-          gotchi.modifiedNumericTraits
-        );
-
-        //Before modifying
-        let withSetsNumericTraits = gotchi.modifiedNumericTraits;
-
-        //Add in the individual bonuses
-        for (let index = 0; index < 4; index++) {
-          withSetsNumericTraits[index] =
-            withSetsNumericTraits[index] + setBonuses[index + 1];
-        }
-
-        //Get the post-set bonus
-        let afterSetBonus = calculateBaseRarityScore(withSetsNumericTraits);
-
-        //Get the difference
-        let bonusDifference = afterSetBonus - beforeSetBonus;
-
-        //Update the traits
-        gotchi.withSetsNumericTraits = withSetsNumericTraits;
-
-        //Add on the bonus differences to the modified rarity score
-        gotchi.withSetsRarityScore = gotchi.modifiedRarityScore
-          .plus(BigInt.fromI32(bonusDifference))
-          .plus(BigInt.fromI32(brsBonus));
-
-        //Equip the set
-        gotchi.equippedSetID = BigInt.fromI32(bestSetID);
-
-        //Set the name
-        gotchi.equippedSetName = setTypes[bestSetID].name;
-      }
-
-      gotchi.possibleSets = BigInt.fromI32(equippedSets.value.length);
-    } else {
-      gotchi.equippedSetID = null;
-      gotchi.equippedSetName = "";
-      gotchi.withSetsRarityScore = gotchi.modifiedRarityScore;
-      gotchi.withSetsNumericTraits = gotchi.modifiedNumericTraits;
-    }
-  } else {
-    gotchi.withSetsRarityScore = gotchi.modifiedRarityScore;
-    gotchi.withSetsNumericTraits = gotchi.modifiedNumericTraits;
-    log.warning("Find wearable sets reverted at block: {} tx_hash: {}", [
-      event.block.number.toString(),
-      event.transaction.hash.toHexString(),
-    ]);
-  }
-
-  gotchi.save();
+  updateAavegotchiWearables(gotchi, event);
 }
 
 // - event: SetAavegotchiName(indexed uint256,string,string)
@@ -362,6 +249,12 @@ export function handleSetAavegotchiName(event: SetAavegotchiName): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
   gotchi.save();
+
+  if(gotchi.activeListing) {
+    let listing = getOrCreateERC721Listing(gotchi.activeListing!.toString(), false);
+    listing.nameLowerCase = gotchi.nameLowerCase;
+    listing.save();
+  }
 }
 
 // - event: UseConsumables(indexed uint256,uint256[],uint256[])
@@ -497,12 +390,20 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
 
   if (listing.category == BigInt.fromI32(3)) {
     listing.gotchi = event.params.erc721TokenId.toString();
+    let gotchi = getOrCreateAavegotchi(event.params.erc721TokenId.toString(), event);
+    gotchi.activeListing = event.params.listingId;
+    gotchi.save();
+    listing.nameLowerCase = gotchi.nameLowerCase;
   } else if (listing.category.lt(BigInt.fromI32(3))) {
+    let portal = getOrCreatePortal(event.params.erc721TokenId.toString());
+    portal.activeListing = event.params.listingId;
+    portal.save();
     listing.portal = event.params.erc721TokenId.toString();
   } else if (listing.category == BigInt.fromI32(4)) {
     listing.parcel = event.params.erc721TokenId.toString();
     
     let parcel = Parcel.load(event.params.erc721TokenId.toString())!;
+    parcel.activeListing = event.params.listingId;
     listing.fudBoost = parcel.fudBoost;
     listing.fomoBoost = parcel.fomoBoost;
     listing.alphaBoost = parcel.alphaBoost;
@@ -556,6 +457,7 @@ export function handleERC721ExecutedListing(
     }
     historicalPrices.push(event.params.priceInWei);
     portal.historicalPrices = historicalPrices;
+    portal.activeListing = null;
     portal.save();
   }
 
@@ -574,6 +476,7 @@ export function handleERC721ExecutedListing(
     }
     historicalPrices.push(event.params.priceInWei);
     gotchi.historicalPrices = historicalPrices;
+    gotchi.activeListing = null;
     gotchi.save();
   }
 
@@ -593,7 +496,7 @@ export function handleERC721ExecutedListing(
       event.params.erc721TokenAddress
     );
     parcel.timesTraded = parcel.timesTraded.plus(BIGINT_ONE);
-
+    parcel.activeListing = null;
     // add to historical prices
     let historicalPrices = parcel.historicalPrices;
     if(historicalPrices == null) {
@@ -622,6 +525,20 @@ export function handleERC721ListingCancelled(
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
   listing = updateERC721ListingInfo(listing, event.params.listingId, event);
 
+  if(listing.category.lt(BigInt.fromI32(3))) {
+    let portal = getOrCreatePortal(listing.tokenId.toString());
+    portal.activeListing = null;
+    portal.save();
+  } else if(listing.category.equals(BigInt.fromI32(3))) {
+    let gotchi = getOrCreateAavegotchi(listing.tokenId.toString(), event);
+    gotchi.activeListing = null;
+    gotchi.save();
+  } else if(listing.category.equals(BigInt.fromI32(4))) {
+    let parcel = getOrCreateParcel(listing.tokenId, listing.seller, Address.fromString(listing.erc721TokenAddress.toHexString()));
+    parcel.activeListing = null;
+    parcel.save();
+  }
+
   listing.cancelled = true;
   listing.save();
 }
@@ -634,6 +551,20 @@ handler:handleERC721ListingRemoved
 export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
   listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+
+  if(listing.category.lt(BigInt.fromI32(3))) {
+    let portal = getOrCreatePortal(listing.tokenId.toString());
+    portal.activeListing = null;
+    portal.save();
+  } else if(listing.category.equals(BigInt.fromI32(3))) {
+    let gotchi = getOrCreateAavegotchi(listing.tokenId.toString(), event);
+    gotchi.activeListing = null;
+    gotchi.save();
+  } else if(listing.category.equals(BigInt.fromI32(4))) {
+    let parcel = getOrCreateParcel(listing.tokenId, listing.seller, Address.fromString(listing.erc721TokenAddress.toHexString()));
+    parcel.activeListing = null;
+    parcel.save();
+  }
 
   listing.cancelled = true;
   listing.save();

@@ -1,5 +1,5 @@
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { ERC721ExecutedListing, ERC721ListingAdd, ERC721ListingCancelled, UpdateERC1155Listing } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
+import { ClaimAavegotchi, ERC721ExecutedListing, ERC721ListingAdd, ERC721ListingCancelled, SetAavegotchiName, UpdateERC1155Listing } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { BIGINT_ONE } from "../src/utils/constants";
 import { newMockEvent } from 'matchstick-as/assembly/index'
 
@@ -16,7 +16,7 @@ export function getAavegotchiMock(event: ethereum.Event, status: BigInt = BigInt
         ethereum.Value.fromUnsignedBigInt(status),
         ethereum.Value.fromSignedBigIntArray([BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE]),
         ethereum.Value.fromSignedBigIntArray([BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE]),
-        ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE]),
+        ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE]),
         ethereum.Value.fromAddress(event.address),
         ethereum.Value.fromAddress(event.address),
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
@@ -220,6 +220,65 @@ export function getERC721ListingCancelledEvent(categoryId: BigInt): ERC721Listin
     let time = new ethereum.EventParam("BigInt", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
     event.parameters.push(time);
     
+    let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
+    event.address = contractAddress
+    return event;
+}
+
+export function findWearableSetsReturn(): ethereum.Value[] {
+    //getERC721Listing(uint256):((uint256,address,address,uint256,uint256,uint256,uint256,uint256,bool))
+    return [(
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromAddress(contractAddress),
+        ethereum.Value.fromAddress(contractAddress),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromBoolean(true)
+    )]
+}
+
+export function getSetNameEvent(): SetAavegotchiName {
+    let newMockevent = newMockEvent();
+    let event = new SetAavegotchiName(
+        newMockevent.address,
+        newMockevent.logIndex,
+        newMockevent.transactionLogIndex,
+        newMockevent.logType,
+        newMockevent.block,
+        newMockevent.transaction,
+        newMockevent.parameters
+    );
+    event.parameters = new Array<ethereum.EventParam>();
+    event.block.number = BIGINT_ONE;
+
+    event.parameters.push(new ethereum.EventParam("_tokenId",  ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)));
+    event.parameters.push(new ethereum.EventParam("_oldName",  ethereum.Value.fromString("oldName")));
+    event.parameters.push(new ethereum.EventParam("_newName",  ethereum.Value.fromString("newName")));
+
+    let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
+    event.address = contractAddress
+    return event;
+}
+
+export function getClaimAavegotchiEvent(): ClaimAavegotchi {
+    let newMockevent = newMockEvent();
+    let event = new ClaimAavegotchi(
+        newMockevent.address,
+        newMockevent.logIndex,
+        newMockevent.transactionLogIndex,
+        newMockevent.logType,
+        newMockevent.block,
+        newMockevent.transaction,
+        newMockevent.parameters
+    );
+    event.parameters = new Array<ethereum.EventParam>();
+    event.block.number = BIGINT_ONE;
+
+    event.parameters.push(new ethereum.EventParam("BigInt",  ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)));
+
     let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
     event.address = contractAddress
     return event;

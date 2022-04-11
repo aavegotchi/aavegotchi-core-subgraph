@@ -86,6 +86,8 @@ type Aavegotchi @entity {
   timesTraded: BigInt!
 
   historicalPrices: [BigInt!]
+
+  activeListing: BigInt
 }
 
 enum PortalStatus {
@@ -120,6 +122,8 @@ type Portal @entity {
   timesTraded: BigInt!
 
   historicalPrices: [BigInt!]
+
+  activeListing: BigInt
 }
 
 type User @entity {
@@ -164,6 +168,7 @@ type ERC721Listing @entity {
   coordinateY: BigInt # coordinate y of parcel
   size: BigInt # size of parcel
   parcelHash: String # address/hash of parcel
+  nameLowerCase: String
 }
 
 type ERC1155Listing @entity {
@@ -270,6 +275,7 @@ type Parcel @entity {
   auctionId: String
   timesTraded: BigInt!
   historicalPrices: [BigInt!]
+  activeListing: BigInt
 }
 
 #type Upgrade @entity {
