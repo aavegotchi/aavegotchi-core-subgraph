@@ -61,6 +61,7 @@ import {
   PORTAL_STATUS_OPENED,
   PORTAL_STATUS_CLAIMED,
   BIGINT_ZERO,
+  ZERO_ADDRESS,
 } from "../utils/constants";
 import { Address, BigInt, log } from "@graphprotocol/graph-ts";
 
@@ -347,6 +348,7 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
 export function handleTransfer(event: Transfer): void {
   let id = event.params._tokenId.toString();
   let newOwner = getOrCreateUser(event.params._to.toHexString());
+  newOwner.save();
   let gotchi = getOrCreateAavegotchi(id, event);
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
   
@@ -360,8 +362,6 @@ export function handleTransfer(event: Transfer): void {
     portal.owner = newOwner.id;
     portal.save();
   }
-
-  newOwner.save();
 }
 
 //ERC1155 Transfers
