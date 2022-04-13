@@ -1,0 +1,32 @@
+name: Deploy to Dev
+
+on:
+  push: develop
+
+jobs:
+  deployDev:
+    runs-on: ubuntu-latest
+    environment: Staging
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Install Yarn
+        run: npm i -g yarn
+      - name: Install Libs
+        run: yarn --frozen-lockfile
+      - name: Codegen
+        run: yarn codegen
+      - name: Build
+        run: yarn build
+      - name: Run Unit Tests
+        run: yarn test:unit
+      - name: Deploy Dev
+        run: |
+          npx graph create --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic-dev subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node http://157.90.182.138:8020
+          npx graph create --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic-dev subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node http://157.90.180.94:8020
+          npx graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic-dev subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node http://157.90.182.138:8020 -l v0.0.1
+          npx graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic-dev subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node http://157.90.180.94:8020 -l v0.0.1
+        shell: bash
