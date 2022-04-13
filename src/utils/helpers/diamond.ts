@@ -663,7 +663,7 @@ export function updateGotchiLending(lending: GotchiLending, event: ethereum.Even
   gotchi = updateAavegotchiInfo(gotchi, gotchiResult.tokenId, event)
 
   if(!gotchi.owner) {
-    let owner = getOrCreateUser(lending.originalOwner.toHexString());
+    let owner = getOrCreateUser(lending.originalOwner!.toHexString());
     owner.save();
     gotchi.owner = owner.id;
   }
@@ -680,7 +680,7 @@ export function updateGotchiLending(lending: GotchiLending, event: ethereum.Even
   lending.completed = listingResult.completed;
   lending.gotchiTokenId = BigInt.fromString(gotchi.id);
   lending.gotchiBRS = gotchi.withSetsRarityScore;
-  lending.gotchiKinship = gotchi.kinship;
+  lending.gotchiKinship = gotchiResult.kinship;
 
   lending.tokensToShare = listingResult.revenueTokens.map<Bytes>(e => e);
   lending.upfrontCost = listingResult.initialCost;
