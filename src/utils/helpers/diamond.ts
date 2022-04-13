@@ -359,6 +359,12 @@ export function updateAavegotchiInfo(
       gotchi.withSetsNumericTraits = gotchiInfo.modifiedNumericTraits;
     }
 
+    if(gotchi.lending) {
+      let lending = getOrCreateGotchiLending(gotchi.lending!);
+      lending.gotchiKinship = gotchi.kinship;
+      lending.save();
+    }
+
     gotchi.locked = gotchiInfo.locked;
   } else {
     log.warning("Aavegotchi {} couldn't be updated at block: {} tx_hash: {}", [
