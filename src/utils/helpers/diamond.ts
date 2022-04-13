@@ -661,6 +661,12 @@ export function updateGotchiLending(lending: GotchiLending, event: ethereum.Even
   // load Gotchi & update gotchi
   let gotchi = getOrCreateAavegotchi(gotchiResult.tokenId.toString(), event)
   gotchi = updateAavegotchiInfo(gotchi, gotchiResult.tokenId, event)
+
+  if(!gotchi.owner) {
+    let owner = getOrCreateUser(lending.originalOwner.toHexString());
+    owner.save();
+    gotchi.owner = owner.id;
+  }
   if(!listingResult.completed && !listingResult.canceled) {
     gotchi.lending = BigInt.fromString(lending.id);
   } else {
@@ -674,7 +680,7 @@ export function updateGotchiLending(lending: GotchiLending, event: ethereum.Even
   lending.completed = listingResult.completed;
   lending.gotchiTokenId = BigInt.fromString(gotchi.id);
   lending.gotchiBRS = gotchi.withSetsRarityScore;
-  lending.gotchiKinship = gotchiResult.kinship;
+  lending.gotchiKinship = gotchi.kinship;
 
   lending.tokensToShare = listingResult.revenueTokens.map<Bytes>(e => e);
   lending.upfrontCost = listingResult.initialCost;
@@ -683,6 +689,8 @@ export function updateGotchiLending(lending: GotchiLending, event: ethereum.Even
 
   lending.lender = listingResult.lender;
   lending.originalOwner = listingResult.originalOwner;
+
+  
 
   let whitelist = createOrUpdateWhitelist(listingResult.whitelistId, event);
   if(whitelist === null) {
