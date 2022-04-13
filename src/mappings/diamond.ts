@@ -372,12 +372,11 @@ export function handleTransfer(event: Transfer): void {
   let newOwner = getOrCreateUser(event.params._to.toHexString());
   newOwner.save();
   let gotchi = getOrCreateAavegotchi(id, event);
-  gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-  
   let portal = getOrCreatePortal(id, false);
 
   // ERC721 transfer can be portal or gotchi based, so we have to check it.
-  if (gotchi.status.gt(BigInt.fromI32(2))) {
+  if (gotchi.status && gotchi.status.gt(BigInt.fromI32(2))) {
+    gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
     gotchi.owner = newOwner.id;
     gotchi.save();
   } else {

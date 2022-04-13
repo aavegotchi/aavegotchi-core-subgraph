@@ -24,8 +24,8 @@ jobs:
         run: yarn test:unit
       - name: Deploy to Dev
         run: |
-          npx graph create --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic-${{GITHUB_REF_NAME}} subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node http://157.90.182.138:8020
-          npx graph create --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic-${{GITHUB_REF_NAME}} subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node http://157.90.180.94:8020
-          npx graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic-${{GITHUB_REF_NAME}} subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node http://157.90.182.138:8020 -l v0.0.1
-          npx graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic-${{GITHUB_REF_NAME}} subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node http://157.90.180.94:8020 -l v0.0.1
+          npx graph create --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic-${{env.GITHUB_REF_NAME}} subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node http://157.90.182.138:8020
+          npx graph create --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic-${{env.GITHUB_REF_NAME}} subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node http://157.90.180.94:8020
+          npx graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic-${{env.GITHUB_REF_NAME}} subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node http://157.90.182.138:8020 -l v0.0.1
+          npx graph deploy --access-token ${{secrets.GRAPH_ACCESS_TOKEN}} aavegotchi/aavegotchi-core-matic-${{env.GITHUB_REF_NAME}} subgraph.yaml --ipfs https://api.thegraph.com/ipfs/ --node http://157.90.180.94:8020 -l v0.0.1
         shell: bash
