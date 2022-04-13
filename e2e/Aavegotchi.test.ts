@@ -1,3 +1,5 @@
+import { ExperienceTransfer } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
+
 const query = require("./helper/query");
 const config = require("./helper/config");
 const compare = require("./helper/compare");
@@ -79,5 +81,21 @@ describe("Aavegotchis E2E", () => {
   
     const {data} = await query(config.endpoint, queryString);
     expect(data.aavegotchis).not.toHaveLength(0);
+  })
+
+  it("should maintain proper kinship level on lendings", async () => {
+    const queryString = `{
+      gotchiLendings(block: {number:27091286} where: {id:"1000"} ) {
+        id
+        gotchi {
+          kinship
+        } 
+        gotchiKinship
+      }
+    }`;
+
+    const {data} = await query(config.endpoint, queryString);
+    expect(data.gotchiLendings.gotchiKinship).toBe(data.gotchiLendings.gotchi.kinship);
+
   })
 });
