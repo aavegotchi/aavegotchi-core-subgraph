@@ -331,6 +331,10 @@ export function updateAavegotchiInfo(
   if (!response.reverted) {
     let gotchiInfo = response.value;
 
+    let owner = getOrCreateUser(gotchiInfo.owner.toHexString());
+    owner.save();
+    
+    gotchi.owner = owner.id;
     gotchi.name = gotchiInfo.name;
     gotchi.nameLowerCase = gotchiInfo.name.toLowerCase();
     gotchi.randomNumber = gotchiInfo.randomNumber;
