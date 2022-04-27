@@ -58,15 +58,18 @@ export function getOrCreateAavegotchiOption(
 export function getOrCreateAavegotchi(
   id: string,
   event: ethereum.Event,
-): Aavegotchi {
+  createIfNotFound: boolean = true
+): Aavegotchi | null {
   let gotchi = Aavegotchi.load(id);
 
-  if (gotchi == null) {
+  if (gotchi == null && createIfNotFound) {
     gotchi = new Aavegotchi(id);
     gotchi.gotchiId = BigInt.fromString(id);
     gotchi.createdAt = event.block.number;
     gotchi.timesTraded = BIGINT_ZERO;
     gotchi.historicalPrices = [];
+  } else if(gotchi == null && !createIfNotFound) {
+    return null
   }
 
   return gotchi as Aavegotchi;
@@ -362,6 +365,7 @@ export function updateAavegotchiInfo(
     if(gotchi.lending) {
       let lending = getOrCreateGotchiLending(gotchi.lending!);
       lending.gotchiKinship = gotchi.kinship;
+      lending.gotchiBRS = gotchi.withSetsRarityScore;
       lending.save();
     }
 
@@ -665,19 +669,22 @@ export function updateGotchiLending(lending: GotchiLending, event: ethereum.Even
   let gotchiResult = response.value.value1;
 
   // load Gotchi & update gotchi
-  let gotchi = getOrCreateAavegotchi(gotchiResult.tokenId.toString(), event)
+  let gotchi = getOrCreateAavegotchi(gotchiResult.tokenId.toString(), event)!
   gotchi = updateAavegotchiInfo(gotchi, gotchiResult.tokenId, event)
 
-  if(!gotchi.owner) {
-    let owner = getOrCreateUser(lending.originalOwner!.toHexString());
-    owner.save();
-    gotchi.owner = owner.id;
-  }
   if(!listingResult.completed && !listingResult.canceled) {
     gotchi.lending = BigInt.fromString(lending.id);
   } else {
     gotchi.lending = null;
   }
+
+  // remove Hotfix for lending
+  if(gotchi.originalOwner == null) {
+    let lender = getOrCreateUser(listingResult.lender.toHexString())
+    lender.save();
+    gotchi.originalOwner = lender.id;
+  }
+
   gotchi.save();
 
   lending.gotchi = gotchi.id;

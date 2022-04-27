@@ -24,6 +24,8 @@ type Aavegotchi @entity {
 
   owner: User
 
+  originalOwner: User
+
   portal: Portal! @derivedFrom(field: "gotchi")
 
   hauntId: BigInt!
