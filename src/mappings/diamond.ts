@@ -73,7 +73,7 @@ import {
   BIGINT_ZERO,
   ZERO_ADDRESS,
 } from "../utils/constants";
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { Address, BigInt, log } from "@graphprotocol/graph-ts";
 
 import { Parcel } from "../../generated/schema";
 import {
