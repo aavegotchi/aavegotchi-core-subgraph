@@ -365,6 +365,7 @@ export function updateAavegotchiInfo(
     if(gotchi.lending) {
       let lending = getOrCreateGotchiLending(gotchi.lending!);
       lending.gotchiKinship = gotchi.kinship;
+      lending.gotchiBRS = gotchi.withSetsRarityScore;
       lending.save();
     }
 

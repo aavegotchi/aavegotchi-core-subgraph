@@ -251,12 +251,6 @@ export function handleEquipWearables(event: EquipWearables): void {
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
   updateAavegotchiWearables(gotchi, event);
-
-  if(gotchi.lending) {
-    let lending = getOrCreateGotchiLending(gotchi.lending!);
-    lending.gotchiBRS = gotchi.withSetsRarityScore;
-    lending.save();
-  }
 }
 
 // - event: SetAavegotchiName(indexed uint256,string,string)
@@ -351,7 +345,7 @@ export function handleExperienceTransfer(event: ExperienceTransfer): void {
 //   handler: handleAavegotchiInteract
 
 export function handleAavegotchiInteract(event: AavegotchiInteract): void {
-  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event)!;
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event, false);
   if(!gotchi) {
     return;
   }
@@ -362,11 +356,6 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
     gotchi.save();
   }
 
-  if(gotchi.lending) {
-    let lending = getOrCreateGotchiLending(gotchi.lending!);
-    lending.gotchiKinship = gotchi.kinship;
-    lending.save();
-  }
 }
 
 //ERC721 Transfer
