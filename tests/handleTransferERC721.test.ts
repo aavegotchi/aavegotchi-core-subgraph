@@ -175,7 +175,6 @@ test("handleTransferERC721 - should set owner to 0x0 of aavegotchi entity if got
     clearStore();
 })
 
-
 test("handleTransferERC721 - should proper handle bridged portals", () => {
 
     let testAddressFrom = Address.fromString("0x86935f11c86623dec8a25696e1c19a8659cbf95d");
