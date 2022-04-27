@@ -197,11 +197,12 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
   let stats = getStatisticEntity();
 
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-  gotchi.owner = portal.owner;
   gotchi.claimedAt = event.block.number;
   gotchi.gotchiId = event.params._tokenId;
 
   portal.gotchi = gotchi.id;
+  let zeroUser = getOrCreateUser(ZERO_ADDRESS);
+  portal.owner = zeroUser.id;
   portal.status = PORTAL_STATUS_CLAIMED;
   portal.claimedAt = event.block.number;
 
@@ -216,6 +217,7 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
   stats.save();
   gotchi.save();
   portal.save();
+  zeroUser.save();
 }
 
 // - event: IncreaseStake(indexed uint256,uint256)
