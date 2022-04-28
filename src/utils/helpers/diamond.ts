@@ -707,16 +707,17 @@ export function updateGotchiLending(lending: GotchiLending, event: ethereum.Even
   lending.originalOwner = listingResult.originalOwner;
 
   
-
-  let whitelist = createOrUpdateWhitelist(listingResult.whitelistId, event);
-  if(whitelist === null) {
-    lending.whitelist = null;
-    lending.whitelistMembers = [];
-    lending.whitelistId = null;
-  } else {
-    lending.whitelist = whitelist.id;
-    lending.whitelistMembers = whitelist.members;
-    lending.whitelistId = BigInt.fromString(whitelist.id);
+  if(listingResult.whitelistId != BIGINT_ZERO) {
+    let whitelist = createOrUpdateWhitelist(listingResult.whitelistId, event);
+    if(whitelist === null) {
+      lending.whitelist = null;
+      lending.whitelistMembers = [];
+      lending.whitelistId = null;
+    } else {
+      lending.whitelist = whitelist.id;
+      lending.whitelistMembers = whitelist.members;
+      lending.whitelistId = BigInt.fromString(whitelist.id);
+    }
   }
 
   lending.period = listingResult.period;
