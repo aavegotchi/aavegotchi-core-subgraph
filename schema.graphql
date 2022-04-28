@@ -322,6 +322,15 @@ type GotchiLending @entity {
 
   timeAgreed: BigInt
   timeCreated: BigInt
+
+  claimed: [ClaimedToken!]! @derivedFrom(field: "lending")
+}
+
+type ClaimedToken @entity {
+  id: ID!
+  lending: GotchiLending!
+  token: Bytes!
+  amount: BigInt!
 }
 
 type Whitelist @entity {
