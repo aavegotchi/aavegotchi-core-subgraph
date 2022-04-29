@@ -983,6 +983,7 @@ export function handleGotchiLendingExecute(event: GotchiLendingExecute): void {
   gotchisBorrowed.push(lending.gotchiTokenId);
   borrower.gotchisBorrowed = gotchisBorrowed;
 
+  originalOwner.save();
   borrower.save();
   lending.save();
 }
