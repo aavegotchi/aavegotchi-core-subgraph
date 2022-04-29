@@ -64,6 +64,7 @@ import {
   getOrCreateGotchiLending,
   updateGotchiLending,
   createOrUpdateWhitelist,
+  getOrCreateClaimedToken,
 } from "../utils/helpers/diamond";
 import {
   BIGINT_ONE,
@@ -924,6 +925,11 @@ export function handleGotchiLendingAdd(event: GotchiLendingAdd): void {
 export function handleGotchiLendingClaim(event: GotchiLendingClaim): void {
   let lending = getOrCreateGotchiLending(event.params.listingId);
   lending = updateGotchiLending(lending, event);
+  for(let i=0;i<event.params.tokenAddresses.length; i++) {
+      let ctoken = getOrCreateClaimedToken(event.params.tokenAddresses[i], lending);
+      ctoken.amount = ctoken.amount.plus(event.params.amounts[i]);
+      ctoken.save();
+  }
   lending.save();
 }
 

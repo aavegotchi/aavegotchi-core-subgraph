@@ -22,6 +22,7 @@ import {
   Parcel,
   GotchiLending,
   Whitelist,
+  ClaimedToken,
 } from "../../../generated/schema";
 import { BIGINT_ZERO, STATUS_AAVEGOTCHI } from "../constants";
 import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
@@ -730,4 +731,17 @@ export function updateGotchiLending(lending: GotchiLending, event: ethereum.Even
   lending.timeCreated = listingResult.timeCreated;
 
   return lending;
+}
+
+export function getOrCreateClaimedToken(tokenAddress: Bytes, lending: GotchiLending): ClaimedToken {
+  let id = lending.id  + "_" + tokenAddress.toHexString();
+  let ctoken = ClaimedToken.load(id);
+  if(ctoken == null) {
+    ctoken = new ClaimedToken(id);
+    ctoken.amount = BIGINT_ZERO;
+    ctoken.lending = lending.id;
+    ctoken.token = tokenAddress;
+  }
+
+  return ctoken;
 }
