@@ -141,6 +141,10 @@ type User @entity {
 
   parcelsOwned: [Parcel!]! @derivedFrom(field: "owner")
 
+  gotchisLentOut: [BigInt!]!
+
+  gotchisBorrowed: [BigInt!]!
+
   # borrowedGotchis: [GotchiLending!]! @derivedFrom(field: "borrower")
   # lendGotchis: [GotchiLending!]! @derivedFrom(field: "originalOwner")
 }
