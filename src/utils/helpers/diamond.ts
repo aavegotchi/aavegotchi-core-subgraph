@@ -84,6 +84,8 @@ export function getOrCreateUser(
 
   if (user == null && createIfNotFound) {
     user = new User(id);
+    user.gotchisLentOut = new Array<BigInt>();
+    user.gotchisBorrowed = new Array<BigInt>();
   }
 
   return user as User;

@@ -936,12 +936,55 @@ export function handleGotchiLendingClaim(event: GotchiLendingClaim): void {
 export function handleGotchiLendingEnd(event: GotchiLendingEnd): void {
   let lending = getOrCreateGotchiLending(event.params.listingId);
   lending = updateGotchiLending(lending, event);
+
+  
+  let originalOwner = getOrCreateUser(lending.lender!.toHexString());
+  if(originalOwner.gotchisLentOut.length > 0) {
+    let newGotchiLentOut = new Array<BigInt>();
+
+    for(let i=0; i < originalOwner.gotchisLentOut.length; i++) {
+      let gotchiId = originalOwner.gotchisLentOut[i];
+      if(!gotchiId.equals(lending.gotchiTokenId)) {
+        newGotchiLentOut.push(gotchiId)
+      }
+    }
+    originalOwner.gotchisLentOut = newGotchiLentOut;
+    originalOwner.save();
+  }
+
+  let borrower = getOrCreateUser(lending.borrower!.toHexString());
+  if(borrower.gotchisBorrowed.length > 0) {
+    let newGotchiLentOut = new Array<BigInt>();
+
+    for(let i=0; i < borrower.gotchisBorrowed.length; i++) {
+      let gotchiId = borrower.gotchisBorrowed[i];
+      if(!gotchiId.equals(lending.gotchiTokenId)) {
+        newGotchiLentOut.push(gotchiId)
+      }
+    }
+    borrower.gotchisBorrowed = newGotchiLentOut;
+    borrower.save();
+  }
+
   lending.save();
 }
 
 export function handleGotchiLendingExecute(event: GotchiLendingExecute): void {
   let lending = getOrCreateGotchiLending(event.params.listingId);
   lending = updateGotchiLending(lending, event);
+
+  let originalOwner = getOrCreateUser(lending.lender!.toHexString());
+  let gotchisLentOut = originalOwner.gotchisLentOut;
+  gotchisLentOut.push(lending.gotchiTokenId);
+  originalOwner.gotchisLentOut = gotchisLentOut;
+
+  let borrower = getOrCreateUser(lending.borrower!.toHexString());
+  let gotchisBorrowed = borrower.gotchisBorrowed;
+  gotchisBorrowed.push(lending.gotchiTokenId);
+  borrower.gotchisBorrowed = gotchisBorrowed;
+
+  originalOwner.save();
+  borrower.save();
   lending.save();
 }
 
