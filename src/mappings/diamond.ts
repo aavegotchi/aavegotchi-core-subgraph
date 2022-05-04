@@ -303,7 +303,7 @@ export function handleGrantExperience(event: GrantExperience): void {
     let tokenID = ids[i];
 
     let gotchi = getOrCreateAavegotchi(tokenID.toString(), event)!;
-    gotchi = updateAavegotchiInfo(gotchi, tokenID, event);
+    gotchi = updateAavegotchiInfo(gotchi, tokenID, event, false);
     /*
     let xpAmount = xpAmounts[i];
 

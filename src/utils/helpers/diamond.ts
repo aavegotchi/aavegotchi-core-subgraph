@@ -329,7 +329,8 @@ export function updateERC1155PurchaseInfo(
 export function updateAavegotchiInfo(
   gotchi: Aavegotchi,
   id: BigInt,
-  event: ethereum.Event
+  event: ethereum.Event,
+  updateListing: boolean = true
 ): Aavegotchi {
   let contract = AavegotchiDiamond.bind(event.address);
   let response = contract.try_getAavegotchi(id);
@@ -375,7 +376,7 @@ export function updateAavegotchiInfo(
       lending.save();
     }
 
-    if(gotchi.activeListing) {
+    if(gotchi.activeListing && updateListing) {
       let listing = getOrCreateERC721Listing(gotchi.activeListing!.toString());
       listing.kinship = gotchi.kinship;
       listing.experience = gotchi.experience;
