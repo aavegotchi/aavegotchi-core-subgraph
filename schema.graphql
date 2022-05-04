@@ -165,6 +165,7 @@ type ERC721Listing @entity {
   parcel: Parcel # if the listing is for a parcel, this will be populated
   hauntId: BigInt
   kinship: BigInt
+  xp: BigInt
   baseRarityScore: BigInt
   modifiedRarityScore: BigInt
   equippedWearables: [Int!]
