@@ -209,12 +209,14 @@ export function updateERC721ListingInfo(
     } else {
       let aavegotchi = getOrCreateAavegotchi(
         listingInfo.erc721TokenId.toString(),
-        event
+        event,
+        false
       );
 
       if (aavegotchi) {
         listing.hauntId = aavegotchi.hauntId;
         listing.kinship = aavegotchi.kinship;
+        listing.experience = aavegotchi.experience;
         listing.baseRarityScore = aavegotchi.baseRarityScore;
         listing.modifiedRarityScore = aavegotchi.modifiedRarityScore;
         listing.equippedWearables = aavegotchi.equippedWearables;
