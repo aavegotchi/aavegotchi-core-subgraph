@@ -375,6 +375,13 @@ export function updateAavegotchiInfo(
       lending.save();
     }
 
+    if(gotchi.activeListing != null) {
+      let listing = getOrCreateERC721Listing(gotchi.activeListing.toString());
+      listing.kinship = gotchi.kinship;
+      listing.experience = gotchi.experience;
+      listing.save();
+    }
+
     gotchi.locked = gotchiInfo.locked;
   } else {
     log.warning("Aavegotchi {} couldn't be updated at block: {} tx_hash: {}", [
