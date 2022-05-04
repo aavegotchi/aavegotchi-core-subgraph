@@ -410,6 +410,7 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
   if (listing.category == BigInt.fromI32(3)) {
     listing.gotchi = event.params.erc721TokenId.toString();
     let gotchi = getOrCreateAavegotchi(event.params.erc721TokenId.toString(), event)!;
+    listing.collateral = gotchi.collateral;
     gotchi.activeListing = event.params.listingId;
     gotchi.save();
     listing.nameLowerCase = gotchi.nameLowerCase;
