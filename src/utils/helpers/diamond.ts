@@ -375,8 +375,8 @@ export function updateAavegotchiInfo(
       lending.save();
     }
 
-    if(gotchi.activeListing != null) {
-      let listing = getOrCreateERC721Listing(gotchi.activeListing.toString());
+    if(gotchi.activeListing) {
+      let listing = getOrCreateERC721Listing(gotchi.activeListing!.toString());
       listing.kinship = gotchi.kinship;
       listing.experience = gotchi.experience;
       listing.save();
