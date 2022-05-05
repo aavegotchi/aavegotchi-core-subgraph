@@ -302,8 +302,13 @@ export function handleGrantExperience(event: GrantExperience): void {
   for (let i = 0; i < ids.length; i++) {
     let tokenID = ids[i];
 
-    let gotchi = getOrCreateAavegotchi(tokenID.toString(), event)!;
-    gotchi = updateAavegotchiInfo(gotchi, tokenID, event);
+    let gotchi = getOrCreateAavegotchi(tokenID.toString(), event, false);
+
+    if(gotchi) {
+      gotchi = updateAavegotchiInfo(gotchi, tokenID, event);
+      gotchi.save();
+    }
+    
     /*
     let xpAmount = xpAmounts[i];
 
@@ -323,8 +328,6 @@ export function handleGrantExperience(event: GrantExperience): void {
       }
     }
     */
-
-    gotchi.save();
   }
 }
 
