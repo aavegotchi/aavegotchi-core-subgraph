@@ -301,7 +301,6 @@ export function handleGrantExperience(event: GrantExperience): void {
 
   for (let i = 0; i < ids.length; i++) {
     let tokenID = ids[i];
-
     let gotchi = getOrCreateAavegotchi(tokenID.toString(), event, false);
 
     if(gotchi) {

@@ -209,12 +209,14 @@ export function updateERC721ListingInfo(
     } else {
       let aavegotchi = getOrCreateAavegotchi(
         listingInfo.erc721TokenId.toString(),
-        event
+        event,
+        false
       );
 
       if (aavegotchi) {
         listing.hauntId = aavegotchi.hauntId;
         listing.kinship = aavegotchi.kinship;
+        listing.experience = aavegotchi.experience;
         listing.baseRarityScore = aavegotchi.baseRarityScore;
         listing.modifiedRarityScore = aavegotchi.modifiedRarityScore;
         listing.equippedWearables = aavegotchi.equippedWearables;
@@ -329,7 +331,8 @@ export function updateERC1155PurchaseInfo(
 export function updateAavegotchiInfo(
   gotchi: Aavegotchi,
   id: BigInt,
-  event: ethereum.Event
+  event: ethereum.Event,
+  updateListing: boolean = true
 ): Aavegotchi {
   let contract = AavegotchiDiamond.bind(event.address);
   let response = contract.try_getAavegotchi(id);
@@ -373,6 +376,13 @@ export function updateAavegotchiInfo(
       lending.gotchiKinship = gotchi.kinship;
       lending.gotchiBRS = gotchi.withSetsRarityScore;
       lending.save();
+    }
+
+    if(gotchi.activeListing && updateListing) {
+      let listing = getOrCreateERC721Listing(gotchi.activeListing!.toString());
+      listing.kinship = gotchi.kinship;
+      listing.experience = gotchi.experience;
+      listing.save();
     }
 
     gotchi.locked = gotchiInfo.locked;
