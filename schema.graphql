@@ -166,6 +166,7 @@ type ERC721Listing @entity {
   hauntId: BigInt
   kinship: BigInt
   experience: BigInt
+  collateral: Bytes
   baseRarityScore: BigInt
   modifiedRarityScore: BigInt
   equippedWearables: [Int!]

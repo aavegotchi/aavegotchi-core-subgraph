@@ -301,9 +301,13 @@ export function handleGrantExperience(event: GrantExperience): void {
 
   for (let i = 0; i < ids.length; i++) {
     let tokenID = ids[i];
+    let gotchi = getOrCreateAavegotchi(tokenID.toString(), event, false);
 
-    let gotchi = getOrCreateAavegotchi(tokenID.toString(), event)!;
-    gotchi = updateAavegotchiInfo(gotchi, tokenID, event, false);
+    if(gotchi) {
+      gotchi = updateAavegotchiInfo(gotchi, tokenID, event);
+      gotchi.save();
+    }
+    
     /*
     let xpAmount = xpAmounts[i];
 
@@ -323,8 +327,6 @@ export function handleGrantExperience(event: GrantExperience): void {
       }
     }
     */
-
-    gotchi.save();
   }
 }
 
@@ -410,6 +412,7 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
   if (listing.category == BigInt.fromI32(3)) {
     listing.gotchi = event.params.erc721TokenId.toString();
     let gotchi = getOrCreateAavegotchi(event.params.erc721TokenId.toString(), event)!;
+    listing.collateral = gotchi.collateral;
     gotchi.activeListing = event.params.listingId;
     gotchi.save();
     listing.nameLowerCase = gotchi.nameLowerCase;
