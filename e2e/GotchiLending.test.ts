@@ -80,4 +80,49 @@ describe("GotchiLending E2E", () => {
             ]
         });
     })
+
+    it("should have gotchi lending entity", async () => {
+        let queryString = `
+            {gotchiLendings(first: 5 block: {number: 27000000}) {
+                gotchi {
+                    id
+                }
+            }}
+        `;
+
+        let expectedResult = {
+            "data": {
+                "gotchiLendings": [
+                {
+                    "gotchi": {
+                    "id": "20203"
+                    }
+                },
+                {
+                    "gotchi": {
+                    "id": "21821"
+                    }
+                },
+                {
+                    "gotchi": {
+                    "id": "12492"
+                    }
+                },
+                {
+                    "gotchi": {
+                    "id": "4435"
+                    }
+                },
+                {
+                    "gotchi": {
+                    "id": "11808"
+                    }
+                }
+                ]
+            }
+        };
+
+        let result = await query(config.endpoint, queryString);
+        expect(result).toStrictEqual(expectedResult);
+    })
 })
