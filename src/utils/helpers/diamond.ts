@@ -382,6 +382,13 @@ export function updateAavegotchiInfo(
       let listing = getOrCreateERC721Listing(gotchi.activeListing!.toString());
       listing.kinship = gotchi.kinship;
       listing.experience = gotchi.experience;
+      listing.nameLowerCase = gotchi.nameLowerCase;
+      listing.nrgTrait = gotchi.withSetsNumericTraits[0];
+      listing.aggTrait = gotchi.withSetsNumericTraits[1];
+      listing.spkTrait = gotchi.withSetsNumericTraits[2];
+      listing.brnTrait = gotchi.withSetsNumericTraits[3];
+      listing.eysTrait = gotchi.withSetsNumericTraits[4];
+      listing.eycTrait = gotchi.withSetsNumericTraits[5];
       listing.save();
     }
 
