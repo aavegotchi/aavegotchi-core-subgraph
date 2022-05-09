@@ -418,12 +418,14 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
     listing.nameLowerCase = gotchi.nameLowerCase;
 
     // Traits for Filter in v2
-    listing.nrgTrait = gotchi.withSetsNumericTraits[0];
-    listing.aggTrait = gotchi.withSetsNumericTraits[1];
-    listing.spkTrait = gotchi.withSetsNumericTraits[2];
-    listing.brnTrait = gotchi.withSetsNumericTraits[3];
-    listing.eysTrait = gotchi.withSetsNumericTraits[4];
-    listing.eycTrait = gotchi.withSetsNumericTraits[5];
+    if(gotchi.withSetsNumericTraits != null && gotchi.withSetsNumericTraits!.length == 6) {
+      listing.nrgTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![0]);
+      listing.aggTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![1]);
+      listing.spkTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![2]);
+      listing.brnTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![3]);
+      listing.eysTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![4]);
+      listing.eycTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![5]);
+    }
   } else if (listing.category.lt(BigInt.fromI32(3))) {
     let portal = getOrCreatePortal(event.params.erc721TokenId.toString());
     portal.activeListing = event.params.listingId;
