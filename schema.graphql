@@ -197,6 +197,14 @@ type ERC1155Listing @entity {
   timeLastPurchased: BigInt! # Time when the listing was purchased
   sold: Boolean!
   rarityLevel: BigInt
+
+  rarityScoreModifier: BigInt
+  nrgTraitModifier: BigInt
+  aggTraitModifier: BigInt
+  spkTraitModifier: BigInt
+  brnTraitModifier: BigInt
+  eysTraitModifier: BigInt
+  eycTraitModifier: BigInt
 }
 
 type ERC1155Purchase @entity {
