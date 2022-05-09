@@ -95,27 +95,27 @@ describe("GotchiLending E2E", () => {
                 "gotchiLendings": [
                 {
                     "gotchi": {
+                    "id": "22239"
+                    }
+                },
+                {
+                    "gotchi": {
+                    "id": "2575"
+                    }
+                },
+                {
+                    "gotchi": {
+                    "id": "15823"
+                    }
+                },
+                {
+                    "gotchi": {
                     "id": "20203"
                     }
                 },
                 {
                     "gotchi": {
                     "id": "21821"
-                    }
-                },
-                {
-                    "gotchi": {
-                    "id": "12492"
-                    }
-                },
-                {
-                    "gotchi": {
-                    "id": "4435"
-                    }
-                },
-                {
-                    "gotchi": {
-                    "id": "11808"
                     }
                 }
                 ]
