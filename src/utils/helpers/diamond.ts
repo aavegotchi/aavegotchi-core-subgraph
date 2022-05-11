@@ -205,6 +205,11 @@ export function updateERC721ListingInfo(
 
       if (portal) {
         listing.hauntId = portal.hauntId;
+        if(portal.historicalPrices && portal.historicalPrices!.length > 0) {
+          listing.soldBefore = true;
+        } else {
+          listing.soldBefore = false;
+        }
       }
     } else {
       let aavegotchi = getOrCreateAavegotchi(
@@ -220,6 +225,11 @@ export function updateERC721ListingInfo(
         listing.baseRarityScore = aavegotchi.baseRarityScore;
         listing.modifiedRarityScore = aavegotchi.modifiedRarityScore;
         listing.equippedWearables = aavegotchi.equippedWearables;
+        if(aavegotchi.historicalPrices && aavegotchi.historicalPrices!.length > 0) {
+          listing.soldBefore = true;
+        } else {
+          listing.soldBefore = false;
+        }
         listing.claimedAt = aavegotchi.claimedAt;
       }
     }

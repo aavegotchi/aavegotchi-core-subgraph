@@ -182,6 +182,7 @@ type ERC721Listing @entity {
   size: BigInt # size of parcel
   parcelHash: String # address/hash of parcel
   nameLowerCase: String
+  soldBefore: Boolean
   claimedAt: BigInt
 
   # Traits of Gotchi
