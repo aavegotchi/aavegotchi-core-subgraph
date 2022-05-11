@@ -280,6 +280,17 @@ export function updateERC1155ListingInfo(
       if (itemType) {
         listing.rarityLevel = itemMaxQuantityToRarity(itemType.maxQuantity);
       }
+
+      // brs modifier
+      listing.rarityScoreModifier = BigInt.fromI32(itemType.rarityScoreModifier);
+      
+      // trait modifier
+      listing.nrgTraitModifier = BigInt.fromI32(itemType.traitModifiers![0]);
+      listing.aggTraitModifier = BigInt.fromI32(itemType.traitModifiers![1]);
+      listing.spkTraitModifier = BigInt.fromI32(itemType.traitModifiers![2]);
+      listing.brnTraitModifier = BigInt.fromI32(itemType.traitModifiers![3]);
+      listing.eysTraitModifier = BigInt.fromI32(itemType.traitModifiers![4]);
+      listing.eycTraitModifier = BigInt.fromI32(itemType.traitModifiers![5]);
     }
   } else {
     log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
