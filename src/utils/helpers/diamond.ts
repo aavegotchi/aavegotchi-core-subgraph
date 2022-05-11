@@ -225,6 +225,7 @@ export function updateERC721ListingInfo(
         listing.baseRarityScore = aavegotchi.baseRarityScore;
         listing.modifiedRarityScore = aavegotchi.modifiedRarityScore;
         listing.equippedWearables = aavegotchi.equippedWearables;
+        listing.amountEquippedWearables = aavegotchi.equippedWearables.filter(e => e != 210 && e != 0).length; // without haunt1 background
         if(aavegotchi.historicalPrices && aavegotchi.historicalPrices!.length > 0) {
           listing.soldBefore = true;
         } else {
