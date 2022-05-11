@@ -182,6 +182,14 @@ type ERC721Listing @entity {
   size: BigInt # size of parcel
   parcelHash: String # address/hash of parcel
   nameLowerCase: String
+
+  # Traits of Gotchi
+  nrgTrait: BigInt
+  aggTrait: BigInt
+  spkTrait: BigInt
+  brnTrait: BigInt
+  eysTrait: BigInt
+  eycTrait: BigInt
 }
 
 type ERC1155Listing @entity {
