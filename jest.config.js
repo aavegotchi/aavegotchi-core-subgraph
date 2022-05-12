@@ -3,7 +3,7 @@
 const config = {
   verbose: true,
   testPathIgnorePatterns: ["node_modules", "tests"],
-  testTimeout: 100000,
+  testTimeout: 10000000,
 };
 
 module.exports = config;

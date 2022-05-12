@@ -48,10 +48,10 @@ describe("Aavegotchis E2E", () => {
     expect(data.aavegotchis).toHaveLength(0);
   })
 
-  it("should have only gotchis with status claimed(3) or sacrificed(0)", async () => {
+  it("should have only gotchis with status 3 if claimed or 0 if sacrificed", async () => {
     const queryString = `
     {
-      aavegotchis(first: 1000 where: {status_not_in: ["0", "3"]}) {
+      aavegotchis(first: 1000 where: {status_not_in: ["0","3"]}) {
         id
         gotchiId
         status
@@ -61,24 +61,6 @@ describe("Aavegotchis E2E", () => {
   
     const {data} = await query(config.endpoint, queryString);
     expect(data.aavegotchis).toHaveLength(0);
-  })
-
-  it("should have multiple gotchis with status sacrificed (0)", async () => {
-    const queryString = `
-    {
-      aavegotchis(first: 1000 where: {status: "0"}) {
-        id
-        gotchiId
-        status
-        owner {
-          id
-        }
-      }
-    }
-    `
-  
-    const {data} = await query(config.endpoint, queryString);
-    expect(data.aavegotchis).not.toHaveLength(0);
   })
 
   it("should maintain proper kinship level on lendings", async () => {
