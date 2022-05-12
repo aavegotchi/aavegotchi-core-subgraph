@@ -1,5 +1,3 @@
-import { ExperienceTransfer } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
-
 const query = require("./helper/query");
 const config = require("./helper/config");
 const compare = require("./helper/compare");
@@ -85,17 +83,38 @@ describe("Aavegotchis E2E", () => {
 
   it("should maintain proper kinship level on lendings", async () => {
     const queryString = `{
-      gotchiLendings(block: {number:27091286} where: {id:"1000"} ) {
+      gotchiLendings(block: {number:27091286} where:{gotchiTokenId:"4430" id:"166650"}) {
         id
+        completed
+        cancelled
         gotchi {
           kinship
+          lending
         } 
         gotchiKinship
+        gotchiTokenId
       }
     }`;
 
-    const {data} = await query(config.endpoint, queryString);
-    expect(data.gotchiLendings.gotchiKinship).toBe(data.gotchiLendings.gotchi.kinship);
+    const result = await query(config.endpoint, queryString);
+    const expectedResult = {
+      "data": {
+        "gotchiLendings": [
+          {
+            "id": "166650",
+            "completed": false,
+            "cancelled": false,
+            "gotchi": {
+              "kinship": "665",
+              "lending": "166650"
+            },
+            "gotchiKinship": "665",
+            "gotchiTokenId": "4430"
+          }
+        ]
+      }
+    }
+    expect(result).toStrictEqual(expectedResult);
 
   })
 });
