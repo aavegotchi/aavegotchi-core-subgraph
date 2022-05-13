@@ -24,6 +24,8 @@ type Aavegotchi @entity {
 
   owner: User
 
+  originalOwner: User
+
   portal: Portal! @derivedFrom(field: "gotchi")
 
   hauntId: BigInt!
@@ -86,6 +88,10 @@ type Aavegotchi @entity {
   timesTraded: BigInt!
 
   historicalPrices: [BigInt!]
+
+  activeListing: BigInt
+
+  lending: BigInt
 }
 
 enum PortalStatus {
@@ -120,6 +126,8 @@ type Portal @entity {
   timesTraded: BigInt!
 
   historicalPrices: [BigInt!]
+
+  activeListing: BigInt
 }
 
 type User @entity {
@@ -132,6 +140,13 @@ type User @entity {
   portalsOwned: [Portal!]! @derivedFrom(field: "owner")
 
   parcelsOwned: [Parcel!]! @derivedFrom(field: "owner")
+
+  gotchisLentOut: [BigInt!]!
+
+  gotchisBorrowed: [BigInt!]!
+
+  # borrowedGotchis: [GotchiLending!]! @derivedFrom(field: "borrower")
+  # lendGotchis: [GotchiLending!]! @derivedFrom(field: "originalOwner")
 }
 
 type ERC721Listing @entity {
@@ -150,6 +165,8 @@ type ERC721Listing @entity {
   parcel: Parcel # if the listing is for a parcel, this will be populated
   hauntId: BigInt
   kinship: BigInt
+  experience: BigInt
+  collateral: Bytes
   baseRarityScore: BigInt
   modifiedRarityScore: BigInt
   equippedWearables: [Int!]
@@ -164,6 +181,7 @@ type ERC721Listing @entity {
   coordinateY: BigInt # coordinate y of parcel
   size: BigInt # size of parcel
   parcelHash: String # address/hash of parcel
+  nameLowerCase: String
 }
 
 type ERC1155Listing @entity {
@@ -270,6 +288,63 @@ type Parcel @entity {
   auctionId: String
   timesTraded: BigInt!
   historicalPrices: [BigInt!]
+  activeListing: BigInt
+}
+
+### lending
+type GotchiLending @entity {
+  id: ID!
+  rentDuration: BigInt!
+  upfrontCost: BigInt!
+  period: BigInt!
+
+  gotchi: Aavegotchi!
+
+  # gotch filter attributes
+  gotchiBRS: BigInt
+  gotchiTokenId: BigInt!
+  gotchiKinship: BigInt!
+
+  # profit split
+  splitOwner: BigInt
+  splitBorrower: BigInt
+  splitOther: BigInt
+
+  # tokens to share
+  tokensToShare: [Bytes!]!
+
+  whitelist: Whitelist
+  whitelistMembers: [Bytes!]!
+  whitelistId: BigInt
+  thirdPartyAddress: Bytes
+
+  borrower: Bytes
+  lender: Bytes
+  originalOwner: Bytes
+
+  cancelled: Boolean!
+  completed: Boolean!
+  lastClaimed: BigInt
+
+  timeAgreed: BigInt
+  timeCreated: BigInt
+
+  claimed: [ClaimedToken!]! @derivedFrom(field: "lending")
+}
+
+type ClaimedToken @entity {
+  id: ID!
+  lending: GotchiLending!
+  token: Bytes!
+  amount: BigInt!
+}
+
+type Whitelist @entity {
+  id: ID!
+  name: String!
+  members: [Bytes!]!
+  owner: User!
+  ownerAddress: Bytes!
 }
 
 #type Upgrade @entity {

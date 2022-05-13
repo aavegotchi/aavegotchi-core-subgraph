@@ -20,8 +20,11 @@ import {
   WearableSet,
   ERC1155Purchase,
   Parcel,
+  GotchiLending,
+  Whitelist,
+  ClaimedToken,
 } from "../../../generated/schema";
-import { BIGINT_ZERO } from "../constants";
+import { BIGINT_ZERO, STATUS_AAVEGOTCHI } from "../constants";
 import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 
 export function getOrCreatePortal(
@@ -56,15 +59,18 @@ export function getOrCreateAavegotchiOption(
 export function getOrCreateAavegotchi(
   id: string,
   event: ethereum.Event,
-): Aavegotchi {
+  createIfNotFound: boolean = true
+): Aavegotchi | null {
   let gotchi = Aavegotchi.load(id);
 
-  if (gotchi == null) {
+  if (gotchi == null && createIfNotFound) {
     gotchi = new Aavegotchi(id);
     gotchi.gotchiId = BigInt.fromString(id);
     gotchi.createdAt = event.block.number;
     gotchi.timesTraded = BIGINT_ZERO;
     gotchi.historicalPrices = [];
+  } else if(gotchi == null && !createIfNotFound) {
+    return null
   }
 
   return gotchi as Aavegotchi;
@@ -78,6 +84,8 @@ export function getOrCreateUser(
 
   if (user == null && createIfNotFound) {
     user = new User(id);
+    user.gotchisLentOut = new Array<BigInt>();
+    user.gotchisBorrowed = new Array<BigInt>();
   }
 
   return user as User;
@@ -201,12 +209,14 @@ export function updateERC721ListingInfo(
     } else {
       let aavegotchi = getOrCreateAavegotchi(
         listingInfo.erc721TokenId.toString(),
-        event
+        event,
+        false
       );
 
       if (aavegotchi) {
         listing.hauntId = aavegotchi.hauntId;
         listing.kinship = aavegotchi.kinship;
+        listing.experience = aavegotchi.experience;
         listing.baseRarityScore = aavegotchi.baseRarityScore;
         listing.modifiedRarityScore = aavegotchi.modifiedRarityScore;
         listing.equippedWearables = aavegotchi.equippedWearables;
@@ -321,7 +331,8 @@ export function updateERC1155PurchaseInfo(
 export function updateAavegotchiInfo(
   gotchi: Aavegotchi,
   id: BigInt,
-  event: ethereum.Event
+  event: ethereum.Event,
+  updateListing: boolean = true
 ): Aavegotchi {
   let contract = AavegotchiDiamond.bind(event.address);
   let response = contract.try_getAavegotchi(id);
@@ -329,6 +340,9 @@ export function updateAavegotchiInfo(
   if (!response.reverted) {
     let gotchiInfo = response.value;
 
+    let owner = getOrCreateUser(gotchiInfo.owner.toHexString());
+    owner.save();
+    gotchi.owner = owner.id;
     gotchi.name = gotchiInfo.name;
     gotchi.nameLowerCase = gotchiInfo.name.toLowerCase();
     gotchi.randomNumber = gotchiInfo.randomNumber;
@@ -355,6 +369,20 @@ export function updateAavegotchiInfo(
     if (!gotchi.withSetsRarityScore) {
       gotchi.withSetsRarityScore = gotchiInfo.modifiedRarityScore;
       gotchi.withSetsNumericTraits = gotchiInfo.modifiedNumericTraits;
+    }
+
+    if(gotchi.lending) {
+      let lending = getOrCreateGotchiLending(gotchi.lending!);
+      lending.gotchiKinship = gotchi.kinship;
+      lending.gotchiBRS = gotchi.withSetsRarityScore;
+      lending.save();
+    }
+
+    if(gotchi.activeListing && updateListing) {
+      let listing = getOrCreateERC721Listing(gotchi.activeListing!.toString());
+      listing.kinship = gotchi.kinship;
+      listing.experience = gotchi.experience;
+      listing.save();
     }
 
     gotchi.locked = gotchiInfo.locked;
@@ -479,4 +507,253 @@ export function getOrCreateParcel(
   }
 
   return parcel as Parcel;
+}
+
+export function updateAavegotchiWearables(gotchi : Aavegotchi, event: ethereum.Event): void {
+  let contract = AavegotchiDiamond.bind(event.address);
+
+  let bigInts = new Array<BigInt>();
+  let equippedWearables = gotchi.equippedWearables;
+
+  for (let index = 0; index < equippedWearables.length; index++) {
+    let element = equippedWearables[index];
+    bigInts.push(BigInt.fromI32(element));
+  }
+
+  let equippedSets = contract.try_findWearableSets(bigInts);
+
+  if (!equippedSets.reverted) {
+    log.warning("Equipped sets for GotchiID {} length {}", [
+      gotchi.id,
+      BigInt.fromI32(equippedSets.value.length).toString(),
+    ]);
+
+    if (equippedSets.value.length > 0) {
+      //Find the best set
+      let foundSetIDs = equippedSets.value;
+
+      //Retrieve sets from onchain
+      let getSetTypes = contract.try_getWearableSets();
+      if (!getSetTypes.reverted) {
+        let setTypes = getSetTypes.value;
+
+        let bestSetID = 0;
+        let highestBRSBonus = 0;
+        //Iterate through all the possible equipped sets
+        for (let index = 0; index < foundSetIDs.length; index++) {
+          let setID = foundSetIDs[index];
+          let setInfo = setTypes[setID.toI32()];
+          let traitBonuses = setInfo.traitsBonuses;
+          let brsBonus = traitBonuses[0];
+
+          if (brsBonus >= highestBRSBonus) {
+            highestBRSBonus = brsBonus;
+            bestSetID = setID.toI32();
+          }
+        }
+
+        log.warning("Best set: for GotchiID {} {} {}", [
+          gotchi.gotchiId.toString(),
+          setTypes[bestSetID].name,
+          bestSetID.toString(),
+        ]);
+
+        let setBonuses = setTypes[bestSetID].traitsBonuses;
+
+        //Add the set bonuses on to the modified numeric traits (which already include wearable bonuses, but not rarityScore modifiers)
+        let brsBonus = setBonuses[0];
+
+        let beforeSetBonus = calculateBaseRarityScore(
+          gotchi.modifiedNumericTraits
+        );
+
+        //Before modifying
+        let withSetsNumericTraits = gotchi.modifiedNumericTraits;
+
+        //Add in the individual bonuses
+        for (let index = 0; index < 4; index++) {
+          withSetsNumericTraits[index] =
+            withSetsNumericTraits[index] + setBonuses[index + 1];
+        }
+
+        //Get the post-set bonus
+        let afterSetBonus = calculateBaseRarityScore(withSetsNumericTraits);
+
+        //Get the difference
+        let bonusDifference = afterSetBonus - beforeSetBonus;
+
+        //Update the traits
+        gotchi.withSetsNumericTraits = withSetsNumericTraits;
+
+        //Add on the bonus differences to the modified rarity score
+        gotchi.withSetsRarityScore = gotchi.modifiedRarityScore
+          .plus(BigInt.fromI32(bonusDifference))
+          .plus(BigInt.fromI32(brsBonus));
+
+        //Equip the set
+        gotchi.equippedSetID = BigInt.fromI32(bestSetID);
+
+        //Set the name
+        gotchi.equippedSetName = setTypes[bestSetID].name;
+      }
+
+      gotchi.possibleSets = BigInt.fromI32(equippedSets.value.length);
+    } else {
+      gotchi.equippedSetID = null;
+      gotchi.equippedSetName = "";
+      gotchi.withSetsRarityScore = gotchi.modifiedRarityScore;
+      gotchi.withSetsNumericTraits = gotchi.modifiedNumericTraits;
+    }
+  } else {
+    gotchi.withSetsRarityScore = gotchi.modifiedRarityScore;
+    gotchi.withSetsNumericTraits = gotchi.modifiedNumericTraits;
+    log.warning("Find wearable sets reverted at block: {} tx_hash: {}", [
+      event.block.number.toString(),
+      event.transaction.hash.toHexString(),
+    ]);
+  }
+
+  if(gotchi.status.equals(STATUS_AAVEGOTCHI)) {
+    gotchi.save();
+  }
+}
+
+// @ts-ignore
+export function calculateBaseRarityScore(numericTraits: Array<i32>): i32 {
+  let rarityScore = 0;
+
+  for (let index = 0; index < numericTraits.length; index++) {
+    let element = numericTraits[index];
+
+    if (element < 50) rarityScore = rarityScore + (100 - element);
+    else rarityScore = rarityScore + (element + 1);
+  }
+
+  return rarityScore;
+}
+
+// whitelist
+
+export function createOrUpdateWhitelist(id: BigInt, event: ethereum.Event): Whitelist | null {
+  let contract = AavegotchiDiamond.bind(event.address);
+  let response = contract.try_getWhitelist(id);
+
+  if(response.reverted) {
+    return null;
+  }
+
+  let result = response.value;
+
+  let members = result.addresses;
+  let name = result.name;
+
+  let whitelist = Whitelist.load(id.toString());
+  if(!whitelist) {
+    whitelist = new Whitelist(id.toString());
+    whitelist.ownerAddress = result.owner;
+    let user = getOrCreateUser(result.owner.toHexString());
+    user.save();
+    whitelist.owner = user.id;
+    whitelist.name = name;
+  }
+
+  whitelist.members = members.map<Bytes>(e => e);
+
+  whitelist.save();
+  return whitelist;
+}
+
+export function getOrCreateGotchiLending(listingId: BigInt): GotchiLending {
+    let lending = GotchiLending.load(listingId.toString());
+    if(!lending) {
+      lending = new GotchiLending(listingId.toString());
+      lending.cancelled = false;
+      lending.completed = false;
+      lending.whitelist = null;
+      lending.whitelistMembers = [];
+      lending.whitelistId = null;
+    }
+
+    return lending;
+}
+
+export function updateGotchiLending(lending: GotchiLending, event: ethereum.Event): GotchiLending {
+  let contract = AavegotchiDiamond.bind(event.address);
+  let response = contract.try_getGotchiLendingListingInfo(BigInt.fromString(lending.id));
+  if(response.reverted) {
+    return lending;
+  }
+
+  let listingResult = response.value.value0;
+  let gotchiResult = response.value.value1;
+
+  // load Gotchi & update gotchi
+  let gotchi = getOrCreateAavegotchi(gotchiResult.tokenId.toString(), event)!
+  gotchi = updateAavegotchiInfo(gotchi, gotchiResult.tokenId, event)
+
+  if(!listingResult.completed && !listingResult.canceled) {
+    gotchi.lending = BigInt.fromString(lending.id);
+  } else {
+    gotchi.lending = null;
+  }
+
+  // remove Hotfix for lending
+  if(gotchi.originalOwner == null) {
+    let lender = getOrCreateUser(listingResult.lender.toHexString())
+    lender.save();
+    gotchi.originalOwner = lender.id;
+  }
+
+  gotchi.save();
+
+  lending.gotchi = gotchi.id;
+  lending.borrower = listingResult.borrower;
+  lending.cancelled = listingResult.canceled;
+  lending.completed = listingResult.completed;
+  lending.gotchiTokenId = BigInt.fromString(gotchi.id);
+  lending.gotchiBRS = gotchi.withSetsRarityScore;
+  lending.gotchiKinship = gotchiResult.kinship;
+
+  lending.tokensToShare = listingResult.revenueTokens.map<Bytes>(e => e);
+  lending.upfrontCost = listingResult.initialCost;
+
+  lending.lastClaimed = listingResult.lastClaimed;
+
+  lending.lender = listingResult.lender;
+  lending.originalOwner = listingResult.originalOwner;
+
+  
+  if(listingResult.whitelistId != BIGINT_ZERO) {
+    let whitelist = createOrUpdateWhitelist(listingResult.whitelistId, event);
+    if(whitelist !== null) {
+      lending.whitelist = whitelist.id;
+      lending.whitelistMembers = whitelist.members;
+      lending.whitelistId = BigInt.fromString(whitelist.id);
+    }
+  }
+
+  lending.period = listingResult.period;
+
+  lending.splitOwner = BigInt.fromI32(listingResult.revenueSplit[0]);
+  lending.splitBorrower = BigInt.fromI32(listingResult.revenueSplit[1]);
+  lending.splitOther = BigInt.fromI32(listingResult.revenueSplit[2]);
+
+  lending.thirdPartyAddress = listingResult.thirdParty;
+  lending.timeAgreed = listingResult.timeAgreed;
+  lending.timeCreated = listingResult.timeCreated;
+
+  return lending;
+}
+
+export function getOrCreateClaimedToken(tokenAddress: Bytes, lending: GotchiLending): ClaimedToken {
+  let id = lending.id  + "_" + tokenAddress.toHexString();
+  let ctoken = ClaimedToken.load(id);
+  if(ctoken == null) {
+    ctoken = new ClaimedToken(id);
+    ctoken.amount = BIGINT_ZERO;
+    ctoken.lending = lending.id;
+    ctoken.token = tokenAddress;
+  }
+
+  return ctoken;
 }
