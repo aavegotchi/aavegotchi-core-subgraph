@@ -205,6 +205,11 @@ export function updateERC721ListingInfo(
 
       if (portal) {
         listing.hauntId = portal.hauntId;
+        if(portal.historicalPrices && portal.historicalPrices!.length > 0) {
+          listing.soldBefore = true;
+        } else {
+          listing.soldBefore = false;
+        }
       }
     } else {
       let aavegotchi = getOrCreateAavegotchi(
@@ -220,6 +225,13 @@ export function updateERC721ListingInfo(
         listing.baseRarityScore = aavegotchi.baseRarityScore;
         listing.modifiedRarityScore = aavegotchi.modifiedRarityScore;
         listing.equippedWearables = aavegotchi.equippedWearables;
+        listing.amountEquippedWearables = aavegotchi.equippedWearables.filter(e => e != 210 && e != 0).length; // without haunt1 background
+        if(aavegotchi.historicalPrices && aavegotchi.historicalPrices!.length > 0) {
+          listing.soldBefore = true;
+        } else {
+          listing.soldBefore = false;
+        }
+        listing.claimedAt = aavegotchi.claimedAt;
       }
     }
   } else {
@@ -280,6 +292,17 @@ export function updateERC1155ListingInfo(
       if (itemType) {
         listing.rarityLevel = itemMaxQuantityToRarity(itemType.maxQuantity);
       }
+
+      // brs modifier
+      listing.rarityScoreModifier = BigInt.fromI32(itemType.rarityScoreModifier);
+      
+      // trait modifier
+      listing.nrgTraitModifier = BigInt.fromI32(itemType.traitModifiers![0]);
+      listing.aggTraitModifier = BigInt.fromI32(itemType.traitModifiers![1]);
+      listing.spkTraitModifier = BigInt.fromI32(itemType.traitModifiers![2]);
+      listing.brnTraitModifier = BigInt.fromI32(itemType.traitModifiers![3]);
+      listing.eysTraitModifier = BigInt.fromI32(itemType.traitModifiers![4]);
+      listing.eycTraitModifier = BigInt.fromI32(itemType.traitModifiers![5]);
     }
   } else {
     log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
@@ -382,6 +405,15 @@ export function updateAavegotchiInfo(
       let listing = getOrCreateERC721Listing(gotchi.activeListing!.toString());
       listing.kinship = gotchi.kinship;
       listing.experience = gotchi.experience;
+      listing.nameLowerCase = gotchi.nameLowerCase;
+      if(gotchi.withSetsNumericTraits != null && gotchi.withSetsNumericTraits!.length == 6) {
+        listing.nrgTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![0]);
+        listing.aggTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![1]);
+        listing.spkTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![2]);
+        listing.brnTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![3]);
+        listing.eysTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![4]);
+        listing.eycTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![5]);
+      }
       listing.save();
     }
 
