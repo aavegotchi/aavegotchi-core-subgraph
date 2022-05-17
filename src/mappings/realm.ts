@@ -57,8 +57,8 @@ export function handleChannelAlchemica(event: ChannelAlchemica): void {
     let channeledAlchemica = getOrCreateChanneledAlchemica(gotchi, parcel, event);
 
     channeledAlchemica.alchemica = event.params._alchemica;
-    channeledAlchemica.spiloverRadius = event.params._spilloverRadius;
-    channeledAlchemica.spiloverRate = event.params._spilloverRate;
+    channeledAlchemica.spilloverRadius = event.params._spilloverRadius;
+    channeledAlchemica.spilloverRate = event.params._spilloverRate;
     channeledAlchemica.save();
 
     gotchi.lastChanneledAlchemica = event.block.timestamp;

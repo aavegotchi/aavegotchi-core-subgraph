@@ -375,8 +375,8 @@ type ChanneledAlchemica @entity {
   parcel: Parcel!
   "FUD, FOMO, ALPHA; KEK"
   alchemica: [BigInt!]!
-  spiloverRate: BigInt!
-  spiloverRadius: BigInt!
+  spilloverRate: BigInt!
+  spilloverRadius: BigInt!
 }
 
 #type Upgrade @entity {
