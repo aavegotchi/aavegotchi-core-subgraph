@@ -183,7 +183,6 @@ dataSources:
       abis:
         - name: RealmDiamond
           file: ./abis/RealmDiamond.json
-        
       eventHandlers:
         - event: MintParcel(indexed address,indexed uint256)
           handler: handleMintParcel
