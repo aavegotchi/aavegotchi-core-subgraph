@@ -769,5 +769,42 @@
     ],
     "name": "Transfer",
     "type": "event"
+  },
+  {
+    "anonymous":false,
+    "inputs":[
+      {
+        "indexed":true,
+        "internalType":"uint256",
+        "name":"_realmId",
+        "type":"uint256"
+      },
+      {
+        "indexed":true,
+        "internalType":"uint256",
+        "name":"_gotchiId",
+        "type":"uint256"
+      },
+      {
+        "indexed":false,
+        "internalType":"uint256[4]",
+        "name":"_alchemica",
+        "type":"uint256[4]"
+      },
+      {
+        "indexed":false,
+        "internalType":"uint256",
+        "name":"_spilloverRate",
+        "type":"uint256"
+      },
+      {
+        "indexed":false,
+        "internalType":"uint256",
+        "name":"_spilloverRadius",
+        "type":"uint256"
+      }
+    ],
+    "name":"ChannelAlchemica",
+    "type":"event"
   }
 ]
