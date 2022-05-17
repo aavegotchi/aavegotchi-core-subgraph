@@ -947,7 +947,16 @@ export function handleGotchiLendingClaim(event: GotchiLendingClaim): void {
 }
 
 export function handleGotchiLendingEnd(event: GotchiLendingEnd): void {
-  let lending = getOrCreateGotchiLending(event.params.listingId);
+
+  let listingId = event.params.listingId
+
+  // Fix: For Bug in Lending Refactoring 
+  if(event.block.number.ge(BigInt.fromI32(28297165)) && event.block.number.le(BigInt.fromI32(29000000))) {
+    let gotchi = getOrCreateAavegotchi(event.params.listingId.toString(), event)!
+    listingId = gotchi.lending;
+  } 
+
+  let lending = getOrCreateGotchiLending(listingId);
   lending = updateGotchiLending(lending, event);
 
   
