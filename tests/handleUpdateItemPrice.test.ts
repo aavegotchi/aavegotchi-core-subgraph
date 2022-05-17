@@ -1,6 +1,6 @@
 import { test, assert, clearStore, newMockEvent } from "matchstick-as/assembly/index";
 import { ethereum } from "@graphprotocol/graph-ts";
-import { handleMintPortals, handleUpdateItemPrice } from "../src/mappings/diamond";
+import { handleMintPortals, handleUpdateItemPrice } from "../src/mappings/aavegotchi";
 import { MintPortals, UpdateItemPrice } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { BIGINT_ONE } from "../src/utils/constants";
 

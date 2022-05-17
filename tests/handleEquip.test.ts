@@ -1,6 +1,6 @@
 import { test, assert, clearStore, newMockEvent, createMockedFunction } from "matchstick-as/assembly/index";
 import { BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { handleEquipWearables } from "../src/mappings/diamond";
+import { handleEquipWearables } from "../src/mappings/aavegotchi";
 import { EquipWearables } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { BIGINT_ONE, BIGINT_ZERO } from "../src/utils/constants";
 import { getAavegotchiMock } from "./mocks";

@@ -1,6 +1,6 @@
 import { test, assert, clearStore, newMockEvent, createMockedFunction } from "matchstick-as/assembly/index";
 import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
-import { handleTransfer } from "../src/mappings/diamond";
+import { handleTransfer } from "../src/mappings/aavegotchi";
 import { Transfer } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { BIGINT_ONE, BIGINT_ZERO, STATUS_AAVEGOTCHI, STATUS_CLOSED_PORTAL } from "../src/utils/constants";
 import { getAavegotchiMock } from "./mocks";

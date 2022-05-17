@@ -6,7 +6,7 @@ import {
   ERC721ListingCancelled,
 } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
 
-import {RealmDiamond} from "../../../generated/RealmDiamond/RealmDiamond"
+import {ChannelAlchemica, RealmDiamond} from "../../../generated/RealmDiamond/RealmDiamond"
 
 import {
   Aavegotchi,
@@ -23,6 +23,7 @@ import {
   GotchiLending,
   Whitelist,
   ClaimedToken,
+  ChanneledAlchemica,
 } from "../../../generated/schema";
 import { BIGINT_ZERO, STATUS_AAVEGOTCHI } from "../constants";
 import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
@@ -788,4 +789,15 @@ export function getOrCreateClaimedToken(tokenAddress: Bytes, lending: GotchiLend
   }
 
   return ctoken;
+}
+
+export function getOrCreateChanneledAlchemica(gotchi: Aavegotchi, parcel: Parcel, event: ethereum.Event): ChanneledAlchemica {
+  let id = gotchi.id + "-" + parcel.id + "-" + event.block.number.toString();
+  let channeledAlchemica = ChanneledAlchemica.load(id);
+  if(channeledAlchemica == null) {
+    channeledAlchemica = new ChanneledAlchemica(id);
+    channeledAlchemica.gotchi = gotchi.id;
+    channeledAlchemica.parcel = parcel.id;
+  }
+  return channeledAlchemica;
 }

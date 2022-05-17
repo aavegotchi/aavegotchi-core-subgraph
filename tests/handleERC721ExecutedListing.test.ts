@@ -1,6 +1,6 @@
 import { test, assert, clearStore, createMockedFunction } from "matchstick-as/assembly/index";
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { handleERC721ExecutedListing, handleERC721ListingAdd, handleERC721ListingCancelled } from "../src/mappings/diamond";
+import { handleERC721ExecutedListing, handleERC721ListingAdd, handleERC721ListingCancelled } from "../src/mappings/aavegotchi";
 import { BIGINT_ONE } from "../src/utils/constants";
 import { getERC721ListingAddEvent, getERC721ListingCancelledEvent, getERC721ListingExecutedEvent, getERC721ListingMock } from "./mocks";
 import { getOrCreatePortal } from "../src/utils/helpers/diamond";

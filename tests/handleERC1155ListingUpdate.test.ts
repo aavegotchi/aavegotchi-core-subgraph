@@ -1,6 +1,6 @@
 import { test, assert, clearStore, createMockedFunction } from "matchstick-as/assembly/index";
 import { Address, ethereum } from "@graphprotocol/graph-ts";
-import { handleERC1155ListingUpdated } from "../src/mappings/diamond";
+import { handleERC1155ListingUpdated } from "../src/mappings/aavegotchi";
 import { BIGINT_ONE } from "../src/utils/constants";
 import { getERC1155ListingUpdateEvent, getERC115ListingMock } from "./mocks";
 import { ItemType } from "../generated/schema";

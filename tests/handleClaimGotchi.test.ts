@@ -1,7 +1,7 @@
 import { ethereum, store } from "@graphprotocol/graph-ts";
 import { test, assert, clearStore, createMockedFunction } from "matchstick-as/assembly/index";
 import { ERC721Listing, Portal } from "../generated/schema";
-import { handleClaimAavegotchi } from "../src/mappings/diamond";
+import { handleClaimAavegotchi } from "../src/mappings/aavegotchi";
 import { BIGINT_ONE } from "../src/utils/constants";
 import { getAavegotchiMock, getClaimAavegotchiEvent } from "./mocks";
 
