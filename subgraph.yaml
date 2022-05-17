@@ -15,14 +15,12 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ./src/mappings/diamond.ts
+      file: ./src/mappings/aavegotchi.ts
       entities:
         - User
       abis:
         - name: AavegotchiDiamond
           file: ./abis/AavegotchiDiamond.json
-        - name: RealmDiamond
-          file: ./abis/RealmDiamond.json
       eventHandlers:
         - event: BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
           handler: handleBuyPortals
@@ -181,9 +179,11 @@ dataSources:
       entities:
         - MintParcel
         - Transfer
+        - Aavegotchi
       abis:
         - name: RealmDiamond
           file: ./abis/RealmDiamond.json
+        
       eventHandlers:
         - event: MintParcel(indexed address,indexed uint256)
           handler: handleMintParcel
@@ -191,4 +191,6 @@ dataSources:
           handler: handleTransferParcel
         - event: ResyncParcel(uint256)
           handler: handleResyncParcel
-      file: ./src/mappings/diamond.ts
+        - event: ChannelAlchemica(indexed uint256,indexed uint256,uint256[4],uint256,uint256)
+          handler: handleChannelAlchemica
+      file: ./src/mappings/realm.ts
