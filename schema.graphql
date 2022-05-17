@@ -92,6 +92,9 @@ type Aavegotchi @entity {
   activeListing: BigInt
 
   lending: BigInt
+  "Last time aavegotchi channeled alchemica"
+  lastChanneledAlchemica: BigInt
+  channeledAlchemica: [ChanneledAlchemica!]! @derivedFrom(field: "gotchi")
 }
 
 enum PortalStatus {
@@ -364,6 +367,16 @@ type Whitelist @entity {
   members: [Bytes!]!
   owner: User!
   ownerAddress: Bytes!
+}
+
+type ChanneledAlchemica @entity {
+  id: ID!
+  gotchi: Aavegotchi!
+  parcel: Parcel!
+  "FUD, FOMO, ALPHA; KEK"
+  alchemica: [BigInt!]!
+  spiloverRate: BigInt!
+  spiloverRadius: BigInt!
 }
 
 #type Upgrade @entity {
