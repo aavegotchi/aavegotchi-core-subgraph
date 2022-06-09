@@ -945,7 +945,7 @@ export function handleGotchiLendingClaim(event: GotchiLendingClaim): void {
 export function handleGotchiLendingEnd(event: GotchiLendingEnd): void {
   let lending = getOrCreateGotchiLending(event.params.listingId);
   lending = updateGotchiLending(lending, event);
-
+  lending.save();
   
   let originalOwner = getOrCreateUser(lending.lender!.toHexString());
   if(originalOwner.gotchisLentOut.length > 0) {
@@ -975,7 +975,9 @@ export function handleGotchiLendingEnd(event: GotchiLendingEnd): void {
     borrower.save();
   }
 
-  lending.save();
+  let stats = getStatisticEntity();
+  stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.minus(BIGINT_ONE);
+  stats.save();
 }
 
 export function handleGotchiLendingExecute(event: GotchiLendingExecute): void {
