@@ -379,6 +379,12 @@ export function handleTransfer(event: Transfer): void {
     gotchi.owner = newOwner.id;
     gotchi.originalOwner = newOwner.id;
     gotchi.save();
+
+    if(newOwner.id == "0x0000000000000000000000000000000000000000") {
+      let stats = getStatisticEntity();
+      stats.aavegotchisSacrificed = stats.aavegotchisSacrificed.plus(BIGINT_ONE);
+      stats.save();
+    }
   } else {
     portal.owner = newOwner.id;
     portal.save();
@@ -985,6 +991,9 @@ export function handleGotchiLendingExecute(event: GotchiLendingExecute): void {
   let gotchisBorrowed = borrower.gotchisBorrowed;
   gotchisBorrowed.push(lending.gotchiTokenId);
   borrower.gotchisBorrowed = gotchisBorrowed;
+
+  let stats = getStatisticEntity();
+  stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.plus(BIGINT_ONE);
 
   originalOwner.save();
   borrower.save();
