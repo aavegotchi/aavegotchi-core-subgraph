@@ -996,6 +996,7 @@ export function handleGotchiLendingExecute(event: GotchiLendingExecute): void {
 
   let stats = getStatisticEntity();
   stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.plus(BIGINT_ONE);
+  stats.save();
 
   originalOwner.save();
   borrower.save();
