@@ -377,7 +377,9 @@ export function handleTransfer(event: Transfer): void {
   if (gotchi != null) {
     // gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
     gotchi.owner = newOwner.id;
-    gotchi.originalOwner = newOwner.id;
+    if(!gotchi.lending) { 
+      gotchi.originalOwner = newOwner.id;
+    }
     gotchi.save();
   } else {
     portal.owner = newOwner.id;
@@ -968,6 +970,11 @@ export function handleGotchiLendingEnd(event: GotchiLendingEnd): void {
     borrower.gotchisBorrowed = newGotchiLentOut;
     borrower.save();
   }
+
+  let gotchi = getOrCreateAavegotchi(lending.gotchiTokenId.toString(), event)!;
+  gotchi.lending = null;
+  gotchi.originalOwner = originalOwner.id;
+  gotchi.save();
 
   lending.save();
 }
