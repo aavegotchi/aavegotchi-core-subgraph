@@ -694,7 +694,9 @@ export function updateGotchiLending(lending: GotchiLending, event: ethereum.Even
 
   // load Gotchi & update gotchi
   let gotchi = getOrCreateAavegotchi(gotchiResult.tokenId.toString(), event)!
-  gotchi = updateAavegotchiInfo(gotchi, gotchiResult.tokenId, event)
+  if(!gotchi.modifiedRarityScore) {
+    gotchi = updateAavegotchiInfo(gotchi, gotchiResult.tokenId, event)
+  }
 
   if(!listingResult.completed && !listingResult.canceled) {
     gotchi.lending = BigInt.fromString(lending.id);
