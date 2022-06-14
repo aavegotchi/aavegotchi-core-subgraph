@@ -457,6 +457,9 @@ export function getStatisticEntity(): Statistic {
     stats.totalConsumablesVolume = BIGINT_ZERO;
     stats.totalTicketsVolume = BIGINT_ZERO;
 
+    stats.aavegotchisBorrowed = BIGINT_ZERO;
+    stats.aavegotchisSacrificed = BIGINT_ZERO;
+
     stats.save();
   }
 
