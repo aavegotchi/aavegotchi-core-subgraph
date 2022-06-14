@@ -375,7 +375,9 @@ export function handleTransfer(event: Transfer): void {
   let portal = getOrCreatePortal(id, false);
   // ERC721 transfer can be portal or gotchi based, so we have to check it.
   if (gotchi != null) {
-    // gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+    if(!gotchi.modifiedRarityScore) {
+      gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+    }
     gotchi.owner = newOwner.id;
     if(!gotchi.lending) { 
       gotchi.originalOwner = newOwner.id;
