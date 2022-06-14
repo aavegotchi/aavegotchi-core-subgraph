@@ -375,9 +375,13 @@ export function handleTransfer(event: Transfer): void {
   let portal = getOrCreatePortal(id, false);
   // ERC721 transfer can be portal or gotchi based, so we have to check it.
   if (gotchi != null) {
-    gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+    if(!gotchi.modifiedRarityScore) {
+      gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+    }
     gotchi.owner = newOwner.id;
-    gotchi.originalOwner = newOwner.id;
+    if(!gotchi.lending) { 
+      gotchi.originalOwner = newOwner.id;
+    }
     gotchi.save();
 
     if(newOwner.id == "0x0000000000000000000000000000000000000000") {
@@ -560,7 +564,7 @@ export function handleERC721ListingCancelled(
     gotchi.activeListing = null;
     gotchi.save();
   } else if(listing.category.equals(BigInt.fromI32(4))) {
-    let parcel = getOrCreateParcel(listing.tokenId, listing.seller, Address.fromString(listing.erc721TokenAddress.toHexString()));
+    let parcel = getOrCreateParcel(listing.tokenId, listing.seller, Address.fromString(listing.erc721TokenAddress.toHexString()), false);
     parcel.activeListing = null;
     parcel.save();
   }
@@ -587,7 +591,7 @@ export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
     gotchi.activeListing = null;
     gotchi.save();
   } else if(listing.category.equals(BigInt.fromI32(4))) {
-    let parcel = getOrCreateParcel(listing.tokenId, listing.seller, Address.fromString(listing.erc721TokenAddress.toHexString()));
+    let parcel = getOrCreateParcel(listing.tokenId, listing.seller, Address.fromString(listing.erc721TokenAddress.toHexString()), false);
     parcel.activeListing = null;
     parcel.save();
   }
@@ -975,6 +979,13 @@ export function handleGotchiLendingEnd(event: GotchiLendingEnd): void {
     borrower.save();
   }
 
+  let gotchi = getOrCreateAavegotchi(lending.gotchiTokenId.toString(), event)!;
+  gotchi.lending = null;
+  gotchi.originalOwner = originalOwner.id;
+  gotchi.save();
+
+  lending.save();
+
   let stats = getStatisticEntity();
   stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.minus(BIGINT_ONE);
   stats.save();
@@ -983,6 +994,13 @@ export function handleGotchiLendingEnd(event: GotchiLendingEnd): void {
 export function handleGotchiLendingExecute(event: GotchiLendingExecute): void {
   let lending = getOrCreateGotchiLending(event.params.listingId);
   lending = updateGotchiLending(lending, event);
+
+  // update originalOwner to lender
+  let gotchi = getOrCreateAavegotchi(lending.gotchi, event)!;
+  let lender = getOrCreateUser(lending.lender!.toHexString());
+  gotchi.originalOwner = lender.id;
+  lender.save();
+  gotchi.save();
 
   let originalOwner = getOrCreateUser(lending.lender!.toHexString());
   let gotchisLentOut = originalOwner.gotchisLentOut;

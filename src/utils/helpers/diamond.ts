@@ -469,7 +469,8 @@ export function getStatisticEntity(): Statistic {
 export function getOrCreateParcel(
   tokenId: BigInt,
   owner: Bytes,
-  tokenAddress: Address
+  tokenAddress: Address,
+  updateParcelInfo: boolean = true
 ): Parcel {
   let parcel = Parcel.load(tokenId.toString());
 
@@ -478,6 +479,10 @@ export function getOrCreateParcel(
   if (parcel == null) {
     parcel = new Parcel(tokenId.toString());
     parcel.timesTraded = BIGINT_ZERO;
+  }
+
+  if(!updateParcelInfo) {
+    return parcel;
   }
 
   log.debug("token address: {}", [tokenAddress.toHexString()]);
@@ -692,7 +697,9 @@ export function updateGotchiLending(lending: GotchiLending, event: ethereum.Even
 
   // load Gotchi & update gotchi
   let gotchi = getOrCreateAavegotchi(gotchiResult.tokenId.toString(), event)!
-  gotchi = updateAavegotchiInfo(gotchi, gotchiResult.tokenId, event)
+  if(!gotchi.modifiedRarityScore) {
+    gotchi = updateAavegotchiInfo(gotchi, gotchiResult.tokenId, event)
+  }
 
   if(!listingResult.completed && !listingResult.canceled) {
     gotchi.lending = BigInt.fromString(lending.id);

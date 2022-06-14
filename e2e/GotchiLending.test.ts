@@ -125,4 +125,45 @@ describe("GotchiLending E2E", () => {
         let result = await query(config.endpoint, queryString);
         expect(result).toStrictEqual(expectedResult);
     })
+
+    it("should change owner, not originalOwner", async()=> {
+        let borrower = "0xf06dcbec97d02e0df8d304bdbbb7ccab587c3e1f";
+        let originalOwner = "0x1ad3d72e54fb0eb46e87f82f77b284fc8a66b16c";
+        let getQuery = block => `{
+            gotchiLending(id:"900596" block: {number:${block}}) {
+              originalOwner
+              borrower
+              completed
+              cancelled
+                gotchi {
+                originalOwner {
+                  id
+                }
+                owner {
+                  id
+                }
+              }
+              }
+          }`;
+
+          let furtherBlocks = [29521786, 29521787, 29521811];
+          let block = furtherBlocks[0]
+          let firstResult = await query(config.endpoint, getQuery(block));
+          console.log(JSON.stringify(firstResult));
+          block = furtherBlocks[1];
+          let secondResult = await query(config.endpoint, getQuery(block));
+          console.log(JSON.stringify(secondResult));
+          block = furtherBlocks[2];
+          let thirdResult = await query(config.endpoint, getQuery(block));
+          console.log(JSON.stringify(thirdResult));
+          expect(firstResult.data.gotchiLending.gotchi.originalOwner.id).toStrictEqual(originalOwner);
+          expect(secondResult.data.gotchiLending.gotchi.originalOwner.id).toStrictEqual(originalOwner);
+          expect(thirdResult.data.gotchiLending.gotchi.originalOwner.id).toStrictEqual(originalOwner);
+
+          expect(firstResult.data.gotchiLending.gotchi.owner.id).toStrictEqual(originalOwner);
+          expect(secondResult.data.gotchiLending.gotchi.owner.id).toStrictEqual(borrower);
+          expect(thirdResult.data.gotchiLending.gotchi.owner.id).toStrictEqual(originalOwner);
+
+
+    })
 })

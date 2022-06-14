@@ -137,6 +137,8 @@ type User @entity {
 
   gotchisOwned: [Aavegotchi!]! @derivedFrom(field: "owner")
 
+  gotchisOriginalOwned: [Aavegotchi!]! @derivedFrom(field: "originalOwner")
+
   portalsOwned: [Portal!]! @derivedFrom(field: "owner")
 
   parcelsOwned: [Parcel!]! @derivedFrom(field: "owner")
