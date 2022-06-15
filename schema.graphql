@@ -362,46 +362,20 @@ type Whitelist @entity {
 
 type InstallationType @entity {
   id: ID!
-  svgId: BigInt!
   name: String!
   desc: String
   author: String
-  traitModifiers: [Int!]
-  slotPositions: [Boolean!]
-  ghstPrice: BigInt!
   maxQuantity: BigInt! # on mint
   totalQuantity: BigInt! # on mint
-  rarityScoreModifier: Int!
-  canPurchaseWithGhst: Boolean!
-  minLevel: Int
-  canBeTransferred: Boolean!
   category: Int!
-  kinshipBonus: Int
-  experienceBonus: BigInt
-  consumed: BigInt!
-
   deprecated: Boolean
 }
 
 type TileType @entity {
   id: ID!
-  svgId: BigInt!
   name: String!
-  desc: String
-  author: String
-  traitModifiers: [Int!]
-  slotPositions: [Boolean!]
-  ghstPrice: BigInt!
   maxQuantity: BigInt! # on mint
   totalQuantity: BigInt! # on mint
-  rarityScoreModifier: Int!
-  canPurchaseWithGhst: Boolean!
-  minLevel: Int
-  canBeTransferred: Boolean!
   category: Int!
-  kinshipBonus: Int
-  experienceBonus: BigInt
-  consumed: BigInt!
-
   deprecated: Boolean
 }

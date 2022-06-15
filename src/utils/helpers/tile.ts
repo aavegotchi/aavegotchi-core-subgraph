@@ -10,14 +10,9 @@ export function getOrCreateTileType(
 
   if (tileType == null) {
     tileType = new TileType(id);
-    tileType.consumed = BIGINT_ZERO;
     tileType.name = "";
-    tileType.svgId = BIGINT_ZERO;
-    tileType.ghstPrice = BIGINT_ZERO;
     tileType.maxQuantity = BIGINT_ZERO;
     tileType.totalQuantity = BIGINT_ZERO;
-    tileType.rarityScoreModifier = 0;
-    tileType.canPurchaseWithGhst = true;
     tileType.category = 5;
   }
 

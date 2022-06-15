@@ -11,14 +11,9 @@ export function getOrCreateInstallationType(
 
   if (installationType == null) {
     installationType = new InstallationType(id);
-    installationType.consumed = BIGINT_ZERO;
     installationType.name = "";
-    installationType.svgId = BIGINT_ZERO;
-    installationType.ghstPrice = BIGINT_ZERO;
     installationType.maxQuantity = BIGINT_ZERO;
     installationType.totalQuantity = BIGINT_ZERO;
-    installationType.rarityScoreModifier = 0;
-    installationType.canPurchaseWithGhst = true;
     installationType.category = 4;
   }
 
