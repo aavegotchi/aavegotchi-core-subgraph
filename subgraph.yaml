@@ -221,10 +221,6 @@ dataSources:
       eventHandlers:
         - event: MintInstallation(indexed address,indexed uint256,uint256)
           handler: handleMintInstallation
-        - event: AddInstallationType(uint256)
-          handler: handleAddInstallationType
-        - event: EditInstallationType(uint256)
-          handler: handleEditInstallationType
   - kind: ethereum/contract
     name: TileDiamond
     network: matic
