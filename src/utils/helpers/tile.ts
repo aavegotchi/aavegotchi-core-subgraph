@@ -19,7 +19,7 @@ export function getOrCreateTileType(
     tileType.totalQuantity = BIGINT_ZERO;
     tileType.rarityScoreModifier = 0;
     tileType.canPurchaseWithGhst = true;
-    tileType.category = 6;
+    tileType.category = 5;
   }
 
   return tileType

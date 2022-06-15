@@ -20,7 +20,7 @@ export function getOrCreateInstallationType(
     installationType.totalQuantity = BIGINT_ZERO;
     installationType.rarityScoreModifier = 0;
     installationType.canPurchaseWithGhst = true;
-    installationType.category = 6;
+    installationType.category = 4;
   }
 
   return installationType;
