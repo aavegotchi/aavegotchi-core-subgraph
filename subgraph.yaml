@@ -225,3 +225,28 @@ dataSources:
           handler: handleAddInstallationType
         - event: EditInstallationType(uint256)
           handler: handleEditInstallationType
+  - kind: ethereum/contract
+    name: TileDiamond
+    network: matic
+    source:
+      address: "0x9216c31d8146bCB3eA5a9162Dc1702e8AEDCa355"
+      abi: TileDiamond
+      startBlock: 27231106
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - MintTileEvent
+        - TileType
+      abis:
+        - name: TileDiamond
+          file: ./abis/TileDiamond.json
+        - name: InstallationDiamond
+          file: ./abis/InstallationDiamond.json
+      eventHandlers:
+        - event: MintTile(indexed address,indexed uint256,uint256)
+          handler: handleMintTile
+        - event: CraftTimeReduced(indexed uint256,uint256)
+          handler: handleCraftTimeReduced
+      file: ./src/mappings/tile.ts
