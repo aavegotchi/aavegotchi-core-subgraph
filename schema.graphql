@@ -360,7 +360,7 @@ type Whitelist @entity {
 #  calldata:
 #}
 
-type InstallationType implements ItemType @entity(immutable: true) {
+type InstallationType @entity {
   id: ID!
   svgId: BigInt!
   name: String!
@@ -383,7 +383,7 @@ type InstallationType implements ItemType @entity(immutable: true) {
   deprecated: Boolean
 }
 
-type TileType implements ItemType @entity(immutable: true) {
+type TileType @entity {
   id: ID!
   svgId: BigInt!
   name: String!

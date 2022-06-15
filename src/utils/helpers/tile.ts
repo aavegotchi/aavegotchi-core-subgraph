@@ -4,12 +4,11 @@ import { TileDiamond } from "../../../generated/TileDiamond/TileDiamond";
 import { BIGINT_ZERO, TILE_DIAMOND } from "../constants";
 
 export function getOrCreateTileType(
-  id: string,
-  createIfNotFound: boolean = true
+  id: string
 ): TileType {
   let tileType = TileType.load(id);
 
-  if (tileType == null && createIfNotFound) {
+  if (tileType == null) {
     tileType = new TileType(id);
     tileType.consumed = BIGINT_ZERO;
     tileType.name = "";
@@ -25,11 +24,11 @@ export function getOrCreateTileType(
   return tileType
 }
 
-export function updateTileType(tileType: TileType): TileType | false {
+export function updateTileType(tileType: TileType): TileType | null {
     let contract = TileDiamond.bind(Address.fromString(TILE_DIAMOND));
     let response = contract.try_getTileType(BigInt.fromString(tileType.id));
     if(response.reverted) {
-      return false;
+      return null;
     }
 
     tileType.name = response.value.name;

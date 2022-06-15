@@ -6,11 +6,10 @@ import { BIGINT_ZERO, INSTALLATION_DIAMOND, TILE_DIAMOND } from "../constants";
 
 export function getOrCreateInstallationType(
   id: string,
-  createIfNotFound: boolean = true
 ): InstallationType {
   let installationType = InstallationType.load(id);
 
-  if (installationType == null && createIfNotFound) {
+  if (installationType == null) {
     installationType = new InstallationType(id);
     installationType.consumed = BIGINT_ZERO;
     installationType.name = "";
@@ -26,11 +25,11 @@ export function getOrCreateInstallationType(
   return installationType;
 }
 
-export function updateInstallationType(installationType: InstallationType): InstallationType | false {
+export function updateInstallationType(installationType: InstallationType): InstallationType | null {
     let contract = InstallationDiamond.bind(Address.fromString(INSTALLATION_DIAMOND));
     let response = contract.try_getInstallationType(BigInt.fromString(installationType.id));
     if(response.reverted) {
-      return false;
+      return null;
     }
 
     installationType.name = response.value.name;
