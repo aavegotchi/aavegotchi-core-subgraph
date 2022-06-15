@@ -26,6 +26,8 @@ import {
 } from "../../../generated/schema";
 import { BIGINT_ZERO, STATUS_AAVEGOTCHI } from "../constants";
 import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
+import { getOrCreateInstallationType } from "./installation";
+import { getOrCreateTileType } from "./tile";
 
 export function getOrCreatePortal(
   id: string,
@@ -266,10 +268,29 @@ export function updateERC1155ListingInfo(
     listing.quantity = listingInfo.quantity;
 
     //tickets
-    if (listing.category.toI32() === 3) {
+    let category = listing.category.toI32();
+    if (category === 3) {
       let rarityLevel = listing.erc1155TypeId;
       listing.rarityLevel = rarityLevel;
+      
+      //installations
+    } else if(category === 4) {
+      let type = getOrCreateInstallationType(listingInfo.erc1155TypeId.toString());
+      if(type.deprecated) {
+        listing.rarityLevel = BigInt.fromI32(5);
+      } else {
+        listing.rarityLevel = itemMaxQuantityToRarity(type.maxQuantity);
+      }
 
+      // tiles
+    } else if(category === 5) {
+      let type = getOrCreateTileType(listingInfo.erc1155TypeId.toString());
+      if(type.deprecated) {
+        listing.rarityLevel = BigInt.fromI32(5);
+      } else {
+        listing.rarityLevel = itemMaxQuantityToRarity(type.maxQuantity);
+      }
+      
       //items
     } else {
       let itemType = getOrCreateItemType(
