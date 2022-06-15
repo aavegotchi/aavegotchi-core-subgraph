@@ -197,3 +197,31 @@ dataSources:
         - event: ResyncParcel(uint256)
           handler: handleResyncParcel
       file: ./src/mappings/diamond.ts
+  - kind: ethereum/contract
+    name: InstallationDiamond
+    network: matic
+    source:
+      address: "0x19f870bD94A34b3adAa9CaA439d333DA18d6812A"
+      abi: InstallationDiamond
+      startBlock: 26540482
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - MintInstallationEvent
+        - UpgradeInitiatedEvent
+        - AddInstallationTypeEvent
+        - EditInstallationTypeEvent
+        - DeprecateInstallationEvent
+      abis:
+        - name: InstallationDiamond
+          file: ./abis/InstallationDiamond.json
+      file: ./src/mappings/installation.ts
+      eventHandlers:
+        - event: MintInstallation(indexed address,indexed uint256,uint256)
+          handler: handleMintInstallation
+        - event: AddInstallationType(uint256)
+          handler: handleAddInstallationType
+        - event: EditInstallationType(uint256)
+          handler: handleEditInstallationType
