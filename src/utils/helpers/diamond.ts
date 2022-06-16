@@ -290,7 +290,7 @@ export function updateERC1155ListingInfo(
       } else {
         listing.rarityLevel = itemMaxQuantityToRarity(type.maxQuantity);
       }
-      
+
       //items
     } else {
       let itemType = getOrCreateItemType(
@@ -738,6 +738,7 @@ export function updateGotchiLending(lending: GotchiLending, event: ethereum.Even
   gotchi.save();
 
   lending.gotchi = gotchi.id;
+  lending.rentDuration = listingResult.period;
   lending.borrower = listingResult.borrower;
   lending.cancelled = listingResult.canceled;
   lending.completed = listingResult.completed;
