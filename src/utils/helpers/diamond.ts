@@ -307,6 +307,7 @@ export function updateERC1155PurchaseInfo(
   listing.priceInWei = listingInfo.priceInWei;
   listing.quantity = event.params._quantity;
   listing.buyer = event.params.buyer;
+  listing.recipient = event.params.buyer;
 
   //tickets
   if (listing.category.equals(BigInt.fromI32(3))) {
