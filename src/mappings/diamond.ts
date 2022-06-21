@@ -43,6 +43,7 @@ import {
   WhitelistCreated,
   WhitelistUpdated,
   ERC1155ExecutedToRecipient,
+  ERC721ExecutedToRecipient,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -1046,4 +1047,12 @@ export function handleERC1155ExecutedToRecipient(event: ERC1155ExecutedToRecipie
   purchase.buyer = event.params.buyer;
   purchase.recipient = event.params.recipient;
   purchase.save();
+}
+
+export function handleERC721ExecutedToRecipient(event: ERC721ExecutedToRecipient): void {
+  // update listing
+  let listing = getOrCreateERC721Listing(event.params.listingId.toString());
+  listing.recipient = event.params.recipient;
+  listing.buyer = event.params.buyer;
+  listing.save();
 }
