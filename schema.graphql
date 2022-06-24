@@ -210,7 +210,7 @@ type ERC1155Purchase @entity {
   erc1155TypeId: BigInt!
   seller: Bytes!
   buyer: Bytes!
-  recipient: Bytes!
+  recipient: Bytes
   priceInWei: BigInt!
   quantity: BigInt!
   #cancelled: Boolean!
