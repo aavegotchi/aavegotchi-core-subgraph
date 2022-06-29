@@ -1044,6 +1044,7 @@ export function handleERC1155ExecutedToRecipient(event: ERC1155ExecutedToRecipie
     listingUpdateInfo.buyer
   );
 
+  purchase = updateERC1155PurchaseInfo(purchase, event);
   purchase.buyer = event.params.buyer;
   purchase.recipient = event.params.recipient;
   purchase.save();
@@ -1052,6 +1053,7 @@ export function handleERC1155ExecutedToRecipient(event: ERC1155ExecutedToRecipie
 export function handleERC721ExecutedToRecipient(event: ERC721ExecutedToRecipient): void {
   // update listing
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
+  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
   listing.recipient = event.params.recipient;
   listing.buyer = event.params.buyer;
   listing.save();
