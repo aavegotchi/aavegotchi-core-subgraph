@@ -137,6 +137,8 @@ type User @entity {
 
   gotchisOwned: [Aavegotchi!]! @derivedFrom(field: "owner")
 
+  gotchisOriginalOwned: [Aavegotchi!]! @derivedFrom(field: "originalOwner")
+
   portalsOwned: [Portal!]! @derivedFrom(field: "owner")
 
   parcelsOwned: [Parcel!]! @derivedFrom(field: "owner")
@@ -247,6 +249,12 @@ type Statistic @entity {
 
   "Total amount of Aavegotchis claimed"
   aavegotchisClaimed: BigInt!
+
+  "Total amount of Aavegotchis sacrificed"
+  aavegotchisSacrificed: BigInt!
+
+  "Total amount of Aavegotchis borrowed"
+  aavegotchisBorrowed: BigInt!
 
   erc721ActiveListingCount: BigInt! #Total # of active ERC721 Listings
   erc1155ActiveListingCount: BigInt! #Total # of active ERC1155 Listings

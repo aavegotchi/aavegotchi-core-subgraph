@@ -489,6 +489,9 @@ export function getStatisticEntity(): Statistic {
     stats.totalConsumablesVolume = BIGINT_ZERO;
     stats.totalTicketsVolume = BIGINT_ZERO;
 
+    stats.aavegotchisBorrowed = BIGINT_ZERO;
+    stats.aavegotchisSacrificed = BIGINT_ZERO;
+
     stats.save();
   }
 
@@ -726,7 +729,9 @@ export function updateGotchiLending(lending: GotchiLending, event: ethereum.Even
 
   // load Gotchi & update gotchi
   let gotchi = getOrCreateAavegotchi(gotchiResult.tokenId.toString(), event)!
-  gotchi = updateAavegotchiInfo(gotchi, gotchiResult.tokenId, event)
+  if(!gotchi.modifiedRarityScore) {
+    gotchi = updateAavegotchiInfo(gotchi, gotchiResult.tokenId, event)
+  }
 
   if(!listingResult.completed && !listingResult.canceled) {
     gotchi.lending = BigInt.fromString(lending.id);
