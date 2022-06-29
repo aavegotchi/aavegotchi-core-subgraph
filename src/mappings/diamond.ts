@@ -42,6 +42,8 @@ import {
   GotchiLendingAdd,
   WhitelistCreated,
   WhitelistUpdated,
+  ERC1155ExecutedToRecipient,
+  ERC721ExecutedToRecipient,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -1027,3 +1029,32 @@ export function handleGotchiLendingCancel(event: GotchiLendingCancel): void {
   lending.save();
 }
 
+export function handleERC1155ExecutedToRecipient(event: ERC1155ExecutedToRecipient): void {
+  let listingUpdateInfo = event.params;
+
+  //Update ERC1155Purchase
+  let purchaseID =
+    listingUpdateInfo.listingId.toString() +
+    "_" +
+    listingUpdateInfo.buyer.toHexString() +
+    "_" +
+    event.block.timestamp.toString();
+  let purchase = getOrCreateERC1155Purchase(
+    purchaseID,
+    listingUpdateInfo.buyer
+  );
+
+  purchase = updateERC1155PurchaseInfo(purchase, event);
+  purchase.buyer = event.params.buyer;
+  purchase.recipient = event.params.recipient;
+  purchase.save();
+}
+
+export function handleERC721ExecutedToRecipient(event: ERC721ExecutedToRecipient): void {
+  // update listing
+  let listing = getOrCreateERC721Listing(event.params.listingId.toString());
+  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+  listing.recipient = event.params.recipient;
+  listing.buyer = event.params.buyer;
+  listing.save();
+}

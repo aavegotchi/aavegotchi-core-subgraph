@@ -158,6 +158,7 @@ type ERC721Listing @entity {
   tokenId: BigInt! # The token ID of the NFT
   seller: Bytes! # The creator of the listing
   buyer: Bytes
+  recipient: Bytes
   timeCreated: BigInt! # Time at which listed was created
   timePurchased: BigInt # Time when the listing was purchased
   cancelled: Boolean # If the listing is cancelled
@@ -209,6 +210,7 @@ type ERC1155Purchase @entity {
   erc1155TypeId: BigInt!
   seller: Bytes!
   buyer: Bytes!
+  recipient: Bytes
   priceInWei: BigInt!
   quantity: BigInt!
   #cancelled: Boolean!
