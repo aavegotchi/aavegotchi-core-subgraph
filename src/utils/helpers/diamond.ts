@@ -862,3 +862,16 @@ export function getOrCreateClaimedToken(
 
     return ctoken;
 }
+
+export function getOrCreateWhitelist(
+    whitelistId: BigInt,
+    event: ethereum.Event
+): Whitelist | null {
+    let id = whitelistId.toString();
+    let whitelist = Whitelist.load(id);
+    if (!whitelist) {
+        whitelist = createOrUpdateWhitelist(whitelistId, event);
+    }
+
+    return whitelist;
+}
