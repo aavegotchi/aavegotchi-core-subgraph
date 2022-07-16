@@ -1146,6 +1146,7 @@ export function handleERC721ExecutedToRecipient(
 export function handleGotchiLendingAdded(event: GotchiLendingAdded): void {
     let lending = getOrCreateGotchiLending(event.params.listingId);
     lending.upfrontCost = event.params.initialCost;
+    lending.rentDuration = event.params.period;
     lending.lender = event.params.lender;
     lending.originalOwner = event.params.originalOwner;
     lending.period = event.params.period;
@@ -1162,7 +1163,7 @@ export function handleGotchiLendingAdded(event: GotchiLendingAdded): void {
         if (whitelist) {
             lending.whitelist = whitelist.id;
             lending.whitelistMembers = whitelist.members;
-            lending.whitelistId = BigInt.fromString(whitelist.id);
+            lending.whitelistId = event.params.whitelistId;
         }
     }
     let gotchi = getOrCreateAavegotchi(event.params.tokenId.toString(), event)!;
@@ -1202,7 +1203,7 @@ export function handleGotchiLendingClaimed(event: GotchiLendingClaimed): void {
         if (whitelist) {
             lending.whitelist = whitelist.id;
             lending.whitelistMembers = whitelist.members;
-            lending.whitelistId = BigInt.fromString(whitelist.id);
+            lending.whitelistId = event.params.whitelistId;
         }
     }
     lending.save();
@@ -1229,7 +1230,7 @@ export function handleGotchiLendingCanceled(
         if (whitelist) {
             lending.whitelist = whitelist.id;
             lending.whitelistMembers = whitelist.members;
-            lending.whitelistId = BigInt.fromString(whitelist.id);
+            lending.whitelistId = event.params.whitelistId;
         }
     }
     lending.save();
@@ -1249,6 +1250,7 @@ export function handleGotchiLendingExecuted(
     lending.tokensToShare = event.params.revenueTokens.map<Bytes>((e) => e);
     lending.thirdPartyAddress = event.params.thirdParty;
     lending.gotchiTokenId = event.params.tokenId;
+    lending.timeAgreed = event.params.timeAgreed;
     lending.cancelled = false;
     lending.completed = false;
     lending.borrower = event.params.borrower;
@@ -1257,7 +1259,7 @@ export function handleGotchiLendingExecuted(
         if (whitelist) {
             lending.whitelist = whitelist.id;
             lending.whitelistMembers = whitelist.members;
-            lending.whitelistId = BigInt.fromString(whitelist.id);
+            lending.whitelistId = event.params.whitelistId;
         }
     }
     lending.save();
@@ -1281,7 +1283,7 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
         if (whitelist) {
             lending.whitelist = whitelist.id;
             lending.whitelistMembers = whitelist.members;
-            lending.whitelistId = BigInt.fromString(whitelist.id);
+            lending.whitelistId = event.params.whitelistId;
         }
     }
     lending.save();
