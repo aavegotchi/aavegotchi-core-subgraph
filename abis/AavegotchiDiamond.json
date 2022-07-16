@@ -9204,7 +9204,6 @@
         "name": "ERC1155ExecutedToRecipient",
         "type": "event"
     },
-
     {
         "anonymous": false,
         "inputs": [

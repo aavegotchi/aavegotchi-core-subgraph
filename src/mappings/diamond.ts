@@ -1168,6 +1168,7 @@ export function handleGotchiLendingAdded(event: GotchiLendingAdded): void {
     }
     let gotchi = getOrCreateAavegotchi(event.params.tokenId.toString(), event)!;
     lending.gotchiKinship = gotchi.kinship;
+    lending.gotchiBRS = gotchi.withSetsRarityScore;
     lending.save();
 }
 
