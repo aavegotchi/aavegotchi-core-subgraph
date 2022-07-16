@@ -1155,7 +1155,6 @@ export function handleGotchiLendingAdded(event: GotchiLendingAdded): void {
     lending.tokensToShare = event.params.revenueTokens.map<Bytes>((e) => e);
     lending.thirdPartyAddress = event.params.thirdParty;
     lending.timeCreated = event.params.timeCreated;
-    lending.gotchiTokenId = event.params.tokenId;
     lending.cancelled = false;
     lending.completed = false;
     if (event.params.whitelistId != BIGINT_ZERO) {
@@ -1167,6 +1166,8 @@ export function handleGotchiLendingAdded(event: GotchiLendingAdded): void {
         }
     }
     let gotchi = getOrCreateAavegotchi(event.params.tokenId.toString(), event)!;
+    lending.gotchi = gotchi.id;
+    lending.gotchiTokenId = event.params.tokenId;
     lending.gotchiKinship = gotchi.kinship;
     lending.gotchiBRS = gotchi.withSetsRarityScore;
     lending.save();
