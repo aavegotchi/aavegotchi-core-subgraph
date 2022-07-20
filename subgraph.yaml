@@ -210,4 +210,6 @@ dataSources:
                 handler: handleTransferParcel
               - event: ResyncParcel(uint256)
                 handler: handleResyncParcel
+              - event: SurveyParcel(uint256,uint256,uint256[])
+                handler: handleSurveyParcel
           file: ./src/mappings/diamond.ts
