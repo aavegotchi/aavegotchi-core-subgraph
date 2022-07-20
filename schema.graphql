@@ -197,7 +197,7 @@ type ERC721Listing @entity {
     eysTrait: BigInt
     eycTrait: BigInt
 
-    amountSurveyed: BigInt
+    amountSurveyed: BigInt # rounds surveyed of parcel
 }
 
 type ERC1155Listing @entity {
@@ -321,8 +321,8 @@ type Parcel @entity {
     historicalPrices: [BigInt!]
     activeListing: BigInt
 
-    amountSurveyed: BigInt
-    alchemicaRemaining: [BigInt!]
+    amountSurveyed: BigInt # rounds survey
+    alchemicaRemaining: [BigInt!] # alchemica remaining
 }
 
 ### lending
