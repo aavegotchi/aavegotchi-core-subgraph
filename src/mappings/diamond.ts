@@ -89,6 +89,7 @@ import {
     RealmDiamond,
     MintParcel,
     ResyncParcel,
+    SurveyParcel,
 } from "../../generated/RealmDiamond/RealmDiamond";
 
 export function handleBuyPortals(event: BuyPortals): void {
@@ -1287,4 +1288,17 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
         }
     }
     lending.save();
+}
+
+export function handleSurveyParcel(event: SurveyParcel): void {
+    let tokenId = event.params._tokenId.toString();
+    let parcel = Parcel.load(tokenId.toString())!;
+    parcel.amountSurveyed = event.params._round;
+    parcel.alchemicaRemaining = event.params._alchemicas;
+    parcel.save();
+    if (parcel.activeListing) {
+        let listing = getOrCreateERC721Listing(parcel.activeListing.toString());
+        listing.amountSurveyed = event.params._round;
+        listing.save();
+    }
 }
