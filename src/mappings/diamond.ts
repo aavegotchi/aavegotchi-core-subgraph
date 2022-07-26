@@ -1297,7 +1297,9 @@ export function handleSurveyParcel(event: SurveyParcel): void {
     parcel.alchemicaRemaining = event.params._alchemicas;
     parcel.save();
     if (parcel.activeListing) {
-        let listing = getOrCreateERC721Listing(parcel.activeListing.toString());
+        let listing = getOrCreateERC721Listing(
+            parcel.activeListing!.toString()
+        );
         listing.amountSurveyed = event.params._round;
         listing.save();
     }
