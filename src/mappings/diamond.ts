@@ -81,6 +81,7 @@ import {
     PORTAL_STATUS_CLAIMED,
     BIGINT_ZERO,
     ZERO_ADDRESS,
+    BLOCK_DISABLE_OLD_LENDING_EVENTS,
 } from "../utils/constants";
 import { Address, BigInt, log, Bytes } from "@graphprotocol/graph-ts";
 
@@ -1007,12 +1008,18 @@ export function handleWhitelistUpdated(event: WhitelistUpdated): void {
 }
 
 export function handleGotchiLendingAdd(event: GotchiLendingAdd): void {
+    if (event.block.number.gt(BLOCK_DISABLE_OLD_LENDING_EVENTS)) {
+        return;
+    }
     let lending = getOrCreateGotchiLending(event.params.listingId);
     lending = updateGotchiLending(lending, event);
     lending.save();
 }
 
 export function handleGotchiLendingClaim(event: GotchiLendingClaim): void {
+    if (event.block.number.gt(BLOCK_DISABLE_OLD_LENDING_EVENTS)) {
+        return;
+    }
     let lending = getOrCreateGotchiLending(event.params.listingId);
     lending = updateGotchiLending(lending, event);
     for (let i = 0; i < event.params.tokenAddresses.length; i++) {
@@ -1027,6 +1034,9 @@ export function handleGotchiLendingClaim(event: GotchiLendingClaim): void {
 }
 
 export function handleGotchiLendingEnd(event: GotchiLendingEnd): void {
+    if (event.block.number.gt(BLOCK_DISABLE_OLD_LENDING_EVENTS)) {
+        return;
+    }
     let lending = getOrCreateGotchiLending(event.params.listingId);
     lending = updateGotchiLending(lending, event);
     lending.save();
@@ -1075,6 +1085,9 @@ export function handleGotchiLendingEnd(event: GotchiLendingEnd): void {
 }
 
 export function handleGotchiLendingExecute(event: GotchiLendingExecute): void {
+    if (event.block.number.gt(BLOCK_DISABLE_OLD_LENDING_EVENTS)) {
+        return;
+    }
     let lending = getOrCreateGotchiLending(event.params.listingId);
     lending = updateGotchiLending(lending, event);
 
@@ -1105,6 +1118,9 @@ export function handleGotchiLendingExecute(event: GotchiLendingExecute): void {
 }
 
 export function handleGotchiLendingCancel(event: GotchiLendingCancel): void {
+    if (event.block.number.gt(BLOCK_DISABLE_OLD_LENDING_EVENTS)) {
+        return;
+    }
     let lending = getOrCreateGotchiLending(event.params.listingId);
     lending = updateGotchiLending(lending, event);
     lending.save();
@@ -1263,6 +1279,33 @@ export function handleGotchiLendingExecuted(
         }
     }
     lending.save();
+
+    if (event.block.number.le(BLOCK_DISABLE_OLD_LENDING_EVENTS)) {
+        return;
+    }
+
+    // update originalOwner to lender
+    let gotchi = getOrCreateAavegotchi(lending.gotchi, event)!;
+    let lender = getOrCreateUser(lending.lender!.toHexString());
+    gotchi.originalOwner = lender.id;
+    lender.save();
+    gotchi.save();
+
+    let originalOwner = getOrCreateUser(lending.lender!.toHexString());
+    let gotchisLentOut = originalOwner.gotchisLentOut;
+    gotchisLentOut.push(lending.gotchiTokenId);
+    originalOwner.gotchisLentOut = gotchisLentOut;
+    originalOwner.save();
+
+    let borrower = getOrCreateUser(lending.borrower!.toHexString());
+    let gotchisBorrowed = borrower.gotchisBorrowed;
+    gotchisBorrowed.push(lending.gotchiTokenId);
+    borrower.gotchisBorrowed = gotchisBorrowed;
+
+    // update stats
+    let stats = getStatisticEntity();
+    stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.plus(BIGINT_ONE);
+    stats.save();
 }
 
 export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
@@ -1287,4 +1330,50 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
         }
     }
     lending.save();
+
+    if (event.block.number.le(BLOCK_DISABLE_OLD_LENDING_EVENTS)) {
+        return;
+    }
+    // remove gotchi from originalOwner gotchisLentout
+    let originalOwner = getOrCreateUser(lending.lender!.toHexString());
+    if (originalOwner.gotchisLentOut.length > 0) {
+        let newGotchiLentOut = new Array<BigInt>();
+
+        for (let i = 0; i < originalOwner.gotchisLentOut.length; i++) {
+            let gotchiId = originalOwner.gotchisLentOut[i];
+            if (!gotchiId.equals(lending.gotchiTokenId)) {
+                newGotchiLentOut.push(gotchiId);
+            }
+        }
+        originalOwner.gotchisLentOut = newGotchiLentOut;
+        originalOwner.save();
+    }
+
+    // remove gotchi from borrower gotchis borrowed
+    let borrower = getOrCreateUser(lending.borrower!.toHexString());
+    if (borrower.gotchisBorrowed.length > 0) {
+        let newGotchiLentOut = new Array<BigInt>();
+
+        for (let i = 0; i < borrower.gotchisBorrowed.length; i++) {
+            let gotchiId = borrower.gotchisBorrowed[i];
+            if (!gotchiId.equals(lending.gotchiTokenId)) {
+                newGotchiLentOut.push(gotchiId);
+            }
+        }
+        borrower.gotchisBorrowed = newGotchiLentOut;
+        borrower.save();
+    }
+
+    let gotchi = getOrCreateAavegotchi(
+        lending.gotchiTokenId.toString(),
+        event
+    )!;
+    gotchi.lending = null;
+    gotchi.originalOwner = originalOwner.id;
+    gotchi.save();
+
+    // update Stats
+    let stats = getStatisticEntity();
+    stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.minus(BIGINT_ONE);
+    stats.save();
 }
