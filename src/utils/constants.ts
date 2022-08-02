@@ -14,3 +14,5 @@ export let STATUS_CLOSED_PORTAL = BIGINT_ZERO;
 export let STATUS_VRF_PENDING = BIGINT_ONE;
 export let STATUS_OPEN_PORTAL = BigInt.fromI32(2);
 export let STATUS_AAVEGOTCHI = BigInt.fromI32(3);
+
+export let BLOCK_DISABLE_OLD_LENDING_EVENTS = BigInt.fromI32(31313604);
