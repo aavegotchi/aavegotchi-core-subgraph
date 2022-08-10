@@ -1039,6 +1039,7 @@ export function handleGotchiLendingEnd(event: GotchiLendingEnd): void {
     }
     let lending = getOrCreateGotchiLending(event.params.listingId);
     lending = updateGotchiLending(lending, event);
+    lending.timeEnded = event.block.timestamp;
     lending.save();
 
     let originalOwner = getOrCreateUser(lending.lender!.toHexString());
@@ -1321,6 +1322,7 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
     lending.thirdPartyAddress = event.params.thirdParty;
     lending.gotchiTokenId = event.params.tokenId;
     lending.completed = true;
+    lending.timeEnded = event.block.timestamp;
     if (event.params.whitelistId != BIGINT_ZERO) {
         let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
         if (whitelist) {
