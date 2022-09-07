@@ -173,9 +173,7 @@ export function handlePortalOpened(event: PortalOpened): void {
 
         for (let i = 0; i < 10; i++) {
             let possibleAavegotchiTraits = array[i];
-            let gotchi = getOrCreateAavegotchiOption(
-                portal.id.concat("-").concat(BigInt.fromI32(i).toString())
-            );
+            let gotchi = getOrCreateAavegotchiOption(portal.id, i);
             gotchi.portal = portal.id;
             gotchi.owner = portal.owner;
             gotchi.randomNumber = possibleAavegotchiTraits.randomNumber;
