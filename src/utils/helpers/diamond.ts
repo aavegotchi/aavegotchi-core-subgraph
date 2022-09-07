@@ -44,13 +44,16 @@ export function getOrCreatePortal(
 }
 
 export function getOrCreateAavegotchiOption(
-    id: string,
+    portalId: string,
+    i: i32,
     createIfNotFound: boolean = true
 ): AavegotchiOption {
+    let id = portalId.concat("-").concat(BigInt.fromI32(i).toString());
     let option = AavegotchiOption.load(id);
 
     if (option == null && createIfNotFound) {
         option = new AavegotchiOption(id);
+        option.portalOptionId = i;
     }
 
     return option as AavegotchiOption;
