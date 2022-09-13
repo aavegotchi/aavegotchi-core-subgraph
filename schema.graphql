@@ -377,6 +377,9 @@ type Whitelist @entity {
     members: [Bytes!]!
     owner: User!
     ownerAddress: Bytes!
+
+    "Access Right for max borrowed Gotchis, default 1"
+    maxBorrowedGotchis: Int
 }
 
 #type Upgrade @entity {
