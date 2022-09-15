@@ -1383,6 +1383,10 @@ export function handleWhitelistAccessRightSet(
     event: WhitelistAccessRightSet
 ): void {
     let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
+    if (whitelist == null) {
+        return;
+    }
+
     if (event.params.actionRight === BIGINT_ZERO) {
         whitelist.borrowLimit = event.params.accessRight.toI32();
     }
