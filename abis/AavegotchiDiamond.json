@@ -40,6 +40,13 @@
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "addInterfaces",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
         "inputs": [
             { "internalType": "address", "name": "_owner", "type": "address" }
         ],
@@ -323,6 +330,25 @@
         "name": "balanceOf",
         "outputs": [
             { "internalType": "uint256", "name": "balance_", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "_tokenIds",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "batchOwnerOf",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "owners_",
+                "type": "address[]"
+            }
         ],
         "stateMutability": "view",
         "type": "function"
@@ -1162,6 +1188,15 @@
         "type": "function"
     },
     {
+        "inputs": [
+            { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+        ],
+        "name": "realmInteract",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
         "inputs": [],
         "name": "revenueShares",
         "outputs": [
@@ -1206,6 +1241,15 @@
             { "internalType": "string", "name": "_name", "type": "string" }
         ],
         "name": "setAavegotchiName",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_realm", "type": "address" }
+        ],
+        "name": "setRealmAddress",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -2217,6 +2261,25 @@
             {
                 "indexed": false,
                 "internalType": "uint256",
+                "name": "_itemId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_priceInWei",
+                "type": "uint256"
+            }
+        ],
+        "name": "UpdateItemPrice",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
                 "name": "_setId",
                 "type": "uint256"
             },
@@ -2677,6 +2740,24 @@
             }
         ],
         "name": "addWearableSets",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "_itemIds",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_newPrices",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "batchUpdateItemsPrice",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -3166,6 +3247,31 @@
             {
                 "indexed": true,
                 "internalType": "address",
+                "name": "buyer",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+            }
+        ],
+        "name": "ERC1155ExecutedToRecipient",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "listingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
                 "name": "seller",
                 "type": "address"
             },
@@ -3223,6 +3329,31 @@
         "type": "event"
     },
     {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "listingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint16[2]",
+                "name": "principalSplit",
+                "type": "uint16[2]"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "affiliate",
+                "type": "address"
+            }
+        ],
+        "name": "ERC1155ListingSplit",
+        "type": "event"
+    },
+    {
         "inputs": [
             {
                 "internalType": "uint256",
@@ -3267,6 +3398,40 @@
             }
         ],
         "name": "executeERC1155Listing",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_listingId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_contractAddress",
+                "type": "address"
+            },
+            { "internalType": "uint256", "name": "_itemId", "type": "uint256" },
+            {
+                "internalType": "uint256",
+                "name": "_quantity",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_priceInWei",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_recipient",
+                "type": "address"
+            }
+        ],
+        "name": "executeERC1155ListingToRecipient",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -3362,6 +3527,16 @@
                         "internalType": "bool",
                         "name": "cancelled",
                         "type": "bool"
+                    },
+                    {
+                        "internalType": "uint16[2]",
+                        "name": "principalSplit",
+                        "type": "uint16[2]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "affiliate",
+                        "type": "address"
                     }
                 ],
                 "internalType": "struct ERC1155Listing",
@@ -3445,6 +3620,16 @@
                         "internalType": "bool",
                         "name": "cancelled",
                         "type": "bool"
+                    },
+                    {
+                        "internalType": "uint16[2]",
+                        "name": "principalSplit",
+                        "type": "uint16[2]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "affiliate",
+                        "type": "address"
                     }
                 ],
                 "internalType": "struct ERC1155Listing",
@@ -3524,6 +3709,16 @@
                         "internalType": "bool",
                         "name": "cancelled",
                         "type": "bool"
+                    },
+                    {
+                        "internalType": "uint16[2]",
+                        "name": "principalSplit",
+                        "type": "uint16[2]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "affiliate",
+                        "type": "address"
                     }
                 ],
                 "internalType": "struct ERC1155Listing[]",
@@ -3613,6 +3808,16 @@
                         "internalType": "bool",
                         "name": "cancelled",
                         "type": "bool"
+                    },
+                    {
+                        "internalType": "uint16[2]",
+                        "name": "principalSplit",
+                        "type": "uint16[2]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "affiliate",
+                        "type": "address"
                     }
                 ],
                 "internalType": "struct ERC1155Listing[]",
@@ -3677,6 +3882,44 @@
             }
         ],
         "name": "setERC1155Listing",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_erc1155TokenAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_erc1155TypeId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_quantity",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_priceInWei",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint16[2]",
+                "name": "_principalSplit",
+                "type": "uint16[2]"
+            },
+            {
+                "internalType": "address",
+                "name": "_affiliate",
+                "type": "address"
+            }
+        ],
+        "name": "setERC1155ListingWithSplit",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -3799,6 +4042,31 @@
             {
                 "indexed": true,
                 "internalType": "address",
+                "name": "buyer",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+            }
+        ],
+        "name": "ERC721ExecutedToRecipient",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "listingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
                 "name": "seller",
                 "type": "address"
             },
@@ -3831,6 +4099,31 @@
         "type": "event"
     },
     {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "listingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint16[2]",
+                "name": "principalSplit",
+                "type": "uint16[2]"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "affiliate",
+                "type": "address"
+            }
+        ],
+        "name": "ERC721ListingSplit",
+        "type": "event"
+    },
+    {
         "inputs": [
             {
                 "internalType": "address",
@@ -3849,6 +4142,39 @@
             }
         ],
         "name": "addERC721Listing",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_erc721TokenAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_erc721TokenId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_priceInWei",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint16[2]",
+                "name": "_principalSplit",
+                "type": "uint16[2]"
+            },
+            {
+                "internalType": "address",
+                "name": "_affiliate",
+                "type": "address"
+            }
+        ],
+        "name": "addERC721ListingWithSplit",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -3916,6 +4242,39 @@
                 "internalType": "uint256",
                 "name": "_listingId",
                 "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_contractAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_priceInWei",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_recipient",
+                "type": "address"
+            }
+        ],
+        "name": "executeERC721ListingToRecipient",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_listingId",
+                "type": "uint256"
             }
         ],
         "name": "getAavegotchiListing",
@@ -3966,6 +4325,16 @@
                         "internalType": "bool",
                         "name": "cancelled",
                         "type": "bool"
+                    },
+                    {
+                        "internalType": "uint16[2]",
+                        "name": "principalSplit",
+                        "type": "uint16[2]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "affiliate",
+                        "type": "address"
                     }
                 ],
                 "internalType": "struct ERC721Listing",
@@ -4289,6 +4658,16 @@
                                 "internalType": "bool",
                                 "name": "cancelled",
                                 "type": "bool"
+                            },
+                            {
+                                "internalType": "uint16[2]",
+                                "name": "principalSplit",
+                                "type": "uint16[2]"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "affiliate",
+                                "type": "address"
                             }
                         ],
                         "internalType": "struct ERC721Listing",
@@ -4637,6 +5016,16 @@
                         "internalType": "bool",
                         "name": "cancelled",
                         "type": "bool"
+                    },
+                    {
+                        "internalType": "uint16[2]",
+                        "name": "principalSplit",
+                        "type": "uint16[2]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "affiliate",
+                        "type": "address"
                     }
                 ],
                 "internalType": "struct ERC721Listing",
@@ -4709,6 +5098,16 @@
                         "internalType": "bool",
                         "name": "cancelled",
                         "type": "bool"
+                    },
+                    {
+                        "internalType": "uint16[2]",
+                        "name": "principalSplit",
+                        "type": "uint16[2]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "affiliate",
+                        "type": "address"
                     }
                 ],
                 "internalType": "struct ERC721Listing",
@@ -4777,6 +5176,16 @@
                         "internalType": "bool",
                         "name": "cancelled",
                         "type": "bool"
+                    },
+                    {
+                        "internalType": "uint16[2]",
+                        "name": "principalSplit",
+                        "type": "uint16[2]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "affiliate",
+                        "type": "address"
                     }
                 ],
                 "internalType": "struct ERC721Listing[]",
@@ -4848,6 +5257,16 @@
                                 "internalType": "bool",
                                 "name": "cancelled",
                                 "type": "bool"
+                            },
+                            {
+                                "internalType": "uint16[2]",
+                                "name": "principalSplit",
+                                "type": "uint16[2]"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "affiliate",
+                                "type": "address"
                             }
                         ],
                         "internalType": "struct ERC721Listing",
@@ -5175,6 +5594,16 @@
                         "internalType": "bool",
                         "name": "cancelled",
                         "type": "bool"
+                    },
+                    {
+                        "internalType": "uint16[2]",
+                        "name": "principalSplit",
+                        "type": "uint16[2]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "affiliate",
+                        "type": "address"
                     }
                 ],
                 "internalType": "struct ERC721Listing[]",
@@ -5183,6 +5612,31 @@
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "erc721TokenAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "category",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct ERC721MarketplaceFacet.Category[]",
+                "name": "_categories",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "setERC721Categories",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -5360,6 +5814,17 @@
     },
     {
         "inputs": [
+            { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+        ],
+        "name": "gotchiEscrow",
+        "outputs": [
+            { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
             {
                 "internalType": "uint256",
                 "name": "_tokenId",
@@ -5382,6 +5847,338 @@
             }
         ],
         "name": "transferEscrow",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_erc721TokenId",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint96",
+                "name": "_initialCost",
+                "type": "uint96"
+            },
+            { "internalType": "uint32", "name": "_period", "type": "uint32" },
+            {
+                "internalType": "uint8[3]",
+                "name": "_revenueSplit",
+                "type": "uint8[3]"
+            },
+            {
+                "internalType": "address",
+                "name": "_originalOwner",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_thirdParty",
+                "type": "address"
+            },
+            {
+                "internalType": "uint32",
+                "name": "_whitelistId",
+                "type": "uint32"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_revenueTokens",
+                "type": "address[]"
+            }
+        ],
+        "name": "addGotchiLending",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint32",
+                        "name": "tokenId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "initialCost",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "period",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint8[3]",
+                        "name": "revenueSplit",
+                        "type": "uint8[3]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "originalOwner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "thirdParty",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "whitelistId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "revenueTokens",
+                        "type": "address[]"
+                    }
+                ],
+                "internalType": "struct GotchiLendingFacet.AddGotchiListing",
+                "name": "p",
+                "type": "tuple"
+            }
+        ],
+        "name": "addGotchiListing",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_listingId",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "_erc721TokenId",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint96",
+                "name": "_initialCost",
+                "type": "uint96"
+            },
+            { "internalType": "uint32", "name": "_period", "type": "uint32" },
+            {
+                "internalType": "uint8[3]",
+                "name": "_revenueSplit",
+                "type": "uint8[3]"
+            }
+        ],
+        "name": "agreeGotchiLending",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint32",
+                        "name": "tokenId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "initialCost",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "period",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint8[3]",
+                        "name": "revenueSplit",
+                        "type": "uint8[3]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "originalOwner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "thirdParty",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "whitelistId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "revenueTokens",
+                        "type": "address[]"
+                    }
+                ],
+                "internalType": "struct GotchiLendingFacet.AddGotchiListing[]",
+                "name": "listings",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "batchAddGotchiListing",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32[]",
+                "name": "_listingIds",
+                "type": "uint32[]"
+            }
+        ],
+        "name": "batchCancelGotchiLending",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32[]",
+                "name": "_erc721TokenIds",
+                "type": "uint32[]"
+            }
+        ],
+        "name": "batchCancelGotchiLendingByToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32[]",
+                "name": "_tokenIds",
+                "type": "uint32[]"
+            }
+        ],
+        "name": "batchClaimAndEndAndRelistGotchiLending",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32[]",
+                "name": "_tokenIds",
+                "type": "uint32[]"
+            }
+        ],
+        "name": "batchClaimAndEndGotchiLending",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32[]",
+                "name": "_tokenIds",
+                "type": "uint32[]"
+            }
+        ],
+        "name": "batchClaimGotchiLending",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint32",
+                        "name": "tokenId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "extension",
+                        "type": "uint32"
+                    }
+                ],
+                "internalType": "struct GotchiLendingFacet.BatchRenew[]",
+                "name": "_batchRenewParams",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "batchExtendGotchiLending",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint32", "name": "_listingId", "type": "uint32" }
+        ],
+        "name": "cancelGotchiLending",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_erc721TokenId",
+                "type": "uint32"
+            }
+        ],
+        "name": "cancelGotchiLendingByToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint32", "name": "_tokenId", "type": "uint32" }
+        ],
+        "name": "claimAndEndAndRelistGotchiLending",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint32", "name": "_tokenId", "type": "uint32" }
+        ],
+        "name": "claimAndEndGotchiLending",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint32", "name": "_tokenId", "type": "uint32" }
+        ],
+        "name": "claimGotchiLending",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint32", "name": "_tokenId", "type": "uint32" },
+            { "internalType": "uint32", "name": "extension", "type": "uint32" }
+        ],
+        "name": "extendGotchiLending",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -6308,7 +7105,6 @@
         "stateMutability": "nonpayable",
         "type": "function"
     },
-
     {
         "inputs": [
             {
@@ -6584,1504 +7380,42 @@
         "anonymous": false,
         "inputs": [
             {
-                "indexed": false,
-                "internalType": "address",
-                "name": "userAddress",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "address payable",
-                "name": "relayerAddress",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "bytes",
-                "name": "functionSignature",
-                "type": "bytes"
-            }
-        ],
-        "name": "MetaTransactionExecuted",
-        "type": "event"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "userAddress",
-                "type": "address"
-            },
-            {
-                "internalType": "bytes",
-                "name": "functionSignature",
-                "type": "bytes"
-            },
-            { "internalType": "bytes32", "name": "sigR", "type": "bytes32" },
-            { "internalType": "bytes32", "name": "sigS", "type": "bytes32" },
-            { "internalType": "uint8", "name": "sigV", "type": "uint8" }
-        ],
-        "name": "executeMetaTransaction",
-        "outputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
-        "stateMutability": "payable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            { "internalType": "address", "name": "user", "type": "address" }
-        ],
-        "name": "getNonce",
-        "outputs": [
-            { "internalType": "uint256", "name": "nonce_", "type": "uint256" }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
                 "indexed": true,
                 "internalType": "address",
-                "name": "_from",
+                "name": "lender",
                 "type": "address"
             },
             {
                 "indexed": true,
                 "internalType": "address",
-                "name": "_to",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_numAavegotchisToPurchase",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_totalPrice",
-                "type": "uint256"
-            }
-        ],
-        "name": "BuyPortals",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_from",
+                "name": "lendingOperator",
                 "type": "address"
             },
             {
                 "indexed": true,
-                "internalType": "address",
-                "name": "_to",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_numAavegotchisToPurchase",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_totalPrice",
-                "type": "uint256"
-            }
-        ],
-        "name": "Xingyun",
-        "type": "event"
-    },
-
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_from",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_to",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_numAavegotchisToPurchase",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_hauntId",
-                "type": "uint256"
-            }
-        ],
-        "name": "MintPortals",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_buyer",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_to",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256[]",
-                "name": "_itemIds",
-                "type": "uint256[]"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256[]",
-                "name": "_quantities",
-                "type": "uint256[]"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_totalPrice",
-                "type": "uint256"
-            }
-        ],
-        "name": "PurchaseItemsWithGhst",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_buyer",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_to",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256[]",
-                "name": "_itemIds",
-                "type": "uint256[]"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256[]",
-                "name": "_quantities",
-                "type": "uint256[]"
-            }
-        ],
-        "name": "PurchaseItemsWithVouchers",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_buyer",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_to",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256[]",
-                "name": "_itemIds",
-                "type": "uint256[]"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256[]",
-                "name": "_quantities",
-                "type": "uint256[]"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_totalPrice",
-                "type": "uint256"
-            }
-        ],
-        "name": "PurchaseTransferItemsWithGhst",
-        "type": "event"
-    },
-    {
-        "inputs": [
-            { "internalType": "address", "name": "_to", "type": "address" },
-            { "internalType": "uint256", "name": "_ghst", "type": "uint256" }
-        ],
-        "name": "buyPortals",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            { "internalType": "address", "name": "_to", "type": "address" },
-            { "internalType": "uint256", "name": "_amount", "type": "uint256" }
-        ],
-        "name": "mintPortals",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            { "internalType": "address", "name": "_to", "type": "address" },
-            {
-                "internalType": "uint256[]",
-                "name": "_itemIds",
-                "type": "uint256[]"
-            },
-            {
-                "internalType": "uint256[]",
-                "name": "_quantities",
-                "type": "uint256[]"
-            }
-        ],
-        "name": "purchaseItemsWithGhst",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            { "internalType": "address", "name": "_to", "type": "address" },
-            {
-                "internalType": "uint256[]",
-                "name": "_itemIds",
-                "type": "uint256[]"
-            },
-            {
-                "internalType": "uint256[]",
-                "name": "_quantities",
-                "type": "uint256[]"
-            }
-        ],
-        "name": "purchaseTransferItemsWithGhst",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "bytes32",
-                "name": "_svgType",
-                "type": "bytes32"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_numLayers",
-                "type": "uint256"
-            }
-        ],
-        "name": "deleteLastSvgLayers",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
-        ],
-        "name": "getAavegotchiSvg",
-        "outputs": [
-            { "internalType": "string", "name": "ag_", "type": "string" }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            { "internalType": "uint256", "name": "_itemId", "type": "uint256" }
-        ],
-        "name": "getItemSvg",
-        "outputs": [
-            { "internalType": "string", "name": "ag_", "type": "string" }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "bytes32",
-                "name": "_svgType",
-                "type": "bytes32"
-            },
-            { "internalType": "uint256", "name": "_itemId", "type": "uint256" }
-        ],
-        "name": "getSvg",
-        "outputs": [
-            { "internalType": "string", "name": "svg_", "type": "string" }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "bytes32",
-                "name": "_svgType",
-                "type": "bytes32"
-            },
-            {
-                "internalType": "uint256[]",
-                "name": "_itemIds",
-                "type": "uint256[]"
-            }
-        ],
-        "name": "getSvgs",
-        "outputs": [
-            { "internalType": "string[]", "name": "svgs_", "type": "string[]" }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
-        ],
-        "name": "portalAavegotchisSvg",
-        "outputs": [
-            {
-                "internalType": "string[10]",
-                "name": "svg_",
-                "type": "string[10]"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_hauntId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "_collateralType",
-                "type": "address"
-            },
-            {
-                "internalType": "int16[6]",
-                "name": "_numericTraits",
-                "type": "int16[6]"
-            },
-            {
-                "internalType": "uint16[16]",
-                "name": "equippedWearables",
-                "type": "uint16[16]"
-            }
-        ],
-        "name": "previewAavegotchi",
-        "outputs": [
-            { "internalType": "string", "name": "ag_", "type": "string" }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256[]",
-                "name": "_itemIds",
-                "type": "uint256[]"
-            },
-            {
-                "components": [
-                    { "internalType": "uint8", "name": "x", "type": "uint8" },
-                    { "internalType": "uint8", "name": "y", "type": "uint8" },
-                    {
-                        "internalType": "uint8",
-                        "name": "width",
-                        "type": "uint8"
-                    },
-                    {
-                        "internalType": "uint8",
-                        "name": "height",
-                        "type": "uint8"
-                    }
-                ],
-                "internalType": "struct Dimensions[]",
-                "name": "_dimensions",
-                "type": "tuple[]"
-            }
-        ],
-        "name": "setItemsDimensions",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "components": [
-                    {
-                        "internalType": "uint256",
-                        "name": "sleeveId",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "wearableId",
-                        "type": "uint256"
-                    }
-                ],
-                "internalType": "struct SvgFacet.Sleeve[]",
-                "name": "_sleeves",
-                "type": "tuple[]"
-            }
-        ],
-        "name": "setSleeves",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            { "internalType": "string", "name": "_svg", "type": "string" },
-            {
-                "components": [
-                    {
-                        "internalType": "bytes32",
-                        "name": "svgType",
-                        "type": "bytes32"
-                    },
-                    {
-                        "internalType": "uint256[]",
-                        "name": "sizes",
-                        "type": "uint256[]"
-                    }
-                ],
-                "internalType": "struct LibSvg.SvgTypeAndSizes[]",
-                "name": "_typesAndSizes",
-                "type": "tuple[]"
-            }
-        ],
-        "name": "storeSvg",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            { "internalType": "string", "name": "_svg", "type": "string" },
-            {
-                "components": [
-                    {
-                        "internalType": "bytes32",
-                        "name": "svgType",
-                        "type": "bytes32"
-                    },
-                    {
-                        "internalType": "uint256[]",
-                        "name": "ids",
-                        "type": "uint256[]"
-                    },
-                    {
-                        "internalType": "uint256[]",
-                        "name": "sizes",
-                        "type": "uint256[]"
-                    }
-                ],
-                "internalType": "struct LibSvg.SvgTypeAndIdsAndSizes[]",
-                "name": "_typesAndIdsAndSizes",
-                "type": "tuple[]"
-            }
-        ],
-        "name": "updateSvg",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
-        ],
-        "name": "getAavegotchiSideSvgs",
-        "outputs": [
-            { "internalType": "string[]", "name": "ag_", "type": "string[]" }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            { "internalType": "uint256", "name": "_itemId", "type": "uint256" }
-        ],
-        "name": "getItemSvgs",
-        "outputs": [
-            { "internalType": "string[]", "name": "svg_", "type": "string[]" }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_hauntId",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "_collateralType",
-                "type": "address"
-            },
-            {
-                "internalType": "int16[6]",
-                "name": "_numericTraits",
-                "type": "int16[6]"
-            },
-            {
-                "internalType": "uint16[16]",
-                "name": "equippedWearables",
-                "type": "uint16[16]"
-            }
-        ],
-        "name": "previewSideAavegotchi",
-        "outputs": [
-            { "internalType": "string[]", "name": "ag_", "type": "string[]" }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "components": [
-                    {
-                        "internalType": "uint256",
-                        "name": "itemId",
-                        "type": "uint256"
-                    },
-                    {
-                        "internalType": "string",
-                        "name": "side",
-                        "type": "string"
-                    },
-                    {
-                        "components": [
-                            {
-                                "internalType": "uint8",
-                                "name": "x",
-                                "type": "uint8"
-                            },
-                            {
-                                "internalType": "uint8",
-                                "name": "y",
-                                "type": "uint8"
-                            },
-                            {
-                                "internalType": "uint8",
-                                "name": "width",
-                                "type": "uint8"
-                            },
-                            {
-                                "internalType": "uint8",
-                                "name": "height",
-                                "type": "uint8"
-                            }
-                        ],
-                        "internalType": "struct Dimensions",
-                        "name": "dimensions",
-                        "type": "tuple"
-                    }
-                ],
-                "internalType": "struct SvgViewsFacet.SideViewDimensionsArgs[]",
-                "name": "_sideViewDimensions",
-                "type": "tuple[]"
-            }
-        ],
-        "name": "setSideViewDimensions",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "uint256[]",
-                "name": "_tokenIds",
-                "type": "uint256[]"
-            }
-        ],
-        "name": "OpenPortals",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "uint256",
+                "internalType": "uint32",
                 "name": "tokenId",
-                "type": "uint256"
-            }
-        ],
-        "name": "PortalOpened",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "tokenId",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "randomNumber",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_vrfTimeSet",
-                "type": "uint256"
-            }
-        ],
-        "name": "VrfRandomNumber",
-        "type": "event"
-    },
-    {
-        "inputs": [
-            { "internalType": "uint256", "name": "_newFee", "type": "uint256" },
-            {
-                "internalType": "bytes32",
-                "name": "_keyHash",
-                "type": "bytes32"
-            },
-            {
-                "internalType": "address",
-                "name": "_vrfCoordinator",
-                "type": "address"
-            },
-            { "internalType": "address", "name": "_link", "type": "address" }
-        ],
-        "name": "changeVrf",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "keyHash",
-        "outputs": [
-            { "internalType": "bytes32", "name": "", "type": "bytes32" }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "link",
-        "outputs": [
-            { "internalType": "address", "name": "", "type": "address" }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "linkBalance",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "linkBalance_",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256[]",
-                "name": "_tokenIds",
-                "type": "uint256[]"
-            }
-        ],
-        "name": "openPortals",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "bytes32",
-                "name": "_requestId",
-                "type": "bytes32"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_randomNumber",
-                "type": "uint256"
-            }
-        ],
-        "name": "rawFulfillRandomness",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            { "internalType": "address", "name": "_to", "type": "address" },
-            { "internalType": "uint256", "name": "_value", "type": "uint256" }
-        ],
-        "name": "removeLinkTokens",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "vrfCoordinator",
-        "outputs": [
-            { "internalType": "address", "name": "", "type": "address" }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_owner",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256[]",
-                "name": "_ids",
-                "type": "uint256[]"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256[]",
-                "name": "_values",
-                "type": "uint256[]"
-            }
-        ],
-        "name": "MigrateVouchers",
-        "type": "event"
-    },
-    {
-        "inputs": [
-            {
-                "components": [
-                    {
-                        "internalType": "address",
-                        "name": "owner",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "uint256[]",
-                        "name": "ids",
-                        "type": "uint256[]"
-                    },
-                    {
-                        "internalType": "uint256[]",
-                        "name": "values",
-                        "type": "uint256[]"
-                    }
-                ],
-                "internalType": "struct VoucherMigrationFacet.VouchersOwner[]",
-                "name": "_vouchersOwners",
-                "type": "tuple[]"
-            }
-        ],
-        "name": "migrateVouchers",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "kinship",
-                "type": "uint256"
-            }
-        ],
-        "name": "AavegotchiInteract",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "listingId",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "category",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "time",
-                "type": "uint256"
-            }
-        ],
-        "name": "ERC1155ListingCancelled",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "listingId",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "category",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "time",
-                "type": "uint256"
-            }
-        ],
-        "name": "ERC1155ListingRemoved",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "listingId",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "quantity",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "priceInWei",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "time",
-                "type": "uint256"
-            }
-        ],
-        "name": "UpdateERC1155Listing",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "listingId",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "category",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "time",
-                "type": "uint256"
-            }
-        ],
-        "name": "ERC721ListingCancelled",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "listingId",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "category",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "time",
-                "type": "uint256"
-            }
-        ],
-        "name": "ERC721ListingRemoved",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "components": [
-                    {
-                        "internalType": "bytes32",
-                        "name": "svgType",
-                        "type": "bytes32"
-                    },
-                    {
-                        "internalType": "uint256[]",
-                        "name": "sizes",
-                        "type": "uint256[]"
-                    }
-                ],
-                "indexed": false,
-                "internalType": "struct LibSvg.SvgTypeAndSizes[]",
-                "name": "_typesAndSizes",
-                "type": "tuple[]"
-            }
-        ],
-        "name": "StoreSvg",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "components": [
-                    {
-                        "internalType": "bytes32",
-                        "name": "svgType",
-                        "type": "bytes32"
-                    },
-                    {
-                        "internalType": "uint256[]",
-                        "name": "ids",
-                        "type": "uint256[]"
-                    },
-                    {
-                        "internalType": "uint256[]",
-                        "name": "sizes",
-                        "type": "uint256[]"
-                    }
-                ],
-                "indexed": false,
-                "internalType": "struct LibSvg.SvgTypeAndIdsAndSizes[]",
-                "name": "_typesAndIdsAndSizes",
-                "type": "tuple[]"
-            }
-        ],
-        "name": "UpdateSvg",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "components": [
-                    {
-                        "internalType": "address",
-                        "name": "facetAddress",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "enum IDiamondCut.FacetCutAction",
-                        "name": "action",
-                        "type": "uint8"
-                    },
-                    {
-                        "internalType": "bytes4[]",
-                        "name": "functionSelectors",
-                        "type": "bytes4[]"
-                    }
-                ],
-                "indexed": false,
-                "internalType": "struct IDiamondCut.FacetCut[]",
-                "name": "_diamondCut",
-                "type": "tuple[]"
-            },
-            {
-                "indexed": false,
-                "internalType": "address",
-                "name": "_init",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "bytes",
-                "name": "_calldata",
-                "type": "bytes"
-            }
-        ],
-        "name": "DiamondCut",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "previousOwner",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "newOwner",
-                "type": "address"
-            }
-        ],
-        "name": "OwnershipTransferred",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_owner",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_operator",
-                "type": "address"
+                "type": "uint32"
             },
             {
                 "indexed": false,
                 "internalType": "bool",
-                "name": "_approved",
+                "name": "isLendingOperator",
                 "type": "bool"
             }
         ],
-        "name": "ApprovalForAll",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_operator",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_from",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_to",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256[]",
-                "name": "_ids",
-                "type": "uint256[]"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256[]",
-                "name": "_values",
-                "type": "uint256[]"
-            }
-        ],
-        "name": "TransferBatch",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_fromContract",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "_fromTokenId",
-                "type": "uint256"
-            },
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "_tokenTypeId",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_value",
-                "type": "uint256"
-            }
-        ],
-        "name": "TransferFromParent",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_operator",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_from",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_to",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_id",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_value",
-                "type": "uint256"
-            }
-        ],
-        "name": "TransferSingle",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_toContract",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "_toTokenId",
-                "type": "uint256"
-            },
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "_tokenTypeId",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_value",
-                "type": "uint256"
-            }
-        ],
-        "name": "TransferToParent",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "string",
-                "name": "_value",
-                "type": "string"
-            },
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "_id",
-                "type": "uint256"
-            }
-        ],
-        "name": "URI",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_owner",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_approved",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            }
-        ],
-        "name": "Approval",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_owner",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_operator",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "bool",
-                "name": "_approved",
-                "type": "bool"
-            }
-        ],
-        "name": "ApprovalForAll",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_from",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "_to",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "_tokenId",
-                "type": "uint256"
-            }
-        ],
-        "name": "Transfer",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_itemId",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "_priceInWei",
-                "type": "uint256"
-            }
-        ],
-        "name": "UpdateItemPrice",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "uint32",
-                "name": "listingId",
-                "type": "uint32"
-            }
-        ],
-        "name": "GotchiLendingAdd",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "uint32",
-                "name": "listingId",
-                "type": "uint32"
-            }
-        ],
-        "name": "GotchiLendingEnd",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "uint32",
-                "name": "listingId",
-                "type": "uint32"
-            }
-        ],
-        "name": "GotchiLendingExecute",
+        "name": "LendingOperatorSet",
         "type": "event"
     },
     {
         "inputs": [
-            {
-                "internalType": "uint32",
-                "name": "_erc721TokenId",
-                "type": "uint32"
-            },
-            {
-                "internalType": "uint96",
-                "name": "_initialCost",
-                "type": "uint96"
-            },
-            {
-                "internalType": "uint32",
-                "name": "_period",
-                "type": "uint32"
-            },
-            {
-                "internalType": "uint8[3]",
-                "name": "_revenueSplit",
-                "type": "uint8[3]"
-            },
-            {
-                "internalType": "address",
-                "name": "_originalOwner",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
-                "name": "_thirdParty",
-                "type": "address"
-            },
-            {
-                "internalType": "uint32",
-                "name": "_whitelistId",
-                "type": "uint32"
-            },
             {
                 "internalType": "address[]",
-                "name": "_revenueTokens",
+                "name": "tokens",
                 "type": "address[]"
             }
         ],
-        "name": "addGotchiLending",
+        "name": "allowRevenueTokens",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -8089,32 +7423,29 @@
     {
         "inputs": [
             {
-                "internalType": "uint32",
-                "name": "_listingId",
-                "type": "uint32"
+                "internalType": "address",
+                "name": "_lendingOperator",
+                "type": "address"
             },
             {
-                "internalType": "uint32",
-                "name": "_erc721TokenId",
-                "type": "uint32"
-            },
-            {
-                "internalType": "uint96",
-                "name": "_initialCost",
-                "type": "uint96"
-            },
-            {
-                "internalType": "uint32",
-                "name": "_period",
-                "type": "uint32"
-            },
-            {
-                "internalType": "uint8[3]",
-                "name": "_revenueSplit",
-                "type": "uint8[3]"
+                "components": [
+                    {
+                        "internalType": "uint32",
+                        "name": "_tokenId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "_isLendingOperator",
+                        "type": "bool"
+                    }
+                ],
+                "internalType": "struct LendingGetterAndSetterFacet.LendingOperatorInputs[]",
+                "name": "_inputs",
+                "type": "tuple[]"
             }
         ],
-        "name": "agreeGotchiLending",
+        "name": "batchSetLendingOperator",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -8122,51 +7453,12 @@
     {
         "inputs": [
             {
-                "internalType": "uint32",
-                "name": "_listingId",
-                "type": "uint32"
+                "internalType": "address[]",
+                "name": "tokens",
+                "type": "address[]"
             }
         ],
-        "name": "cancelGotchiLending",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint32",
-                "name": "_erc721TokenId",
-                "type": "uint32"
-            }
-        ],
-        "name": "cancelGotchiLendingByToken",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint32",
-                "name": "_tokenId",
-                "type": "uint32"
-            }
-        ],
-        "name": "claimAndEndGotchiLending",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint32",
-                "name": "_tokenId",
-                "type": "uint32"
-            }
-        ],
-        "name": "claimGotchiLending",
+        "name": "disallowRevenueTokens",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -8281,23 +7573,13 @@
             }
         ],
         "name": "getGotchiLendingIdByToken",
-        "outputs": [
-            {
-                "internalType": "uint32",
-                "name": "",
-                "type": "uint32"
-            }
-        ],
+        "outputs": [{ "internalType": "uint32", "name": "", "type": "uint32" }],
         "stateMutability": "view",
         "type": "function"
     },
     {
         "inputs": [
-            {
-                "internalType": "uint32",
-                "name": "_listingId",
-                "type": "uint32"
-            }
+            { "internalType": "uint32", "name": "_listingId", "type": "uint32" }
         ],
         "name": "getGotchiLendingListingInfo",
         "outputs": [
@@ -8647,16 +7929,8 @@
     },
     {
         "inputs": [
-            {
-                "internalType": "bytes32",
-                "name": "_status",
-                "type": "bytes32"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_length",
-                "type": "uint256"
-            }
+            { "internalType": "bytes32", "name": "_status", "type": "bytes32" },
+            { "internalType": "uint256", "name": "_length", "type": "uint256" }
         ],
         "name": "getGotchiLendings",
         "outputs": [
@@ -8752,12 +8026,17 @@
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "getGotchiLendingsLength",
+        "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [
-            {
-                "internalType": "uint32",
-                "name": "_listingId",
-                "type": "uint32"
-            }
+            { "internalType": "uint32", "name": "_listingId", "type": "uint32" }
         ],
         "name": "getLendingListingInfo",
         "outputs": [
@@ -8854,21 +8133,9 @@
     },
     {
         "inputs": [
-            {
-                "internalType": "address",
-                "name": "_lender",
-                "type": "address"
-            },
-            {
-                "internalType": "bytes32",
-                "name": "_status",
-                "type": "bytes32"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_length",
-                "type": "uint256"
-            }
+            { "internalType": "address", "name": "_lender", "type": "address" },
+            { "internalType": "bytes32", "name": "_status", "type": "bytes32" },
+            { "internalType": "uint256", "name": "_length", "type": "uint256" }
         ],
         "name": "getOwnerGotchiLendings",
         "outputs": [
@@ -8965,6 +8232,38 @@
     },
     {
         "inputs": [
+            { "internalType": "address", "name": "_lender", "type": "address" },
+            { "internalType": "bytes32", "name": "_status", "type": "bytes32" }
+        ],
+        "name": "getOwnerGotchiLendingsLength",
+        "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint32", "name": "_tokenId", "type": "uint32" },
+            {
+                "internalType": "address[]",
+                "name": "_revenueTokens",
+                "type": "address[]"
+            }
+        ],
+        "name": "getTokenBalancesInEscrow",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "revenueBalances",
+                "type": "uint256[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
             {
                 "internalType": "uint32",
                 "name": "_erc721TokenId",
@@ -8972,14 +8271,985 @@
             }
         ],
         "name": "isAavegotchiLent",
-        "outputs": [
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_erc721TokenId",
+                "type": "uint32"
+            }
+        ],
+        "name": "isAavegotchiListed",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_lender", "type": "address" },
+            {
+                "internalType": "address",
+                "name": "_lendingOperator",
+                "type": "address"
+            },
+            { "internalType": "uint32", "name": "_tokenId", "type": "uint32" }
+        ],
+        "name": "isLendingOperator",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "token", "type": "address" }
+        ],
+        "name": "revenueTokenAllowed",
+        "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_lendingOperator",
+                "type": "address"
+            },
+            { "internalType": "uint32", "name": "_tokenId", "type": "uint32" },
             {
                 "internalType": "bool",
-                "name": "",
+                "name": "_isLendingOperator",
                 "type": "bool"
             }
         ],
+        "name": "setLendingOperator",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "userAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address payable",
+                "name": "relayerAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "functionSignature",
+                "type": "bytes"
+            }
+        ],
+        "name": "MetaTransactionExecuted",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "userAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "functionSignature",
+                "type": "bytes"
+            },
+            { "internalType": "bytes32", "name": "sigR", "type": "bytes32" },
+            { "internalType": "bytes32", "name": "sigS", "type": "bytes32" },
+            { "internalType": "uint8", "name": "sigV", "type": "uint8" }
+        ],
+        "name": "executeMetaTransaction",
+        "outputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "user", "type": "address" }
+        ],
+        "name": "getNonce",
+        "outputs": [
+            { "internalType": "uint256", "name": "nonce_", "type": "uint256" }
+        ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_numAavegotchisToPurchase",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_totalPrice",
+                "type": "uint256"
+            }
+        ],
+        "name": "BuyPortals",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_numAavegotchisToPurchase",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_hauntId",
+                "type": "uint256"
+            }
+        ],
+        "name": "MintPortals",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_numAavegotchisToPurchase",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_hauntId",
+                "type": "uint256"
+            }
+        ],
+        "name": "Xingyun",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_buyer",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_itemIds",
+                "type": "uint256[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_quantities",
+                "type": "uint256[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_totalPrice",
+                "type": "uint256"
+            }
+        ],
+        "name": "PurchaseItemsWithGhst",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_buyer",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_itemIds",
+                "type": "uint256[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_quantities",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "PurchaseItemsWithVouchers",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_buyer",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_itemIds",
+                "type": "uint256[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_quantities",
+                "type": "uint256[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_totalPrice",
+                "type": "uint256"
+            }
+        ],
+        "name": "PurchaseTransferItemsWithGhst",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_to", "type": "address" },
+            { "internalType": "uint256", "name": "_ghst", "type": "uint256" }
+        ],
+        "name": "buyPortals",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_to", "type": "address" },
+            { "internalType": "uint256", "name": "_amount", "type": "uint256" }
+        ],
+        "name": "mintPortals",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_to", "type": "address" },
+            {
+                "internalType": "uint256[]",
+                "name": "_itemIds",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_quantities",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "purchaseItemsWithGhst",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_to", "type": "address" },
+            {
+                "internalType": "uint256[]",
+                "name": "_itemIds",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_quantities",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "purchaseTransferItemsWithGhst",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_svgType",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_numLayers",
+                "type": "uint256"
+            }
+        ],
+        "name": "deleteLastSvgLayers",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+        ],
+        "name": "getAavegotchiSvg",
+        "outputs": [
+            { "internalType": "string", "name": "ag_", "type": "string" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "_itemId", "type": "uint256" }
+        ],
+        "name": "getItemSvg",
+        "outputs": [
+            { "internalType": "string", "name": "ag_", "type": "string" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getNextSleeveId",
+        "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_svgType",
+                "type": "bytes32"
+            },
+            { "internalType": "uint256", "name": "_itemId", "type": "uint256" }
+        ],
+        "name": "getSvg",
+        "outputs": [
+            { "internalType": "string", "name": "svg_", "type": "string" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_svgType",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_itemIds",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "getSvgs",
+        "outputs": [
+            { "internalType": "string[]", "name": "svgs_", "type": "string[]" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+        ],
+        "name": "portalAavegotchisSvg",
+        "outputs": [
+            {
+                "internalType": "string[10]",
+                "name": "svg_",
+                "type": "string[10]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_hauntId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_collateralType",
+                "type": "address"
+            },
+            {
+                "internalType": "int16[6]",
+                "name": "_numericTraits",
+                "type": "int16[6]"
+            },
+            {
+                "internalType": "uint16[16]",
+                "name": "equippedWearables",
+                "type": "uint16[16]"
+            }
+        ],
+        "name": "previewAavegotchi",
+        "outputs": [
+            { "internalType": "string", "name": "ag_", "type": "string" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "_itemIds",
+                "type": "uint256[]"
+            },
+            {
+                "components": [
+                    { "internalType": "uint8", "name": "x", "type": "uint8" },
+                    { "internalType": "uint8", "name": "y", "type": "uint8" },
+                    {
+                        "internalType": "uint8",
+                        "name": "width",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "height",
+                        "type": "uint8"
+                    }
+                ],
+                "internalType": "struct Dimensions[]",
+                "name": "_dimensions",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "setItemsDimensions",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "sleeveId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "wearableId",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct SvgFacet.Sleeve[]",
+                "name": "_sleeves",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "setSleeves",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "string", "name": "_svg", "type": "string" },
+            {
+                "components": [
+                    {
+                        "internalType": "bytes32",
+                        "name": "svgType",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "sizes",
+                        "type": "uint256[]"
+                    }
+                ],
+                "internalType": "struct LibSvg.SvgTypeAndSizes[]",
+                "name": "_typesAndSizes",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "storeSvg",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "string", "name": "_svg", "type": "string" },
+            {
+                "components": [
+                    {
+                        "internalType": "bytes32",
+                        "name": "svgType",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "ids",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "sizes",
+                        "type": "uint256[]"
+                    }
+                ],
+                "internalType": "struct LibSvg.SvgTypeAndIdsAndSizes[]",
+                "name": "_typesAndIdsAndSizes",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "updateSvg",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+        ],
+        "name": "getAavegotchiSideSvgs",
+        "outputs": [
+            { "internalType": "string[]", "name": "ag_", "type": "string[]" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "_itemId", "type": "uint256" }
+        ],
+        "name": "getItemSvgs",
+        "outputs": [
+            { "internalType": "string[]", "name": "svg_", "type": "string[]" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_hauntId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_collateralType",
+                "type": "address"
+            },
+            {
+                "internalType": "int16[6]",
+                "name": "_numericTraits",
+                "type": "int16[6]"
+            },
+            {
+                "internalType": "uint16[16]",
+                "name": "equippedWearables",
+                "type": "uint16[16]"
+            }
+        ],
+        "name": "previewSideAavegotchi",
+        "outputs": [
+            { "internalType": "string[]", "name": "ag_", "type": "string[]" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "itemId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "side",
+                        "type": "string"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint8",
+                                "name": "x",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "y",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "width",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "height",
+                                "type": "uint8"
+                            }
+                        ],
+                        "internalType": "struct Dimensions",
+                        "name": "dimensions",
+                        "type": "tuple"
+                    }
+                ],
+                "internalType": "struct SvgViewsFacet.SideViewDimensionsArgs[]",
+                "name": "_sideViewDimensions",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "setSideViewDimensions",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "itemId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "slotPosition",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "side",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "exceptionBool",
+                        "type": "bool"
+                    }
+                ],
+                "internalType": "struct SvgViewsFacet.SideViewExceptions[]",
+                "name": "_sideViewExceptions",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "setSideViewExceptions",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_tokenIds",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "OpenPortals",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "PortalOpened",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "randomNumber",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_vrfTimeSet",
+                "type": "uint256"
+            }
+        ],
+        "name": "VrfRandomNumber",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "_newFee", "type": "uint256" },
+            {
+                "internalType": "bytes32",
+                "name": "_keyHash",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "_vrfCoordinator",
+                "type": "address"
+            },
+            { "internalType": "address", "name": "_link", "type": "address" }
+        ],
+        "name": "changeVrf",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "keyHash",
+        "outputs": [
+            { "internalType": "bytes32", "name": "", "type": "bytes32" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "link",
+        "outputs": [
+            { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "linkBalance",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "linkBalance_",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "_tokenIds",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "openPortals",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_requestId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_randomNumber",
+                "type": "uint256"
+            }
+        ],
+        "name": "rawFulfillRandomness",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_to", "type": "address" },
+            { "internalType": "uint256", "name": "_value", "type": "uint256" }
+        ],
+        "name": "removeLinkTokens",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "vrfCoordinator",
+        "outputs": [
+            { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_ids",
+                "type": "uint256[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_values",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "MigrateVouchers",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "ids",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "values",
+                        "type": "uint256[]"
+                    }
+                ],
+                "internalType": "struct VoucherMigrationFacet.VouchersOwner[]",
+                "name": "_vouchersOwners",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "migrateVouchers",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -9003,6 +9273,25 @@
                 "internalType": "uint32",
                 "name": "whitelistId",
                 "type": "uint32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "WhitelistOwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "whitelistId",
+                "type": "uint32"
             }
         ],
         "name": "WhitelistUpdated",
@@ -9010,11 +9299,7 @@
     },
     {
         "inputs": [
-            {
-                "internalType": "string",
-                "name": "_name",
-                "type": "string"
-            },
+            { "internalType": "string", "name": "_name", "type": "string" },
             {
                 "internalType": "address[]",
                 "name": "_whitelistAddresses",
@@ -9024,6 +9309,21 @@
         "name": "createWhitelist",
         "outputs": [],
         "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_whitelistId",
+                "type": "uint32"
+            }
+        ],
+        "name": "getBorrowLimit",
+        "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -9063,33 +9363,129 @@
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "getWhitelists",
-        "outputs": [
+        "inputs": [
             {
-                "components": [
-                    {
-                        "internalType": "address",
-                        "name": "owner",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "string",
-                        "name": "name",
-                        "type": "string"
-                    },
-                    {
-                        "internalType": "address[]",
-                        "name": "addresses",
-                        "type": "address[]"
-                    }
-                ],
-                "internalType": "struct Whitelist[]",
-                "name": "",
-                "type": "tuple[]"
+                "internalType": "uint32",
+                "name": "_whitelistId",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_actionRight",
+                "type": "uint256"
             }
         ],
+        "name": "getWhitelistAccessRight",
+        "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getWhitelistsLength",
+        "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_whitelistId",
+                "type": "uint32"
+            },
+            {
+                "internalType": "address",
+                "name": "_whitelistAddress",
+                "type": "address"
+            }
+        ],
+        "name": "isWhitelisted",
+        "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_whitelistId",
+                "type": "uint32"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_whitelistAddresses",
+                "type": "address[]"
+            }
+        ],
+        "name": "removeAddressesFromWhitelist",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_whitelistId",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_borrowlimit",
+                "type": "uint256"
+            }
+        ],
+        "name": "setBorrowLimit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_whitelistId",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_actionRight",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_accessRight",
+                "type": "uint256"
+            }
+        ],
+        "name": "setWhitelistAccessRight",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_whitelistId",
+                "type": "uint32"
+            },
+            {
+                "internalType": "address",
+                "name": "_whitelistOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnershipOfWhitelist",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -9111,13 +9507,68 @@
         "type": "function"
     },
     {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "whitelistId",
+                "type": "uint32"
+            }
+        ],
+        "name": "whitelistExists",
+        "outputs": [
+            { "internalType": "bool", "name": "exists", "type": "bool" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_whitelistId",
+                "type": "uint32"
+            }
+        ],
+        "name": "whitelistOwner",
+        "outputs": [
+            { "internalType": "address", "name": "", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "anonymous": false,
         "inputs": [
             {
                 "indexed": true,
-                "internalType": "uint32",
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "kinship",
+                "type": "uint256"
+            }
+        ],
+        "name": "AavegotchiInteract",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
                 "name": "listingId",
-                "type": "uint32"
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "category",
+                "type": "uint256"
             },
             {
                 "indexed": false,
@@ -9126,7 +9577,113 @@
                 "type": "uint256"
             }
         ],
-        "name": "GotchiLendingCancel",
+        "name": "ERC1155ListingCancelled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "listingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "category",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "time",
+                "type": "uint256"
+            }
+        ],
+        "name": "ERC1155ListingRemoved",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "listingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "quantity",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "priceInWei",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "time",
+                "type": "uint256"
+            }
+        ],
+        "name": "UpdateERC1155Listing",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "listingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "category",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "time",
+                "type": "uint256"
+            }
+        ],
+        "name": "ERC721ListingCancelled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "listingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "category",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "time",
+                "type": "uint256"
+            }
+        ],
+        "name": "ERC721ListingRemoved",
         "type": "event"
     },
     {
@@ -9137,71 +9694,9 @@
                 "internalType": "uint32",
                 "name": "listingId",
                 "type": "uint32"
-            },
-            {
-                "indexed": false,
-                "internalType": "address[]",
-                "name": "tokenAddresses",
-                "type": "address[]"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256[]",
-                "name": "amounts",
-                "type": "uint256[]"
             }
         ],
-        "name": "GotchiLendingClaim",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "listingId",
-                "type": "uint256"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "buyer",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "recipient",
-                "type": "address"
-            }
-        ],
-        "name": "ERC721ExecutedToRecipient",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "uint256",
-                "name": "listingId",
-                "type": "uint256"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "buyer",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "recipient",
-                "type": "address"
-            }
-        ],
-        "name": "ERC1155ExecutedToRecipient",
+        "name": "GotchiLendingAdd",
         "type": "event"
     },
     {
@@ -9287,6 +9782,25 @@
                 "type": "uint32"
             },
             {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "time",
+                "type": "uint256"
+            }
+        ],
+        "name": "GotchiLendingCancel",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "listingId",
+                "type": "uint32"
+            },
+            {
                 "indexed": true,
                 "internalType": "address",
                 "name": "lender",
@@ -9348,6 +9862,31 @@
             }
         ],
         "name": "GotchiLendingCanceled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "listingId",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "tokenAddresses",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "amounts",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "GotchiLendingClaim",
         "type": "event"
     },
     {
@@ -9443,6 +9982,19 @@
                 "internalType": "uint32",
                 "name": "listingId",
                 "type": "uint32"
+            }
+        ],
+        "name": "GotchiLendingEnd",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "listingId",
+                "type": "uint32"
             },
             {
                 "indexed": true,
@@ -9522,6 +10074,19 @@
                 "internalType": "uint32",
                 "name": "listingId",
                 "type": "uint32"
+            }
+        ],
+        "name": "GotchiLendingExecute",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "listingId",
+                "type": "uint32"
             },
             {
                 "indexed": true,
@@ -9591,6 +10156,402 @@
             }
         ],
         "name": "GotchiLendingExecuted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bytes32",
+                        "name": "svgType",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "sizes",
+                        "type": "uint256[]"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct LibSvg.SvgTypeAndSizes[]",
+                "name": "_typesAndSizes",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "StoreSvg",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bytes32",
+                        "name": "svgType",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "ids",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "sizes",
+                        "type": "uint256[]"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct LibSvg.SvgTypeAndIdsAndSizes[]",
+                "name": "_typesAndIdsAndSizes",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "UpdateSvg",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "whitelistId",
+                "type": "uint32"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "actionRight",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "accessRight",
+                "type": "uint256"
+            }
+        ],
+        "name": "WhitelistAccessRightSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "facetAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum IDiamondCut.FacetCutAction",
+                        "name": "action",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "bytes4[]",
+                        "name": "functionSelectors",
+                        "type": "bytes4[]"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct IDiamondCut.FacetCut[]",
+                "name": "_diamondCut",
+                "type": "tuple[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_init",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "_calldata",
+                "type": "bytes"
+            }
+        ],
+        "name": "DiamondCut",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_operator",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "_approved",
+                "type": "bool"
+            }
+        ],
+        "name": "ApprovalForAll",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_operator",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_ids",
+                "type": "uint256[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_values",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "TransferBatch",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_fromContract",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_fromTokenId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_tokenTypeId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "name": "TransferFromParent",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_operator",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "name": "TransferSingle",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_toContract",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_toTokenId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_tokenTypeId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "name": "TransferToParent",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "_value",
+                "type": "string"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "URI",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_approved",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "Approval",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_operator",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "_approved",
+                "type": "bool"
+            }
+        ],
+        "name": "ApprovalForAll",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "Transfer",
         "type": "event"
     }
 ]
