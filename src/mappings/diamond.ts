@@ -1171,8 +1171,6 @@ export function handleGotchiLendingAdded(event: GotchiLendingAdded): void {
     lending.tokensToShare = event.params.revenueTokens.map<Bytes>((e) => e);
     lending.thirdPartyAddress = event.params.thirdParty;
     lending.timeCreated = event.params.timeCreated;
-    lending.cancelled = false;
-    lending.completed = false;
     if (event.params.whitelistId != BIGINT_ZERO) {
         let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
         if (whitelist) {
@@ -1211,8 +1209,6 @@ export function handleGotchiLendingClaimed(event: GotchiLendingClaimed): void {
     lending.lastClaimed = event.params.timeClaimed;
     lending.gotchiTokenId = event.params.tokenId;
     lending.borrower = event.params.borrower;
-    lending.cancelled = false;
-    lending.completed = false;
     if (event.params.whitelistId != BIGINT_ZERO) {
         let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
         if (whitelist) {
@@ -1239,7 +1235,6 @@ export function handleGotchiLendingCanceled(
     lending.thirdPartyAddress = event.params.thirdParty;
     lending.gotchiTokenId = event.params.tokenId;
     lending.cancelled = true;
-    lending.completed = false;
     if (event.params.whitelistId != BIGINT_ZERO) {
         let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
         if (whitelist) {
@@ -1266,8 +1261,6 @@ export function handleGotchiLendingExecuted(
     lending.thirdPartyAddress = event.params.thirdParty;
     lending.gotchiTokenId = event.params.tokenId;
     lending.timeAgreed = event.params.timeAgreed;
-    lending.cancelled = false;
-    lending.completed = false;
     lending.borrower = event.params.borrower;
     if (event.params.whitelistId != BIGINT_ZERO) {
         let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
