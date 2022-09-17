@@ -1387,8 +1387,8 @@ export function handleWhitelistAccessRightSet(
         return;
     }
 
-    if (event.params.actionRight === BIGINT_ZERO) {
-        whitelist.borrowLimit = event.params.accessRight.toI32();
+    if (event.params.actionRight == BIGINT_ZERO) {
+        whitelist.maxBorrowLimit = event.params.accessRight.toI32();
     }
 
     whitelist.save();

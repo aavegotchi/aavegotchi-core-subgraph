@@ -746,7 +746,7 @@ export function createOrUpdateWhitelist(
     let whitelist = Whitelist.load(id.toString());
     if (!whitelist) {
         whitelist = new Whitelist(id.toString());
-        whitelist.borrowLimit = 1;
+        whitelist.maxBorrowLimit = 1;
         whitelist.ownerAddress = result.owner;
         let user = getOrCreateUser(result.owner.toHexString());
         user.save();
