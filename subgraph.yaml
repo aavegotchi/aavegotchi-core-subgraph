@@ -111,7 +111,7 @@ dataSources:
               #   handler: handleGotchiLendingEnd
               # - event: GotchiLendingExecute(indexed uint32)
               #   handler: handleGotchiLendingExecute
-              # - event: GotchiLendingCancel(indexed uint3git checkout -b SUB-88-gotchi-lending-not-cancelled-even-if-its-cancelled2,uint256)
+              # - event: GotchiLendingCancel(indexed uint32,uint256)
               #   handler: handleGotchiLendingCancel
               - event: ERC1155ExecutedToRecipient(indexed uint256,indexed address,indexed address)
                 handler: handleERC1155ExecutedToRecipient
