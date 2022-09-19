@@ -49,6 +49,7 @@ import {
     GotchiLendingCanceled,
     GotchiLendingClaimed,
     GotchiLendingAdded,
+    WhitelistAccessRightSet,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
     getOrCreateUser,
@@ -1376,4 +1377,19 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
     let stats = getStatisticEntity();
     stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.minus(BIGINT_ONE);
     stats.save();
+}
+
+export function handleWhitelistAccessRightSet(
+    event: WhitelistAccessRightSet
+): void {
+    let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
+    if (whitelist == null) {
+        return;
+    }
+
+    if (event.params.actionRight == BIGINT_ZERO) {
+        whitelist.maxBorrowLimit = event.params.accessRight.toI32();
+    }
+
+    whitelist.save();
 }
