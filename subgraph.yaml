@@ -103,6 +103,8 @@ dataSources:
                 handler: handleWhitelistCreated
               - event: WhitelistUpdated(indexed uint32)
                 handler: handleWhitelistUpdated
+              - event: WhitelistOwnershipTransferred(indexed uint32,indexed address)
+                handler: handleWhitelistOwnershipTransferred
               - event: GotchiLendingAdd(indexed uint32)
                 handler: handleGotchiLendingAdd
               - event: GotchiLendingClaim(indexed uint32,address[],uint256[])

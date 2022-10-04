@@ -747,13 +747,13 @@ export function createOrUpdateWhitelist(
     if (!whitelist) {
         whitelist = new Whitelist(id.toString());
         whitelist.maxBorrowLimit = 1;
-        whitelist.ownerAddress = result.owner;
-        let user = getOrCreateUser(result.owner.toHexString());
-        user.save();
-        whitelist.owner = user.id;
         whitelist.name = name;
     }
 
+    let user = getOrCreateUser(result.owner.toHexString());
+    user.save();
+    whitelist.owner = user.id;
+    whitelist.ownerAddress = result.owner;
     whitelist.members = members.map<Bytes>((e) => e);
 
     whitelist.save();
