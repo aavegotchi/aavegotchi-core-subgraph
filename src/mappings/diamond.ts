@@ -50,6 +50,7 @@ import {
     GotchiLendingClaimed,
     GotchiLendingAdded,
     WhitelistAccessRightSet,
+    WhitelistOwnershipTransferred,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
     getOrCreateUser,
@@ -1003,6 +1004,12 @@ export function handleWhitelistCreated(event: WhitelistCreated): void {
 }
 
 export function handleWhitelistUpdated(event: WhitelistUpdated): void {
+    createOrUpdateWhitelist(event.params.whitelistId, event);
+}
+
+export function handleWhitelistOwnershipTransferred(
+    event: WhitelistOwnershipTransferred
+): void {
     createOrUpdateWhitelist(event.params.whitelistId, event);
 }
 
