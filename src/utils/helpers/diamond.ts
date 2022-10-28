@@ -394,6 +394,9 @@ export function updateAavegotchiInfo(
         let owner = getOrCreateUser(gotchiInfo.owner.toHexString());
         owner.save();
         gotchi.owner = owner.id;
+        if (!gotchi.originalOwner) {
+            gotchi.originalOwner = owner.id;
+        }
         gotchi.name = gotchiInfo.name;
         gotchi.nameLowerCase = gotchiInfo.name.toLowerCase();
         gotchi.randomNumber = gotchiInfo.randomNumber;
