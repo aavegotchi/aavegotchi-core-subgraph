@@ -49,6 +49,8 @@ import {
     GotchiLendingCanceled,
     GotchiLendingClaimed,
     GotchiLendingAdded,
+    WhitelistAccessRightSet,
+    WhitelistOwnershipTransferred,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
     getOrCreateUser,
@@ -1005,6 +1007,12 @@ export function handleWhitelistUpdated(event: WhitelistUpdated): void {
     createOrUpdateWhitelist(event.params.whitelistId, event);
 }
 
+export function handleWhitelistOwnershipTransferred(
+    event: WhitelistOwnershipTransferred
+): void {
+    createOrUpdateWhitelist(event.params.whitelistId, event);
+}
+
 export function handleGotchiLendingAdd(event: GotchiLendingAdd): void {
     if (event.block.number.gt(BLOCK_DISABLE_OLD_LENDING_EVENTS)) {
         return;
@@ -1311,4 +1319,19 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
     gotchi.lending = null;
     gotchi.originalOwner = lender.id;
     gotchi.save();
+}
+
+export function handleWhitelistAccessRightSet(
+    event: WhitelistAccessRightSet
+): void {
+    let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
+    if (whitelist == null) {
+        return;
+    }
+
+    if (event.params.actionRight == BIGINT_ZERO) {
+        whitelist.maxBorrowLimit = event.params.accessRight.toI32();
+    }
+
+    whitelist.save();
 }

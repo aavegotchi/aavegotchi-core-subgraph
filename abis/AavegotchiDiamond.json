@@ -9009,6 +9009,25 @@
         "type": "event"
     },
     {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "whitelistId",
+                "type": "uint32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "WhitelistOwnershipTransferred",
+        "type": "event"
+    },
+    {
         "inputs": [
             {
                 "internalType": "string",
@@ -9592,5 +9611,30 @@
         ],
         "name": "GotchiLendingExecuted",
         "type": "event"
+    },
+    {
+        "name": "WhitelistAccessRightSet",
+        "type": "event",
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "whitelistId",
+                "type": "uint32"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "actionRight",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "accessRight",
+                "type": "uint256"
+            }
+        ]
     }
 ]

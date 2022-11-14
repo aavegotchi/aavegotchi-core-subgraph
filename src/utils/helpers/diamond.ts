@@ -24,7 +24,7 @@ import {
     Whitelist,
     ClaimedToken,
 } from "../../../generated/schema";
-import { BIGINT_ZERO, STATUS_AAVEGOTCHI } from "../constants";
+import { BIGINT_ZERO, CORE_DIAMOND, STATUS_AAVEGOTCHI } from "../constants";
 import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 
 export function getOrCreatePortal(
@@ -394,6 +394,9 @@ export function updateAavegotchiInfo(
         let owner = getOrCreateUser(gotchiInfo.owner.toHexString());
         owner.save();
         gotchi.owner = owner.id;
+        if (!gotchi.originalOwner) {
+            gotchi.originalOwner = owner.id;
+        }
         gotchi.name = gotchiInfo.name;
         gotchi.nameLowerCase = gotchiInfo.name.toLowerCase();
         gotchi.randomNumber = gotchiInfo.randomNumber;
@@ -731,7 +734,7 @@ export function createOrUpdateWhitelist(
     id: BigInt,
     event: ethereum.Event
 ): Whitelist | null {
-    let contract = AavegotchiDiamond.bind(event.address);
+    let contract = AavegotchiDiamond.bind(Address.fromString(CORE_DIAMOND));
     let response = contract.try_getWhitelist(id);
 
     if (response.reverted) {
@@ -746,13 +749,14 @@ export function createOrUpdateWhitelist(
     let whitelist = Whitelist.load(id.toString());
     if (!whitelist) {
         whitelist = new Whitelist(id.toString());
-        whitelist.ownerAddress = result.owner;
-        let user = getOrCreateUser(result.owner.toHexString());
-        user.save();
-        whitelist.owner = user.id;
+        whitelist.maxBorrowLimit = 1;
         whitelist.name = name;
     }
 
+    let user = getOrCreateUser(result.owner.toHexString());
+    user.save();
+    whitelist.owner = user.id;
+    whitelist.ownerAddress = result.owner;
     whitelist.members = members.map<Bytes>((e) => e);
 
     whitelist.save();
