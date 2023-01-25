@@ -1,0 +1,28 @@
+name: Deploy to Satsuma Service
+
+on:
+    push:
+        tags:
+            - "*"
+
+jobs:
+    buildAndDeploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+            - name: Install node
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 14
+            - name: Install Yarn
+              run: npm i -g yarn
+            - name: Install Libs
+              run: yarn --frozen-lockfile
+            - name: Codegen
+              run: yarn codegen
+            - name: Build
+              run: yarn build
+            - name: Deploy to Satsuma
+              run: |
+                  npx graph deploy --access-token ${{secrets.SATSUMA_ACCESS_TOKEN}} aavegotchi-core-matic subgraph.yaml  --node https://app.satsuma.xyz/api/subgraphs/deploy --version-label ${GITHUB_REF#refs/*/}
+              shell: bash
