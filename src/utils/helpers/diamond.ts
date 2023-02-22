@@ -289,7 +289,7 @@ export function updateERC1155ListingInfo(
         listing.quantity = listingInfo.quantity;
 
         //tickets
-        if (listing.category.toI32() === 3) {
+        if (listing.category.toI32() < 3) {
             let rarityLevel = listing.erc1155TypeId;
             listing.rarityLevel = rarityLevel;
 
