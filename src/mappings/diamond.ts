@@ -323,7 +323,7 @@ export function handleUseConsumables(event: UseConsumables): void {
     let itemTypes = event.params._itemIds;
     let quantities = event.params._quantities;
     for (let i = 0; i < event.params._itemIds.length; i++) {
-        let itemType = getOrCreateItemType(itemTypes[i].toString());
+        let itemType = getOrCreateItemType(itemTypes[i].toString())!;
         itemType.consumed = itemType.consumed.plus(quantities[i]);
         itemType.save();
     }
@@ -766,7 +766,9 @@ export function handleERC1155ListingRemoved(
 //ERC1155 Item Types
 
 export function handleAddItemType(event: AddItemType): void {
-    let itemType = getOrCreateItemType(event.params._itemType.svgId.toString());
+    let itemType = getOrCreateItemType(
+        event.params._itemType.svgId.toString()
+    )!;
 
     let itemInfo = event.params._itemType;
 
@@ -800,7 +802,7 @@ export function handleItemTypeMaxQuantity(event: ItemTypeMaxQuantity): void {
         let itemId = itemIds[index];
         let maxQuantity = quantities[index];
 
-        let itemType = getOrCreateItemType(itemId.toString());
+        let itemType = getOrCreateItemType(itemId.toString())!;
         itemType.maxQuantity = maxQuantity;
         itemType.save();
     }
@@ -816,7 +818,7 @@ export function handlePurchaseItemsWithGhst(
         let itemId = itemIds[index];
         let quantity = quantities[index];
 
-        let itemType = getOrCreateItemType(itemId.toString());
+        let itemType = getOrCreateItemType(itemId.toString())!;
         itemType.totalQuantity = itemType.totalQuantity.plus(quantity);
         itemType.save();
     }
@@ -832,7 +834,7 @@ export function handlePurchaseItemsWithVouchers(
         let itemId = itemIds[index];
         let quantity = quantities[index];
 
-        let itemType = getOrCreateItemType(itemId.toString());
+        let itemType = getOrCreateItemType(itemId.toString())!;
         itemType.totalQuantity = itemType.totalQuantity.plus(quantity);
         itemType.save();
     }
@@ -846,7 +848,7 @@ export function handleMigrateVouchers(event: MigrateVouchers): void {
         let itemId = itemIds[index];
         let quantity = quantities[index];
 
-        let itemType = getOrCreateItemType(itemId.toString());
+        let itemType = getOrCreateItemType(itemId.toString())!;
         itemType.totalQuantity = itemType.totalQuantity.plus(quantity);
         itemType.save();
     }
@@ -877,7 +879,7 @@ export function handleUpdateWearableSet(event: UpdateWearableSet): void {
 }
 
 export function handleItemModifiersSet(event: ItemModifiersSet): void {
-    let itemType = getOrCreateItemType(event.params._wearableId.toString());
+    let itemType = getOrCreateItemType(event.params._wearableId.toString())!;
     itemType.traitModifiers = event.params._traitModifiers;
     itemType.rarityScoreModifier = event.params._rarityScoreModifier;
     itemType.save();
@@ -886,7 +888,7 @@ export function handleItemModifiersSet(event: ItemModifiersSet): void {
 export function handleWearableSlotPositionsSet(
     event: WearableSlotPositionsSet
 ): void {
-    let itemType = getOrCreateItemType(event.params._wearableId.toString());
+    let itemType = getOrCreateItemType(event.params._wearableId.toString())!;
     itemType.slotPositions = event.params._slotPositions;
     itemType.save();
 }
@@ -928,7 +930,7 @@ export function handleERC1155ListingUpdated(event: UpdateERC1155Listing): void {
 }
 
 export function handleUpdateItemPrice(event: UpdateItemPrice): void {
-    let item = getOrCreateItemType(event.params._itemId.toString());
+    let item = getOrCreateItemType(event.params._itemId.toString())!;
     item.ghstPrice = event.params._priceInWei;
     item.save();
 }

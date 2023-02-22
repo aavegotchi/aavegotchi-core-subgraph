@@ -139,7 +139,7 @@ export function getOrCreateERC1155Purchase(
 export function getOrCreateItemType(
     id: string,
     createIfNotFound: boolean = true
-): ItemType {
+): ItemType | null {
     let itemType = ItemType.load(id);
 
     if (itemType == null && createIfNotFound) {
@@ -147,7 +147,7 @@ export function getOrCreateItemType(
         itemType.consumed = BIGINT_ZERO;
     }
 
-    return itemType as ItemType;
+    return itemType;
 }
 
 export function getOrCreateWearableSet(
@@ -300,12 +300,11 @@ export function updateERC1155ListingInfo(
                 false
             );
 
-            if (itemType) {
-                listing.rarityLevel = itemMaxQuantityToRarity(
-                    itemType.maxQuantity
-                );
+            if (!itemType) {
+                return listing;
             }
 
+            listing.rarityLevel = itemMaxQuantityToRarity(itemType.maxQuantity);
             // brs modifier
             listing.rarityScoreModifier = BigInt.fromI32(
                 itemType.rarityScoreModifier
