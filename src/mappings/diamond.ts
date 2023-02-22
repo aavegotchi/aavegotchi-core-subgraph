@@ -58,16 +58,6 @@ import {
     getOrCreateAavegotchiOption,
     getOrCreateAavegotchi,
     updateAavegotchiInfo,
-    getStatisticEntity,
-    getOrCreateERC1155Listing,
-    getOrCreateERC721Listing,
-    updateERC1155ListingInfo,
-    updateERC721ListingInfo,
-    getOrCreateItemType,
-    getOrCreateWearableSet,
-    getOrCreateERC1155Purchase,
-    updateERC1155PurchaseInfo,
-    getOrCreateParcel,
     updateAavegotchiWearables,
     calculateBaseRarityScore,
     getOrCreateGotchiLending,
@@ -85,20 +75,13 @@ import {
     ZERO_ADDRESS,
     BLOCK_DISABLE_OLD_LENDING_EVENTS,
 } from "../utils/constants";
-import { Address, BigInt, log, Bytes } from "@graphprotocol/graph-ts";
-
-import { Parcel } from "../../generated/schema";
-import {
-    RealmDiamond,
-    MintParcel,
-    ResyncParcel,
-} from "../../generated/RealmDiamond/RealmDiamond";
+import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 
 export function handleBuyPortals(event: BuyPortals): void {
     let contract = AavegotchiDiamond.bind(event.address);
     let buyer = getOrCreateUser(event.params._from.toHexString());
     let owner = getOrCreateUser(event.params._to.toHexString());
-    let stats = getStatisticEntity();
+    // let stats = getStatisticEntity();
 
     let baseId = event.params._tokenId;
 
@@ -120,11 +103,11 @@ export function handleBuyPortals(event: BuyPortals): void {
         portal.save();
     }
 
-    stats.portalsBought = stats.portalsBought.plus(
-        event.params._numAavegotchisToPurchase
-    );
+    // stats.portalsBought = stats.portalsBought.plus(
+    //     event.params._numAavegotchisToPurchase
+    // );
 
-    stats.save();
+    // stats.save();
     buyer.save();
     owner.save();
 }
@@ -133,7 +116,7 @@ export function handleXingyun(event: Xingyun): void {
     let contract = AavegotchiDiamond.bind(event.address);
     let buyer = getOrCreateUser(event.params._from.toHexString());
     let owner = getOrCreateUser(event.params._to.toHexString());
-    let stats = getStatisticEntity();
+    // let stats = getStatisticEntity();
 
     let baseId = event.params._tokenId;
 
@@ -153,11 +136,11 @@ export function handleXingyun(event: Xingyun): void {
         baseId = baseId.plus(BIGINT_ONE);
     }
 
-    stats.portalsBought = stats.portalsBought.plus(
-        event.params._numAavegotchisToPurchase
-    );
+    // stats.portalsBought = stats.portalsBought.plus(
+    //     event.params._numAavegotchisToPurchase
+    // );
 
-    stats.save();
+    // stats.save();
     buyer.save();
     owner.save();
 }
@@ -168,7 +151,7 @@ export function handlePortalOpened(event: PortalOpened): void {
     let contract = AavegotchiDiamond.bind(event.address);
     let portal = getOrCreatePortal(event.params.tokenId.toString());
     let response = contract.try_portalAavegotchiTraits(event.params.tokenId);
-    let stats = getStatisticEntity();
+    // let stats = getStatisticEntity();
 
     if (!response.reverted) {
         let array = response.value;
@@ -194,9 +177,9 @@ export function handlePortalOpened(event: PortalOpened): void {
     portal.status = PORTAL_STATUS_OPENED;
     portal.openedAt = event.block.number;
 
-    stats.portalsOpened = stats.portalsOpened.plus(BIGINT_ONE);
+    // stats.portalsOpened = stats.portalsOpened.plus(BIGINT_ONE);
 
-    stats.save();
+    // stats.save();
     portal.save();
 }
 
@@ -209,7 +192,7 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
         event.params._tokenId.toString(),
         event
     )!;
-    let stats = getStatisticEntity();
+    // let stats = getStatisticEntity();
 
     gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
     gotchi.claimedAt = event.block.number;
@@ -221,17 +204,9 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
     portal.status = PORTAL_STATUS_CLAIMED;
     portal.claimedAt = event.block.number;
 
-    if (portal.activeListing) {
-        let listing = getOrCreateERC721Listing(
-            portal.activeListing!.toString()
-        );
-        listing.cancelled = true;
-        listing.save();
-    }
+    // stats.aavegotchisClaimed = stats.aavegotchisClaimed.plus(BIGINT_ONE);
 
-    stats.aavegotchisClaimed = stats.aavegotchisClaimed.plus(BIGINT_ONE);
-
-    stats.save();
+    // stats.save();
     gotchi.save();
     portal.save();
     zeroUser.save();
@@ -297,15 +272,6 @@ export function handleSetAavegotchiName(event: SetAavegotchiName): void {
     )!;
     gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
     gotchi.save();
-
-    if (gotchi.activeListing) {
-        let listing = getOrCreateERC721Listing(
-            gotchi.activeListing!.toString(),
-            false
-        );
-        listing.nameLowerCase = gotchi.nameLowerCase;
-        listing.save();
-    }
 }
 
 // - event: UseConsumables(indexed uint256,uint256[],uint256[])
@@ -322,89 +288,26 @@ export function handleUseConsumables(event: UseConsumables): void {
     // maintain consumed
     let itemTypes = event.params._itemIds;
     let quantities = event.params._quantities;
-    for (let i = 0; i < event.params._itemIds.length; i++) {
-        let itemType = getOrCreateItemType(itemTypes[i].toString())!;
-        itemType.consumed = itemType.consumed.plus(quantities[i]);
-        itemType.save();
-    }
+    // for (let i = 0; i < event.params._itemIds.length; i++) {
+    //     let itemType = getOrCreateItemType(itemTypes[i].toString())!;
+    //     itemType.consumed = itemType.consumed.plus(quantities[i]);
+    //     itemType.save();
+    // }
 }
 
 // - event: GrantExperience(uint256[],uint32[])
 //   handler: handleGrantExperience
 
-export function handleGrantExperience(event: GrantExperience): void {
-    let ids = event.params._tokenIds;
-    //let xpAmounts = event.params._xpValues;
+export function handleGrantExperience(event: GrantExperience): void {}
 
-    for (let i = 0; i < ids.length; i++) {
-        let tokenID = ids[i];
-        let gotchi = getOrCreateAavegotchi(tokenID.toString(), event, false);
+export function handleRemoveExperience(event: RemoveExperience): void {}
 
-        if (gotchi) {
-            gotchi = updateAavegotchiInfo(gotchi, tokenID, event);
-            gotchi.save();
-        }
-
-        /*
-    let xpAmount = xpAmounts[i];
-
-    let gotchi = getOrCreateAavegotchi(tokenID.toString(), event);
-
-    if (gotchi.owner === "0x0000000000000000000000000000000000000000") {
-      //Don't do anything, this aavegotchi has been sacrificed
-    } else {
-      gotchi.experience = gotchi.experience.plus(xpAmount);
-
-      if (gotchi.experience.gt(BigInt.fromI32(490050))) {
-        gotchi.level = BigInt.fromI32(99);
-      } else {
-        //@ts-ignore
-        let level = (Math.sqrt(2 * gotchi.experience.toI32()) / 10) as i32;
-        gotchi.level = BigInt.fromI32(level + 1);
-      }
-    }
-    */
-    }
-}
-
-export function handleRemoveExperience(event: RemoveExperience): void {
-    let ids = event.params._tokenIds;
-    for (let i = 0; i < ids.length; i++) {
-        let tokenID = ids[i];
-        let gotchi = getOrCreateAavegotchi(tokenID.toString(), event)!;
-        gotchi = updateAavegotchiInfo(gotchi, tokenID, event);
-
-        gotchi.save();
-    }
-}
-
-export function handleExperienceTransfer(event: ExperienceTransfer): void {
-    let tokenID = event.params._toTokenId;
-
-    let gotchi = getOrCreateAavegotchi(tokenID.toString(), event)!;
-    gotchi = updateAavegotchiInfo(gotchi, tokenID, event);
-    gotchi.save();
-}
+export function handleExperienceTransfer(event: ExperienceTransfer): void {}
 
 // - event: AavegotchiInteract(indexed uint256,uint256)
 //   handler: handleAavegotchiInteract
 
-export function handleAavegotchiInteract(event: AavegotchiInteract): void {
-    let gotchi = getOrCreateAavegotchi(
-        event.params._tokenId.toString(),
-        event,
-        false
-    );
-    if (!gotchi) {
-        return;
-    }
-
-    gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-    // persist only if gotchi is already claimed
-    if (gotchi.status.equals(BigInt.fromI32(3))) {
-        gotchi.save();
-    }
-}
+export function handleAavegotchiInteract(event: AavegotchiInteract): void {}
 
 //ERC721 Transfer
 export function handleTransfer(event: Transfer): void {
@@ -425,11 +328,11 @@ export function handleTransfer(event: Transfer): void {
         gotchi.save();
 
         if (newOwner.id == "0x0000000000000000000000000000000000000000") {
-            let stats = getStatisticEntity();
-            stats.aavegotchisSacrificed = stats.aavegotchisSacrificed.plus(
-                BIGINT_ONE
-            );
-            stats.save();
+            // let stats = getStatisticEntity();
+            // stats.aavegotchisSacrificed = stats.aavegotchisSacrificed.plus(
+            //     BIGINT_ONE
+            // );
+            // stats.save();
         }
     } else {
         portal.owner = newOwner.id;
@@ -457,60 +360,7 @@ export function handleTransferBatch(event: TransferBatch): void {}
 -handler: handleERC721ListingAdd
 */
 
-export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
-    let listing = getOrCreateERC721Listing(event.params.listingId.toString());
-    listing = updateERC721ListingInfo(listing, event.params.listingId, event);
-
-    if (listing.category == BigInt.fromI32(3)) {
-        listing.gotchi = event.params.erc721TokenId.toString();
-        let gotchi = getOrCreateAavegotchi(
-            event.params.erc721TokenId.toString(),
-            event
-        )!;
-        listing.collateral = gotchi.collateral;
-        gotchi.activeListing = event.params.listingId;
-        gotchi.save();
-        listing.nameLowerCase = gotchi.nameLowerCase;
-
-        // Traits for Filter in v2
-        if (
-            gotchi.withSetsNumericTraits != null &&
-            gotchi.withSetsNumericTraits!.length == 6
-        ) {
-            listing.nrgTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![0]);
-            listing.aggTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![1]);
-            listing.spkTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![2]);
-            listing.brnTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![3]);
-            listing.eysTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![4]);
-            listing.eycTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![5]);
-        }
-    } else if (listing.category.lt(BigInt.fromI32(3))) {
-        let portal = getOrCreatePortal(event.params.erc721TokenId.toString());
-        portal.activeListing = event.params.listingId;
-        portal.save();
-        listing.portal = event.params.erc721TokenId.toString();
-    } else if (listing.category == BigInt.fromI32(4)) {
-        listing.parcel = event.params.erc721TokenId.toString();
-
-        let parcel = Parcel.load(event.params.erc721TokenId.toString())!;
-        parcel.activeListing = event.params.listingId;
-        listing.fudBoost = parcel.fudBoost;
-        listing.fomoBoost = parcel.fomoBoost;
-        listing.alphaBoost = parcel.alphaBoost;
-        listing.kekBoost = parcel.kekBoost;
-
-        listing.district = parcel.district;
-        listing.size = parcel.size;
-
-        listing.coordinateX = parcel.coordinateX;
-        listing.coordinateY = parcel.coordinateY;
-        listing.parcelHash = parcel.parcelHash;
-    } else {
-        //handle external contracts
-    }
-
-    listing.save();
-}
+export function handleERC721ListingAdd(event: ERC721ListingAdd): void {}
 
 /* -event: ERC721ExecutedListing(
         uint256 indexed listingId,
@@ -527,86 +377,7 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
 
 export function handleERC721ExecutedListing(
     event: ERC721ExecutedListing
-): void {
-    let listing = getOrCreateERC721Listing(event.params.listingId.toString());
-    listing = updateERC721ListingInfo(listing, event.params.listingId, event);
-
-    listing.buyer = event.params.buyer;
-    listing.timePurchased = event.params.time;
-    listing.save();
-
-    //Portal -- update number of times traded
-    if (event.params.category.lt(BigInt.fromI32(3))) {
-        let portal = getOrCreatePortal(event.params.erc721TokenId.toString());
-        portal.timesTraded = portal.timesTraded.plus(BIGINT_ONE);
-
-        // add to historical prices
-        let historicalPrices = portal.historicalPrices;
-        if (historicalPrices == null) {
-            historicalPrices = new Array();
-        }
-        historicalPrices.push(event.params.priceInWei);
-        portal.historicalPrices = historicalPrices;
-        portal.activeListing = null;
-        portal.save();
-    }
-
-    //Aavegotchi -- update number of times traded
-    else if (event.params.category.equals(BigInt.fromI32(3))) {
-        let gotchi = getOrCreateAavegotchi(
-            event.params.erc721TokenId.toString(),
-            event
-        )!;
-        gotchi.timesTraded = gotchi.timesTraded.plus(BIGINT_ONE);
-
-        // add to historical prices
-        let historicalPrices = gotchi.historicalPrices;
-        if (historicalPrices == null) {
-            historicalPrices = new Array();
-        }
-        historicalPrices.push(event.params.priceInWei);
-        gotchi.historicalPrices = historicalPrices;
-        gotchi.activeListing = null;
-        gotchi.save();
-    } else if (event.params.category == BigInt.fromI32(4)) {
-        let listing = getOrCreateERC721Listing(
-            event.params.listingId.toString()
-        );
-        listing = updateERC721ListingInfo(
-            listing,
-            event.params.listingId,
-            event
-        );
-
-        listing.buyer = event.params.buyer;
-        listing.timePurchased = event.params.time;
-        listing.save();
-
-        //Parcel -- update number of times traded
-
-        let parcel = getOrCreateParcel(
-            event.params.erc721TokenId,
-            event.params.buyer,
-            event.params.erc721TokenAddress
-        );
-        parcel.timesTraded = parcel.timesTraded.plus(BIGINT_ONE);
-        parcel.activeListing = null;
-        // add to historical prices
-        let historicalPrices = parcel.historicalPrices;
-        if (historicalPrices == null) {
-            historicalPrices = new Array();
-        }
-        historicalPrices.push(event.params.priceInWei);
-        parcel.historicalPrices = historicalPrices;
-        parcel.save();
-    }
-
-    let stats = getStatisticEntity();
-    stats.erc721TotalVolume = stats.erc721TotalVolume.plus(
-        event.params.priceInWei
-    );
-    stats.save();
-}
+): void {}
 
 /*
 event: ERC721ListingCancelled(uint256 indexed listingId, uint256 category, uint256 time);
@@ -615,288 +386,90 @@ handler: handleERC721ListingCancelled
 
 export function handleERC721ListingCancelled(
     event: ERC721ListingCancelled
-): void {
-    let listing = getOrCreateERC721Listing(event.params.listingId.toString());
-    listing = updateERC721ListingInfo(listing, event.params.listingId, event);
-
-    if (listing.category.lt(BigInt.fromI32(3))) {
-        let portal = getOrCreatePortal(listing.tokenId.toString());
-        portal.activeListing = null;
-        portal.save();
-    } else if (listing.category.equals(BigInt.fromI32(3))) {
-        let gotchi = getOrCreateAavegotchi(listing.tokenId.toString(), event)!;
-        gotchi.activeListing = null;
-        gotchi.save();
-    } else if (listing.category.equals(BigInt.fromI32(4))) {
-        let parcel = getOrCreateParcel(
-            listing.tokenId,
-            listing.seller,
-            Address.fromString(listing.erc721TokenAddress.toHexString()),
-            false
-        );
-        parcel.activeListing = null;
-        parcel.save();
-    }
-
-    listing.cancelled = true;
-    listing.save();
-}
+): void {}
 
 /*
 event: ERC721ListingRemoved(uint256 indexed listingId, uint256 category, uint256 time);
 handler:handleERC721ListingRemoved
 */
 
-export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
-    let listing = getOrCreateERC721Listing(event.params.listingId.toString());
-    listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {}
 
-    if (listing.category.lt(BigInt.fromI32(3))) {
-        let portal = getOrCreatePortal(listing.tokenId.toString());
-        portal.activeListing = null;
-        portal.save();
-    } else if (listing.category.equals(BigInt.fromI32(3))) {
-        let gotchi = getOrCreateAavegotchi(listing.tokenId.toString(), event)!;
-        gotchi.activeListing = null;
-        gotchi.save();
-    } else if (listing.category.equals(BigInt.fromI32(4))) {
-        let parcel = getOrCreateParcel(
-            listing.tokenId,
-            listing.seller,
-            Address.fromString(listing.erc721TokenAddress.toHexString()),
-            false
-        );
-        parcel.activeListing = null;
-        parcel.save();
-    }
-
-    listing.cancelled = true;
-    listing.save();
-}
-
-export function handleERC1155ListingAdd(event: ERC1155ListingAdd): void {
-    let listing = getOrCreateERC1155Listing(
-        event.params.listingId.toString(),
-        true
-    );
-
-    listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
-
-    listing.save();
-}
-
-/*
--event: ERC1155ExecutedListing(
-        uint256 indexed listingId,
-        address indexed seller,
-        address buyer,
-        address erc1155TokenAddress,
-        uint256 erc1155TypeId,
-        uint256 indexed category,
-        uint256 _quantity,
-        uint256 priceInWei,
-        uint256 time
-    )
--handler: handleERC1155ExecutedListing
-    */
+export function handleERC1155ListingAdd(event: ERC1155ListingAdd): void {}
 
 export function handleERC1155ExecutedListing(
     event: ERC1155ExecutedListing
-): void {
-    let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
-    let listingUpdateInfo = event.params;
-
-    listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
-
-    listing.save();
-
-    //Create new ERC1155Purchase
-    let purchaseID =
-        listingUpdateInfo.listingId.toString() +
-        "_" +
-        listingUpdateInfo.buyer.toHexString() +
-        "_" +
-        event.block.timestamp.toString();
-    let purchase = getOrCreateERC1155Purchase(
-        purchaseID,
-        listingUpdateInfo.buyer
-    );
-    purchase = updateERC1155PurchaseInfo(purchase, event);
-    purchase.save();
-
-    //Update Stats
-    let stats = getStatisticEntity();
-    let volume = listingUpdateInfo.priceInWei.times(
-        listingUpdateInfo._quantity
-    );
-    stats.erc1155TotalVolume = stats.erc1155TotalVolume.plus(volume);
-
-    if (listing.category.toI32() === 0)
-        stats.totalWearablesVolume = stats.totalWearablesVolume.plus(volume);
-    else if (listing.category.toI32() === 2)
-        stats.totalConsumablesVolume = stats.totalConsumablesVolume.plus(
-            volume
-        );
-    else if (listing.category.toI32() === 3)
-        stats.totalTicketsVolume = stats.totalTicketsVolume.plus(volume);
-
-    stats.save();
-}
+): void {}
 
 export function handleERC1155ListingCancelled(
     event: ERC1155ListingCancelled
 ): void {
-    let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
-
-    listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
-
-    listing.save();
+    // let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
+    // listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
+    // listing.save();
 }
 
 export function handleERC1155ListingRemoved(
     event: ERC1155ListingRemoved
-): void {
-    let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
-
-    listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
-
-    listing.save();
-}
+): void {}
 
 //ERC1155 Item Types
 
-export function handleAddItemType(event: AddItemType): void {
-    let itemType = getOrCreateItemType(
-        event.params._itemType.svgId.toString()
-    )!;
+export function handleAddItemType(event: AddItemType): void {}
 
-    let itemInfo = event.params._itemType;
-
-    itemType.name = itemInfo.name;
-    itemType.svgId = itemInfo.svgId;
-    itemType.desc = itemInfo.description;
-    itemType.author = itemInfo.author;
-
-    itemType.traitModifiers = itemInfo.traitModifiers;
-
-    itemType.slotPositions = itemInfo.slotPositions;
-    itemType.ghstPrice = itemInfo.ghstPrice;
-    itemType.maxQuantity = itemInfo.maxQuantity;
-    itemType.totalQuantity = itemInfo.totalQuantity;
-    itemType.rarityScoreModifier = itemInfo.rarityScoreModifier;
-    itemType.canPurchaseWithGhst = itemInfo.canPurchaseWithGhst;
-    itemType.minLevel = itemInfo.minLevel;
-    itemType.canBeTransferred = itemInfo.canBeTransferred;
-    itemType.category = itemInfo.category;
-    itemType.kinshipBonus = itemInfo.kinshipBonus;
-    itemType.experienceBonus = itemInfo.experienceBonus;
-
-    itemType.save();
-}
-
-export function handleItemTypeMaxQuantity(event: ItemTypeMaxQuantity): void {
-    let itemIds = event.params._itemIds;
-    let quantities = event.params._maxQuanities;
-
-    for (let index = 0; index < itemIds.length; index++) {
-        let itemId = itemIds[index];
-        let maxQuantity = quantities[index];
-
-        let itemType = getOrCreateItemType(itemId.toString())!;
-        itemType.maxQuantity = maxQuantity;
-        itemType.save();
-    }
-}
+export function handleItemTypeMaxQuantity(event: ItemTypeMaxQuantity): void {}
 
 export function handlePurchaseItemsWithGhst(
     event: PurchaseItemsWithGhst
-): void {
-    let itemIds = event.params._itemIds;
-    let quantities = event.params._quantities;
-
-    for (let index = 0; index < itemIds.length; index++) {
-        let itemId = itemIds[index];
-        let quantity = quantities[index];
-
-        let itemType = getOrCreateItemType(itemId.toString())!;
-        itemType.totalQuantity = itemType.totalQuantity.plus(quantity);
-        itemType.save();
-    }
-}
+): void {}
 
 export function handlePurchaseItemsWithVouchers(
     event: PurchaseItemsWithVouchers
-): void {
-    let itemIds = event.params._itemIds;
-    let quantities = event.params._quantities;
+): void {}
 
-    for (let index = 0; index < itemIds.length; index++) {
-        let itemId = itemIds[index];
-        let quantity = quantities[index];
-
-        let itemType = getOrCreateItemType(itemId.toString())!;
-        itemType.totalQuantity = itemType.totalQuantity.plus(quantity);
-        itemType.save();
-    }
-}
-
-export function handleMigrateVouchers(event: MigrateVouchers): void {
-    let itemIds = event.params._ids;
-    let quantities = event.params._values;
-
-    for (let index = 0; index < itemIds.length; index++) {
-        let itemId = itemIds[index];
-        let quantity = quantities[index];
-
-        let itemType = getOrCreateItemType(itemId.toString())!;
-        itemType.totalQuantity = itemType.totalQuantity.plus(quantity);
-        itemType.save();
-    }
-}
+export function handleMigrateVouchers(event: MigrateVouchers): void {}
 
 export function handleAddWearableSet(event: AddWearableSet): void {
-    let set = getOrCreateWearableSet(event.params._wearableSet.name);
-    let setInfo = event.params._wearableSet;
-
-    set.name = setInfo.name;
-    set.traitBonuses = setInfo.traitsBonuses;
-    set.wearableIds = setInfo.wearableIds;
-    set.allowedCollaterals = setInfo.allowedCollaterals;
-
-    set.save();
+    // let set = getOrCreateWearableSet(event.params._wearableSet.name);
+    // let setInfo = event.params._wearableSet;
+    // set.name = setInfo.name;
+    // set.traitBonuses = setInfo.traitsBonuses;
+    // set.wearableIds = setInfo.wearableIds;
+    // set.allowedCollaterals = setInfo.allowedCollaterals;
+    // set.save();
 }
 
 export function handleUpdateWearableSet(event: UpdateWearableSet): void {
     let setInfo = event.params._wearableSet;
 
-    let set = getOrCreateWearableSet(event.params._wearableSet.name);
-    set.name = setInfo.name;
-    set.traitBonuses = setInfo.traitsBonuses;
-    set.wearableIds = setInfo.wearableIds;
-    set.allowedCollaterals = setInfo.allowedCollaterals;
+    // let set = getOrCreateWearableSet(event.params._wearableSet.name);
+    // set.name = setInfo.name;
+    // set.traitBonuses = setInfo.traitsBonuses;
+    // set.wearableIds = setInfo.wearableIds;
+    // set.allowedCollaterals = setInfo.allowedCollaterals;
 
-    set.save();
+    // set.save();
 }
 
 export function handleItemModifiersSet(event: ItemModifiersSet): void {
-    let itemType = getOrCreateItemType(event.params._wearableId.toString())!;
-    itemType.traitModifiers = event.params._traitModifiers;
-    itemType.rarityScoreModifier = event.params._rarityScoreModifier;
-    itemType.save();
+    // let itemType = getOrCreateItemType(event.params._wearableId.toString())!;
+    // itemType.traitModifiers = event.params._traitModifiers;
+    // itemType.rarityScoreModifier = event.params._rarityScoreModifier;
+    // itemType.save();
 }
 
 export function handleWearableSlotPositionsSet(
     event: WearableSlotPositionsSet
 ): void {
-    let itemType = getOrCreateItemType(event.params._wearableId.toString())!;
-    itemType.slotPositions = event.params._slotPositions;
-    itemType.save();
+    // let itemType = getOrCreateItemType(event.params._wearableId.toString())!;
+    // itemType.slotPositions = event.params._slotPositions;
+    // itemType.save();
 }
 
 export function handleMintPortals(event: MintPortals): void {
     let buyer = getOrCreateUser(event.params._from.toHexString());
     let owner = getOrCreateUser(event.params._to.toHexString());
-    let stats = getStatisticEntity();
+    // let stats = getStatisticEntity();
 
     let baseId = event.params._tokenId;
     for (let i = 0; i < event.params._numAavegotchisToPurchase.toI32(); i++) {
@@ -914,26 +487,20 @@ export function handleMintPortals(event: MintPortals): void {
         baseId = baseId.plus(BIGINT_ONE);
     }
 
-    stats.portalsBought = stats.portalsBought.plus(
-        event.params._numAavegotchisToPurchase
-    );
+    // stats.portalsBought = stats.portalsBought.plus(
+    //     event.params._numAavegotchisToPurchase
+    // );
 
-    stats.save();
+    // stats.save();
     buyer.save();
     owner.save();
 }
 
-export function handleERC1155ListingUpdated(event: UpdateERC1155Listing): void {
-    let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
-    listing = updateERC1155ListingInfo(listing, event.params.listingId, event);
-    listing.save();
-}
+export function handleERC1155ListingUpdated(
+    event: UpdateERC1155Listing
+): void {}
 
-export function handleUpdateItemPrice(event: UpdateItemPrice): void {
-    let item = getOrCreateItemType(event.params._itemId.toString())!;
-    item.ghstPrice = event.params._priceInWei;
-    item.save();
-}
+export function handleUpdateItemPrice(event: UpdateItemPrice): void {}
 
 //Upgrades
 
@@ -952,53 +519,6 @@ export function handleDiamondCut(event: DiamondCut): void {
 // export { runTests } from "../tests/aavegotchi.test";
 
 // Realm
-export function handleResyncParcel(event: ResyncParcel): void {
-    let parcel = Parcel.load(event.params._tokenId.toString())!;
-
-    let contract = RealmDiamond.bind(event.address);
-    let parcelInfo = contract.try_getParcelInfo(event.params._tokenId);
-
-    if (!parcelInfo.reverted) {
-        let parcelMetadata = parcelInfo.value;
-        parcel.parcelId = parcelMetadata.parcelId;
-        parcel.tokenId = event.params._tokenId;
-        parcel.coordinateX = parcelMetadata.coordinateX;
-        parcel.coordinateY = parcelMetadata.coordinateY;
-        parcel.district = parcelMetadata.district;
-        parcel.parcelHash = parcelMetadata.parcelAddress;
-
-        parcel.size = parcelMetadata.size;
-
-        let boostArray = parcelMetadata.boost;
-        parcel.fudBoost = boostArray[0];
-        parcel.fomoBoost = boostArray[1];
-        parcel.alphaBoost = boostArray[2];
-        parcel.kekBoost = boostArray[3];
-    }
-
-    //update auction too
-
-    // Entities can be written to the store with `.save()`
-    parcel.save();
-}
-
-export function handleTransferParcel(event: Transfer): void {
-    let user = getOrCreateUser(event.params._to.toHexString());
-    user.save();
-
-    let parcel = Parcel.load(event.params._tokenId.toString())!;
-    parcel.owner = user.id;
-    parcel.save();
-}
-
-export function handleMintParcel(event: MintParcel): void {
-    let parcel = getOrCreateParcel(
-        event.params._tokenId,
-        event.params._owner,
-        event.address
-    );
-    parcel.save();
-}
 
 // Whitelist
 export function handleWhitelistCreated(event: WhitelistCreated): void {
@@ -1088,9 +608,9 @@ export function handleGotchiLendingEnd(event: GotchiLendingEnd): void {
 
     lending.save();
 
-    let stats = getStatisticEntity();
-    stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.minus(BIGINT_ONE);
-    stats.save();
+    // let stats = getStatisticEntity();
+    // stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.minus(BIGINT_ONE);
+    // stats.save();
 }
 
 export function handleGotchiLendingExecute(event: GotchiLendingExecute): void {
@@ -1117,9 +637,9 @@ export function handleGotchiLendingExecute(event: GotchiLendingExecute): void {
     gotchisBorrowed.push(lending.gotchiTokenId);
     borrower.gotchisBorrowed = gotchisBorrowed;
 
-    let stats = getStatisticEntity();
-    stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.plus(BIGINT_ONE);
-    stats.save();
+    // let stats = getStatisticEntity();
+    // stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.plus(BIGINT_ONE);
+    // stats.save();
 
     originalOwner.save();
     borrower.save();
@@ -1137,35 +657,12 @@ export function handleGotchiLendingCancel(event: GotchiLendingCancel): void {
 
 export function handleERC1155ExecutedToRecipient(
     event: ERC1155ExecutedToRecipient
-): void {
-    let listingUpdateInfo = event.params;
-
-    //Update ERC1155Purchase
-    let purchaseID =
-        listingUpdateInfo.listingId.toString() +
-        "_" +
-        listingUpdateInfo.buyer.toHexString() +
-        "_" +
-        event.block.timestamp.toString();
-    let purchase = getOrCreateERC1155Purchase(
-        purchaseID,
-        listingUpdateInfo.buyer
-    );
-
-    purchase.buyer = event.params.buyer;
-    purchase.recipient = event.params.recipient;
-    purchase.save();
-}
+): void {}
 
 export function handleERC721ExecutedToRecipient(
     event: ERC721ExecutedToRecipient
 ): void {
     // update listing
-    let listing = getOrCreateERC721Listing(event.params.listingId.toString());
-    listing = updateERC721ListingInfo(listing, event.params.listingId, event);
-    listing.recipient = event.params.recipient;
-    listing.buyer = event.params.buyer;
-    listing.save();
 }
 
 export function handleGotchiLendingAdded(event: GotchiLendingAdded): void {
@@ -1312,9 +809,9 @@ export function handleGotchiLendingExecuted(
     borrower.gotchisBorrowed = gotchisBorrowed;
 
     // update stats
-    let stats = getStatisticEntity();
-    stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.plus(BIGINT_ONE);
-    stats.save();
+    // let stats = getStatisticEntity();
+    // stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.plus(BIGINT_ONE);
+    // stats.save();
 }
 
 export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
@@ -1383,9 +880,9 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
     gotchi.save();
 
     // update Stats
-    let stats = getStatisticEntity();
-    stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.minus(BIGINT_ONE);
-    stats.save();
+    // let stats = getStatisticEntity();
+    // stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.minus(BIGINT_ONE);
+    // stats.save();
 }
 
 export function handleWhitelistAccessRightSet(
