@@ -1,13 +1,25 @@
 import {
     AavegotchiDiamond,
     ERC1155ExecutedListing,
+    ERC721ExecutedListing,
+    ERC721ListingAdd,
+    ERC721ListingCancelled,
 } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
+
+import { RealmDiamond } from "../../../generated/RealmDiamond/RealmDiamond";
 
 import {
     Aavegotchi,
     AavegotchiOption,
+    ERC721Listing,
+    ERC1155Listing,
     Portal,
     User,
+    Statistic,
+    ItemType,
+    WearableSet,
+    ERC1155Purchase,
+    Parcel,
     GotchiLending,
     Whitelist,
     ClaimedToken,
@@ -82,74 +94,74 @@ export function getOrCreateUser(
     return user as User;
 }
 
-// export function getOrCreateERC721Listing(
-//     id: string,
-//     createIfNotFound: boolean = true
-// ): ERC721Listing {
-//     let listing = ERC721Listing.load(id);
+export function getOrCreateERC721Listing(
+    id: string,
+    createIfNotFound: boolean = true
+): ERC721Listing {
+    let listing = ERC721Listing.load(id);
 
-//     if (listing == null && createIfNotFound) {
-//         listing = new ERC721Listing(id);
-//         listing.blockCreated = BIGINT_ZERO;
-//         listing.timeCreated = BIGINT_ZERO;
-//     }
+    if (listing == null && createIfNotFound) {
+        listing = new ERC721Listing(id);
+        listing.blockCreated = BIGINT_ZERO;
+        listing.timeCreated = BIGINT_ZERO;
+    }
 
-//     return listing as ERC721Listing;
-// }
+    return listing as ERC721Listing;
+}
 
-// export function getOrCreateERC1155Listing(
-//     id: string,
-//     createIfNotFound: boolean = true
-// ): ERC1155Listing {
-//     let listing = ERC1155Listing.load(id);
+export function getOrCreateERC1155Listing(
+    id: string,
+    createIfNotFound: boolean = true
+): ERC1155Listing {
+    let listing = ERC1155Listing.load(id);
 
-//     if (listing == null && createIfNotFound) {
-//         listing = new ERC1155Listing(id);
-//     }
+    if (listing == null && createIfNotFound) {
+        listing = new ERC1155Listing(id);
+    }
 
-//     return listing as ERC1155Listing;
-// }
+    return listing as ERC1155Listing;
+}
 
-// export function getOrCreateERC1155Purchase(
-//     id: string,
-//     buyer: Address,
-//     createIfNotFound: boolean = true
-// ): ERC1155Purchase {
-//     let listing = ERC1155Purchase.load(id);
+export function getOrCreateERC1155Purchase(
+    id: string,
+    buyer: Address,
+    createIfNotFound: boolean = true
+): ERC1155Purchase {
+    let listing = ERC1155Purchase.load(id);
 
-//     if (listing == null && createIfNotFound) {
-//         listing = new ERC1155Purchase(id);
-//     }
+    if (listing == null && createIfNotFound) {
+        listing = new ERC1155Purchase(id);
+    }
 
-//     return listing as ERC1155Purchase;
-// }
+    return listing as ERC1155Purchase;
+}
 
-// export function getOrCreateItemType(
-//     id: string,
-//     createIfNotFound: boolean = true
-// ): ItemType | null {
-//     let itemType = ItemType.load(id);
+export function getOrCreateItemType(
+    id: string,
+    createIfNotFound: boolean = true
+): ItemType | null {
+    let itemType = ItemType.load(id);
 
-//     if (itemType == null && createIfNotFound) {
-//         itemType = new ItemType(id);
-//         itemType.consumed = BIGINT_ZERO;
-//     }
+    if (itemType == null && createIfNotFound) {
+        itemType = new ItemType(id);
+        itemType.consumed = BIGINT_ZERO;
+    }
 
-//     return itemType;
-// }
+    return itemType;
+}
 
-// export function getOrCreateWearableSet(
-//     id: string,
-//     createIfNotFound: boolean = true
-// ): WearableSet {
-//     let set = WearableSet.load(id);
+export function getOrCreateWearableSet(
+    id: string,
+    createIfNotFound: boolean = true
+): WearableSet {
+    let set = WearableSet.load(id);
 
-//     if (set == null && createIfNotFound) {
-//         set = new WearableSet(id);
-//     }
+    if (set == null && createIfNotFound) {
+        set = new WearableSet(id);
+    }
 
-//     return set as WearableSet;
-// }
+    return set as WearableSet;
+}
 
 /*
 export function getOrCreateUpgrade(
@@ -165,84 +177,84 @@ export function getOrCreateUpgrade(
 }
 */
 
-// export function updateERC721ListingInfo(
-//     listing: ERC721Listing,
-//     listingID: BigInt,
-//     event: ethereum.Event
-// ): ERC721Listing {
-//     let contract = AavegotchiDiamond.bind(event.address);
-//     let response = contract.try_getERC721Listing(listingID);
+export function updateERC721ListingInfo(
+    listing: ERC721Listing,
+    listingID: BigInt,
+    event: ethereum.Event
+): ERC721Listing {
+    let contract = AavegotchiDiamond.bind(event.address);
+    let response = contract.try_getERC721Listing(listingID);
 
-//     if (!response.reverted) {
-//         let listingInfo = response.value;
-//         listing.category = listingInfo.category;
-//         listing.erc721TokenAddress = listingInfo.erc721TokenAddress;
-//         listing.tokenId = listingInfo.erc721TokenId;
-//         listing.seller = listingInfo.seller;
-//         listing.timeCreated = listingInfo.timeCreated;
-//         listing.timePurchased = listingInfo.timePurchased;
-//         listing.priceInWei = listingInfo.priceInWei;
-//         listing.cancelled = listingInfo.cancelled;
+    if (!response.reverted) {
+        let listingInfo = response.value;
+        listing.category = listingInfo.category;
+        listing.erc721TokenAddress = listingInfo.erc721TokenAddress;
+        listing.tokenId = listingInfo.erc721TokenId;
+        listing.seller = listingInfo.seller;
+        listing.timeCreated = listingInfo.timeCreated;
+        listing.timePurchased = listingInfo.timePurchased;
+        listing.priceInWei = listingInfo.priceInWei;
+        listing.cancelled = listingInfo.cancelled;
 
-//         if (listing.blockCreated.equals(BIGINT_ZERO)) {
-//             listing.blockCreated = event.block.number;
-//         }
+        if (listing.blockCreated.equals(BIGINT_ZERO)) {
+            listing.blockCreated = event.block.number;
+        }
 
-//         if (listing.category.toI32() <= 2) {
-//             let portal = getOrCreatePortal(
-//                 listingInfo.erc721TokenId.toString(),
-//                 false
-//             );
+        if (listing.category.toI32() <= 2) {
+            let portal = getOrCreatePortal(
+                listingInfo.erc721TokenId.toString(),
+                false
+            );
 
-//             if (portal) {
-//                 listing.hauntId = portal.hauntId;
-//                 if (
-//                     portal.historicalPrices &&
-//                     portal.historicalPrices!.length > 0
-//                 ) {
-//                     listing.soldBefore = true;
-//                 } else {
-//                     listing.soldBefore = false;
-//                 }
-//             }
-//         } else {
-//             let aavegotchi = getOrCreateAavegotchi(
-//                 listingInfo.erc721TokenId.toString(),
-//                 event,
-//                 false
-//             );
+            if (portal) {
+                listing.hauntId = portal.hauntId;
+                if (
+                    portal.historicalPrices &&
+                    portal.historicalPrices!.length > 0
+                ) {
+                    listing.soldBefore = true;
+                } else {
+                    listing.soldBefore = false;
+                }
+            }
+        } else {
+            let aavegotchi = getOrCreateAavegotchi(
+                listingInfo.erc721TokenId.toString(),
+                event,
+                false
+            );
 
-//             if (aavegotchi) {
-//                 listing.hauntId = aavegotchi.hauntId;
-//                 listing.kinship = aavegotchi.kinship;
-//                 listing.experience = aavegotchi.experience;
-//                 listing.baseRarityScore = aavegotchi.baseRarityScore;
-//                 listing.modifiedRarityScore = aavegotchi.modifiedRarityScore;
-//                 listing.equippedWearables = aavegotchi.equippedWearables;
-//                 listing.amountEquippedWearables = aavegotchi.equippedWearables.filter(
-//                     (e) => e != 210 && e != 0
-//                 ).length; // without haunt1 background
-//                 if (
-//                     aavegotchi.historicalPrices &&
-//                     aavegotchi.historicalPrices!.length > 0
-//                 ) {
-//                     listing.soldBefore = true;
-//                 } else {
-//                     listing.soldBefore = false;
-//                 }
-//                 listing.claimedAt = aavegotchi.claimedAt;
-//             }
-//         }
-//     } else {
-//         log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
-//             listingID.toString(),
-//             event.block.number.toString(),
-//             event.transaction.hash.toHexString(),
-//         ]);
-//     }
+            if (aavegotchi) {
+                listing.hauntId = aavegotchi.hauntId;
+                listing.kinship = aavegotchi.kinship;
+                listing.experience = aavegotchi.experience;
+                listing.baseRarityScore = aavegotchi.baseRarityScore;
+                listing.modifiedRarityScore = aavegotchi.modifiedRarityScore;
+                listing.equippedWearables = aavegotchi.equippedWearables;
+                listing.amountEquippedWearables = aavegotchi.equippedWearables.filter(
+                    (e) => e != 210 && e != 0
+                ).length; // without haunt1 background
+                if (
+                    aavegotchi.historicalPrices &&
+                    aavegotchi.historicalPrices!.length > 0
+                ) {
+                    listing.soldBefore = true;
+                } else {
+                    listing.soldBefore = false;
+                }
+                listing.claimedAt = aavegotchi.claimedAt;
+            }
+        }
+    } else {
+        log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
+            listingID.toString(),
+            event.block.number.toString(),
+            event.transaction.hash.toHexString(),
+        ]);
+    }
 
-//     return listing as ERC721Listing;
-// }
+    return listing as ERC721Listing;
+}
 
 //@ts-ignore
 function itemMaxQuantityToRarity(bigInt: BigInt): BigInt {
@@ -256,115 +268,115 @@ function itemMaxQuantityToRarity(bigInt: BigInt): BigInt {
     return BigInt.fromI32(0);
 }
 
-// export function updateERC1155ListingInfo(
-//     listing: ERC1155Listing,
-//     listingID: BigInt,
-//     event: ethereum.Event
-// ): ERC1155Listing {
-//     let contract = AavegotchiDiamond.bind(event.address);
-//     let response = contract.try_getERC1155Listing(listingID);
-//     if (!response.reverted) {
-//         let listingInfo = response.value;
-//         listing.category = listingInfo.category;
-//         listing.erc1155TokenAddress = listingInfo.erc1155TokenAddress;
-//         listing.erc1155TypeId = listingInfo.erc1155TypeId;
-//         listing.seller = listingInfo.seller;
-//         listing.timeCreated = listingInfo.timeCreated;
-//         listing.timeLastPurchased = listingInfo.timeLastPurchased;
-//         listing.priceInWei = listingInfo.priceInWei;
-//         listing.sold = listingInfo.sold;
-//         listing.cancelled = listingInfo.cancelled;
-//         listing.quantity = listingInfo.quantity;
+export function updateERC1155ListingInfo(
+    listing: ERC1155Listing,
+    listingID: BigInt,
+    event: ethereum.Event
+): ERC1155Listing {
+    let contract = AavegotchiDiamond.bind(event.address);
+    let response = contract.try_getERC1155Listing(listingID);
+    if (!response.reverted) {
+        let listingInfo = response.value;
+        listing.category = listingInfo.category;
+        listing.erc1155TokenAddress = listingInfo.erc1155TokenAddress;
+        listing.erc1155TypeId = listingInfo.erc1155TypeId;
+        listing.seller = listingInfo.seller;
+        listing.timeCreated = listingInfo.timeCreated;
+        listing.timeLastPurchased = listingInfo.timeLastPurchased;
+        listing.priceInWei = listingInfo.priceInWei;
+        listing.sold = listingInfo.sold;
+        listing.cancelled = listingInfo.cancelled;
+        listing.quantity = listingInfo.quantity;
 
-//         //tickets
-//         if (listing.category.toI32() === 3) {
-//             let rarityLevel = listing.erc1155TypeId;
-//             listing.rarityLevel = rarityLevel;
+        //tickets
+        if (listing.category.toI32() === 3) {
+            let rarityLevel = listing.erc1155TypeId;
+            listing.rarityLevel = rarityLevel;
 
-//             //items
-//         } else if (listing.category.toI32() < 3) {
-//             let itemType = getOrCreateItemType(
-//                 listingInfo.erc1155TypeId.toString(),
-//                 false
-//             );
+            //items
+        } else if (listing.category.toI32() < 3) {
+            let itemType = getOrCreateItemType(
+                listingInfo.erc1155TypeId.toString(),
+                false
+            );
 
-//             if (!itemType) {
-//                 return listing;
-//             }
+            if (!itemType) {
+                return listing;
+            }
 
-//             listing.rarityLevel = itemMaxQuantityToRarity(itemType.maxQuantity);
-//             // brs modifier
-//             listing.rarityScoreModifier = BigInt.fromI32(
-//                 itemType.rarityScoreModifier
-//             );
+            listing.rarityLevel = itemMaxQuantityToRarity(itemType.maxQuantity);
+            // brs modifier
+            listing.rarityScoreModifier = BigInt.fromI32(
+                itemType.rarityScoreModifier
+            );
 
-//             // trait modifier
-//             listing.nrgTraitModifier = BigInt.fromI32(
-//                 itemType.traitModifiers![0]
-//             );
-//             listing.aggTraitModifier = BigInt.fromI32(
-//                 itemType.traitModifiers![1]
-//             );
-//             listing.spkTraitModifier = BigInt.fromI32(
-//                 itemType.traitModifiers![2]
-//             );
-//             listing.brnTraitModifier = BigInt.fromI32(
-//                 itemType.traitModifiers![3]
-//             );
-//             listing.eysTraitModifier = BigInt.fromI32(
-//                 itemType.traitModifiers![4]
-//             );
-//             listing.eycTraitModifier = BigInt.fromI32(
-//                 itemType.traitModifiers![5]
-//             );
-//         }
-//     } else {
-//         log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
-//             listingID.toString(),
-//             event.block.number.toString(),
-//             event.transaction.hash.toHexString(),
-//         ]);
-//     }
+            // trait modifier
+            listing.nrgTraitModifier = BigInt.fromI32(
+                itemType.traitModifiers![0]
+            );
+            listing.aggTraitModifier = BigInt.fromI32(
+                itemType.traitModifiers![1]
+            );
+            listing.spkTraitModifier = BigInt.fromI32(
+                itemType.traitModifiers![2]
+            );
+            listing.brnTraitModifier = BigInt.fromI32(
+                itemType.traitModifiers![3]
+            );
+            listing.eysTraitModifier = BigInt.fromI32(
+                itemType.traitModifiers![4]
+            );
+            listing.eycTraitModifier = BigInt.fromI32(
+                itemType.traitModifiers![5]
+            );
+        }
+    } else {
+        log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
+            listingID.toString(),
+            event.block.number.toString(),
+            event.transaction.hash.toHexString(),
+        ]);
+    }
 
-//     return listing as ERC1155Listing;
-// }
+    return listing as ERC1155Listing;
+}
 
-// export function updateERC1155PurchaseInfo(
-//     listing: ERC1155Purchase,
-//     event: ERC1155ExecutedListing
-// ): ERC1155Purchase {
-//     let listingInfo = event.params;
+export function updateERC1155PurchaseInfo(
+    listing: ERC1155Purchase,
+    event: ERC1155ExecutedListing
+): ERC1155Purchase {
+    let listingInfo = event.params;
 
-//     listing.category = listingInfo.category;
-//     listing.listingID = listingInfo.listingId;
-//     listing.erc1155TokenAddress = listingInfo.erc1155TokenAddress;
-//     listing.erc1155TypeId = listingInfo.erc1155TypeId;
-//     listing.seller = listingInfo.seller;
-//     listing.timeLastPurchased = listingInfo.time;
-//     listing.priceInWei = listingInfo.priceInWei;
-//     listing.quantity = event.params._quantity;
-//     listing.buyer = event.params.buyer;
-//     listing.recipient = event.params.buyer;
+    listing.category = listingInfo.category;
+    listing.listingID = listingInfo.listingId;
+    listing.erc1155TokenAddress = listingInfo.erc1155TokenAddress;
+    listing.erc1155TypeId = listingInfo.erc1155TypeId;
+    listing.seller = listingInfo.seller;
+    listing.timeLastPurchased = listingInfo.time;
+    listing.priceInWei = listingInfo.priceInWei;
+    listing.quantity = event.params._quantity;
+    listing.buyer = event.params.buyer;
+    listing.recipient = event.params.buyer;
 
-//     //tickets
-//     if (listing.category.equals(BigInt.fromI32(3))) {
-//         let rarityLevel = listingInfo.erc1155TypeId;
-//         listing.rarityLevel = rarityLevel;
+    //tickets
+    if (listing.category.equals(BigInt.fromI32(3))) {
+        let rarityLevel = listingInfo.erc1155TypeId;
+        listing.rarityLevel = rarityLevel;
 
-//         //items
-//     } else {
-//         let itemType = getOrCreateItemType(
-//             listingInfo.erc1155TypeId.toString(),
-//             false
-//         );
+        //items
+    } else {
+        let itemType = getOrCreateItemType(
+            listingInfo.erc1155TypeId.toString(),
+            false
+        );
 
-//         if (itemType) {
-//             listing.rarityLevel = itemMaxQuantityToRarity(itemType.maxQuantity);
-//         }
-//     }
+        if (itemType) {
+            listing.rarityLevel = itemMaxQuantityToRarity(itemType.maxQuantity);
+        }
+    }
 
-//     return listing as ERC1155Purchase;
-// }
+    return listing as ERC1155Purchase;
+}
 
 export function updateAavegotchiInfo(
     gotchi: Aavegotchi,
@@ -419,38 +431,38 @@ export function updateAavegotchiInfo(
             lending.save();
         }
 
-        // if (gotchi.activeListing && updateListing) {
-        //     // let listing = getOrCreateERC721Listing(
-        //     //     gotchi.activeListing!.toString()
-        //     // );
-        //     listing.kinship = gotchi.kinship;
-        //     listing.experience = gotchi.experience;
-        //     listing.nameLowerCase = gotchi.nameLowerCase;
-        //     if (
-        //         gotchi.withSetsNumericTraits != null &&
-        //         gotchi.withSetsNumericTraits!.length == 6
-        //     ) {
-        //         listing.nrgTrait = BigInt.fromI32(
-        //             gotchi.withSetsNumericTraits![0]
-        //         );
-        //         listing.aggTrait = BigInt.fromI32(
-        //             gotchi.withSetsNumericTraits![1]
-        //         );
-        //         listing.spkTrait = BigInt.fromI32(
-        //             gotchi.withSetsNumericTraits![2]
-        //         );
-        //         listing.brnTrait = BigInt.fromI32(
-        //             gotchi.withSetsNumericTraits![3]
-        //         );
-        //         listing.eysTrait = BigInt.fromI32(
-        //             gotchi.withSetsNumericTraits![4]
-        //         );
-        //         listing.eycTrait = BigInt.fromI32(
-        //             gotchi.withSetsNumericTraits![5]
-        //         );
-        //     }
-        //     listing.save();
-        // }
+        if (gotchi.activeListing && updateListing) {
+            let listing = getOrCreateERC721Listing(
+                gotchi.activeListing!.toString()
+            );
+            listing.kinship = gotchi.kinship;
+            listing.experience = gotchi.experience;
+            listing.nameLowerCase = gotchi.nameLowerCase;
+            if (
+                gotchi.withSetsNumericTraits != null &&
+                gotchi.withSetsNumericTraits!.length == 6
+            ) {
+                listing.nrgTrait = BigInt.fromI32(
+                    gotchi.withSetsNumericTraits![0]
+                );
+                listing.aggTrait = BigInt.fromI32(
+                    gotchi.withSetsNumericTraits![1]
+                );
+                listing.spkTrait = BigInt.fromI32(
+                    gotchi.withSetsNumericTraits![2]
+                );
+                listing.brnTrait = BigInt.fromI32(
+                    gotchi.withSetsNumericTraits![3]
+                );
+                listing.eysTrait = BigInt.fromI32(
+                    gotchi.withSetsNumericTraits![4]
+                );
+                listing.eycTrait = BigInt.fromI32(
+                    gotchi.withSetsNumericTraits![5]
+                );
+            }
+            listing.save();
+        }
 
         gotchi.locked = gotchiInfo.locked;
     } else {
@@ -467,125 +479,125 @@ export function updateAavegotchiInfo(
     return gotchi as Aavegotchi;
 }
 
-// export function updateItemTypeInfo(
-//     itemType: ItemType,
-//     itemId: BigInt,
-//     event: ethereum.Event
-// ): ItemType {
-//     let contract = AavegotchiDiamond.bind(event.address);
-//     let response = contract.try_getItemType(itemId);
+export function updateItemTypeInfo(
+    itemType: ItemType,
+    itemId: BigInt,
+    event: ethereum.Event
+): ItemType {
+    let contract = AavegotchiDiamond.bind(event.address);
+    let response = contract.try_getItemType(itemId);
 
-//     log.warning("Adding item type {}", [itemId.toString()]);
+    log.warning("Adding item type {}", [itemId.toString()]);
 
-//     if (!response.reverted) {
-//         let itemInfo = response.value;
-//         itemType.name = itemInfo.name;
-//         itemType.svgId = itemId;
-//         itemType.desc = itemInfo.description;
-//         itemType.author = itemInfo.author;
+    if (!response.reverted) {
+        let itemInfo = response.value;
+        itemType.name = itemInfo.name;
+        itemType.svgId = itemId;
+        itemType.desc = itemInfo.description;
+        itemType.author = itemInfo.author;
 
-//         itemType.traitModifiers = itemInfo.traitModifiers;
+        itemType.traitModifiers = itemInfo.traitModifiers;
 
-//         itemType.slotPositions = itemInfo.slotPositions;
-//         itemType.ghstPrice = itemInfo.ghstPrice;
-//         itemType.maxQuantity = itemInfo.maxQuantity;
-//         itemType.totalQuantity = itemInfo.totalQuantity;
-//         itemType.rarityScoreModifier = itemInfo.rarityScoreModifier;
-//         itemType.canPurchaseWithGhst = itemInfo.canPurchaseWithGhst;
-//         itemType.minLevel = itemInfo.minLevel;
-//         itemType.canBeTransferred = itemInfo.canBeTransferred;
-//         itemType.category = itemInfo.category;
-//         itemType.kinshipBonus = itemInfo.kinshipBonus;
-//         itemType.experienceBonus = itemInfo.experienceBonus;
-//     } else {
-//         log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
-//             itemType.id.toString(),
-//             event.block.number.toString(),
-//             event.transaction.hash.toHexString(),
-//         ]);
-//     }
+        itemType.slotPositions = itemInfo.slotPositions;
+        itemType.ghstPrice = itemInfo.ghstPrice;
+        itemType.maxQuantity = itemInfo.maxQuantity;
+        itemType.totalQuantity = itemInfo.totalQuantity;
+        itemType.rarityScoreModifier = itemInfo.rarityScoreModifier;
+        itemType.canPurchaseWithGhst = itemInfo.canPurchaseWithGhst;
+        itemType.minLevel = itemInfo.minLevel;
+        itemType.canBeTransferred = itemInfo.canBeTransferred;
+        itemType.category = itemInfo.category;
+        itemType.kinshipBonus = itemInfo.kinshipBonus;
+        itemType.experienceBonus = itemInfo.experienceBonus;
+    } else {
+        log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
+            itemType.id.toString(),
+            event.block.number.toString(),
+            event.transaction.hash.toHexString(),
+        ]);
+    }
 
-//     return itemType as ItemType;
-// }
+    return itemType as ItemType;
+}
 
-// export function getStatisticEntity(): Statistic {
-//     let stats = Statistic.load("0");
+export function getStatisticEntity(): Statistic {
+    let stats = Statistic.load("0");
 
-//     if (stats == null) {
-//         stats = new Statistic("0");
+    if (stats == null) {
+        stats = new Statistic("0");
 
-//         stats.portalsBought = BIGINT_ZERO;
-//         stats.portalsOpened = BIGINT_ZERO;
-//         stats.aavegotchisClaimed = BIGINT_ZERO;
-//         stats.erc721ActiveListingCount = BIGINT_ZERO;
-//         stats.erc1155ActiveListingCount = BIGINT_ZERO;
-//         stats.erc721TotalVolume = BIGINT_ZERO;
-//         stats.erc1155TotalVolume = BIGINT_ZERO;
+        stats.portalsBought = BIGINT_ZERO;
+        stats.portalsOpened = BIGINT_ZERO;
+        stats.aavegotchisClaimed = BIGINT_ZERO;
+        stats.erc721ActiveListingCount = BIGINT_ZERO;
+        stats.erc1155ActiveListingCount = BIGINT_ZERO;
+        stats.erc721TotalVolume = BIGINT_ZERO;
+        stats.erc1155TotalVolume = BIGINT_ZERO;
 
-//         //new
-//         stats.totalWearablesVolume = BIGINT_ZERO;
-//         stats.totalConsumablesVolume = BIGINT_ZERO;
-//         stats.totalTicketsVolume = BIGINT_ZERO;
+        //new
+        stats.totalWearablesVolume = BIGINT_ZERO;
+        stats.totalConsumablesVolume = BIGINT_ZERO;
+        stats.totalTicketsVolume = BIGINT_ZERO;
 
-//         stats.aavegotchisBorrowed = BIGINT_ZERO;
-//         stats.aavegotchisSacrificed = BIGINT_ZERO;
+        stats.aavegotchisBorrowed = BIGINT_ZERO;
+        stats.aavegotchisSacrificed = BIGINT_ZERO;
 
-//         stats.save();
-//     }
+        stats.save();
+    }
 
-//     return stats as Statistic;
-// }
+    return stats as Statistic;
+}
 
-// export function getOrCreateParcel(
-//     tokenId: BigInt,
-//     owner: Bytes,
-//     tokenAddress: Address,
-//     updateParcelInfo: boolean = true
-// ): Parcel {
-//     let parcel = Parcel.load(tokenId.toString());
+export function getOrCreateParcel(
+    tokenId: BigInt,
+    owner: Bytes,
+    tokenAddress: Address,
+    updateParcelInfo: boolean = true
+): Parcel {
+    let parcel = Parcel.load(tokenId.toString());
 
-//     // Entities only exist after they have been saved to the store;
-//     // `null` checks allow to create entities on demand
-//     if (parcel == null) {
-//         parcel = new Parcel(tokenId.toString());
-//         parcel.timesTraded = BIGINT_ZERO;
-//     }
+    // Entities only exist after they have been saved to the store;
+    // `null` checks allow to create entities on demand
+    if (parcel == null) {
+        parcel = new Parcel(tokenId.toString());
+        parcel.timesTraded = BIGINT_ZERO;
+    }
 
-//     if (!updateParcelInfo) {
-//         return parcel;
-//     }
+    if (!updateParcelInfo) {
+        return parcel;
+    }
 
-//     log.debug("token address: {}", [tokenAddress.toHexString()]);
+    log.debug("token address: {}", [tokenAddress.toHexString()]);
 
-//     let contract = RealmDiamond.bind(tokenAddress);
-//     let parcelInfo = contract.try_getParcelInfo(tokenId);
+    let contract = RealmDiamond.bind(tokenAddress);
+    let parcelInfo = contract.try_getParcelInfo(tokenId);
 
-//     if (parcelInfo.reverted) {
-//     } else {
-//         let parcelMetadata = parcelInfo.value;
-//         parcel.parcelId = parcelMetadata.parcelId;
-//         parcel.tokenId = tokenId;
+    if (parcelInfo.reverted) {
+    } else {
+        let parcelMetadata = parcelInfo.value;
+        parcel.parcelId = parcelMetadata.parcelId;
+        parcel.tokenId = tokenId;
 
-//         let user = getOrCreateUser(owner.toHexString());
-//         user.save();
-//         parcel.owner = user.id;
+        let user = getOrCreateUser(owner.toHexString());
+        user.save();
+        parcel.owner = user.id;
 
-//         parcel.coordinateX = parcelMetadata.coordinateX;
-//         parcel.coordinateY = parcelMetadata.coordinateY;
-//         parcel.district = parcelMetadata.district;
-//         parcel.parcelHash = parcelMetadata.parcelAddress;
+        parcel.coordinateX = parcelMetadata.coordinateX;
+        parcel.coordinateY = parcelMetadata.coordinateY;
+        parcel.district = parcelMetadata.district;
+        parcel.parcelHash = parcelMetadata.parcelAddress;
 
-//         let boostArray = parcelMetadata.boost;
-//         parcel.fudBoost = boostArray[0];
-//         parcel.fomoBoost = boostArray[1];
-//         parcel.alphaBoost = boostArray[2];
-//         parcel.kekBoost = boostArray[3];
+        let boostArray = parcelMetadata.boost;
+        parcel.fudBoost = boostArray[0];
+        parcel.fomoBoost = boostArray[1];
+        parcel.alphaBoost = boostArray[2];
+        parcel.kekBoost = boostArray[3];
 
-//         parcel.size = parcelMetadata.size;
-//     }
+        parcel.size = parcelMetadata.size;
+    }
 
-//     return parcel as Parcel;
-// }
+    return parcel as Parcel;
+}
 
 export function updateAavegotchiWearables(
     gotchi: Aavegotchi,
