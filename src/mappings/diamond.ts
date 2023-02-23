@@ -1275,6 +1275,7 @@ export function handleGotchiLendingExecuted(
     lending.tokensToShare = event.params.revenueTokens.map<Bytes>((e) => e);
     lending.thirdPartyAddress = event.params.thirdParty;
     lending.gotchiTokenId = event.params.tokenId;
+    lending.gotchi = event.params.tokenId.toString();
     lending.timeAgreed = event.params.timeAgreed;
     lending.cancelled = false;
     lending.completed = false;
