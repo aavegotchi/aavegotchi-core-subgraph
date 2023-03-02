@@ -1,83 +1,149 @@
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
-import { ClaimAavegotchi, ERC721ExecutedListing, ERC721ListingAdd, ERC721ListingCancelled, SetAavegotchiName, UpdateERC1155Listing } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
+import {
+    ClaimAavegotchi,
+    ERC721ExecutedListing,
+    ERC721ListingAdd,
+    ERC721ListingCancelled,
+    SetAavegotchiName,
+    UpdateERC1155Listing,
+} from "../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { BIGINT_ONE } from "../src/utils/constants";
-import { newMockEvent } from 'matchstick-as/assembly/index'
+import { newMockEvent } from "matchstick-as/assembly/index";
 
-let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
+let contractAddress = Address.fromString(
+    "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
+);
 
-export function getAavegotchiMock(event: ethereum.Event, status: BigInt = BigInt.fromI32(3)): ethereum.Value[]  {
-
+export function getAavegotchiMock(
+    event: ethereum.Event,
+    status: BigInt = BigInt.fromI32(3)
+): ethereum.Value[] {
     return [
-        ethereum.Value.fromTuple(changetype<ethereum.Tuple>([
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromString("yes"),
-        ethereum.Value.fromAddress(event.address),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(status),
-        ethereum.Value.fromSignedBigIntArray([BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE]),
-        ethereum.Value.fromSignedBigIntArray([BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE]),
-        ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE]),
-        ethereum.Value.fromAddress(event.address),
-        ethereum.Value.fromAddress(event.address),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromBoolean(true),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromString("yes"),
-        ethereum.Value.fromString("yes"),
-        ethereum.Value.fromString("yes"),
-        ethereum.Value.fromSignedBigIntArray([BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE]),
-        ethereum.Value.fromBooleanArray([true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]),
-        ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE]),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromBoolean(true),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromBoolean(true),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromSignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
-    ]))]
-    
+        ethereum.Value.fromTuple(
+            changetype<ethereum.Tuple>([
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromString("yes"),
+                ethereum.Value.fromAddress(event.address),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(status),
+                ethereum.Value.fromSignedBigIntArray([
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                ]),
+                ethereum.Value.fromSignedBigIntArray([
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                ]),
+                ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE]),
+                ethereum.Value.fromAddress(event.address),
+                ethereum.Value.fromAddress(event.address),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromBoolean(true),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromString("yes"),
+                ethereum.Value.fromString("yes"),
+                ethereum.Value.fromString("yes"),
+                ethereum.Value.fromSignedBigIntArray([
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                ]),
+                ethereum.Value.fromBooleanArray([
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                    true,
+                ]),
+                ethereum.Value.fromUnsignedBigIntArray([
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                    BIGINT_ONE,
+                ]),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromBoolean(true),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromBoolean(true),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromSignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+            ])
+        ),
+    ];
 }
 
-export function getERC721ListingMock(event: ethereum.Event, category: BigInt = BigInt.fromI32(3)): ethereum.Value[] {
+export function getERC721ListingMock(
+    event: ethereum.Event,
+    category: BigInt = BigInt.fromI32(3)
+): ethereum.Value[] {
     //getERC721Listing(uint256):((uint256,address,address,uint256,uint256,uint256,uint256,uint256,bool))
     return [
-        ethereum.Value.fromTuple(changetype<ethereum.Tuple>([
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromAddress(event.address),
-            ethereum.Value.fromAddress(event.address),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(category),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-            ethereum.Value.fromBoolean(true),
-    ]))]
+        ethereum.Value.fromTuple(
+            changetype<ethereum.Tuple>([
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromAddress(event.address),
+                ethereum.Value.fromAddress(event.address),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(category),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+                ethereum.Value.fromBoolean(true),
+            ])
+        ),
+    ];
 }
 
-export function getERC115ListingMock(category: BigInt = BigInt.fromI32(3)): ethereum.Value[] {
+export function getERC115ListingMock(
+    category: BigInt = BigInt.fromI32(3)
+): ethereum.Value[] {
     //getERC721Listing(uint256):((uint256,address,address,uint256,uint256,uint256,uint256,uint256,bool))
-    return [(
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+    return [
+        (ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromAddress(contractAddress),
         ethereum.Value.fromAddress(contractAddress),
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
@@ -85,13 +151,13 @@ export function getERC115ListingMock(category: BigInt = BigInt.fromI32(3)): ethe
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromBoolean(true)
-    )]
+        ethereum.Value.fromBoolean(true)),
+    ];
 }
 
-
-
-export function getERC721ListingExecutedEvent(categoryId: BigInt): ERC721ExecutedListing {
+export function getERC721ListingExecutedEvent(
+    categoryId: BigInt
+): ERC721ExecutedListing {
     let newMockevent = newMockEvent();
     let event = new ERC721ExecutedListing(
         newMockevent.address,
@@ -100,33 +166,66 @@ export function getERC721ListingExecutedEvent(categoryId: BigInt): ERC721Execute
         newMockevent.logType,
         newMockevent.block,
         newMockevent.transaction,
-        newMockevent.parameters
+        newMockevent.parameters,
+        null
     );
     event.parameters = new Array<ethereum.EventParam>();
     event.block.number = BIGINT_ONE;
 
-    let listingId = new ethereum.EventParam("BigInt", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
+    let listingId = new ethereum.EventParam(
+        "BigInt",
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    );
     event.parameters.push(listingId);
 
-    let seller = new ethereum.EventParam("address", ethereum.Value.fromAddress(Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d")));
+    let seller = new ethereum.EventParam(
+        "address",
+        ethereum.Value.fromAddress(
+            Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d")
+        )
+    );
     event.parameters.push(seller);
 
-    let buyer = new ethereum.EventParam("address", ethereum.Value.fromAddress(Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d")));
+    let buyer = new ethereum.EventParam(
+        "address",
+        ethereum.Value.fromAddress(
+            Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d")
+        )
+    );
     event.parameters.push(buyer);
 
-    let erc721TokenAddress = new ethereum.EventParam("address", ethereum.Value.fromAddress(Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d")));
+    let erc721TokenAddress = new ethereum.EventParam(
+        "address",
+        ethereum.Value.fromAddress(
+            Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d")
+        )
+    );
     event.parameters.push(erc721TokenAddress);
 
-    let erc721TokenId = new ethereum.EventParam("BigInt", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE))
+    let erc721TokenId = new ethereum.EventParam(
+        "BigInt",
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    );
     event.parameters.push(erc721TokenId);
-    let category = new ethereum.EventParam("BigInt", ethereum.Value.fromUnsignedBigInt(categoryId))
+    let category = new ethereum.EventParam(
+        "BigInt",
+        ethereum.Value.fromUnsignedBigInt(categoryId)
+    );
     event.parameters.push(category);
-    let priceInWei = new ethereum.EventParam("BigInt", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE))
+    let priceInWei = new ethereum.EventParam(
+        "BigInt",
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    );
     event.parameters.push(priceInWei);
-    let time = new ethereum.EventParam("BigInt", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE))
+    let time = new ethereum.EventParam(
+        "BigInt",
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    );
     event.parameters.push(time);
-    let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
-    event.address = contractAddress
+    let contractAddress = Address.fromString(
+        "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
+    );
+    event.address = contractAddress;
     return event;
 }
 
@@ -139,21 +238,34 @@ export function getERC1155ListingUpdateEvent(): UpdateERC1155Listing {
         newMockevent.logType,
         newMockevent.block,
         newMockevent.transaction,
-        newMockevent.parameters
+        newMockevent.parameters,
+        null
     );
     event.parameters = new Array<ethereum.EventParam>();
     event.block.number = BIGINT_ONE;
 
-    let listingId = new ethereum.EventParam("listingId", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
+    let listingId = new ethereum.EventParam(
+        "listingId",
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    );
     event.parameters.push(listingId);
 
-    let quantity = new ethereum.EventParam("quantity", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
+    let quantity = new ethereum.EventParam(
+        "quantity",
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    );
     event.parameters.push(quantity);
 
-    let price = new ethereum.EventParam("priceInWei", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
+    let price = new ethereum.EventParam(
+        "priceInWei",
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    );
     event.parameters.push(price);
 
-    let time = new ethereum.EventParam("time", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
+    let time = new ethereum.EventParam(
+        "time",
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    );
     event.parameters.push(time);
 
     return event;
@@ -168,36 +280,62 @@ export function getERC721ListingAddEvent(categoryId: BigInt): ERC721ListingAdd {
         newMockevent.logType,
         newMockevent.block,
         newMockevent.transaction,
-        newMockevent.parameters
+        newMockevent.parameters,
+        null
     );
     event.parameters = new Array<ethereum.EventParam>();
     event.block.number = BIGINT_ONE;
 
-    let listingId = new ethereum.EventParam("BigInt", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
+    let listingId = new ethereum.EventParam(
+        "BigInt",
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    );
     event.parameters.push(listingId);
 
-    let seller = new ethereum.EventParam("address", ethereum.Value.fromAddress(Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d")));
+    let seller = new ethereum.EventParam(
+        "address",
+        ethereum.Value.fromAddress(
+            Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d")
+        )
+    );
     event.parameters.push(seller);
 
-    let erc721TokenAddress = new ethereum.EventParam("address", ethereum.Value.fromAddress(Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d")));
+    let erc721TokenAddress = new ethereum.EventParam(
+        "address",
+        ethereum.Value.fromAddress(
+            Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d")
+        )
+    );
     event.parameters.push(erc721TokenAddress);
 
-    let erc721TokenId = new ethereum.EventParam("BigInt", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
+    let erc721TokenId = new ethereum.EventParam(
+        "BigInt",
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    );
     event.parameters.push(erc721TokenId);
 
-    let category = new ethereum.EventParam("BigInt", ethereum.Value.fromUnsignedBigInt(categoryId));
+    let category = new ethereum.EventParam(
+        "BigInt",
+        ethereum.Value.fromUnsignedBigInt(categoryId)
+    );
     event.parameters.push(category);
-    
-    let time = new ethereum.EventParam("BigInt", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
+
+    let time = new ethereum.EventParam(
+        "BigInt",
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    );
     event.parameters.push(time);
-    
-    let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
-    event.address = contractAddress
+
+    let contractAddress = Address.fromString(
+        "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
+    );
+    event.address = contractAddress;
     return event;
 }
 
-
-export function getERC721ListingCancelledEvent(categoryId: BigInt): ERC721ListingCancelled {
+export function getERC721ListingCancelledEvent(
+    categoryId: BigInt
+): ERC721ListingCancelled {
     let newMockevent = newMockEvent();
     let event = new ERC721ListingCancelled(
         newMockevent.address,
@@ -206,29 +344,41 @@ export function getERC721ListingCancelledEvent(categoryId: BigInt): ERC721Listin
         newMockevent.logType,
         newMockevent.block,
         newMockevent.transaction,
-        newMockevent.parameters
+        newMockevent.parameters,
+        null
     );
     event.parameters = new Array<ethereum.EventParam>();
     event.block.number = BIGINT_ONE;
 
-    let listingId = new ethereum.EventParam("BigInt",  ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
+    let listingId = new ethereum.EventParam(
+        "BigInt",
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    );
     event.parameters.push(listingId);
 
-    let category = new ethereum.EventParam("BigInt",  ethereum.Value.fromUnsignedBigInt(categoryId));
+    let category = new ethereum.EventParam(
+        "BigInt",
+        ethereum.Value.fromUnsignedBigInt(categoryId)
+    );
     event.parameters.push(category);
-    
-    let time = new ethereum.EventParam("BigInt", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
+
+    let time = new ethereum.EventParam(
+        "BigInt",
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    );
     event.parameters.push(time);
-    
-    let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
-    event.address = contractAddress
+
+    let contractAddress = Address.fromString(
+        "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
+    );
+    event.address = contractAddress;
     return event;
 }
 
 export function findWearableSetsReturn(): ethereum.Value[] {
     //getERC721Listing(uint256):((uint256,address,address,uint256,uint256,uint256,uint256,uint256,bool))
-    return [(
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+    return [
+        (ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromAddress(contractAddress),
         ethereum.Value.fromAddress(contractAddress),
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
@@ -236,8 +386,8 @@ export function findWearableSetsReturn(): ethereum.Value[] {
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromBoolean(true)
-    )]
+        ethereum.Value.fromBoolean(true)),
+    ];
 }
 
 export function getSetNameEvent(): SetAavegotchiName {
@@ -249,17 +399,35 @@ export function getSetNameEvent(): SetAavegotchiName {
         newMockevent.logType,
         newMockevent.block,
         newMockevent.transaction,
-        newMockevent.parameters
+        newMockevent.parameters,
+        null
     );
     event.parameters = new Array<ethereum.EventParam>();
     event.block.number = BIGINT_ONE;
 
-    event.parameters.push(new ethereum.EventParam("_tokenId",  ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)));
-    event.parameters.push(new ethereum.EventParam("_oldName",  ethereum.Value.fromString("oldName")));
-    event.parameters.push(new ethereum.EventParam("_newName",  ethereum.Value.fromString("newName")));
+    event.parameters.push(
+        new ethereum.EventParam(
+            "_tokenId",
+            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "_oldName",
+            ethereum.Value.fromString("oldName")
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "_newName",
+            ethereum.Value.fromString("newName")
+        )
+    );
 
-    let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
-    event.address = contractAddress
+    let contractAddress = Address.fromString(
+        "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
+    );
+    event.address = contractAddress;
     return event;
 }
 
@@ -272,14 +440,22 @@ export function getClaimAavegotchiEvent(): ClaimAavegotchi {
         newMockevent.logType,
         newMockevent.block,
         newMockevent.transaction,
-        newMockevent.parameters
+        newMockevent.parameters,
+        null
     );
     event.parameters = new Array<ethereum.EventParam>();
     event.block.number = BIGINT_ONE;
 
-    event.parameters.push(new ethereum.EventParam("BigInt",  ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)));
+    event.parameters.push(
+        new ethereum.EventParam(
+            "BigInt",
+            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+        )
+    );
 
-    let contractAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
-    event.address = contractAddress
+    let contractAddress = Address.fromString(
+        "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
+    );
+    event.address = contractAddress;
     return event;
 }

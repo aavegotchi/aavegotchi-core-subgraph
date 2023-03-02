@@ -1,9 +1,19 @@
-import { test, assert, clearStore, newMockEvent } from "matchstick-as/assembly/index";
+import {
+    test,
+    assert,
+    clearStore,
+    newMockEvent,
+} from "matchstick-as/assembly/index";
 import { ethereum } from "@graphprotocol/graph-ts";
-import { handleMintPortals, handleUpdateItemPrice } from "../src/mappings/diamond";
-import { MintPortals, UpdateItemPrice } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
+import {
+    handleMintPortals,
+    handleUpdateItemPrice,
+} from "../src/mappings/diamond";
+import {
+    MintPortals,
+    UpdateItemPrice,
+} from "../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { BIGINT_ONE } from "../src/utils/constants";
-
 
 test("handleUpdateItemPrice - happy case", () => {
     // prepare event
@@ -15,16 +25,22 @@ test("handleUpdateItemPrice - happy case", () => {
         newMockevent.logType,
         newMockevent.block,
         newMockevent.transaction,
-        newMockevent.parameters
+        newMockevent.parameters,
+        null
     );
     event.parameters = new Array();
 
-    let _itemId = new ethereum.EventParam("_itemId", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
+    let _itemId = new ethereum.EventParam(
+        "_itemId",
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    );
     event.parameters.push(_itemId);
-    
-    let _priceInWei = new ethereum.EventParam("_priceInWei", ethereum.Value.fromUnsignedBigInt(BIGINT_ONE));
-    event.parameters.push(_priceInWei);
 
+    let _priceInWei = new ethereum.EventParam(
+        "_priceInWei",
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+    );
+    event.parameters.push(_priceInWei);
 
     // execute handler with event
     handleUpdateItemPrice(event);
@@ -32,4 +48,4 @@ test("handleUpdateItemPrice - happy case", () => {
     // assert and clear store
     assert.fieldEquals("ItemType", "1", "ghstPrice", "1");
     clearStore();
-})
+});

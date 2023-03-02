@@ -51,6 +51,7 @@ import {
     GotchiLendingAdded,
     WhitelistAccessRightSet,
     WhitelistOwnershipTransferred,
+    UpdateItemType,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
     getOrCreateUser,
@@ -1401,4 +1402,25 @@ export function handleWhitelistAccessRightSet(
     }
 
     whitelist.save();
+}
+
+export function handleUpdateItemType(event: UpdateItemType): void {
+    let item = getOrCreateItemType(event.params._itemId.toString())!;
+    item.name = event.params._itemType.name;
+    item.svgId = event.params._itemType.svgId;
+    item.desc = event.params._itemType.description;
+    item.author = event.params._itemType.author;
+    item.traitModifiers = event.params._itemType.traitModifiers;
+    item.slotPositions = event.params._itemType.slotPositions;
+    item.ghstPrice = event.params._itemType.ghstPrice;
+    item.maxQuantity = event.params._itemType.maxQuantity;
+    item.totalQuantity = event.params._itemType.totalQuantity;
+    item.rarityScoreModifier = event.params._itemType.rarityScoreModifier;
+    item.canPurchaseWithGhst = event.params._itemType.canPurchaseWithGhst;
+    item.minLevel = event.params._itemType.minLevel;
+    item.canBeTransferred = event.params._itemType.canBeTransferred;
+    item.category = event.params._itemType.category;
+    item.kinshipBonus = event.params._itemType.kinshipBonus;
+    item.experienceBonus = event.params._itemType.experienceBonus;
+    item.save();
 }

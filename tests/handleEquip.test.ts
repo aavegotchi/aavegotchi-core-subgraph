@@ -1,11 +1,16 @@
-import { test, assert, clearStore, newMockEvent, createMockedFunction } from "matchstick-as/assembly/index";
+import {
+    test,
+    assert,
+    clearStore,
+    newMockEvent,
+    createMockedFunction,
+} from "matchstick-as/assembly/index";
 import { BigInt, ethereum } from "@graphprotocol/graph-ts";
 import { handleEquipWearables } from "../src/mappings/diamond";
 import { EquipWearables } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { BIGINT_ONE, BIGINT_ZERO } from "../src/utils/constants";
 import { getAavegotchiMock } from "./mocks";
 import { Aavegotchi } from "../generated/schema";
-
 
 test("should update withSetsRarityScore", () => {
     let gotchi = new Aavegotchi("1");
@@ -21,16 +26,31 @@ test("should update withSetsRarityScore", () => {
         newMockevent.logType,
         newMockevent.block,
         newMockevent.transaction,
-        newMockevent.parameters
+        newMockevent.parameters,
+        null
     );
     event.parameters = new Array();
-    event.parameters.push(new ethereum.EventParam("_tokenId",  ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)));
-    event.parameters.push(new ethereum.EventParam("_oldWearables", ethereum.Value.fromUnsignedBigIntArray([])));    
-    event.parameters.push(new ethereum.EventParam("_newWearables", ethereum.Value.fromUnsignedBigIntArray([])));    
+    event.parameters.push(
+        new ethereum.EventParam(
+            "_tokenId",
+            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "_oldWearables",
+            ethereum.Value.fromUnsignedBigIntArray([])
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "_newWearables",
+            ethereum.Value.fromUnsignedBigIntArray([])
+        )
+    );
 
     event.transaction.to = newMockevent.address;
     event.transaction.from = newMockevent.address;
-
 
     // calls getAavegotchi
     createMockedFunction(
@@ -38,8 +58,8 @@ test("should update withSetsRarityScore", () => {
         "getAavegotchi",
         "getAavegotchi(uint256):((uint256,string,address,uint256,uint256,int16[6],int16[6],uint16[16],address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,bool,(uint256,uint256,(string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))[]))"
     )
-    .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
-    .returns(getAavegotchiMock(event))
+        .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
+        .returns(getAavegotchiMock(event));
 
     // calls findWearableSets
     createMockedFunction(
@@ -47,10 +67,8 @@ test("should update withSetsRarityScore", () => {
         "findWearableSets",
         "findWearableSets(uint256[]):(uint256[])"
     )
-    .withArgs([ethereum.Value.fromUnsignedBigIntArray([
-        BIGINT_ONE
-    ])])
-    .returns([ethereum.Value.fromUnsignedBigIntArray([BIGINT_ZERO])])
+        .withArgs([ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE])])
+        .returns([ethereum.Value.fromUnsignedBigIntArray([BIGINT_ZERO])]);
 
     // calls getWearableSets
     createMockedFunction(
@@ -58,18 +76,23 @@ test("should update withSetsRarityScore", () => {
         "getWearableSets",
         "getWearableSets():((string,uint8[],uint16[],int8[5])[])"
     )
-    // .withArgs([])
-    .returns([
-        ethereum.Value.fromTupleArray([
-            changetype<ethereum.Tuple>([
-                ethereum.Value.fromString("yes"),
-                ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE]),
-                ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE]),
-                ethereum.Value.fromUnsignedBigIntArray([BigInt.fromI32(10),BIGINT_ONE,BIGINT_ONE,BIGINT_ONE,BIGINT_ONE])
-            ])
-        ])
-    ])
-
+        // .withArgs([])
+        .returns([
+            ethereum.Value.fromTupleArray([
+                changetype<ethereum.Tuple>([
+                    ethereum.Value.fromString("yes"),
+                    ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE]),
+                    ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE]),
+                    ethereum.Value.fromUnsignedBigIntArray([
+                        BigInt.fromI32(10),
+                        BIGINT_ONE,
+                        BIGINT_ONE,
+                        BIGINT_ONE,
+                        BIGINT_ONE,
+                    ]),
+                ]),
+            ]),
+        ]);
 
     // execute handler with event
     handleEquipWearables(event);
@@ -77,4 +100,4 @@ test("should update withSetsRarityScore", () => {
     // assert and clear store
     assert.fieldEquals("Aavegotchi", "1", "withSetsRarityScore", "7");
     clearStore();
-})
+});

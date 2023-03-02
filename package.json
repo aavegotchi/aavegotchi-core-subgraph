@@ -16,15 +16,15 @@
   },
   "dependencies": {
     "@2fd/graphdoc": "^2.4.0",
-    "@graphprotocol/graph-ts": "0.26.0"
+    "@graphprotocol/graph-cli": "0.30.2",
+    "@graphprotocol/graph-ts": "0.27.0"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "0.26.0",
     "apollo-fetch": "^0.7.0",
     "dotenv": "^15.0.0",
     "ethers": "^5.5.4",
     "jest": "^27.4.7",
     "json-diff": "^0.7.1",
-    "matchstick-as": "^0.2.3"
+    "matchstick-as": "^0.5.0"
   }
 }
