@@ -1408,7 +1408,6 @@ export function handleUpdateItemType(event: UpdateItemType): void {
     let item = getOrCreateItemType(event.params._itemId.toString())!;
     item.name = event.params._itemType.name;
     item.svgId = event.params._itemType.svgId;
-    item.name = event.params._itemType.name;
     item.desc = event.params._itemType.description;
     item.author = event.params._itemType.author;
     item.traitModifiers = event.params._itemType.traitModifiers;
