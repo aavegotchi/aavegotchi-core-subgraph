@@ -841,6 +841,7 @@ export function updateGotchiLending(
     }
 
     lending.period = listingResult.period;
+    lending.rentDuration = listingResult.period;
 
     lending.splitOwner = BigInt.fromI32(listingResult.revenueSplit[0]);
     lending.splitBorrower = BigInt.fromI32(listingResult.revenueSplit[1]);
