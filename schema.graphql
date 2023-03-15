@@ -87,6 +87,9 @@ type Aavegotchi @entity {
     "Block in which the Aavegotchi was claimed. Should coincide with createdAt"
     claimedAt: BigInt
 
+    "Timestamp in which the Aavegotchi was claimed. Should coincide with createdAt"
+    claimedAtTimestamp: BigInt
+
     timesTraded: BigInt!
 
     historicalPrices: [BigInt!]

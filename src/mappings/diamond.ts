@@ -214,6 +214,7 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
 
     gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
     gotchi.claimedAt = event.block.number;
+    gotchi.claimedAtTimestamp = event.block.timestamp;
     gotchi.gotchiId = event.params._tokenId;
 
     portal.gotchi = gotchi.id;
