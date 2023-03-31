@@ -133,6 +133,12 @@ dataSources:
                 handler: handleWhitelistAccessRightSet
               - event: UpdateItemType(indexed uint256,(string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))
                 handler: handleUpdateItemType
+              - event: ERC721ListingWhitelistSet(indexed uint256,uint32)
+                handler: handleERC721ListingWhitelistSet
+              - event: ERC721ListingPriceUpdate(indexed uint256,uint256,uint256)
+                handler: handleERC721ListingPriceUpdate
+              - event: ERC1155ListingWhitelistSet(indexed uint256,uint32)
+                handler: handleERC1155ListingWhitelistSet
               # - event: DiamondCut((address,uint8,bytes4[])[],address,bytes)
               #   handler: handleDiamondCut
     # - AavegotchiInteract(indexed uint256,uint256)
