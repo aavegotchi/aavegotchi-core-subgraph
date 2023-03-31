@@ -200,6 +200,7 @@ type ERC721Listing @entity {
     eycTrait: BigInt
 
     whitelist: Whitelist
+    priceUpdatedAt: BigInt
 }
 
 type ERC1155Listing @entity {
@@ -223,6 +224,9 @@ type ERC1155Listing @entity {
     brnTraitModifier: BigInt
     eysTraitModifier: BigInt
     eycTraitModifier: BigInt
+
+    whitelist: Whitelist
+    priceUpdatedAt: BigInt
 }
 
 type ERC1155Purchase @entity {
@@ -270,8 +274,6 @@ type Statistic @entity {
     totalWearablesVolume: BigInt!
     totalConsumablesVolume: BigInt!
     totalTicketsVolume: BigInt!
-
-    whitelist: Whitelist
 }
 
 type ItemType @entity {
