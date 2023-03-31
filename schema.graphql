@@ -198,6 +198,8 @@ type ERC721Listing @entity {
     brnTrait: BigInt
     eysTrait: BigInt
     eycTrait: BigInt
+
+    whitelist: Whitelist
 }
 
 type ERC1155Listing @entity {
@@ -268,6 +270,8 @@ type Statistic @entity {
     totalWearablesVolume: BigInt!
     totalConsumablesVolume: BigInt!
     totalTicketsVolume: BigInt!
+
+    whitelist: Whitelist
 }
 
 type ItemType @entity {
