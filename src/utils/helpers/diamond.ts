@@ -729,10 +729,7 @@ export function calculateBaseRarityScore(numericTraits: Array<i32>): i32 {
 
 // whitelist
 
-export function createOrUpdateWhitelist(
-    id: BigInt,
-    event: ethereum.Event
-): Whitelist | null {
+export function createOrUpdateWhitelist(id: BigInt): Whitelist | null {
     let contract = AavegotchiDiamond.bind(Address.fromString(CORE_DIAMOND));
     let response = contract.try_getWhitelist(id);
 
@@ -829,10 +826,7 @@ export function updateGotchiLending(
     lending.originalOwner = listingResult.originalOwner;
 
     if (listingResult.whitelistId != BIGINT_ZERO) {
-        let whitelist = createOrUpdateWhitelist(
-            listingResult.whitelistId,
-            event
-        );
+        let whitelist = createOrUpdateWhitelist(listingResult.whitelistId);
         if (whitelist !== null) {
             lending.whitelist = whitelist.id;
             lending.whitelistMembers = whitelist.members;
@@ -870,14 +864,11 @@ export function getOrCreateClaimedToken(
     return ctoken;
 }
 
-export function getOrCreateWhitelist(
-    whitelistId: BigInt,
-    event: ethereum.Event
-): Whitelist | null {
+export function getOrCreateWhitelist(whitelistId: BigInt): Whitelist | null {
     let id = whitelistId.toString();
     let whitelist = Whitelist.load(id);
     if (!whitelist) {
-        whitelist = createOrUpdateWhitelist(whitelistId, event);
+        whitelist = createOrUpdateWhitelist(whitelistId);
     }
 
     return whitelist;

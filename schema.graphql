@@ -198,6 +198,9 @@ type ERC721Listing @entity {
     brnTrait: BigInt
     eysTrait: BigInt
     eycTrait: BigInt
+
+    whitelist: Whitelist
+    priceUpdatedAt: BigInt
 }
 
 type ERC1155Listing @entity {
@@ -221,6 +224,9 @@ type ERC1155Listing @entity {
     brnTraitModifier: BigInt
     eysTraitModifier: BigInt
     eycTraitModifier: BigInt
+
+    whitelist: Whitelist
+    priceUpdatedAt: BigInt
 }
 
 type ERC1155Purchase @entity {
