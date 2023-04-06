@@ -1021,18 +1021,12 @@ export function handleWhitelistOwnershipTransferred(
 }
 
 export function handleGotchiLendingAdd(event: GotchiLendingAdd): void {
-    if (event.block.number.gt(BLOCK_DISABLE_OLD_LENDING_EVENTS)) {
-        return;
-    }
     let lending = getOrCreateGotchiLending(event.params.listingId);
     lending = updateGotchiLending(lending, event);
     lending.save();
 }
 
 export function handleGotchiLendingClaim(event: GotchiLendingClaim): void {
-    if (event.block.number.gt(BLOCK_DISABLE_OLD_LENDING_EVENTS)) {
-        return;
-    }
     let lending = getOrCreateGotchiLending(event.params.listingId);
     lending = updateGotchiLending(lending, event);
     for (let i = 0; i < event.params.tokenAddresses.length; i++) {
@@ -1047,9 +1041,6 @@ export function handleGotchiLendingClaim(event: GotchiLendingClaim): void {
 }
 
 export function handleGotchiLendingEnd(event: GotchiLendingEnd): void {
-    if (event.block.number.gt(BLOCK_DISABLE_OLD_LENDING_EVENTS)) {
-        return;
-    }
     let lending = getOrCreateGotchiLending(event.params.listingId);
     lending = updateGotchiLending(lending, event);
     lending.timeEnded = event.block.timestamp;
@@ -1099,9 +1090,6 @@ export function handleGotchiLendingEnd(event: GotchiLendingEnd): void {
 }
 
 export function handleGotchiLendingExecute(event: GotchiLendingExecute): void {
-    if (event.block.number.gt(BLOCK_DISABLE_OLD_LENDING_EVENTS)) {
-        return;
-    }
     let lending = getOrCreateGotchiLending(event.params.listingId);
     lending = updateGotchiLending(lending, event);
 
@@ -1132,9 +1120,6 @@ export function handleGotchiLendingExecute(event: GotchiLendingExecute): void {
 }
 
 export function handleGotchiLendingCancel(event: GotchiLendingCancel): void {
-    if (event.block.number.gt(BLOCK_DISABLE_OLD_LENDING_EVENTS)) {
-        return;
-    }
     let lending = getOrCreateGotchiLending(event.params.listingId);
     lending = updateGotchiLending(lending, event);
     lending.save();
