@@ -231,18 +231,18 @@ type ERC1155Listing @entity {
 
 type ERC1155Purchase @entity {
     id: ID!
-    listingID: BigInt!
-    category: BigInt! # 0 = Wearable, #1 = Badge, #2 = Consumable, #3 = Ticket
-    erc1155TokenAddress: Bytes!
-    erc1155TypeId: BigInt!
-    seller: Bytes!
-    buyer: Bytes!
+    listingID: BigInt
+    category: BigInt # 0 = Wearable, #1 = Badge, #2 = Consumable, #3 = Ticket
+    erc1155TokenAddress: Bytes
+    erc1155TypeId: BigInt
+    seller: Bytes
+    buyer: Bytes
     recipient: Bytes
-    priceInWei: BigInt!
-    quantity: BigInt!
+    priceInWei: BigInt
+    quantity: BigInt
     #cancelled: Boolean!
     # timeCreated: BigInt! # Time at which listed was created
-    timeLastPurchased: BigInt! # Time when the listing was purchased
+    timeLastPurchased: BigInt # Time when the listing was purchased
     #sold: Boolean!
     rarityLevel: BigInt
 }

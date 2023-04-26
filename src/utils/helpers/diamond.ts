@@ -359,7 +359,7 @@ export function updateERC1155PurchaseInfo(
     listing.recipient = event.params.buyer;
 
     //tickets
-    if (listing.category.equals(BigInt.fromI32(3))) {
+    if (listing.category!.equals(BigInt.fromI32(3))) {
         let rarityLevel = listingInfo.erc1155TypeId;
         listing.rarityLevel = rarityLevel;
 
