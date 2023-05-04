@@ -1007,17 +1007,17 @@ export function handleMintParcel(event: MintParcel): void {
 
 // Whitelist
 export function handleWhitelistCreated(event: WhitelistCreated): void {
-    createOrUpdateWhitelist(event.params.whitelistId);
+    createOrUpdateWhitelist(event.params.whitelistId, event);
 }
 
 export function handleWhitelistUpdated(event: WhitelistUpdated): void {
-    createOrUpdateWhitelist(event.params.whitelistId);
+    createOrUpdateWhitelist(event.params.whitelistId, event);
 }
 
 export function handleWhitelistOwnershipTransferred(
     event: WhitelistOwnershipTransferred
 ): void {
-    createOrUpdateWhitelist(event.params.whitelistId);
+    createOrUpdateWhitelist(event.params.whitelistId, event);
 }
 
 export function handleGotchiLendingAdd(event: GotchiLendingAdd): void {
@@ -1174,7 +1174,7 @@ export function handleGotchiLendingAdded(event: GotchiLendingAdded): void {
     lending.cancelled = false;
     lending.completed = false;
     if (event.params.whitelistId != BIGINT_ZERO) {
-        let whitelist = getOrCreateWhitelist(event.params.whitelistId);
+        let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
         if (whitelist) {
             lending.whitelist = whitelist.id;
             lending.whitelistMembers = whitelist.members;
@@ -1214,7 +1214,7 @@ export function handleGotchiLendingClaimed(event: GotchiLendingClaimed): void {
     lending.cancelled = false;
     lending.completed = false;
     if (event.params.whitelistId != BIGINT_ZERO) {
-        let whitelist = getOrCreateWhitelist(event.params.whitelistId);
+        let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
         if (whitelist) {
             lending.whitelist = whitelist.id;
             lending.whitelistMembers = whitelist.members;
@@ -1241,7 +1241,7 @@ export function handleGotchiLendingCanceled(
     lending.cancelled = true;
     lending.completed = false;
     if (event.params.whitelistId != BIGINT_ZERO) {
-        let whitelist = getOrCreateWhitelist(event.params.whitelistId);
+        let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
         if (whitelist) {
             lending.whitelist = whitelist.id;
             lending.whitelistMembers = whitelist.members;
@@ -1270,7 +1270,7 @@ export function handleGotchiLendingExecuted(
     lending.completed = false;
     lending.borrower = event.params.borrower;
     if (event.params.whitelistId != BIGINT_ZERO) {
-        let whitelist = getOrCreateWhitelist(event.params.whitelistId);
+        let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
         if (whitelist) {
             lending.whitelist = whitelist.id;
             lending.whitelistMembers = whitelist.members;
@@ -1322,7 +1322,7 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
     lending.completed = true;
     lending.timeEnded = event.block.timestamp;
     if (event.params.whitelistId != BIGINT_ZERO) {
-        let whitelist = getOrCreateWhitelist(event.params.whitelistId);
+        let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
         if (whitelist) {
             lending.whitelist = whitelist.id;
             lending.whitelistMembers = whitelist.members;
@@ -1381,7 +1381,7 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
 export function handleWhitelistAccessRightSet(
     event: WhitelistAccessRightSet
 ): void {
-    let whitelist = getOrCreateWhitelist(event.params.whitelistId);
+    let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
     if (whitelist == null) {
         return;
     }
@@ -1418,7 +1418,7 @@ export function handleERC721ListingWhitelistSet(
     event: ERC721ListingWhitelistSet
 ): void {
     let listing = getOrCreateERC721Listing(event.params.listingId.toString());
-    let whitelist = getOrCreateWhitelist(event.params.whitelistId);
+    let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
     if (!listing || !whitelist) return;
     listing.whitelist = whitelist.id;
     listing.save();
@@ -1438,7 +1438,7 @@ export function handleERC1155ListingWhitelistSet(
     event: ERC1155ListingWhitelistSet
 ): void {
     let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
-    let whitelist = getOrCreateWhitelist(event.params.whitelistId);
+    let whitelist = getOrCreateWhitelist(event.params.whitelistId, event);
     if (!listing || !whitelist) return;
     listing.whitelist = whitelist.id;
     listing.save();
