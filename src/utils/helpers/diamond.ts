@@ -1,9 +1,6 @@
 import {
     AavegotchiDiamond,
     ERC1155ExecutedListing,
-    ERC721ExecutedListing,
-    ERC721ListingAdd,
-    ERC721ListingCancelled,
 } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
 
 import { RealmDiamond } from "../../../generated/RealmDiamond/RealmDiamond";
@@ -24,7 +21,7 @@ import {
     Whitelist,
     ClaimedToken,
 } from "../../../generated/schema";
-import { BIGINT_ZERO, CORE_DIAMOND, STATUS_AAVEGOTCHI } from "../constants";
+import { BIGINT_ZERO, STATUS_AAVEGOTCHI } from "../constants";
 import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 
 export function getOrCreatePortal(
@@ -729,8 +726,11 @@ export function calculateBaseRarityScore(numericTraits: Array<i32>): i32 {
 
 // whitelist
 
-export function createOrUpdateWhitelist(id: BigInt): Whitelist | null {
-    let contract = AavegotchiDiamond.bind(Address.fromString(CORE_DIAMOND));
+export function createOrUpdateWhitelist(
+    id: BigInt,
+    event: ethereum.Event
+): Whitelist | null {
+    let contract = AavegotchiDiamond.bind(event.address);
     let response = contract.try_getWhitelist(id);
 
     if (response.reverted) {
@@ -826,7 +826,10 @@ export function updateGotchiLending(
     lending.originalOwner = listingResult.originalOwner;
 
     if (listingResult.whitelistId != BIGINT_ZERO) {
-        let whitelist = createOrUpdateWhitelist(listingResult.whitelistId);
+        let whitelist = createOrUpdateWhitelist(
+            listingResult.whitelistId,
+            event
+        );
         if (whitelist !== null) {
             lending.whitelist = whitelist.id;
             lending.whitelistMembers = whitelist.members;
@@ -864,11 +867,14 @@ export function getOrCreateClaimedToken(
     return ctoken;
 }
 
-export function getOrCreateWhitelist(whitelistId: BigInt): Whitelist | null {
+export function getOrCreateWhitelist(
+    whitelistId: BigInt,
+    event: ethereum.Event
+): Whitelist | null {
     let id = whitelistId.toString();
     let whitelist = Whitelist.load(id);
     if (!whitelist) {
-        whitelist = createOrUpdateWhitelist(whitelistId);
+        whitelist = createOrUpdateWhitelist(whitelistId, event);
     }
 
     return whitelist;
