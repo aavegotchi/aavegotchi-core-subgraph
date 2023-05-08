@@ -499,6 +499,7 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
 
         let parcel = Parcel.load(event.params.erc721TokenId.toString())!;
         parcel.activeListing = event.params.listingId;
+        parcel.save();
         listing.fudBoost = parcel.fudBoost;
         listing.fomoBoost = parcel.fomoBoost;
         listing.alphaBoost = parcel.alphaBoost;
