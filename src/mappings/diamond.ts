@@ -1548,6 +1548,7 @@ export function handleGotchiLendingExecuted2(
     let gotchisBorrowed = borrower.gotchisBorrowed;
     gotchisBorrowed.push(lending.gotchiTokenId);
     borrower.gotchisBorrowed = gotchisBorrowed;
+    borrower.save();
 
     // update stats
     let stats = getStatisticEntity();
