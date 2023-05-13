@@ -149,6 +149,8 @@ dataSources:
                 handler: handleGotchiLendingCancelled2
               - event: GotchiLendingClaimed((uint32,address,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256[],uint256,uint256))
                 handler: handleGotchiLendingClaimed2
+              - event: GotchiLendingEnded((uint32,address,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256,uint256))
+                handler: handleGotchiLendingEnded2
               # - event: DiamondCut((address,uint8,bytes4[])[],address,bytes)
               #   handler: handleDiamondCut
     # - AavegotchiInteract(indexed uint256,uint256)
