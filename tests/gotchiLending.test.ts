@@ -1,19 +1,12 @@
-import { Address, Bytes, ethereum, store } from "@graphprotocol/graph-ts";
+import { Address, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import {
     test,
     assert,
-    clearStore,
     createMockedFunction,
     newMockEvent,
 } from "matchstick-as/assembly/index";
+import { Aavegotchi, Whitelist } from "../generated/schema";
 import {
-    Aavegotchi,
-    ERC721Listing,
-    Portal,
-    Whitelist,
-} from "../generated/schema";
-import {
-    handleClaimAavegotchi,
     handleGotchiLendingAdded2,
     handleGotchiLendingCancelled2,
     handleGotchiLendingClaimed2,
@@ -21,7 +14,7 @@ import {
     handleGotchiLendingExecuted2,
 } from "../src/mappings/diamond";
 import { BIGINT_ONE } from "../src/utils/constants";
-import { getAavegotchiMock, getClaimAavegotchiEvent } from "./mocks";
+import { getAavegotchiMock } from "./mocks";
 import {
     GotchiLendingAdded1,
     GotchiLendingCancelled,
@@ -108,7 +101,10 @@ test("add gotchi lending", () => {
     // init
     let whitelist = new Whitelist("1");
     whitelist.name = "Test Whitelist";
-    whitelist.members = new Array<Bytes>();
+    let members = new Array<Bytes>();
+    members.push(address);
+
+    whitelist.members = members;
     whitelist.owner = address.toHexString();
     whitelist.ownerAddress = address;
     whitelist.save();
@@ -124,12 +120,41 @@ test("add gotchi lending", () => {
 
     handleGotchiLendingAdded2(event);
 
+    // check gotchi lending entity
     assert.fieldEquals("GotchiLending", "1", "cancelled", "false");
     assert.fieldEquals("GotchiLending", "1", "completed", "false");
     assert.fieldEquals("GotchiLending", "1", "gotchi", "1");
     assert.fieldEquals("GotchiLending", "1", "gotchiTokenId", "1");
     assert.fieldEquals("GotchiLending", "1", "gotchiBRS", "1");
     assert.fieldEquals("GotchiLending", "1", "gotchiKinship", "1");
+    assert.fieldEquals("GotchiLending", "1", "upfrontCost", "1");
+    assert.fieldEquals("GotchiLending", "1", "rentDuration", "1");
+    assert.fieldEquals("GotchiLending", "1", "lender", address.toHexString());
+    assert.fieldEquals(
+        "GotchiLending",
+        "1",
+        "originalOwner",
+        address.toHexString()
+    );
+    assert.fieldEquals("GotchiLending", "1", "period", "1");
+    assert.fieldEquals("GotchiLending", "1", "splitOwner", "1");
+    assert.fieldEquals("GotchiLending", "1", "splitBorrower", "2");
+    assert.fieldEquals("GotchiLending", "1", "splitOther", "3");
+    assert.fieldEquals(
+        "GotchiLending",
+        "1",
+        "thirdPartyAddress",
+        address.toHexString()
+    );
+    assert.fieldEquals("GotchiLending", "1", "timeCreated", "1");
+    assert.fieldEquals("GotchiLending", "1", "whitelist", "1");
+    assert.fieldEquals("GotchiLending", "1", "whitelistId", "1");
+    assert.fieldEquals(
+        "GotchiLending",
+        "1",
+        "whitelistMembers",
+        "[0x1ad3d72e54fb0eb46e87f82f77b284fc8a66b16c]"
+    );
 });
 
 test("execute gotchi lending", () => {
