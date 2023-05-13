@@ -9857,5 +9857,320 @@
         ],
         "name": "ERC1155ListingPriceUpdate",
         "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint32",
+                        "name": "listingId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "lender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "tokenId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "initialCost",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "period",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint8[3]",
+                        "name": "revenueSplit",
+                        "type": "uint8[3]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "originalOwner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "thirdParty",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "whitelistId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "revenueTokens",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "timeCreated",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "channellingStatus",
+                        "type": "uint256"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct LibEventStructContainers.GotchiLendingAdd",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "name": "GotchiLendingAdded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint32",
+                        "name": "listingId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "lender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "borrower",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "tokenId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "initialCost",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "period",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint8[3]",
+                        "name": "revenueSplit",
+                        "type": "uint8[3]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "originalOwner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "thirdParty",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "whitelistId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "revenueTokens",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "timeAgreed",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "channellingStatus",
+                        "type": "uint256"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct LibEventStructContainers.GotchiLendingExecution",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "name": "GotchiLendingExecuted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint32",
+                        "name": "listingId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "lender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "tokenId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "initialCost",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "period",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint8[3]",
+                        "name": "revenueSplit",
+                        "type": "uint8[3]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "originalOwner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "thirdParty",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "whitelistId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "revenueTokens",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "timeCancelled",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "channellingStatus",
+                        "type": "uint256"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct LibEventStructContainers.GotchiLendingCancellation",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "name": "GotchiLendingCancelled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint32",
+                        "name": "listingId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "lender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "borrower",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "tokenId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "initialCost",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "period",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint8[3]",
+                        "name": "revenueSplit",
+                        "type": "uint8[3]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "originalOwner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "thirdParty",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "whitelistId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "revenueTokens",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "amounts",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "timeClaimed",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "channellingStatus",
+                        "type": "uint256"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct LibEventStructContainers.GotchiLendingClaim",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "name": "GotchiLendingClaimed",
+        "type": "event"
     }
 ]
