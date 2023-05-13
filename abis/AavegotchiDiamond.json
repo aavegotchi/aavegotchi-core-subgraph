@@ -10172,5 +10172,85 @@
         ],
         "name": "GotchiLendingClaimed",
         "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint32",
+                        "name": "listingId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "lender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "borrower",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "tokenId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "initialCost",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "period",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint8[3]",
+                        "name": "revenueSplit",
+                        "type": "uint8[3]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "originalOwner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "thirdParty",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "whitelistId",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "revenueTokens",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "timeEnded",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "channellingStatus",
+                        "type": "uint256"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct LibEventStructContainers.GotchiLendingEnd",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "name": "GotchiLendingEnded",
+        "type": "event"
     }
 ]

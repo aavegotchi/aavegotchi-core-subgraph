@@ -60,6 +60,7 @@ import {
     ERC1155ListingWhitelistSet,
     ERC721ListingPriceUpdate,
     ERC1155ListingPriceUpdate,
+    GotchiLendingEnded1,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
     getOrCreateUser,
@@ -1627,3 +1628,78 @@ export function handleGotchiLendingClaimed2(
     }
     lending.save();
 }
+
+export function handleGotchiLendingEnded2(event: GotchiLendingEnded1): void {
+    let lending = getOrCreateGotchiLending(event.params.param0.listingId);
+    lending.upfrontCost = event.params.param0.initialCost;
+    lending.lender = event.params.param0.lender;
+    lending.originalOwner = event.params.param0.originalOwner;
+    lending.period = event.params.param0.period;
+    lending.splitOwner = BigInt.fromI32(event.params.param0.revenueSplit[0]);
+    lending.splitBorrower = BigInt.fromI32(event.params.param0.revenueSplit[1]);
+    lending.splitOther = BigInt.fromI32(event.params.param0.revenueSplit[2]);
+    lending.tokensToShare = event.params.param0.revenueTokens.map<Bytes>(
+        (e) => e
+    );
+    lending.thirdPartyAddress = event.params.param0.thirdParty;
+    lending.gotchiTokenId = event.params.param0.tokenId;
+    lending.completed = true;
+    lending.timeEnded = event.block.timestamp;
+    if (event.params.param0.whitelistId != BIGINT_ZERO) {
+        let whitelist = getOrCreateWhitelist(
+            event.params.param0.whitelistId,
+            event
+        );
+        if (whitelist) {
+            lending.whitelist = whitelist.id;
+            lending.whitelistMembers = whitelist.members;
+            lending.whitelistId = event.params.param0.whitelistId;
+        }
+    }
+    lending.save();
+
+    // remove gotchi from originalOwner gotchisLentout
+    let originalOwner = getOrCreateUser(lending.lender!.toHexString());
+    if (originalOwner.gotchisLentOut.length > 0) {
+        let newGotchiLentOut = new Array<BigInt>();
+
+        for (let i = 0; i < originalOwner.gotchisLentOut.length; i++) {
+            let gotchiId = originalOwner.gotchisLentOut[i];
+            if (!gotchiId.equals(lending.gotchiTokenId)) {
+                newGotchiLentOut.push(gotchiId);
+            }
+        }
+        originalOwner.gotchisLentOut = newGotchiLentOut;
+        originalOwner.save();
+    }
+
+    // remove gotchi from borrower gotchis borrowed
+    let borrower = getOrCreateUser(lending.borrower!.toHexString());
+    if (borrower.gotchisBorrowed.length > 0) {
+        let newGotchiLentOut = new Array<BigInt>();
+
+        for (let i = 0; i < borrower.gotchisBorrowed.length; i++) {
+            let gotchiId = borrower.gotchisBorrowed[i];
+            if (!gotchiId.equals(lending.gotchiTokenId)) {
+                newGotchiLentOut.push(gotchiId);
+            }
+        }
+        borrower.gotchisBorrowed = newGotchiLentOut;
+        borrower.save();
+    }
+
+    let gotchi = getOrCreateAavegotchi(
+        lending.gotchiTokenId.toString(),
+        event
+    )!;
+    gotchi.lending = null;
+    gotchi.originalOwner = originalOwner.id;
+    gotchi.save();
+
+    // update Stats
+    let stats = getStatisticEntity();
+    stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.minus(BIGINT_ONE);
+    stats.save();
+}
+
+handleGotchiLendingEnded2;
