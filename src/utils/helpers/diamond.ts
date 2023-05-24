@@ -879,3 +879,15 @@ export function getOrCreateWhitelist(
 
     return whitelist;
 }
+
+export function getPermissionsFromBitmap(bitmap: BigInt): Number[] {
+    const permissions = [];
+    const totalKeys = Object.keys(permissions).length;
+    // (bitmap >> BigInt.fromI32(i * 8)) & BigInt.fromString("0xff")
+    // for (let i = 0; i < totalKeys; i++) {
+    //     const value = Number();
+    //     permissions.push(value as 0 | 1);
+    // }
+
+    return permissions;
+}
