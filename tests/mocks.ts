@@ -1,6 +1,8 @@
-import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
+import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import {
     ClaimAavegotchi,
+    ERC721BuyOrderAdded,
+    ERC721BuyOrderExecuted,
     ERC721ExecutedListing,
     ERC721ListingAdd,
     ERC721ListingCancelled,
@@ -453,6 +455,169 @@ export function getClaimAavegotchiEvent(): ClaimAavegotchi {
         )
     );
 
+    let contractAddress = Address.fromString(
+        "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
+    );
+    event.address = contractAddress;
+    return event;
+}
+
+export function erc721BuyOrderAddedMockEvent(): ERC721BuyOrderAdded {
+    let newMockevent = newMockEvent();
+    let event = new ERC721BuyOrderAdded(
+        newMockevent.address,
+        newMockevent.logIndex,
+        newMockevent.transactionLogIndex,
+        newMockevent.logType,
+        newMockevent.block,
+        newMockevent.transaction,
+        newMockevent.parameters,
+        null
+    );
+    event.parameters = new Array<ethereum.EventParam>();
+    event.block.number = BIGINT_ONE;
+
+    // Add dummy data for each parameter
+    event.parameters.push(
+        new ethereum.EventParam(
+            "indexed uint256",
+            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "indexed address",
+            ethereum.Value.fromAddress(
+                Address.fromString("0x1234567890abcdef1234567890abcdef12345678")
+            )
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "address",
+            ethereum.Value.fromAddress(
+                Address.fromString("0x9876543210fedcba9876543210fedcba98765432")
+            )
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "uint256",
+            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "indexed uint256",
+            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "uint256",
+            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "uint256",
+            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "bytes32",
+            ethereum.Value.fromBytes(
+                Bytes.fromHexString(
+                    "0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+                )
+            )
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "uint256",
+            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+        )
+    );
+
+    let contractAddress = Address.fromString(
+        "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
+    );
+    event.address = contractAddress;
+    return event;
+}
+
+export function erc721BuyOrderExecutedMockEvent(): ERC721BuyOrderExecuted {
+    let mockEvent = newMockEvent();
+    let event = new ERC721BuyOrderExecuted(
+        mockEvent.address,
+        mockEvent.logIndex,
+        mockEvent.transactionLogIndex,
+        mockEvent.logType,
+        mockEvent.block,
+        mockEvent.transaction,
+        mockEvent.parameters,
+        null
+    );
+    event.parameters = new Array<ethereum.EventParam>();
+    event.block.number = BIGINT_ONE;
+
+    // Add dummy data for each parameter
+    event.parameters.push(
+        new ethereum.EventParam(
+            "indexed uint256",
+            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "indexed address",
+            ethereum.Value.fromAddress(
+                Address.fromString("0x1234567890abcdef1234567890abcdef12345678")
+            )
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "address",
+            ethereum.Value.fromAddress(
+                Address.fromString("0x9876543210fedcba9876543210fedcba98765432")
+            )
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "address",
+            ethereum.Value.fromAddress(
+                Address.fromString("0xabcdef1234567890abcdef1234567890abcdef12")
+            )
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "uint256",
+            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "uint256",
+            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "uint256",
+            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+        )
+    );
+    event.parameters.push(
+        new ethereum.EventParam(
+            "uint256",
+            ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)
+        )
+    );
     let contractAddress = Address.fromString(
         "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
     );
