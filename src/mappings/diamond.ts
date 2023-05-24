@@ -56,6 +56,8 @@ import {
     ERC1155ListingWhitelistSet,
     ERC721ListingPriceUpdate,
     ERC1155ListingPriceUpdate,
+    ERC721BuyOrderAdded,
+    ERC721BuyOrderExecuted,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
     getOrCreateUser,
@@ -80,6 +82,7 @@ import {
     createOrUpdateWhitelist,
     getOrCreateClaimedToken,
     getOrCreateWhitelist,
+    getOrCreateERC721BuyOrder,
 } from "../utils/helpers/diamond";
 import {
     BIGINT_ONE,
@@ -1452,4 +1455,32 @@ export function handleERC721ListingPriceUpdate(
     listing.priceInWei = event.params.priceInWei;
     listing.priceUpdatedAt = event.params.time;
     listing.save();
+}
+
+export function handleERC721BuyOrderAdded(event: ERC721BuyOrderAdded): void {
+    // instantiate entity on subgraph
+    let entity = getOrCreateERC721BuyOrder(event.params.buyOrderId.toString());
+    entity.buyer = event.params.buyer;
+    entity.category = event.params.category;
+    entity.createdAt = event.params.time;
+    entity.duration = event.params.duration;
+    entity.erc721TokenAddress = event.params.erc721TokenAddress;
+    entity.erc721TokenId = event.params.erc721TokenId;
+    entity.priceInWei = event.params.priceInWei;
+    entity.validationHash = event.params.validationHash;
+    entity.save();
+}
+
+export function handleERC721BuyOrderExecuted(
+    event: ERC721BuyOrderExecuted
+): void {
+    // update buy order
+    let entity = getOrCreateERC721BuyOrder(event.params.buyOrderId.toString());
+    entity.seller = event.params.seller;
+    entity.erc721TokenAddress = event.params.erc721TokenAddress;
+    entity.erc721TokenId = event.params.erc721TokenId;
+    entity.priceInWei = event.params.priceInWei;
+    entity.buyer = event.params.buyer;
+    entity.executedAt = event.params.time;
+    entity.save();
 }
