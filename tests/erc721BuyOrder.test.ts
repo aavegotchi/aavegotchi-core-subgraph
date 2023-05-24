@@ -1,22 +1,11 @@
-import { ethereum, store } from "@graphprotocol/graph-ts";
+import { test, assert } from "matchstick-as/assembly/index";
 import {
-    test,
-    assert,
-    clearStore,
-    createMockedFunction,
-} from "matchstick-as/assembly/index";
-import { ERC721Listing, Portal } from "../generated/schema";
-import {
-    handleClaimAavegotchi,
     handleERC721BuyOrderAdded,
     handleERC721BuyOrderExecuted,
 } from "../src/mappings/diamond";
-import { BIGINT_ONE } from "../src/utils/constants";
 import {
     erc721BuyOrderAddedMockEvent,
     erc721BuyOrderExecutedMockEvent,
-    getAavegotchiMock,
-    getClaimAavegotchiEvent,
 } from "./mocks";
 
 test("erc721buyOrderAdded should create erc721buyorder entity", () => {
