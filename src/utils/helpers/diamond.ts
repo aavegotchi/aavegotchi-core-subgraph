@@ -254,7 +254,7 @@ export function updateERC721ListingInfo(
 }
 
 //@ts-ignore
-function itemMaxQuantityToRarity(bigInt: BigInt): BigInt {
+export function itemMaxQuantityToRarity(bigInt: BigInt): BigInt {
     let quantity = bigInt.toI32();
     if (quantity >= 1000) return BigInt.fromI32(0);
     if (quantity >= 500) return BigInt.fromI32(1);

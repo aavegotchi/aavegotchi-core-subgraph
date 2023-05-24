@@ -85,6 +85,7 @@ import {
     createOrUpdateWhitelist,
     getOrCreateClaimedToken,
     getOrCreateWhitelist,
+    itemMaxQuantityToRarity,
 } from "../utils/helpers/diamond";
 import {
     BIGINT_ONE,
@@ -1149,6 +1150,43 @@ export function handleERC1155ExecutedToRecipient(
 
     purchase.buyer = event.params.buyer;
     purchase.recipient = event.params.recipient;
+    purchase.listingID = event.params.listingId;
+
+    // listing
+    let listing = getOrCreateERC1155Listing(event.params.listingId.toString());
+    purchase.category = listing.category;
+    purchase.erc1155TokenAddress = listing.erc1155TokenAddress;
+    purchase.erc1155TypeId = listing.erc1155TypeId;
+    purchase.quantity = BIGINT_ONE;
+    purchase.priceInWei = listing.priceInWei;
+    purchase.timeLastPurchased = event.block.timestamp;
+    purchase.category = listing.category;
+    purchase.erc1155TokenAddress = listing.erc1155TokenAddress;
+    purchase.erc1155TypeId = listing.erc1155TypeId;
+    purchase.seller = listing.seller;
+    purchase.timeLastPurchased = event.block.timestamp;
+    purchase.priceInWei = listing.priceInWei;
+    purchase.quantity = purchase.quantity
+        ? purchase.quantity.plus(BIGINT_ONE)
+        : BIGINT_ONE;
+
+    //tickets
+    if (listing.category.equals(BigInt.fromI32(3))) {
+        let rarityLevel = listing.erc1155TypeId;
+        purchase.rarityLevel = rarityLevel;
+
+        //items
+    } else {
+        let itemType = getOrCreateItemType(
+            purchase.erc1155TypeId.toString(),
+            false
+        );
+
+        if (itemType) {
+            listing.rarityLevel = itemMaxQuantityToRarity(itemType.maxQuantity);
+        }
+    }
+
     purchase.save();
 }
 
@@ -1495,6 +1533,7 @@ export function handleGotchiLendingAdded2(event: GotchiLendingAdded1): void {
     lending.gotchiTokenId = event.params.param0.tokenId;
     lending.gotchiKinship = gotchi.kinship;
     lending.gotchiBRS = gotchi.withSetsRarityScore;
+
     lending.save();
 }
 
