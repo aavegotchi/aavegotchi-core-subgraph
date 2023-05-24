@@ -10000,7 +10000,7 @@
                     },
                     {
                         "internalType": "uint256",
-                        "name": "channellingStatus",
+                        "name": "permissions",
                         "type": "uint256"
                     }
                 ],
@@ -10075,7 +10075,7 @@
                     },
                     {
                         "internalType": "uint256",
-                        "name": "channellingStatus",
+                        "name": "permissions",
                         "type": "uint256"
                     }
                 ],
@@ -10160,7 +10160,7 @@
                     },
                     {
                         "internalType": "uint256",
-                        "name": "channellingStatus",
+                        "name": "permissions",
                         "type": "uint256"
                     }
                 ],
@@ -10240,7 +10240,7 @@
                     },
                     {
                         "internalType": "uint256",
-                        "name": "channellingStatus",
+                        "name": "permissions",
                         "type": "uint256"
                     }
                 ],
