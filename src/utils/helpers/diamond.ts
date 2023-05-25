@@ -20,6 +20,7 @@ import {
     GotchiLending,
     Whitelist,
     ClaimedToken,
+    ERC721BuyOrder,
 } from "../../../generated/schema";
 import { BIGINT_ZERO, STATUS_AAVEGOTCHI } from "../constants";
 import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
@@ -890,4 +891,12 @@ export function getPermissionsFromBitmap(bitmap: BigInt): Number[] {
     // }
 
     return permissions;
+}
+export function getOrCreateERC721BuyOrder(id: string): ERC721BuyOrder {
+    let entity = ERC721BuyOrder.load(id);
+    if (!entity) {
+        entity = new ERC721BuyOrder(id);
+    }
+
+    return entity;
 }

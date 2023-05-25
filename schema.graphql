@@ -392,3 +392,17 @@ type Whitelist @entity {
 #  id: ID!
 #  calldata:
 #}
+## buy order
+type ERC721BuyOrder @entity {
+    id: ID!
+    buyer: Bytes!
+    seller: Bytes
+    erc721TokenAddress: Bytes!
+    erc721TokenId: BigInt!
+    category: BigInt!
+    priceInWei: BigInt!
+    duration: BigInt!
+    validationHash: Bytes!
+    createdAt: BigInt!
+    executedAt: BigInt
+}
