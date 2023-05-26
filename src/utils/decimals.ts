@@ -33,13 +33,16 @@ export function updatePermissionsFromBitmap(
     lending: GotchiLending,
     bitmap: BigInt
 ): GotchiLending {
-    const permissions = ["no permissions", "channellingAllowed"];
-    for (let i = 0; i < permissions.length; i++) {
-        const value = bitmap.rightShift(<u8>i * 8).bitAnd(BigInt.fromI32(0xff));
-        if (i === 1) {
-            lending.channellingAllowed = value != BIGINT_ZERO;
-        }
-    }
+    const permissions = bitmap.bitAnd(BigInt.fromI32(0xff));
+    const channelling = bitmap.rightShift(<u8>8).bitAnd(BigInt.fromI32(0xff));
+
+    log.info("permissions: {}, channelling: {}", [
+        permissions.toString(),
+        channelling.toString(),
+    ]);
+    lending.channellingAllowed = !(
+        permissions == BIGINT_ZERO || channelling == BIGINT_ZERO
+    );
 
     return lending;
 }
