@@ -16,6 +16,7 @@ test("Count as interacted if gotchi is claimed", () => {
     // Initialise
     let gotchi = new Aavegotchi("1");
     gotchi.locked = false;
+    gotchi.gotchiId = BIGINT_ONE;
     gotchi.kinship = BIGINT_ZERO;
     gotchi.save();
 

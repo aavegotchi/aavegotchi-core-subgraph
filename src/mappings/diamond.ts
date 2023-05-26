@@ -63,6 +63,7 @@ import {
     GotchiLendingEnded1,
     ERC721BuyOrderAdded,
     ERC721BuyOrderExecuted,
+    KinshipBurned,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
     getOrCreateUser,
@@ -1792,4 +1793,11 @@ export function handleERC721BuyOrderExecuted(
     entity.buyer = event.params.buyer;
     entity.executedAt = event.params.time;
     entity.save();
+}
+
+export function handleKinshipBurned(event: KinshipBurned): void {
+    let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
+    if(!gotchi) return;
+    gotchi.kinship = event.params._value;
+    gotchi.save();
 }
