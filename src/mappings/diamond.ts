@@ -107,6 +107,7 @@ import {
     MintParcel,
     ResyncParcel,
 } from "../../generated/RealmDiamond/RealmDiamond";
+import { updatePermissionsFromBitmap } from "../utils/decimals";
 
 export function handleBuyPortals(event: BuyPortals): void {
     let contract = AavegotchiDiamond.bind(event.address);
@@ -1502,6 +1503,10 @@ export function handleERC721ListingPriceUpdate(
 
 export function handleGotchiLendingAdded2(event: GotchiLendingAdded1): void {
     let lending = getOrCreateGotchiLending(event.params.param0.listingId);
+    lending = updatePermissionsFromBitmap(
+        lending,
+        event.params.param0.permissions
+    );
     lending.upfrontCost = event.params.param0.initialCost;
     lending.rentDuration = event.params.param0.period;
     lending.lender = event.params.param0.lender;
@@ -1544,6 +1549,10 @@ export function handleGotchiLendingExecuted2(
     event: GotchiLendingExecuted1
 ): void {
     let lending = getOrCreateGotchiLending(event.params.param0.listingId);
+    lending = updatePermissionsFromBitmap(
+        lending,
+        event.params.param0.permissions
+    );
     lending.upfrontCost = event.params.param0.initialCost;
     lending.lender = event.params.param0.lender;
     lending.originalOwner = event.params.param0.originalOwner;
@@ -1602,6 +1611,10 @@ export function handleGotchiLendingCancelled2(
     event: GotchiLendingCancelled
 ): void {
     let lending = getOrCreateGotchiLending(event.params.param0.listingId);
+    lending = updatePermissionsFromBitmap(
+        lending,
+        event.params.param0.permissions
+    );
     lending.upfrontCost = event.params.param0.initialCost;
     lending.lender = event.params.param0.lender;
     lending.originalOwner = event.params.param0.originalOwner;
@@ -1634,6 +1647,10 @@ export function handleGotchiLendingClaimed2(
     event: GotchiLendingClaimed1
 ): void {
     let lending = getOrCreateGotchiLending(event.params.param0.listingId);
+    lending = updatePermissionsFromBitmap(
+        lending,
+        event.params.param0.permissions
+    );
     for (let i = 0; i < event.params.param0.revenueTokens.length; i++) {
         let ctoken = getOrCreateClaimedToken(
             event.params.param0.revenueTokens[i],
@@ -1674,6 +1691,10 @@ export function handleGotchiLendingClaimed2(
 
 export function handleGotchiLendingEnded2(event: GotchiLendingEnded1): void {
     let lending = getOrCreateGotchiLending(event.params.param0.listingId);
+    lending = updatePermissionsFromBitmap(
+        lending,
+        event.params.param0.permissions
+    );
     lending.upfrontCost = event.params.param0.initialCost;
     lending.lender = event.params.param0.lender;
     lending.originalOwner = event.params.param0.originalOwner;

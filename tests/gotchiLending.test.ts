@@ -1,4 +1,4 @@
-import { Address, Bytes, ethereum } from "@graphprotocol/graph-ts";
+import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import {
     test,
     assert,
@@ -13,7 +13,7 @@ import {
     handleGotchiLendingEnded2,
     handleGotchiLendingExecuted2,
 } from "../src/mappings/diamond";
-import { BIGINT_ONE } from "../src/utils/constants";
+import { BIGINT_ONE, BIGINT_ZERO } from "../src/utils/constants";
 import { getAavegotchiMock } from "./mocks";
 import {
     GotchiLendingAdded1,
@@ -291,7 +291,7 @@ test("claimed gotchi lending", () => {
         ethereum.Value.fromAddressArray([address]),
         ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE]),
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(256)),
     ]);
     let newMockevent = newMockEvent();
     let event = new GotchiLendingClaimed1(
@@ -337,6 +337,8 @@ test("claimed gotchi lending", () => {
     assert.fieldEquals("GotchiLending", "1", "gotchiBRS", "1");
     assert.fieldEquals("GotchiLending", "1", "gotchiKinship", "1");
 
+    assert.fieldEquals("GotchiLending", "1", "channellingAllowed", "true");
+
     assert.fieldEquals(
         "ClaimedToken",
         `1_${address.toHexString()}`,
@@ -358,8 +360,7 @@ test("cancel gotchi lending", () => {
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromAddressArray([address]),
         ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE]),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BIGINT_ZERO),
     ]);
     let newMockevent = newMockEvent();
     let event = new GotchiLendingCancelled(
@@ -420,8 +421,7 @@ test("end gotchi lending", () => {
         ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
         ethereum.Value.fromAddressArray([address]),
         ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE]),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
-        ethereum.Value.fromUnsignedBigInt(BIGINT_ONE),
+        ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(255)),
     ]);
     let newMockevent = newMockEvent();
     let event = new GotchiLendingEnded1(
@@ -472,6 +472,7 @@ test("end gotchi lending", () => {
     assert.fieldEquals("GotchiLending", "1", "gotchiBRS", "1");
     assert.fieldEquals("GotchiLending", "1", "gotchiKinship", "1");
     assert.fieldEquals("GotchiLending", "1", "completed", "true");
+    assert.fieldEquals("GotchiLending", "1", "channellingAllowed", "false");
 
     assert.fieldEquals("User", borrower.toHexString(), "gotchisBorrowed", "[]");
     assert.fieldEquals("User", address.toHexString(), "gotchisLentOut", "[]");

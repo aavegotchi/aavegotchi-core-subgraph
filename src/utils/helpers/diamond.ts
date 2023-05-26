@@ -769,6 +769,7 @@ export function getOrCreateGotchiLending(listingId: BigInt): GotchiLending {
         lending.whitelist = null;
         lending.whitelistMembers = [];
         lending.whitelistId = null;
+        lending.channellingAllowed = false;
     }
 
     return lending;
@@ -881,17 +882,6 @@ export function getOrCreateWhitelist(
     return whitelist;
 }
 
-export function getPermissionsFromBitmap(bitmap: BigInt): Number[] {
-    const permissions = [];
-    const totalKeys = Object.keys(permissions).length;
-    // (bitmap >> BigInt.fromI32(i * 8)) & BigInt.fromString("0xff")
-    // for (let i = 0; i < totalKeys; i++) {
-    //     const value = Number();
-    //     permissions.push(value as 0 | 1);
-    // }
-
-    return permissions;
-}
 export function getOrCreateERC721BuyOrder(id: string): ERC721BuyOrder {
     let entity = ERC721BuyOrder.load(id);
     if (!entity) {

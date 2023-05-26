@@ -368,6 +368,8 @@ type GotchiLending @entity {
     timeEnded: BigInt
 
     claimed: [ClaimedToken!]! @derivedFrom(field: "lending")
+
+    channellingAllowed: Boolean!
 }
 
 type ClaimedToken @entity {

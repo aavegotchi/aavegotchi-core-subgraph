@@ -1,4 +1,6 @@
-import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
+import { BigDecimal, BigInt, log, ByteArray } from "@graphprotocol/graph-ts";
+import { GotchiLending } from "../../generated/schema";
+import { BIGINT_ZERO } from "./constants";
 
 export const DEFAULT_DECIMALS = 18;
 
@@ -25,4 +27,19 @@ export function toDecimal(
         .toBigDecimal();
 
     return value.divDecimal(precision);
+}
+
+export function updatePermissionsFromBitmap(
+    lending: GotchiLending,
+    bitmap: BigInt
+): GotchiLending {
+    const permissions = ["no permissions", "channellingAllowed"];
+    for (let i = 0; i < permissions.length; i++) {
+        const value = bitmap.rightShift(<u8>i * 8).bitAnd(BigInt.fromI32(0xff));
+        if (i === 1) {
+            lending.channellingAllowed = value != BIGINT_ZERO;
+        }
+    }
+
+    return lending;
 }
