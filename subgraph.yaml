@@ -155,8 +155,6 @@ dataSources:
                 handler: handleERC721BuyOrderAdded
               - event: ERC721BuyOrderExecuted(indexed uint256,indexed address,address,address,uint256,uint256,uint256)
                 handler: handleERC721BuyOrderExecuted
-              - event: KinshipBurned(uint256,uint256)
-                handler: handleKinshipBurned
               # - event: DiamondCut((address,uint8,bytes4[])[],address,bytes)
               #   handler: handleDiamondCut
     # - AavegotchiInteract(indexed uint256,uint256)
@@ -240,4 +238,6 @@ dataSources:
                 handler: handleTransferParcel
               - event: ResyncParcel(uint256)
                 handler: handleResyncParcel
+              - event: KinshipBurned(uint256,uint256)
+                handler: handleKinshipBurned
           file: ./src/mappings/diamond.ts

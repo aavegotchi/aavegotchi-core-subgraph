@@ -63,7 +63,6 @@ import {
     GotchiLendingEnded1,
     ERC721BuyOrderAdded,
     ERC721BuyOrderExecuted,
-    KinshipBurned,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
     getOrCreateUser,
@@ -107,6 +106,7 @@ import {
     RealmDiamond,
     MintParcel,
     ResyncParcel,
+    KinshipBurned,
 } from "../../generated/RealmDiamond/RealmDiamond";
 import { updatePermissionsFromBitmap } from "../utils/decimals";
 
@@ -1797,7 +1797,7 @@ export function handleERC721BuyOrderExecuted(
 
 export function handleKinshipBurned(event: KinshipBurned): void {
     let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
-    if(!gotchi) return;
+    if (!gotchi) return;
     gotchi.kinship = event.params._value;
     gotchi.save();
 }
