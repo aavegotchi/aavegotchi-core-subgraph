@@ -2,21 +2,14 @@ import {
     test,
     assert,
     clearStore,
-    createMockedFunction,
     newMockEvent,
 } from "matchstick-as/assembly/index";
-import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
-import {
-    handleAavegotchiInteract,
-    handleKinshipBurned,
-} from "../src/mappings/diamond";
-import {
-    AavegotchiInteract,
-    KinshipBurned,
-} from "../generated/AavegotchiDiamond/AavegotchiDiamond";
+import { Bytes, ethereum } from "@graphprotocol/graph-ts";
+import { handleKinshipBurned } from "../src/mappings/diamond";
+
 import { Aavegotchi } from "../generated/schema";
-import { BIGINT_ONE, BIGINT_ZERO } from "../src/utils/constants";
-import { getAavegotchiMock } from "./mocks";
+import { BIGINT_ONE } from "../src/utils/constants";
+import { KinshipBurned } from "../generated/RealmDiamond/RealmDiamond";
 
 test("should update kinship of gotchi", () => {
     // Initialise
