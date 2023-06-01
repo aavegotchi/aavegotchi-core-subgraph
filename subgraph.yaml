@@ -141,6 +141,20 @@ dataSources:
                 handler: handleERC1155ListingWhitelistSet
               - event: ERC1155ListingPriceUpdate(indexed uint256,uint256,uint256)
                 handler: handleERC1155ListingPriceUpdate
+              - event: GotchiLendingAdded((uint32,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256,uint256))
+                handler: handleGotchiLendingAdded2
+              - event: GotchiLendingExecuted((uint32,address,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256,uint256))
+                handler: handleGotchiLendingExecuted2
+              - event: GotchiLendingCancelled((uint32,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256,uint256))
+                handler: handleGotchiLendingCancelled2
+              - event: GotchiLendingClaimed((uint32,address,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256[],uint256,uint256))
+                handler: handleGotchiLendingClaimed2
+              - event: GotchiLendingEnded((uint32,address,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256,uint256))
+                handler: handleGotchiLendingEnded2
+              - event: ERC721BuyOrderAdded(indexed uint256,indexed address,address,uint256,indexed uint256,uint256,uint256,bytes32,uint256)
+                handler: handleERC721BuyOrderAdded
+              - event: ERC721BuyOrderExecuted(indexed uint256,indexed address,address,address,uint256,uint256,uint256)
+                handler: handleERC721BuyOrderExecuted
               # - event: DiamondCut((address,uint8,bytes4[])[],address,bytes)
               #   handler: handleDiamondCut
     # - AavegotchiInteract(indexed uint256,uint256)
@@ -224,4 +238,6 @@ dataSources:
                 handler: handleTransferParcel
               - event: ResyncParcel(uint256)
                 handler: handleResyncParcel
+              - event: KinshipBurned(uint256,uint256)
+                handler: handleKinshipBurned
           file: ./src/mappings/diamond.ts

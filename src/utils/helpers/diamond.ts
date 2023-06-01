@@ -20,6 +20,7 @@ import {
     GotchiLending,
     Whitelist,
     ClaimedToken,
+    ERC721BuyOrder,
 } from "../../../generated/schema";
 import { BIGINT_ZERO, STATUS_AAVEGOTCHI } from "../constants";
 import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
@@ -254,7 +255,7 @@ export function updateERC721ListingInfo(
 }
 
 //@ts-ignore
-function itemMaxQuantityToRarity(bigInt: BigInt): BigInt {
+export function itemMaxQuantityToRarity(bigInt: BigInt): BigInt {
     let quantity = bigInt.toI32();
     if (quantity >= 1000) return BigInt.fromI32(0);
     if (quantity >= 500) return BigInt.fromI32(1);
@@ -768,6 +769,7 @@ export function getOrCreateGotchiLending(listingId: BigInt): GotchiLending {
         lending.whitelist = null;
         lending.whitelistMembers = [];
         lending.whitelistId = null;
+        lending.channellingAllowed = false;
     }
 
     return lending;
@@ -878,4 +880,13 @@ export function getOrCreateWhitelist(
     }
 
     return whitelist;
+}
+
+export function getOrCreateERC721BuyOrder(id: string): ERC721BuyOrder {
+    let entity = ERC721BuyOrder.load(id);
+    if (!entity) {
+        entity = new ERC721BuyOrder(id);
+    }
+
+    return entity;
 }
