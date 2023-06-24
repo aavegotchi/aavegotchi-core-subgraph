@@ -105,16 +105,16 @@ dataSources:
                 handler: handleWhitelistUpdated
               - event: WhitelistOwnershipTransferred(indexed uint32,indexed address)
                 handler: handleWhitelistOwnershipTransferred
-              - event: GotchiLendingAdd(indexed uint32)
-                handler: handleGotchiLendingAdd
-              - event: GotchiLendingClaim(indexed uint32,address[],uint256[])
-                handler: handleGotchiLendingClaim
-              - event: GotchiLendingEnd(indexed uint32)
-                handler: handleGotchiLendingEnd
-              - event: GotchiLendingExecute(indexed uint32)
-                handler: handleGotchiLendingExecute
-              - event: GotchiLendingCancel(indexed uint32,uint256)
-                handler: handleGotchiLendingCancel
+              # - event: GotchiLendingAdd(indexed uint32)
+              #   handler: handleGotchiLendingAdd
+              # - event: GotchiLendingClaim(indexed uint32,address[],uint256[])
+              #   handler: handleGotchiLendingClaim
+              # - event: GotchiLendingEnd(indexed uint32)
+              #   handler: handleGotchiLendingEnd
+              # - event: GotchiLendingExecute(indexed uint32)
+              #   handler: handleGotchiLendingExecute
+              # - event: GotchiLendingCancel(indexed uint32,uint256)
+              #   handler: handleGotchiLendingCancel
               - event: ERC1155ExecutedToRecipient(indexed uint256,indexed address,indexed address)
                 handler: handleERC1155ExecutedToRecipient
               - event: ERC721ExecutedToRecipient(indexed uint256,indexed address,indexed address)
@@ -155,6 +155,8 @@ dataSources:
                 handler: handleERC721BuyOrderAdded
               - event: ERC721BuyOrderExecuted(indexed uint256,indexed address,address,address,uint256,uint256,uint256)
                 handler: handleERC721BuyOrderExecuted
+              - event: ERC721BuyOrderCanceled(indexed uint256,uint256)
+                handler: handleERC721BuyOrderCanceled
               # - event: DiamondCut((address,uint8,bytes4[])[],address,bytes)
               #   handler: handleDiamondCut
     # - AavegotchiInteract(indexed uint256,uint256)
