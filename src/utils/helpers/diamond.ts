@@ -23,7 +23,14 @@ import {
     ERC721BuyOrder,
 } from "../../../generated/schema";
 import { BIGINT_ZERO, STATUS_AAVEGOTCHI } from "../constants";
-import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
+import {
+    Address,
+    BigInt,
+    Bytes,
+    bigInt,
+    ethereum,
+    log,
+} from "@graphprotocol/graph-ts";
 
 export function getOrCreatePortal(
     id: string,
@@ -70,6 +77,7 @@ export function getOrCreateAavegotchi(
         gotchi.createdAt = event.block.number;
         gotchi.timesTraded = BIGINT_ZERO;
         gotchi.historicalPrices = [];
+        gotchi.kinship = BigInt.fromI32(50);
     } else if (gotchi == null && !createIfNotFound) {
         return null;
     }
@@ -886,6 +894,7 @@ export function getOrCreateERC721BuyOrder(id: string): ERC721BuyOrder {
     let entity = ERC721BuyOrder.load(id);
     if (!entity) {
         entity = new ERC721BuyOrder(id);
+        entity.canceled = false;
     }
 
     return entity;
