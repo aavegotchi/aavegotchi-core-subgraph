@@ -1264,6 +1264,7 @@ export function handleGotchiLendingClaimed(event: GotchiLendingClaimed): void {
     lending.splitOwner = BigInt.fromI32(event.params.revenueSplit[0]);
     lending.splitBorrower = BigInt.fromI32(event.params.revenueSplit[1]);
     lending.splitOther = BigInt.fromI32(event.params.revenueSplit[2]);
+    lending.rentDuration = event.params.period;
     lending.tokensToShare = event.params.revenueTokens.map<Bytes>((e) => e);
     lending.thirdPartyAddress = event.params.thirdParty;
     lending.lastClaimed = event.params.timeClaimed;
@@ -1590,6 +1591,7 @@ export function handleGotchiLendingExecuted2(
     lending.tokensToShare = event.params.param0.revenueTokens.map<Bytes>(
         (e) => e
     );
+    lending.rentDuration = event.params.param0.period;
     lending.thirdPartyAddress = event.params.param0.thirdParty;
     lending.gotchiTokenId = event.params.param0.tokenId;
     lending.timeAgreed = event.params.param0.timeAgreed;
@@ -1659,6 +1661,7 @@ export function handleGotchiLendingCancelled2(
     lending.gotchiTokenId = event.params.param0.tokenId;
     lending.cancelled = true;
     lending.completed = false;
+    lending.rentDuration = event.params.param0.period;
     if (event.params.param0.whitelistId != BIGINT_ZERO) {
         let whitelist = getOrCreateWhitelist(
             event.params.param0.whitelistId,
@@ -1706,6 +1709,7 @@ export function handleGotchiLendingClaimed2(
     lending.tokensToShare = event.params.param0.revenueTokens.map<Bytes>(
         (e) => e
     );
+    lending.rentDuration = event.params.param0.period;
     lending.thirdPartyAddress = event.params.param0.thirdParty;
     lending.lastClaimed = event.params.param0.timeClaimed;
     lending.gotchiTokenId = event.params.param0.tokenId;
@@ -1742,6 +1746,7 @@ export function handleGotchiLendingEnded2(event: GotchiLendingEnded1): void {
     lending.tokensToShare = event.params.param0.revenueTokens.map<Bytes>(
         (e) => e
     );
+    lending.rentDuration = event.params.param0.period;
     lending.thirdPartyAddress = event.params.param0.thirdParty;
     lending.gotchiTokenId = event.params.param0.tokenId;
     lending.completed = true;
