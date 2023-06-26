@@ -1269,6 +1269,7 @@ export function handleGotchiLendingClaimed(event: GotchiLendingClaimed): void {
     lending.thirdPartyAddress = event.params.thirdParty;
     lending.lastClaimed = event.params.timeClaimed;
     lending.gotchiTokenId = event.params.tokenId;
+    lending.gotchi = event.params.tokenId.toString();
     lending.borrower = event.params.borrower;
     lending.cancelled = false;
     lending.completed = false;
@@ -1296,6 +1297,7 @@ export function handleGotchiLendingCanceled(
     lending.splitOther = BigInt.fromI32(event.params.revenueSplit[2]);
     lending.tokensToShare = event.params.revenueTokens.map<Bytes>((e) => e);
     lending.thirdPartyAddress = event.params.thirdParty;
+    lending.gotchi = event.params.tokenId.toString();
     lending.gotchiTokenId = event.params.tokenId;
     lending.rentDuration = event.params.period;
     lending.cancelled = true;
@@ -1389,6 +1391,7 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
     lending.thirdPartyAddress = event.params.thirdParty;
     lending.rentDuration = event.params.period;
     lending.gotchiTokenId = event.params.tokenId;
+    lending.gotchi = event.params.tokenId.toString();
     lending.completed = true;
     lending.timeEnded = event.block.timestamp;
     if (event.params.whitelistId != BIGINT_ZERO) {
@@ -1594,6 +1597,7 @@ export function handleGotchiLendingExecuted2(
     lending.rentDuration = event.params.param0.period;
     lending.thirdPartyAddress = event.params.param0.thirdParty;
     lending.gotchiTokenId = event.params.param0.tokenId;
+    lending.gotchi = event.params.param0.tokenId.toString();
     lending.timeAgreed = event.params.param0.timeAgreed;
     lending.cancelled = false;
     lending.completed = false;
@@ -1659,6 +1663,7 @@ export function handleGotchiLendingCancelled2(
     );
     lending.thirdPartyAddress = event.params.param0.thirdParty;
     lending.gotchiTokenId = event.params.param0.tokenId;
+    lending.gotchi = event.params.param0.tokenId.toString();
     lending.cancelled = true;
     lending.completed = false;
     lending.rentDuration = event.params.param0.period;
@@ -1713,6 +1718,7 @@ export function handleGotchiLendingClaimed2(
     lending.thirdPartyAddress = event.params.param0.thirdParty;
     lending.lastClaimed = event.params.param0.timeClaimed;
     lending.gotchiTokenId = event.params.param0.tokenId;
+    lending.gotchi = event.params.param0.tokenId.toString();
     lending.borrower = event.params.param0.borrower;
     lending.cancelled = false;
     lending.completed = false;
@@ -1749,6 +1755,7 @@ export function handleGotchiLendingEnded2(event: GotchiLendingEnded1): void {
     lending.rentDuration = event.params.param0.period;
     lending.thirdPartyAddress = event.params.param0.thirdParty;
     lending.gotchiTokenId = event.params.param0.tokenId;
+    lending.gotchi = event.params.param0.tokenId.toString();
     lending.completed = true;
     lending.timeEnded = event.block.timestamp;
     if (event.params.param0.whitelistId != BIGINT_ZERO) {
