@@ -1260,6 +1260,9 @@ export function handleGotchiLendingClaimed(event: GotchiLendingClaimed): void {
     lending.upfrontCost = event.params.initialCost;
     lending.lender = event.params.lender;
     lending.originalOwner = event.params.originalOwner;
+    let gotchi = getOrCreateAavegotchi(event.params.tokenId.toString(), event)!;
+    lending.gotchiBRS = gotchi.withSetsRarityScore;
+    lending.gotchiKinship = gotchi.kinship;
     lending.period = event.params.period;
     lending.splitOwner = BigInt.fromI32(event.params.revenueSplit[0]);
     lending.splitBorrower = BigInt.fromI32(event.params.revenueSplit[1]);
