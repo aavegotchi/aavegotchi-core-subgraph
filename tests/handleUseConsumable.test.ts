@@ -8,15 +8,55 @@ import {
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
 import { handleUseConsumables } from "../src/mappings/diamond";
 import { UseConsumables } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
-import { BIGINT_ONE } from "../src/utils/constants";
+import { BIGINT_ONE, BIGINT_ZERO, ZERO_ADDRESS } from "../src/utils/constants";
 import { getAavegotchiMock } from "./mocks";
-import { Aavegotchi } from "../generated/schema";
+import { Aavegotchi, ItemType } from "../generated/schema";
 
 test("handleUseConsumable - happy case", () => {
     let gotchi = new Aavegotchi("1");
     gotchi.gotchiId = BIGINT_ONE;
     gotchi.locked = true;
+    gotchi.gotchiId = BIGINT_ONE;
+    gotchi.kinship = BIGINT_ZERO;
+    gotchi.portal = "1";
+    gotchi.hauntId = BIGINT_ONE;
+    gotchi.name = "Test";
+    gotchi.nameLowerCase = "test";
+    gotchi.randomNumber = BIGINT_ONE;
+    gotchi.status = BigInt.fromI32(3);
+    gotchi.numericTraits = [1, 1, 1, 1, 1, 1];
+    gotchi.modifiedNumericTraits = [1, 1, 1, 1, 1, 1];
+    gotchi.equippedWearables = [1, 1, 1, 1, 1, 1];
+    gotchi.historicalPrices = [];
+    gotchi.collateral = Address.fromString(ZERO_ADDRESS);
+    gotchi.escrow = Address.fromString(ZERO_ADDRESS);
+    gotchi.stakedAmount = BIGINT_ONE;
+    gotchi.minimumStake = BIGINT_ONE;
+    gotchi.kinship = BIGINT_ONE;
+    gotchi.lastInteracted = BIGINT_ONE;
+    gotchi.experience = BIGINT_ONE;
+    gotchi.toNextLevel = BIGINT_ONE;
+    gotchi.usedSkillPoints = BIGINT_ONE;
+    gotchi.level = BIGINT_ONE;
+    gotchi.baseRarityScore = BIGINT_ONE;
+    gotchi.modifiedRarityScore = BIGINT_ONE;
+    gotchi.withSetsRarityScore = BIGINT_ONE;
+    gotchi.locked = false;
+    gotchi.timesTraded = BIGINT_ONE;
     gotchi.save();
+
+    let itemType = new ItemType("1");
+    itemType.svgId = BIGINT_ONE;
+    itemType.name = "Test";
+    itemType.ghstPrice = BIGINT_ONE;
+    itemType.maxQuantity = BIGINT_ONE;
+    itemType.totalQuantity = BIGINT_ONE;
+    itemType.rarityScoreModifier = 1;
+    itemType.canPurchaseWithGhst = true;
+    itemType.canBeTransferred = true;
+    itemType.category = 1;
+    itemType.consumed = BIGINT_ZERO;
+    itemType.save();
 
     let newMockevent = newMockEvent();
     let event = new UseConsumables(

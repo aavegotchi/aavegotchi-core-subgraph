@@ -14,9 +14,23 @@ import {
     UpdateItemPrice,
 } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { BIGINT_ONE } from "../src/utils/constants";
+import { ItemType } from "../generated/schema";
 
 test("handleUpdateItemPrice - happy case", () => {
     // prepare event
+    let itemType = new ItemType("1");
+    itemType.svgId = BIGINT_ONE;
+    itemType.name = "Test";
+    itemType.ghstPrice = BIGINT_ONE;
+    itemType.maxQuantity = BIGINT_ONE;
+    itemType.totalQuantity = BIGINT_ONE;
+    itemType.rarityScoreModifier = 1;
+    itemType.canPurchaseWithGhst = true;
+    itemType.canBeTransferred = true;
+    itemType.category = 1;
+    itemType.consumed = BIGINT_ONE;
+    itemType.save();
+
     let newMockevent = newMockEvent();
     let event = new UpdateItemPrice(
         newMockevent.address,
