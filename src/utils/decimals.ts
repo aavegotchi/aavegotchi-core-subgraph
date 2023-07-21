@@ -36,10 +36,6 @@ export function updatePermissionsFromBitmap(
     const permissions = bitmap.bitAnd(BigInt.fromI32(0xff));
     const channelling = bitmap.rightShift(<u8>8).bitAnd(BigInt.fromI32(0xff));
 
-    log.info("permissions: {}, channelling: {}", [
-        permissions.toString(),
-        channelling.toString(),
-    ]);
     lending.channellingAllowed = !(
         permissions == BIGINT_ZERO || channelling == BIGINT_ZERO
     );

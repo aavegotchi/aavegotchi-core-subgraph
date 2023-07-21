@@ -1550,7 +1550,7 @@ export function handleGotchiLendingAdded2(event: GotchiLendingAdded1): void {
         (e) => e
     );
     lending.thirdPartyAddress = event.params.param0.thirdParty;
-    lending.timeCreated = event.params.param0.timeCreated;
+    lending.timeCreated = event.block.timestamp;
     lending.cancelled = false;
     lending.completed = false;
     if (event.params.param0.whitelistId != BIGINT_ZERO) {
