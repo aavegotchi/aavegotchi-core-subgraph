@@ -22,7 +22,7 @@ import {
     ClaimedToken,
     ERC721BuyOrder,
 } from "../../../generated/schema";
-import { BIGINT_ZERO, STATUS_AAVEGOTCHI } from "../constants";
+import { BIGINT_ZERO, STATUS_AAVEGOTCHI, ZERO_ADDRESS } from "../constants";
 import {
     Address,
     BigInt,
