@@ -84,7 +84,6 @@ import {
     updateAavegotchiWearables,
     calculateBaseRarityScore,
     getOrCreateGotchiLending,
-    updateGotchiLending,
     createOrUpdateWhitelist,
     getOrCreateClaimedToken,
     getOrCreateWhitelist,
