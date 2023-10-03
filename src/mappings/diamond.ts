@@ -1554,6 +1554,14 @@ export function handleGotchiLendingExecuted2(
         lending,
         event.params.param0.permissions
     );
+    if (lending.gotchiKinship == null || lending.gotchiBRS == null) {
+        let gotchi = getOrCreateAavegotchi(
+            lending.gotchiTokenId.toString(),
+            event
+        )!;
+        lending.gotchiKinship = gotchi.kinship;
+        lending.gotchiBRS = gotchi.withSetsRarityScore;
+    }
     lending.upfrontCost = event.params.param0.initialCost;
     lending.lender = event.params.param0.lender;
     lending.originalOwner = event.params.param0.originalOwner;
@@ -1616,6 +1624,14 @@ export function handleGotchiLendingCancelled2(
         lending,
         event.params.param0.permissions
     );
+    if (lending.gotchiKinship == null || lending.gotchiBRS == null) {
+        let gotchi = getOrCreateAavegotchi(
+            lending.gotchiTokenId.toString(),
+            event
+        )!;
+        lending.gotchiKinship = gotchi.kinship;
+        lending.gotchiBRS = gotchi.withSetsRarityScore;
+    }
     lending.upfrontCost = event.params.param0.initialCost;
     lending.lender = event.params.param0.lender;
     lending.originalOwner = event.params.param0.originalOwner;
@@ -1659,6 +1675,14 @@ export function handleGotchiLendingClaimed2(
         );
         ctoken.amount = ctoken.amount.plus(event.params.param0.amounts[i]);
         ctoken.save();
+    }
+    if (lending.gotchiKinship == null || lending.gotchiBRS == null) {
+        let gotchi = getOrCreateAavegotchi(
+            lending.gotchiTokenId.toString(),
+            event
+        )!;
+        lending.gotchiKinship = gotchi.kinship;
+        lending.gotchiBRS = gotchi.withSetsRarityScore;
     }
     lending.upfrontCost = event.params.param0.initialCost;
     lending.lender = event.params.param0.lender;

@@ -70,6 +70,8 @@ export function getOrCreateAavegotchi(
         gotchi.createdAt = event.block.number;
         gotchi.timesTraded = BIGINT_ZERO;
         gotchi.historicalPrices = [];
+        gotchi.kinship = BIGINT_ZERO;
+        gotchi.withSetsRarityScore = BIGINT_ZERO;
     } else if (gotchi == null && !createIfNotFound) {
         return null;
     }
