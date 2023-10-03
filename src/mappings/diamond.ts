@@ -1554,7 +1554,7 @@ export function handleGotchiLendingExecuted2(
         lending,
         event.params.param0.permissions
     );
-    if (lending.gotchiKinship == null || lending.gotchiBRS == null) {
+    if (!lending.gotchiKinship || !lending.gotchiBRS) {
         let gotchi = getOrCreateAavegotchi(
             lending.gotchiTokenId.toString(),
             event
@@ -1624,7 +1624,7 @@ export function handleGotchiLendingCancelled2(
         lending,
         event.params.param0.permissions
     );
-    if (lending.gotchiKinship == null || lending.gotchiBRS == null) {
+    if (!lending.gotchiKinship || !lending.gotchiBRS) {
         let gotchi = getOrCreateAavegotchi(
             lending.gotchiTokenId.toString(),
             event
@@ -1676,7 +1676,7 @@ export function handleGotchiLendingClaimed2(
         ctoken.amount = ctoken.amount.plus(event.params.param0.amounts[i]);
         ctoken.save();
     }
-    if (lending.gotchiKinship == null || lending.gotchiBRS == null) {
+    if (!lending.gotchiKinship || !lending.gotchiBRS) {
         let gotchi = getOrCreateAavegotchi(
             lending.gotchiTokenId.toString(),
             event
