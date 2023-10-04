@@ -78,6 +78,7 @@ export function getOrCreateAavegotchi(
         gotchi.timesTraded = BIGINT_ZERO;
         gotchi.historicalPrices = [];
         gotchi.kinship = BigInt.fromI32(50);
+        gotchi.withSetsRarityScore = BIGINT_ZERO;
     } else if (gotchi == null && !createIfNotFound) {
         return null;
     }
