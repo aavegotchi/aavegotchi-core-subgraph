@@ -63,6 +63,7 @@ import {
     GotchiLendingEnded1,
     ERC721BuyOrderAdded,
     ERC721BuyOrderExecuted,
+    ERC721BuyOrderCanceled,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
     getOrCreateUser,
@@ -83,7 +84,6 @@ import {
     updateAavegotchiWearables,
     calculateBaseRarityScore,
     getOrCreateGotchiLending,
-    updateGotchiLending,
     createOrUpdateWhitelist,
     getOrCreateClaimedToken,
     getOrCreateWhitelist,
@@ -406,20 +406,23 @@ export function handleExperienceTransfer(event: ExperienceTransfer): void {
 //   handler: handleAavegotchiInteract
 
 export function handleAavegotchiInteract(event: AavegotchiInteract): void {
+    if (event.block.number.le(BigInt.fromI32(40000000))) {
+        return;
+    }
+
     let gotchi = getOrCreateAavegotchi(
         event.params._tokenId.toString(),
         event,
         false
     );
-    if (!gotchi) {
+    if (!gotchi || !gotchi.status.equals(BigInt.fromI32(3))) {
         return;
     }
 
-    gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-    // persist only if gotchi is already claimed
-    if (gotchi.status.equals(BigInt.fromI32(3))) {
-        gotchi.save();
-    }
+    gotchi.kinship = event.params.kinship;
+    gotchi.lastInteracted = event.block.timestamp;
+    // gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+    gotchi.save();
 }
 
 //ERC721 Transfer
@@ -435,9 +438,7 @@ export function handleTransfer(event: Transfer): void {
             gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
         }
         gotchi.owner = newOwner.id;
-        if (!gotchi.lending) {
-            gotchi.originalOwner = newOwner.id;
-        }
+        gotchi.originalOwner = newOwner.id;
         gotchi.save();
 
         if (newOwner.id == "0x0000000000000000000000000000000000000000") {
@@ -1031,111 +1032,6 @@ export function handleWhitelistOwnershipTransferred(
     createOrUpdateWhitelist(event.params.whitelistId, event);
 }
 
-export function handleGotchiLendingAdd(event: GotchiLendingAdd): void {
-    let lending = getOrCreateGotchiLending(event.params.listingId);
-    lending = updateGotchiLending(lending, event);
-    lending.save();
-}
-
-export function handleGotchiLendingClaim(event: GotchiLendingClaim): void {
-    let lending = getOrCreateGotchiLending(event.params.listingId);
-    lending = updateGotchiLending(lending, event);
-    for (let i = 0; i < event.params.tokenAddresses.length; i++) {
-        let ctoken = getOrCreateClaimedToken(
-            event.params.tokenAddresses[i],
-            lending
-        );
-        ctoken.amount = ctoken.amount.plus(event.params.amounts[i]);
-        ctoken.save();
-    }
-    lending.save();
-}
-
-export function handleGotchiLendingEnd(event: GotchiLendingEnd): void {
-    let lending = getOrCreateGotchiLending(event.params.listingId);
-    lending = updateGotchiLending(lending, event);
-    lending.timeEnded = event.block.timestamp;
-    lending.save();
-
-    let originalOwner = getOrCreateUser(lending.lender!.toHexString());
-    if (originalOwner.gotchisLentOut.length > 0) {
-        let newGotchiLentOut = new Array<BigInt>();
-
-        for (let i = 0; i < originalOwner.gotchisLentOut.length; i++) {
-            let gotchiId = originalOwner.gotchisLentOut[i];
-            if (!gotchiId.equals(lending.gotchiTokenId)) {
-                newGotchiLentOut.push(gotchiId);
-            }
-        }
-        originalOwner.gotchisLentOut = newGotchiLentOut;
-        originalOwner.save();
-    }
-
-    let borrower = getOrCreateUser(lending.borrower!.toHexString());
-    if (borrower.gotchisBorrowed.length > 0) {
-        let newGotchiLentOut = new Array<BigInt>();
-
-        for (let i = 0; i < borrower.gotchisBorrowed.length; i++) {
-            let gotchiId = borrower.gotchisBorrowed[i];
-            if (!gotchiId.equals(lending.gotchiTokenId)) {
-                newGotchiLentOut.push(gotchiId);
-            }
-        }
-        borrower.gotchisBorrowed = newGotchiLentOut;
-        borrower.save();
-    }
-
-    let gotchi = getOrCreateAavegotchi(
-        lending.gotchiTokenId.toString(),
-        event
-    )!;
-    gotchi.lending = null;
-    gotchi.originalOwner = originalOwner.id;
-    gotchi.save();
-
-    lending.save();
-
-    let stats = getStatisticEntity();
-    stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.minus(BIGINT_ONE);
-    stats.save();
-}
-
-export function handleGotchiLendingExecute(event: GotchiLendingExecute): void {
-    let lending = getOrCreateGotchiLending(event.params.listingId);
-    lending = updateGotchiLending(lending, event);
-
-    // update originalOwner to lender
-    let gotchi = getOrCreateAavegotchi(lending.gotchi, event)!;
-    let lender = getOrCreateUser(lending.lender!.toHexString());
-    gotchi.originalOwner = lender.id;
-    lender.save();
-    gotchi.save();
-
-    let originalOwner = getOrCreateUser(lending.lender!.toHexString());
-    let gotchisLentOut = originalOwner.gotchisLentOut;
-    gotchisLentOut.push(lending.gotchiTokenId);
-    originalOwner.gotchisLentOut = gotchisLentOut;
-
-    let borrower = getOrCreateUser(lending.borrower!.toHexString());
-    let gotchisBorrowed = borrower.gotchisBorrowed;
-    gotchisBorrowed.push(lending.gotchiTokenId);
-    borrower.gotchisBorrowed = gotchisBorrowed;
-
-    let stats = getStatisticEntity();
-    stats.aavegotchisBorrowed = stats.aavegotchisBorrowed.plus(BIGINT_ONE);
-    stats.save();
-
-    originalOwner.save();
-    borrower.save();
-    lending.save();
-}
-
-export function handleGotchiLendingCancel(event: GotchiLendingCancel): void {
-    let lending = getOrCreateGotchiLending(event.params.listingId);
-    lending = updateGotchiLending(lending, event);
-    lending.save();
-}
-
 export function handleERC1155ExecutedToRecipient(
     event: ERC1155ExecutedToRecipient
 ): void {
@@ -1230,6 +1126,9 @@ export function handleGotchiLendingAdded(event: GotchiLendingAdded): void {
         }
     }
     let gotchi = getOrCreateAavegotchi(event.params.tokenId.toString(), event)!;
+    gotchi.lending = BigInt.fromString(lending.id);
+    gotchi.save();
+
     lending.gotchi = gotchi.id;
     lending.gotchiTokenId = event.params.tokenId;
     lending.gotchiKinship = gotchi.kinship;
@@ -1250,14 +1149,19 @@ export function handleGotchiLendingClaimed(event: GotchiLendingClaimed): void {
     lending.upfrontCost = event.params.initialCost;
     lending.lender = event.params.lender;
     lending.originalOwner = event.params.originalOwner;
+    let gotchi = getOrCreateAavegotchi(event.params.tokenId.toString(), event)!;
+    lending.gotchiBRS = gotchi.withSetsRarityScore;
+    lending.gotchiKinship = gotchi.kinship;
     lending.period = event.params.period;
     lending.splitOwner = BigInt.fromI32(event.params.revenueSplit[0]);
     lending.splitBorrower = BigInt.fromI32(event.params.revenueSplit[1]);
     lending.splitOther = BigInt.fromI32(event.params.revenueSplit[2]);
+    lending.rentDuration = event.params.period;
     lending.tokensToShare = event.params.revenueTokens.map<Bytes>((e) => e);
     lending.thirdPartyAddress = event.params.thirdParty;
     lending.lastClaimed = event.params.timeClaimed;
     lending.gotchiTokenId = event.params.tokenId;
+    lending.gotchi = event.params.tokenId.toString();
     lending.borrower = event.params.borrower;
     lending.cancelled = false;
     lending.completed = false;
@@ -1276,6 +1180,10 @@ export function handleGotchiLendingCanceled(
     event: GotchiLendingCanceled
 ): void {
     let lending = getOrCreateGotchiLending(event.params.listingId);
+    // skip if old lending
+    if (lending.lender === null) {
+        return;
+    }
     lending.upfrontCost = event.params.initialCost;
     lending.lender = event.params.lender;
     lending.originalOwner = event.params.originalOwner;
@@ -1285,7 +1193,9 @@ export function handleGotchiLendingCanceled(
     lending.splitOther = BigInt.fromI32(event.params.revenueSplit[2]);
     lending.tokensToShare = event.params.revenueTokens.map<Bytes>((e) => e);
     lending.thirdPartyAddress = event.params.thirdParty;
+    lending.gotchi = event.params.tokenId.toString();
     lending.gotchiTokenId = event.params.tokenId;
+    lending.rentDuration = event.params.period;
     lending.cancelled = true;
     lending.completed = false;
     if (event.params.whitelistId != BIGINT_ZERO) {
@@ -1296,6 +1206,12 @@ export function handleGotchiLendingCanceled(
             lending.whitelistId = event.params.whitelistId;
         }
     }
+
+    const gotchi = getOrCreateAavegotchi(lending.gotchi.toString(), event)!;
+    gotchi.lending = null;
+    gotchi.save();
+
+    lending.gotchiKinship = gotchi.kinship;
     lending.save();
 }
 
@@ -1314,6 +1230,7 @@ export function handleGotchiLendingExecuted(
     lending.thirdPartyAddress = event.params.thirdParty;
     lending.gotchiTokenId = event.params.tokenId;
     lending.timeAgreed = event.params.timeAgreed;
+    lending.rentDuration = event.params.period;
     lending.cancelled = false;
     lending.completed = false;
     lending.borrower = event.params.borrower;
@@ -1325,11 +1242,7 @@ export function handleGotchiLendingExecuted(
             lending.whitelistId = event.params.whitelistId;
         }
     }
-    lending.save();
-
-    if (event.block.number.le(BLOCK_DISABLE_OLD_LENDING_EVENTS)) {
-        return;
-    }
+    lending.gotchi = event.params.tokenId.toString();
 
     // update originalOwner to lender
     let gotchi = getOrCreateAavegotchi(lending.gotchi, event)!;
@@ -1337,6 +1250,8 @@ export function handleGotchiLendingExecuted(
     gotchi.originalOwner = lender.id;
     lender.save();
     gotchi.save();
+    lending.gotchiKinship = gotchi.kinship;
+    lending.save();
 
     let originalOwner = getOrCreateUser(lending.lender!.toHexString());
     let gotchisLentOut = originalOwner.gotchisLentOut;
@@ -1357,6 +1272,10 @@ export function handleGotchiLendingExecuted(
 
 export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
     let lending = getOrCreateGotchiLending(event.params.listingId);
+    // skip if old lending
+    if (lending.lender === null) {
+        return;
+    }
     lending.upfrontCost = event.params.initialCost;
     lending.lender = event.params.lender;
     lending.originalOwner = event.params.originalOwner;
@@ -1366,7 +1285,9 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
     lending.splitOther = BigInt.fromI32(event.params.revenueSplit[2]);
     lending.tokensToShare = event.params.revenueTokens.map<Bytes>((e) => e);
     lending.thirdPartyAddress = event.params.thirdParty;
+    lending.rentDuration = event.params.period;
     lending.gotchiTokenId = event.params.tokenId;
+    lending.gotchi = event.params.tokenId.toString();
     lending.completed = true;
     lending.timeEnded = event.block.timestamp;
     if (event.params.whitelistId != BIGINT_ZERO) {
@@ -1377,11 +1298,7 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
             lending.whitelistId = event.params.whitelistId;
         }
     }
-    lending.save();
 
-    if (event.block.number.le(BLOCK_DISABLE_OLD_LENDING_EVENTS)) {
-        return;
-    }
     // remove gotchi from originalOwner gotchisLentout
     let originalOwner = getOrCreateUser(lending.lender!.toHexString());
     if (originalOwner.gotchisLentOut.length > 0) {
@@ -1418,7 +1335,10 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
     )!;
     gotchi.lending = null;
     gotchi.originalOwner = originalOwner.id;
+    gotchi.owner = originalOwner.id;
     gotchi.save();
+    lending.gotchiKinship = gotchi.kinship;
+    lending.save();
 
     // update Stats
     let stats = getStatisticEntity();
@@ -1442,7 +1362,7 @@ export function handleWhitelistAccessRightSet(
 }
 
 export function handleUpdateItemType(event: UpdateItemType): void {
-    let item = getOrCreateItemType(event.params._itemId.toString())!;
+    let item = getOrCreateItemType(event.params._itemType.svgId.toString())!;
     item.name = event.params._itemType.name;
     item.svgId = event.params._itemType.svgId;
     item.desc = event.params._itemType.description;
@@ -1520,7 +1440,7 @@ export function handleGotchiLendingAdded2(event: GotchiLendingAdded1): void {
         (e) => e
     );
     lending.thirdPartyAddress = event.params.param0.thirdParty;
-    lending.timeCreated = event.params.param0.timeCreated;
+    lending.timeCreated = event.block.timestamp;
     lending.cancelled = false;
     lending.completed = false;
     if (event.params.param0.whitelistId != BIGINT_ZERO) {
@@ -1538,6 +1458,9 @@ export function handleGotchiLendingAdded2(event: GotchiLendingAdded1): void {
         event.params.param0.tokenId.toString(),
         event
     )!;
+    gotchi.lending = BigInt.fromString(lending.id);
+    gotchi.save();
+
     lending.gotchi = gotchi.id;
     lending.gotchiTokenId = event.params.param0.tokenId;
     lending.gotchiKinship = gotchi.kinship;
@@ -1564,8 +1487,10 @@ export function handleGotchiLendingExecuted2(
     lending.tokensToShare = event.params.param0.revenueTokens.map<Bytes>(
         (e) => e
     );
+    lending.rentDuration = event.params.param0.period;
     lending.thirdPartyAddress = event.params.param0.thirdParty;
     lending.gotchiTokenId = event.params.param0.tokenId;
+    lending.gotchi = event.params.param0.tokenId.toString();
     lending.timeAgreed = event.params.param0.timeAgreed;
     lending.cancelled = false;
     lending.completed = false;
@@ -1581,7 +1506,6 @@ export function handleGotchiLendingExecuted2(
             lending.whitelistId = event.params.param0.whitelistId;
         }
     }
-    lending.save();
 
     // update originalOwner to lender
     let gotchi = getOrCreateAavegotchi(lending.gotchi, event)!;
@@ -1589,6 +1513,10 @@ export function handleGotchiLendingExecuted2(
     gotchi.originalOwner = lender.id;
     lender.save();
     gotchi.save();
+
+    lending.gotchiKinship = gotchi.kinship;
+    lending.gotchiBRS = gotchi.withSetsRarityScore;
+    lending.save();
 
     let originalOwner = getOrCreateUser(lending.lender!.toHexString());
     let gotchisLentOut = originalOwner.gotchisLentOut;
@@ -1612,10 +1540,25 @@ export function handleGotchiLendingCancelled2(
     event: GotchiLendingCancelled
 ): void {
     let lending = getOrCreateGotchiLending(event.params.param0.listingId);
+    // skip if old lending
+    if (
+        lending.lender === null ||
+        lending.gotchiKinship === null ||
+        lending.gotchiBRS === null ||
+        lending.gotchiTokenId === null
+    ) {
+        return;
+    }
     lending = updatePermissionsFromBitmap(
         lending,
         event.params.param0.permissions
     );
+
+    let gotchi = getOrCreateAavegotchi(
+        lending.gotchiTokenId.toString(),
+        event
+    )!;
+
     lending.upfrontCost = event.params.param0.initialCost;
     lending.lender = event.params.param0.lender;
     lending.originalOwner = event.params.param0.originalOwner;
@@ -1628,8 +1571,10 @@ export function handleGotchiLendingCancelled2(
     );
     lending.thirdPartyAddress = event.params.param0.thirdParty;
     lending.gotchiTokenId = event.params.param0.tokenId;
+    lending.gotchi = event.params.param0.tokenId.toString();
     lending.cancelled = true;
     lending.completed = false;
+    lending.rentDuration = event.params.param0.period;
     if (event.params.param0.whitelistId != BIGINT_ZERO) {
         let whitelist = getOrCreateWhitelist(
             event.params.param0.whitelistId,
@@ -1641,13 +1586,28 @@ export function handleGotchiLendingCancelled2(
             lending.whitelistId = event.params.param0.whitelistId;
         }
     }
+    lending.cancelled = true;
+    lending.timeEnded = event.block.timestamp;
+    lending.completed = false;
     lending.save();
+
+    gotchi.lending = null;
+    gotchi.save();
 }
 
 export function handleGotchiLendingClaimed2(
     event: GotchiLendingClaimed1
 ): void {
     let lending = getOrCreateGotchiLending(event.params.param0.listingId);
+    // skip if old lending
+    if (
+        lending.lender === null ||
+        lending.gotchiKinship === null ||
+        lending.gotchiBRS === null ||
+        lending.gotchiTokenId === null
+    ) {
+        return;
+    }
     lending = updatePermissionsFromBitmap(
         lending,
         event.params.param0.permissions
@@ -1660,6 +1620,7 @@ export function handleGotchiLendingClaimed2(
         ctoken.amount = ctoken.amount.plus(event.params.param0.amounts[i]);
         ctoken.save();
     }
+
     lending.upfrontCost = event.params.param0.initialCost;
     lending.lender = event.params.param0.lender;
     lending.originalOwner = event.params.param0.originalOwner;
@@ -1670,9 +1631,11 @@ export function handleGotchiLendingClaimed2(
     lending.tokensToShare = event.params.param0.revenueTokens.map<Bytes>(
         (e) => e
     );
+    lending.rentDuration = event.params.param0.period;
     lending.thirdPartyAddress = event.params.param0.thirdParty;
     lending.lastClaimed = event.params.param0.timeClaimed;
     lending.gotchiTokenId = event.params.param0.tokenId;
+    lending.gotchi = event.params.param0.tokenId.toString();
     lending.borrower = event.params.param0.borrower;
     lending.cancelled = false;
     lending.completed = false;
@@ -1692,10 +1655,25 @@ export function handleGotchiLendingClaimed2(
 
 export function handleGotchiLendingEnded2(event: GotchiLendingEnded1): void {
     let lending = getOrCreateGotchiLending(event.params.param0.listingId);
+    // skip if old lending
+    if (
+        lending.lender === null ||
+        lending.gotchiKinship === null ||
+        lending.gotchiBRS === null ||
+        lending.gotchiTokenId === null
+    ) {
+        return;
+    }
     lending = updatePermissionsFromBitmap(
         lending,
         event.params.param0.permissions
     );
+
+    let gotchi = getOrCreateAavegotchi(
+        lending.gotchiTokenId.toString(),
+        event
+    )!;
+
     lending.upfrontCost = event.params.param0.initialCost;
     lending.lender = event.params.param0.lender;
     lending.originalOwner = event.params.param0.originalOwner;
@@ -1706,8 +1684,10 @@ export function handleGotchiLendingEnded2(event: GotchiLendingEnded1): void {
     lending.tokensToShare = event.params.param0.revenueTokens.map<Bytes>(
         (e) => e
     );
+    lending.rentDuration = event.params.param0.period;
     lending.thirdPartyAddress = event.params.param0.thirdParty;
     lending.gotchiTokenId = event.params.param0.tokenId;
+    lending.gotchi = event.params.param0.tokenId.toString();
     lending.completed = true;
     lending.timeEnded = event.block.timestamp;
     if (event.params.param0.whitelistId != BIGINT_ZERO) {
@@ -1721,6 +1701,8 @@ export function handleGotchiLendingEnded2(event: GotchiLendingEnded1): void {
             lending.whitelistId = event.params.param0.whitelistId;
         }
     }
+    lending.timeEnded = event.block.timestamp;
+    lending.completed = true;
     lending.save();
 
     // remove gotchi from originalOwner gotchisLentout
@@ -1753,12 +1735,21 @@ export function handleGotchiLendingEnded2(event: GotchiLendingEnded1): void {
         borrower.save();
     }
 
-    let gotchi = getOrCreateAavegotchi(
-        lending.gotchiTokenId.toString(),
-        event
-    )!;
+    if (event.params.param0.whitelistId != BIGINT_ZERO) {
+        let whitelist = getOrCreateWhitelist(
+            event.params.param0.whitelistId,
+            event
+        );
+        if (whitelist) {
+            lending.whitelist = whitelist.id;
+            lending.whitelistMembers = whitelist.members;
+            lending.whitelistId = event.params.param0.whitelistId;
+        }
+    }
+
     gotchi.lending = null;
     gotchi.originalOwner = originalOwner.id;
+    gotchi.owner = originalOwner.id;
     gotchi.save();
 
     // update Stats
@@ -1792,6 +1783,16 @@ export function handleERC721BuyOrderExecuted(
     entity.priceInWei = event.params.priceInWei;
     entity.buyer = event.params.buyer;
     entity.executedAt = event.params.time;
+    entity.save();
+}
+
+export function handleERC721BuyOrderCanceled(
+    event: ERC721BuyOrderCanceled
+): void {
+    // update buy order
+    let entity = getOrCreateERC721BuyOrder(event.params.buyOrderId.toString());
+    entity.canceledAt = event.params.time;
+    entity.canceled = true;
     entity.save();
 }
 

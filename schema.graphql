@@ -340,7 +340,7 @@ type GotchiLending @entity {
     # gotch filter attributes
     gotchiBRS: BigInt
     gotchiTokenId: BigInt!
-    gotchiKinship: BigInt!
+    gotchiKinship: BigInt
 
     # profit split
     splitOwner: BigInt
@@ -407,4 +407,6 @@ type ERC721BuyOrder @entity {
     validationHash: Bytes!
     createdAt: BigInt!
     executedAt: BigInt
+    canceledAt: BigInt
+    canceled: Boolean
 }

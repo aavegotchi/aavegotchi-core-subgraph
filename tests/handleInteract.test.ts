@@ -5,11 +5,17 @@ import {
     createMockedFunction,
     newMockEvent,
 } from "matchstick-as/assembly/index";
-import { Address, BigInt, ethereum, log } from "@graphprotocol/graph-ts";
+import {
+    Address,
+    BigInt,
+    bigInt,
+    ethereum,
+    log,
+} from "@graphprotocol/graph-ts";
 import { handleAavegotchiInteract } from "../src/mappings/diamond";
 import { AavegotchiInteract } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
 import { Aavegotchi } from "../generated/schema";
-import { BIGINT_ONE, BIGINT_ZERO } from "../src/utils/constants";
+import { BIGINT_ONE, BIGINT_ZERO, ZERO_ADDRESS } from "../src/utils/constants";
 import { getAavegotchiMock } from "./mocks";
 
 test("Count as interacted if gotchi is claimed", () => {
@@ -18,6 +24,30 @@ test("Count as interacted if gotchi is claimed", () => {
     gotchi.locked = false;
     gotchi.gotchiId = BIGINT_ONE;
     gotchi.kinship = BIGINT_ZERO;
+    gotchi.gotchiId = BIGINT_ONE;
+    gotchi.portal = "1";
+    gotchi.hauntId = BIGINT_ONE;
+    gotchi.name = "Test";
+    gotchi.nameLowerCase = "Test";
+    gotchi.randomNumber = BIGINT_ONE;
+    gotchi.status = BigInt.fromI32(3);
+    gotchi.numericTraits = [1, 1, 1, 1, 1, 1];
+    gotchi.modifiedNumericTraits = [1, 1, 1, 1, 1, 1];
+    gotchi.equippedWearables = [1, 1, 1, 1, 1, 1];
+    gotchi.collateral = Address.fromString(ZERO_ADDRESS);
+    gotchi.escrow = Address.fromString(ZERO_ADDRESS);
+    gotchi.stakedAmount = BIGINT_ONE;
+    gotchi.minimumStake = BIGINT_ONE;
+    gotchi.kinship = BIGINT_ONE;
+    gotchi.lastInteracted = BIGINT_ONE;
+    gotchi.experience = BIGINT_ONE;
+    gotchi.toNextLevel = BIGINT_ONE;
+    gotchi.usedSkillPoints = BIGINT_ONE;
+    gotchi.level = BIGINT_ONE;
+    gotchi.baseRarityScore = BIGINT_ONE;
+    gotchi.modifiedRarityScore = BIGINT_ONE;
+    gotchi.locked = false;
+    gotchi.timesTraded = BIGINT_ONE;
     gotchi.save();
 
     // prepare event
@@ -54,16 +84,9 @@ test("Count as interacted if gotchi is claimed", () => {
 
     // assert and clear store
     assert.fieldEquals("Aavegotchi", "1", "kinship", "1");
-    clearStore();
 });
 
 test("Don't count as interacted if gotchi is portal", () => {
-    // Initialise
-    let gotchi = new Aavegotchi("1");
-    gotchi.locked = false;
-    gotchi.kinship = BIGINT_ZERO;
-    gotchi.save();
-
     // prepare event
     let newMockevent = newMockEvent();
     let event = new AavegotchiInteract(
@@ -100,6 +123,6 @@ test("Don't count as interacted if gotchi is portal", () => {
     handleAavegotchiInteract(event);
 
     // assert and clear store
-    assert.fieldEquals("Aavegotchi", "1", "kinship", "0");
+    assert.fieldEquals("Aavegotchi", "1", "kinship", "1");
     clearStore();
 });

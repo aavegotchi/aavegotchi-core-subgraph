@@ -10362,5 +10362,24 @@
         ],
         "name": "ERC721BuyOrderExecuted",
         "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "buyOrderId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "time",
+                "type": "uint256"
+            }
+        ],
+        "name": "ERC721BuyOrderCanceled",
+        "type": "event"
     }
 ]

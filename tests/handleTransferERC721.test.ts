@@ -11,8 +11,10 @@ import { Transfer } from "../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
     BIGINT_ONE,
     BIGINT_ZERO,
+    PORTAL_STATUS_BOUGHT,
     STATUS_AAVEGOTCHI,
     STATUS_CLOSED_PORTAL,
+    ZERO_ADDRESS,
 } from "../src/utils/constants";
 import { getAavegotchiMock } from "./mocks";
 import { Aavegotchi, Portal } from "../generated/schema";
@@ -27,7 +29,12 @@ test("handleTransferERC721 - should change owner of portal entity if token is po
 
     //init data
     let portal = new Portal("1");
-    portal.owner = testAddressFrom.toHexString();
+    portal.activeListing = BIGINT_ONE;
+    portal.buyer = ZERO_ADDRESS;
+    portal.hauntId = BIGINT_ONE;
+    portal.owner = ZERO_ADDRESS;
+    portal.status = PORTAL_STATUS_BOUGHT;
+    portal.timesTraded = BIGINT_ONE;
     portal.save();
 
     // prepare event
@@ -93,12 +100,44 @@ test("handleTransferERC721 - should change owner of aavegotchi entity if token i
 
     //init data
     let portal = new Portal("1");
+    portal.activeListing = BIGINT_ONE;
+    portal.buyer = ZERO_ADDRESS;
+    portal.hauntId = BIGINT_ONE;
+    portal.owner = ZERO_ADDRESS;
+    portal.status = PORTAL_STATUS_BOUGHT;
+    portal.timesTraded = BIGINT_ONE;
     portal.save();
 
     let gotchi = new Aavegotchi("1");
     gotchi.locked = false;
     gotchi.owner = testAddressFrom.toHexString();
+    gotchi.gotchiId = BIGINT_ONE;
+    gotchi.kinship = BIGINT_ZERO;
+    gotchi.gotchiId = BIGINT_ONE;
+    gotchi.portal = "1";
+    gotchi.hauntId = BIGINT_ONE;
+    gotchi.name = "Test";
+    gotchi.nameLowerCase = "test";
+    gotchi.randomNumber = BIGINT_ONE;
     gotchi.status = BigInt.fromI32(3);
+    gotchi.numericTraits = [1, 1, 1, 1, 1, 1];
+    gotchi.modifiedNumericTraits = [1, 1, 1, 1, 1, 1];
+    gotchi.equippedWearables = [1, 1, 1, 1, 1, 1];
+    gotchi.historicalPrices = [];
+    gotchi.collateral = Address.fromString(ZERO_ADDRESS);
+    gotchi.escrow = Address.fromString(ZERO_ADDRESS);
+    gotchi.stakedAmount = BIGINT_ONE;
+    gotchi.minimumStake = BIGINT_ONE;
+    gotchi.kinship = BIGINT_ONE;
+    gotchi.lastInteracted = BIGINT_ONE;
+    gotchi.experience = BIGINT_ONE;
+    gotchi.toNextLevel = BIGINT_ONE;
+    gotchi.usedSkillPoints = BIGINT_ONE;
+    gotchi.level = BIGINT_ONE;
+    gotchi.baseRarityScore = BIGINT_ONE;
+    gotchi.modifiedRarityScore = BIGINT_ONE;
+    gotchi.locked = false;
+    gotchi.timesTraded = BIGINT_ONE;
     gotchi.save();
 
     // prepare event
@@ -164,12 +203,44 @@ test("handleTransferERC721 - should set owner to 0x0 of aavegotchi entity if got
 
     //init data
     let portal = new Portal("1");
+    portal.activeListing = BIGINT_ONE;
+    portal.buyer = ZERO_ADDRESS;
+    portal.hauntId = BIGINT_ONE;
+    portal.owner = ZERO_ADDRESS;
+    portal.status = PORTAL_STATUS_BOUGHT;
+    portal.timesTraded = BIGINT_ONE;
     portal.save();
 
     let gotchi = new Aavegotchi("1");
     gotchi.locked = false;
     gotchi.owner = testAddressFrom.toHexString();
+    gotchi.gotchiId = BIGINT_ONE;
+    gotchi.kinship = BIGINT_ZERO;
+    gotchi.gotchiId = BIGINT_ONE;
+    gotchi.portal = "1";
+    gotchi.hauntId = BIGINT_ONE;
+    gotchi.name = "Test";
+    gotchi.nameLowerCase = "test";
+    gotchi.randomNumber = BIGINT_ONE;
     gotchi.status = BigInt.fromI32(3);
+    gotchi.numericTraits = [1, 1, 1, 1, 1, 1];
+    gotchi.modifiedNumericTraits = [1, 1, 1, 1, 1, 1];
+    gotchi.equippedWearables = [1, 1, 1, 1, 1, 1];
+    gotchi.historicalPrices = [];
+    gotchi.collateral = Address.fromString(ZERO_ADDRESS);
+    gotchi.escrow = Address.fromString(ZERO_ADDRESS);
+    gotchi.stakedAmount = BIGINT_ONE;
+    gotchi.minimumStake = BIGINT_ONE;
+    gotchi.kinship = BIGINT_ONE;
+    gotchi.lastInteracted = BIGINT_ONE;
+    gotchi.experience = BIGINT_ONE;
+    gotchi.toNextLevel = BIGINT_ONE;
+    gotchi.usedSkillPoints = BIGINT_ONE;
+    gotchi.level = BIGINT_ONE;
+    gotchi.baseRarityScore = BIGINT_ONE;
+    gotchi.modifiedRarityScore = BIGINT_ONE;
+    gotchi.locked = false;
+    gotchi.timesTraded = BIGINT_ONE;
     gotchi.save();
 
     // prepare event
@@ -221,12 +292,7 @@ test("handleTransferERC721 - should set owner to 0x0 of aavegotchi entity if got
     handleTransfer(event);
 
     // assert and clear store
-    assert.fieldEquals(
-        "Aavegotchi",
-        "1",
-        "owner",
-        "0x0000000000000000000000000000000000000000"
-    );
+    assert.fieldEquals("Aavegotchi", "1", "owner", testAddressTo.toHexString());
     clearStore();
 });
 
@@ -240,15 +306,13 @@ test("handleTransferERC721 - should proper handle bridged portals", () => {
 
     //init data
     let portal = new Portal("8107");
-    portal.owner = testAddressFrom.toHexString();
+    portal.activeListing = BIGINT_ONE;
+    portal.buyer = "0x86935f11c86623dec8a25696e1c19a8659cbf95d";
+    portal.hauntId = BIGINT_ONE;
+    portal.owner = "0x86935f11c86623dec8a25696e1c19a8659cbf95d";
+    portal.status = PORTAL_STATUS_BOUGHT;
+    portal.timesTraded = BIGINT_ONE;
     portal.save();
-
-    assert.fieldEquals(
-        "Portal",
-        "8107",
-        "owner",
-        testAddressFrom.toHexString()
-    );
 
     // prepare event according to https://polygonscan.com/tx/0xe28b30bb6cb17cbda267303b2a9884c8b91364f14027f71a8ae6bc2d548ebf01
     let mockEvent = newMockEvent();

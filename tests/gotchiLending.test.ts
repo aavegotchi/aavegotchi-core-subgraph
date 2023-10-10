@@ -487,5 +487,13 @@ test("end gotchi lending", () => {
         "originalOwner",
         address.toHexString()
     );
+    assert.fieldEquals(
+        "Aavegotchi",
+        "1",
+        "originalOwner",
+        address.toHexString()
+    );
+
+    assert.fieldEquals("Aavegotchi", "1", "lending", "null");
     assert.fieldEquals("Aavegotchi", "1", "lending", "null");
 });
