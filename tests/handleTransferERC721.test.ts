@@ -114,7 +114,7 @@ test("handleTransferERC721 - should change owner of aavegotchi entity if token i
     gotchi.gotchiId = BIGINT_ONE;
     gotchi.kinship = BIGINT_ZERO;
     gotchi.gotchiId = BIGINT_ONE;
-    gotchi.portal = "1";
+    // gotchi.portal = "1";
     gotchi.hauntId = BIGINT_ONE;
     gotchi.name = "Test";
     gotchi.nameLowerCase = "test";
@@ -217,7 +217,7 @@ test("handleTransferERC721 - should set owner to 0x0 of aavegotchi entity if got
     gotchi.gotchiId = BIGINT_ONE;
     gotchi.kinship = BIGINT_ZERO;
     gotchi.gotchiId = BIGINT_ONE;
-    gotchi.portal = "1";
+    // gotchi.portal = "1";
     gotchi.hauntId = BIGINT_ONE;
     gotchi.name = "Test";
     gotchi.nameLowerCase = "test";

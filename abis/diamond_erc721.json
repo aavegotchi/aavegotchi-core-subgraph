@@ -1,0 +1,1264 @@
+[
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_aavegotchiDiamond",
+                "type": "address"
+            }
+        ],
+        "name": "AavegotchiAddressUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_fakeGotchisCardDiamond",
+                "type": "address"
+            }
+        ],
+        "name": "FakeGotchisCardAddressUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_ghstContract",
+                "type": "address"
+            }
+        ],
+        "name": "GhstAddressUpdated",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_approved",
+                "type": "address"
+            },
+            { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+        ],
+        "name": "approve",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_owner", "type": "address" }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+            { "internalType": "uint256", "name": "balance_", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+        ],
+        "name": "getApproved",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "approved_",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_owner", "type": "address" },
+            {
+                "internalType": "address",
+                "name": "_operator",
+                "type": "address"
+            }
+        ],
+        "name": "isApprovedForAll",
+        "outputs": [
+            { "internalType": "bool", "name": "approved_", "type": "bool" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_salePrice",
+                "type": "uint256"
+            }
+        ],
+        "name": "multiRoyaltyInfo",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "receivers",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "royaltyAmounts",
+                "type": "uint256[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "name",
+        "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+        ],
+        "name": "ownerOf",
+        "outputs": [
+            { "internalType": "address", "name": "owner_", "type": "address" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_from", "type": "address" },
+            { "internalType": "address", "name": "_to", "type": "address" },
+            {
+                "internalType": "uint256[]",
+                "name": "_tokenIds",
+                "type": "uint256[]"
+            },
+            { "internalType": "bytes", "name": "_data", "type": "bytes" }
+        ],
+        "name": "safeBatchTransfer",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_from", "type": "address" },
+            { "internalType": "address", "name": "_to", "type": "address" },
+            { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+        ],
+        "name": "safeTransferFrom",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_from", "type": "address" },
+            { "internalType": "address", "name": "_to", "type": "address" },
+            {
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            { "internalType": "bytes", "name": "_data", "type": "bytes" }
+        ],
+        "name": "safeTransferFrom",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_aavegotchiDiamond",
+                "type": "address"
+            }
+        ],
+        "name": "setAavegotchiAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_operator",
+                "type": "address"
+            },
+            { "internalType": "bool", "name": "_approved", "type": "bool" }
+        ],
+        "name": "setApprovalForAll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_fakeGotchisCardDiamond",
+                "type": "address"
+            }
+        ],
+        "name": "setFakeGotchisCardAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_ghstContract",
+                "type": "address"
+            }
+        ],
+        "name": "setGhstAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "symbol",
+        "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "_index", "type": "uint256" }
+        ],
+        "name": "tokenByIndex",
+        "outputs": [
+            { "internalType": "uint256", "name": "tokenId_", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_owner", "type": "address" }
+        ],
+        "name": "tokenIdsOfOwner",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "tokenIds_",
+                "type": "uint256[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+        ],
+        "name": "tokenURI",
+        "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+            { "internalType": "uint256", "name": "", "type": "uint256" }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "address", "name": "_from", "type": "address" },
+            { "internalType": "address", "name": "_to", "type": "address" },
+            { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+        ],
+        "name": "transferFrom",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "publisher",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint16[2]",
+                        "name": "royalty",
+                        "type": "uint16[2]"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "editions",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "flagCount",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "likeCount",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "artist",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint40",
+                        "name": "createdAt",
+                        "type": "uint40"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "status",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "minted",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "description",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "externalLink",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "artistName",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "publisherName",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "fileHash",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "fileType",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "thumbnailHash",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "thumbnailType",
+                        "type": "string"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct Metadata",
+                "name": "metaData",
+                "type": "tuple"
+            }
+        ],
+        "name": "MetadataActionLog",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_declinedBy",
+                "type": "address"
+            }
+        ],
+        "name": "MetadataDecline",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_flaggedBy",
+                "type": "address"
+            }
+        ],
+        "name": "MetadataFlag",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_likedBy",
+                "type": "address"
+            }
+        ],
+        "name": "MetadataLike",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_reviewer",
+                "type": "address"
+            }
+        ],
+        "name": "ReviewPass",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "publisherName",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "externalLink",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "description",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "artist",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "artistName",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint16[2]",
+                        "name": "royalty",
+                        "type": "uint16[2]"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "editions",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "fileHash",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "fileType",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "thumbnailHash",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "thumbnailType",
+                        "type": "string"
+                    }
+                ],
+                "internalType": "struct MetadataFacet.MetadataInput",
+                "name": "mData",
+                "type": "tuple"
+            },
+            { "internalType": "uint256", "name": "series", "type": "uint256" }
+        ],
+        "name": "addMetadata",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "_id", "type": "uint256" },
+            { "internalType": "bool", "name": "isBadFaith", "type": "bool" }
+        ],
+        "name": "declineMetadata",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "_id", "type": "uint256" }
+        ],
+        "name": "flag",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "_id", "type": "uint256" }
+        ],
+        "name": "getMetadata",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "publisher",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint16[2]",
+                        "name": "royalty",
+                        "type": "uint16[2]"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "editions",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "flagCount",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "likeCount",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "artist",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint40",
+                        "name": "createdAt",
+                        "type": "uint40"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "status",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "minted",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "description",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "externalLink",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "artistName",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "publisherName",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "fileHash",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "fileType",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "thumbnailHash",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "thumbnailType",
+                        "type": "string"
+                    }
+                ],
+                "internalType": "struct Metadata",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "_id", "type": "uint256" }
+        ],
+        "name": "like",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "_id", "type": "uint256" }
+        ],
+        "name": "mint",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            { "internalType": "uint256", "name": "_id", "type": "uint256" }
+        ],
+        "name": "passReview",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "facetAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum IDiamondCut.FacetCutAction",
+                        "name": "action",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "bytes4[]",
+                        "name": "functionSelectors",
+                        "type": "bytes4[]"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct IDiamondCut.FacetCut[]",
+                "name": "_diamondCut",
+                "type": "tuple[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_init",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "_calldata",
+                "type": "bytes"
+            }
+        ],
+        "name": "DiamondCut",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_operator",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "_approved",
+                "type": "bool"
+            }
+        ],
+        "name": "ApprovalForAll",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_operator",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_ids",
+                "type": "uint256[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_values",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "TransferBatch",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_operator",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "name": "TransferSingle",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "_value",
+                "type": "string"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "URI",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_approved",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "Approval",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_operator",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "_approved",
+                "type": "bool"
+            }
+        ],
+        "name": "ApprovalForAll",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "Mint",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "Transfer",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "facetAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum IDiamondCut.FacetCutAction",
+                        "name": "action",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "bytes4[]",
+                        "name": "functionSelectors",
+                        "type": "bytes4[]"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct IDiamondCut.FacetCut[]",
+                "name": "_diamondCut",
+                "type": "tuple[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_init",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "_calldata",
+                "type": "bytes"
+            }
+        ],
+        "name": "DiamondCut",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_operator",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "_approved",
+                "type": "bool"
+            }
+        ],
+        "name": "ApprovalForAll",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_operator",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_ids",
+                "type": "uint256[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "_values",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "TransferBatch",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_operator",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "name": "TransferSingle",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "_value",
+                "type": "string"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "URI",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_approved",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "Approval",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_operator",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "_approved",
+                "type": "bool"
+            }
+        ],
+        "name": "ApprovalForAll",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "Mint",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "Transfer",
+        "type": "event"
+    }
+]
