@@ -211,24 +211,24 @@ export function updateERC721ListingInfo(
 
         let erc721Contract = fetchERC721(listingInfo.erc721TokenAddress);
         
-        // if (erc721Contract != null) {
-        //     let erc721Token = fetchERC721Token(
-        //         erc721Contract,
-        //         listingInfo.erc721TokenId
-        //     );
+        if (erc721Contract != null) {
+            let erc721Token = fetchERC721Token(
+                erc721Contract,
+                listingInfo.erc721TokenId
+            );
     
-        //     listing.fileHash = erc721Token.fileHash;
-        //     listing.name = erc721Token.name;
-        //     listing.publisher = erc721Token.publisher;
-        //     listing.externalLink = erc721Token.externalLink;
-        //     listing.description = erc721Token.description;
-        //     listing.artist = erc721Token.artist;
-        //     listing.artistName = erc721Token.artistName;
-        //     listing.editions = erc721Token.editions;
-        //     listing.fileType = erc721Token.fileType;
-        //     listing.thumbnailHash = erc721Token.thumbnailHash;
-        //     listing.thumbnailType = erc721Token.thumbnailType;
-        // }
+            listing.fileHash = erc721Token.fileHash;
+            listing.name = erc721Token.name;
+            listing.publisher = erc721Token.publisher;
+            listing.externalLink = erc721Token.externalLink;
+            listing.description = erc721Token.description;
+            listing.artist = erc721Token.artist;
+            listing.artistName = erc721Token.artistName;
+            listing.editions = erc721Token.editions;
+            listing.fileType = erc721Token.fileType;
+            listing.thumbnailHash = erc721Token.thumbnailHash;
+            listing.thumbnailType = erc721Token.thumbnailType;
+        }
 
         if (listing.category.toI32() <= 2) {
             let portal = getOrCreatePortal(
