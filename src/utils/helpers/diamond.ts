@@ -21,7 +21,9 @@ import {
     Whitelist,
     ClaimedToken,
     ERC721BuyOrder,
+    ERC721Contract,
 } from "../../../generated/schema";
+import { fetchERC721, fetchERC721Token } from "../../fetch/erc721";
 import { BIGINT_ZERO, STATUS_AAVEGOTCHI, ZERO_ADDRESS } from "../constants";
 import {
     Address,
@@ -206,6 +208,27 @@ export function updateERC721ListingInfo(
         if (listing.blockCreated.equals(BIGINT_ZERO)) {
             listing.blockCreated = event.block.number;
         }
+
+        let erc721Contract = fetchERC721(listingInfo.erc721TokenAddress);
+        
+        // if (erc721Contract != null) {
+        //     let erc721Token = fetchERC721Token(
+        //         erc721Contract,
+        //         listingInfo.erc721TokenId
+        //     );
+    
+        //     listing.fileHash = erc721Token.fileHash;
+        //     listing.name = erc721Token.name;
+        //     listing.publisher = erc721Token.publisher;
+        //     listing.externalLink = erc721Token.externalLink;
+        //     listing.description = erc721Token.description;
+        //     listing.artist = erc721Token.artist;
+        //     listing.artistName = erc721Token.artistName;
+        //     listing.editions = erc721Token.editions;
+        //     listing.fileType = erc721Token.fileType;
+        //     listing.thumbnailHash = erc721Token.thumbnailHash;
+        //     listing.thumbnailType = erc721Token.thumbnailType;
+        // }
 
         if (listing.category.toI32() <= 2) {
             let portal = getOrCreatePortal(

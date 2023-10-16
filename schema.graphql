@@ -201,6 +201,19 @@ type ERC721Listing @entity {
 
     whitelist: Whitelist
     priceUpdatedAt: BigInt
+
+    fileHash: String
+    name: String
+    publisher: Account
+    publisherName: String
+    externalLink: String
+    description: String
+    artist: Account
+    artistName: String
+    editions: Int
+    fileType: String
+    thumbnailHash: String
+    thumbnailType: String
 }
 
 type ERC1155Listing @entity {

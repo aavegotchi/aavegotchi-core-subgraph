@@ -18,7 +18,7 @@ import {
     getERC721ListingMock,
 } from "./mocks";
 import { getOrCreatePortal } from "../src/utils/helpers/diamond";
-import { Aavegotchi } from "../generated/schema";
+import { Aavegotchi, ERC721Contract } from "../generated/schema";
 
 test("should add gotchi name lower case if token is an aavegtochi", () => {
     // prepare event
@@ -53,6 +53,10 @@ test("should add gotchi name lower case if token is an aavegtochi", () => {
     gotchi.locked = false;
     gotchi.timesTraded = BIGINT_ONE;
     gotchi.save();
+
+    let erc721Contract = new ERC721Contract(event.params.erc721TokenAddress);
+    erc721Contract.asAccount = Address.fromString(ZERO_ADDRESS);
+    erc721Contract.save();
 
     //try_getERC721Listing
     createMockedFunction(

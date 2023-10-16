@@ -18,7 +18,7 @@ import {
     getERC721ListingMock,
 } from "./mocks";
 import { getOrCreatePortal } from "../src/utils/helpers/diamond";
-import { Aavegotchi, ERC721Listing, ItemType } from "../generated/schema";
+import { Aavegotchi, ERC721Contract, ERC721Listing, ItemType } from "../generated/schema";
 
 test("handleERC721Listing - should add price to historicalPrices of aavegotchi if listing is aavegotchi", () => {
     // prepare event
@@ -83,6 +83,10 @@ test("handleERC721Listing - should add price to historicalPrices of aavegotchi i
     listing.blockCreated = BIGINT_ZERO;
     listing.save();
 
+    let erc721Contract = new ERC721Contract(event.params.erc721TokenAddress);
+    erc721Contract.asAccount = Address.fromString(ZERO_ADDRESS);
+    erc721Contract.save();
+
     //try_getERC721Listing
     createMockedFunction(
         event.address,
@@ -113,6 +117,10 @@ test("handleERC721Listing - should add price to historicalPrices of portal if li
     portal.historicalPrices = [];
 
     portal.save();
+
+    let erc721Contract = new ERC721Contract(event.params.erc721TokenAddress);
+    erc721Contract.asAccount = Address.fromString(ZERO_ADDRESS);
+    erc721Contract.save();
 
     createMockedFunction(
         event.address,
@@ -179,6 +187,10 @@ test("handleERC721Listing - should set blockCreated to block number when listing
     listing.blockCreated = BIGINT_ZERO;
     listing.save();
 
+    let erc721Contract = new ERC721Contract(event.params.erc721TokenAddress);
+    erc721Contract.asAccount = Address.fromString(ZERO_ADDRESS);
+    erc721Contract.save();
+
     //try_getERC721Listing
     createMockedFunction(
         event.address,
@@ -240,6 +252,10 @@ test("handleERC721Listing - reorg: should set block created if cancel events hap
     listing.gotchi = "1";
     listing.blockCreated = BIGINT_ZERO;
     listing.save();
+
+    let erc721Contract = new ERC721Contract(Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d"));
+    erc721Contract.asAccount = Address.fromString(ZERO_ADDRESS);
+    erc721Contract.save();
 
     //try_getERC721Listing
     createMockedFunction(
