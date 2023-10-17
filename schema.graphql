@@ -287,6 +287,23 @@ type Statistic @entity {
     totalWearablesVolume: BigInt!
     totalConsumablesVolume: BigInt!
     totalTicketsVolume: BigInt!
+
+    totalOwners: Int
+    totalOwnersArray: [Bytes!]!
+
+    totalFakeGotchiPieces: Int
+    totalNFTs: Int
+    totalNFTsArray: String!
+
+    burnedNFTs: Int
+    burnedCards: Int
+
+    tokenIdCounter: Int
+
+    totalEditionsMinted: Int!
+    totalEditionsCirculating: Int!
+
+    totalEditionsCirculatingArray: String!
 }
 
 type ItemType @entity {
@@ -652,26 +669,6 @@ type Generation @entity {
     "a generation is a series"
     id: ID!
     amount: Int
-}
-
-type TotalStatistic @entity {
-    id: ID!
-    totalOwners: Int
-    totalOwnersArray: [Bytes!]!
-
-    totalFakeGotchiPieces: Int
-    totalNFTs: Int
-    totalNFTsArray: String!
-
-    burnedNFTs: Int
-    burnedCards: Int
-
-    tokenIdCounter: Int
-
-    totalEditionsMinted: Int!
-    totalEditionsCirculating: Int!
-
-    totalEditionsCirculatingArray: String!
 }
 
 type NFTStatistic @entity {

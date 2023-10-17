@@ -160,15 +160,15 @@ describe("handleTransfer", () => {
 
         // total stats
         assert.fieldEquals(
-            "TotalStatistic",
+            "Statistic",
             "0",
             "totalEditionsCirculating",
             "1"
         );
-        assert.fieldEquals("TotalStatistic", "0", "totalEditionsMinted", "1");
-        assert.fieldEquals("TotalStatistic", "0", "totalNFTs", "1");
-        assert.fieldEquals("TotalStatistic", "0", "burnedNFTs", "0");
-        assert.fieldEquals("TotalStatistic", "0", "totalOwners", "1");
+        assert.fieldEquals("Statistic", "0", "totalEditionsMinted", "1");
+        assert.fieldEquals("Statistic", "0", "totalNFTs", "1");
+        assert.fieldEquals("Statistic", "0", "burnedNFTs", "0");
+        assert.fieldEquals("Statistic", "0", "totalOwners", "1");
 
         // nft stats
         assert.fieldEquals("NFTStatistic", "1", "burned", "0");
@@ -199,15 +199,15 @@ describe("handleTransfer", () => {
 
         // Total Stats
         assert.fieldEquals(
-            "TotalStatistic",
+            "Statistic",
             "0",
             "totalEditionsCirculating",
             "1"
         );
-        assert.fieldEquals("TotalStatistic", "0", "totalEditionsMinted", "1");
-        assert.fieldEquals("TotalStatistic", "0", "totalNFTs", "1");
-        assert.fieldEquals("TotalStatistic", "0", "burnedNFTs", "0");
-        assert.fieldEquals("TotalStatistic", "0", "totalOwners", "1");
+        assert.fieldEquals("Statistic", "0", "totalEditionsMinted", "1");
+        assert.fieldEquals("Statistic", "0", "totalNFTs", "1");
+        assert.fieldEquals("Statistic", "0", "burnedNFTs", "0");
+        assert.fieldEquals("Statistic", "0", "totalOwners", "1");
 
         // NFT Stats
         assert.fieldEquals("NFTStatistic", "1", "burned", "0");
@@ -250,15 +250,15 @@ describe("handleTransfer", () => {
 
         // Total Stats
         assert.fieldEquals(
-            "TotalStatistic",
+            "Statistic",
             "0",
             "totalEditionsCirculating",
             "0"
         );
-        assert.fieldEquals("TotalStatistic", "0", "totalEditionsMinted", "1");
-        assert.fieldEquals("TotalStatistic", "0", "totalNFTs", "0");
-        assert.fieldEquals("TotalStatistic", "0", "burnedNFTs", "1");
-        assert.fieldEquals("TotalStatistic", "0", "totalOwners", "0");
+        assert.fieldEquals("Statistic", "0", "totalEditionsMinted", "1");
+        assert.fieldEquals("Statistic", "0", "totalNFTs", "0");
+        assert.fieldEquals("Statistic", "0", "burnedNFTs", "1");
+        assert.fieldEquals("Statistic", "0", "totalOwners", "0");
 
         // NFT Stats
         assert.fieldEquals("NFTStatistic", "1", "burned", "1");

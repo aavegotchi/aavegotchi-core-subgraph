@@ -4,7 +4,7 @@ import {
     Account,
     MetadataActionLog,
     NFTStatistic,
-    TotalStatistic
+    Statistic,
 } from "../../generated/schema";
 import { BIGINT_ONE, BIGINT_ZERO } from "../constants";
 import { createJsonFromJSONObject } from "../helper/json";
@@ -112,9 +112,9 @@ export function updateAccountStatsTo(
 }
 
 export function updateTotalStatsMint(
-    stats: TotalStatistic,
+    stats: Statistic,
     metaData: MetadataActionLog
-): TotalStatistic {
+): Statistic {
     const parsedJsonTotal = json.fromString(
         stats.totalEditionsCirculatingArray
     );
@@ -142,9 +142,9 @@ export function updateTotalStatsMint(
 }
 
 export function updateTotalStatsBurn(
-    stats: TotalStatistic,
+    stats: Statistic,
     metaData: MetadataActionLog
-): TotalStatistic {
+): Statistic {
     const parsedJsonTotal = json.fromString(
         stats.totalEditionsCirculatingArray
     );
@@ -169,9 +169,9 @@ export function updateTotalStatsBurn(
 }
 
 export function addToOwnersIfNotExists(
-    totalStats: TotalStatistic,
+    totalStats: Statistic,
     owner: Bytes
-): TotalStatistic {
+): Statistic {
     let ownersArray = totalStats.totalOwnersArray;
     if (ownersArray.indexOf(owner) == -1) {
         ownersArray.push(owner);
@@ -183,10 +183,10 @@ export function addToOwnersIfNotExists(
 }
 
 export function removeFromOwnersIfExistsAndBalanceNotZero(
-    totalStats: TotalStatistic,
+    totalStats: Statistic,
     owner: Bytes,
     amount: i32
-): TotalStatistic {
+): Statistic {
     if (amount > 0) {
         return totalStats;
     }

@@ -172,7 +172,7 @@ Additionally we store some useful statistics on the subgraph. You can combine th
 
 ```
 {
-  totalStatistics {
+  statistics {
     totalOwners
     totalFakeGotchiPieces
     totalNFTs

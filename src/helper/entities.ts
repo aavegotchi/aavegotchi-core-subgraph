@@ -3,16 +3,16 @@ import { Transfer } from "../../generated/FAKEGotchisNFTDiamond/IERC721";
 import {
     NFTHolder,
     NFTStatistic,
-    TotalStatistic
+    Statistic
 } from "../../generated/schema";
-import { ADDRESS_BURN, ADDRESS_DEAD, ADDRESS_ZERO } from "../constants";
+import { ADDRESS_BURN, ADDRESS_DEAD, ADDRESS_ZERO, BIGINT_ZERO } from "../constants";
 
 // export function getOrCreateCard(id: BigInt): Card
 
-export function getOrCreateStats(): TotalStatistic {
-    let stat = TotalStatistic.load("0");
+export function getOrCreateStats(): Statistic {
+    let stat = Statistic.load("0");
     if (!stat) {
-        stat = new TotalStatistic("0");
+        stat = new Statistic("0");
         stat.burnedCards = 0;
         stat.burnedNFTs = 0;
         stat.totalNFTs = 0;
@@ -24,6 +24,22 @@ export function getOrCreateStats(): TotalStatistic {
         stat.totalEditionsCirculating = 0;
         stat.totalEditionsMinted = 0;
         stat.totalEditionsCirculatingArray = "{}";
+
+        stat.portalsBought = BIGINT_ZERO;
+        stat.portalsOpened = BIGINT_ZERO;
+        stat.aavegotchisClaimed = BIGINT_ZERO;
+        stat.erc721ActiveListingCount = BIGINT_ZERO;
+        stat.erc1155ActiveListingCount = BIGINT_ZERO;
+        stat.erc721TotalVolume = BIGINT_ZERO;
+        stat.erc1155TotalVolume = BIGINT_ZERO;
+
+        //new
+        stat.totalWearablesVolume = BIGINT_ZERO;
+        stat.totalConsumablesVolume = BIGINT_ZERO;
+        stat.totalTicketsVolume = BIGINT_ZERO;
+
+        stat.aavegotchisBorrowed = BIGINT_ZERO;
+        stat.aavegotchisSacrificed = BIGINT_ZERO;
     }
 
     return stat;

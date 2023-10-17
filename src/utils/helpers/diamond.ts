@@ -572,6 +572,18 @@ export function getStatisticEntity(): Statistic {
         stats.aavegotchisBorrowed = BIGINT_ZERO;
         stats.aavegotchisSacrificed = BIGINT_ZERO;
 
+        stats.burnedCards = 0;
+        stats.burnedNFTs = 0;
+        stats.totalNFTs = 0;
+        stats.totalOwners = 0;
+        stats.totalFakeGotchiPieces = 0;
+        stats.totalNFTsArray = "{}";
+        stats.totalOwnersArray = new Array<Bytes>();
+        stats.tokenIdCounter = 0;
+        stats.totalEditionsCirculating = 0;
+        stats.totalEditionsMinted = 0;
+        stats.totalEditionsCirculatingArray = "{}";
+
         stats.save();
     }
 
