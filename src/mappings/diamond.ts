@@ -1126,6 +1126,9 @@ export function handleGotchiLendingAdded(event: GotchiLendingAdded): void {
         }
     }
     let gotchi = getOrCreateAavegotchi(event.params.tokenId.toString(), event)!;
+    if (!gotchi.modifiedRarityScore) {
+        gotchi = updateAavegotchiInfo(gotchi, event.params.tokenId, event);
+    }
     gotchi.lending = BigInt.fromString(lending.id);
     gotchi.save();
 
