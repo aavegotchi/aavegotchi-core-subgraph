@@ -27,8 +27,8 @@ import {
     ADDRESS_ZERO,
     BIGINT_ONE,
     BIGINT_ZERO,
-} from "../src/constants";
-import { handleTransfer } from "../src/diamonds/fakeGotchisNFT";
+} from "../src/utils/constants";
+import { handleTransfer } from "../src/mappings/fakeGotchisNFT";
 
 export function createTransferEvent(
     from: string,

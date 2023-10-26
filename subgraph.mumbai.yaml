@@ -270,7 +270,7 @@ dataSources:
                 handler: handleTransferBatch
               - event: URI(string,indexed uint256)
                 handler: handleURI
-          file: ./src/diamonds/fakeGotchisCard.ts
+          file: ./src/mappings/fakeGotchisCard.ts
     - kind: ethereum/contract
       name: FAKEGotchisNFTDiamond
       network: mumbai
@@ -302,4 +302,4 @@ dataSources:
                 handler: handleReviewPass
               - event: MetadataDecline(indexed uint256,address)
                 handler: handleMetadataDecline
-          file: ./src/diamonds/fakeGotchisNFT.ts
+          file: ./src/mappings/fakeGotchisNFT.ts

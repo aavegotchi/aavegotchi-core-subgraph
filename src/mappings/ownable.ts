@@ -5,7 +5,7 @@ import { OwnershipTransferred as OwnershipTransferredEvent } from "@openzeppelin
 import { events, transactions } from "@amxx/graphprotocol-utils";
 
 import { fetchOwnable } from "@openzeppelin/subgraphs/src/fetch/ownable";
-import { getOrCreateUser } from "./utils/helpers/diamond";
+import { getOrCreateUser } from "../utils/helpers/diamond";
 import { Bytes } from "@graphprotocol/graph-ts";
 
 export function handleOwnershipTransferred(
