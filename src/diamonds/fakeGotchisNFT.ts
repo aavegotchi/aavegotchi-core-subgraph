@@ -34,7 +34,7 @@ import {
     METADATA_STATUS_DECLINED,
     METADATA_STATUS_PAUSED,
     METADATA_STATUS_PENDING
-} from "../constants";
+} from "../utils/constants";
 
 import {
     fetchERC721,

@@ -5,7 +5,7 @@ import {
     NFTStatistic,
     Statistic
 } from "../../generated/schema";
-import { ADDRESS_BURN, ADDRESS_DEAD, ADDRESS_ZERO, BIGINT_ZERO } from "../constants";
+import { ADDRESS_BURN, ADDRESS_DEAD, ADDRESS_ZERO, BIGINT_ZERO } from "../utils/constants";
 
 // export function getOrCreateCard(id: BigInt): Card
 

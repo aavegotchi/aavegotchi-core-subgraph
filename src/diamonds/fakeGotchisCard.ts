@@ -1,5 +1,3 @@
-import { ADDRESS_ZERO, BIGINT_ONE } from "../constants";
-
 import { ethereum, BigInt } from "@graphprotocol/graph-ts";
 
 import {
