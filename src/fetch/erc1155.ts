@@ -1,7 +1,7 @@
 import { Address, BigInt } from "@graphprotocol/graph-ts";
 
 import {
-    Account,
+    User,
     ERC1155Contract,
     ERC1155Token,
     ERC1155Balance,
@@ -11,8 +11,7 @@ import {
 import { IERC1155 } from "../../generated/FAKEGotchisCardDiamond/IERC1155";
 
 import { constants } from "@amxx/graphprotocol-utils";
-
-import { fetchAccount } from "./account";
+import { getOrCreateUser } from "../utils/helpers/diamond";
 
 export function replaceURI(uri: string, identifier: BigInt): string {
     return uri.replaceAll(
@@ -28,10 +27,10 @@ export function fetchERC1155(address: Address): ERC1155Contract {
     let contract = ERC1155Contract.load(address);
     if (!contract) {
         contract = new ERC1155Contract(address);
-        contract.asAccount = address;
+        contract.asAccount = address.toHex();
         contract.save();
 
-        let account = fetchAccount(address);
+        let account = getOrCreateUser(address.toHex());
         account.asERC1155 = address;
         account.save();
     }
@@ -67,11 +66,11 @@ export function fetchERC1155Token(
 
 export function fetchERC1155Balance(
     token: ERC1155Token,
-    account: Account | null
+    account: User | null
 ): ERC1155Balance {
     let id = token.id
         .concat("/")
-        .concat(account ? account.id.toHex() : "totalSupply");
+        .concat(account ? account.id.toString() : "totalSupply");
     let balance = ERC1155Balance.load(id);
 
     if (balance == null) {
@@ -89,15 +88,15 @@ export function fetchERC1155Balance(
 
 export function fetchERC721Operator(
     contract: ERC1155Contract,
-    owner: Account,
-    operator: Account
+    owner: User,
+    operator: User
 ): ERC1155Operator {
     let id = contract.id
         .toHex()
         .concat("/")
-        .concat(owner.id.toHex())
+        .concat(owner.id.toString())
         .concat("/")
-        .concat(operator.id.toHex());
+        .concat(operator.id.toString());
     let op = ERC1155Operator.load(id);
 
     if (op == null) {

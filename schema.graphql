@@ -151,6 +151,34 @@ type User @entity {
 
     # borrowedGotchis: [GotchiLending!]! @derivedFrom(field: "borrower")
     # lendGotchis: [GotchiLending!]! @derivedFrom(field: "originalOwner")
+
+        asERC1155: ERC1155Contract
+    ERC1155balances: [ERC1155Balance!]! @derivedFrom(field: "account")
+    ERC1155operatorOwner: [ERC1155Operator!]! @derivedFrom(field: "owner")
+    ERC1155operatorOperator: [ERC1155Operator!]! @derivedFrom(field: "operator")
+    ERC1155transferFromEvent: [ERC1155Transfer!]! @derivedFrom(field: "from")
+    ERC1155transferToEvent: [ERC1155Transfer!]! @derivedFrom(field: "to")
+    ERC1155transferOperatorEvent: [ERC1155Transfer!]!
+        @derivedFrom(field: "operator")
+
+    asERC721: ERC721Contract
+    ERC721tokens: [ERC721Token!]! @derivedFrom(field: "owner")
+    ERC721operatorOwner: [ERC721Operator!]! @derivedFrom(field: "owner")
+    ERC721operatorOperator: [ERC721Operator!]! @derivedFrom(field: "operator")
+    ERC721transferFromEvent: [ERC721Transfer!]! @derivedFrom(field: "from")
+    ERC721transferToEvent: [ERC721Transfer!]! @derivedFrom(field: "to")
+
+    events: [Event!]! @derivedFrom(field: "emitter")
+
+    tokens: String! # from array
+    amountTokens: Int!
+
+    currentUniquePiecesOwned: Int!
+    totalUniquePiecesOwned: Int!
+
+    currentUniquePiecesOwnedArray: String! # from array
+    totalUniquePiecesOwnedArray: String! # from array
+    totalPiecesOwnedArray: String! # from array
 }
 
 type ERC721Listing @entity {
@@ -204,11 +232,11 @@ type ERC721Listing @entity {
 
     fileHash: String
     name: String
-    publisher: Account
+    publisher: User
     publisherName: String
     externalLink: String
     description: String
-    artist: Account
+    artist: User
     artistName: String
     editions: Int
     fileType: String
@@ -444,7 +472,7 @@ type ERC721BuyOrder @entity {
 interface Event {
     id: ID!
     transaction: Transaction!
-    emitter: Account!
+    emitter: User!
     timestamp: BigInt!
 }
 type Transaction @entity(immutable: true) {
@@ -454,41 +482,10 @@ type Transaction @entity(immutable: true) {
     events: [Event!]! @derivedFrom(field: "transaction")
 }
 
-type Account @entity {
-    id: Bytes!
-    asERC1155: ERC1155Contract
-    ERC1155balances: [ERC1155Balance!]! @derivedFrom(field: "account")
-    ERC1155operatorOwner: [ERC1155Operator!]! @derivedFrom(field: "owner")
-    ERC1155operatorOperator: [ERC1155Operator!]! @derivedFrom(field: "operator")
-    ERC1155transferFromEvent: [ERC1155Transfer!]! @derivedFrom(field: "from")
-    ERC1155transferToEvent: [ERC1155Transfer!]! @derivedFrom(field: "to")
-    ERC1155transferOperatorEvent: [ERC1155Transfer!]!
-        @derivedFrom(field: "operator")
-
-    asERC721: ERC721Contract
-    ERC721tokens: [ERC721Token!]! @derivedFrom(field: "owner")
-    ERC721operatorOwner: [ERC721Operator!]! @derivedFrom(field: "owner")
-    ERC721operatorOperator: [ERC721Operator!]! @derivedFrom(field: "operator")
-    ERC721transferFromEvent: [ERC721Transfer!]! @derivedFrom(field: "from")
-    ERC721transferToEvent: [ERC721Transfer!]! @derivedFrom(field: "to")
-
-    events: [Event!]! @derivedFrom(field: "emitter")
-
-    tokens: String! # from array
-    amountTokens: Int!
-
-    currentUniquePiecesOwned: Int!
-    totalUniquePiecesOwned: Int!
-
-    currentUniquePiecesOwnedArray: String! # from array
-    totalUniquePiecesOwnedArray: String! # from array
-    totalPiecesOwnedArray: String! # from array
-}
-
 # Cards
 type ERC1155Contract @entity(immutable: true) {
     id: Bytes!
-    asAccount: Account!
+    asAccount: User!
     tokens: [ERC1155Token!]! @derivedFrom(field: "contract")
     balances: [ERC1155Balance!]! @derivedFrom(field: "contract")
     operators: [ERC1155Operator!]! @derivedFrom(field: "contract")
@@ -508,7 +505,7 @@ type ERC1155Balance @entity {
     id: ID!
     contract: ERC1155Contract!
     token: ERC1155Token!
-    account: Account
+    account: User
     value: BigDecimal!
     valueExact: BigInt!
     transferFromEvent: [ERC1155Transfer!]! @derivedFrom(field: "fromBalance")
@@ -517,21 +514,21 @@ type ERC1155Balance @entity {
 type ERC1155Operator @entity {
     id: ID!
     contract: ERC1155Contract!
-    owner: Account!
-    operator: Account!
+    owner: User!
+    operator: User!
     approved: Boolean!
 }
 type ERC1155Transfer implements Event @entity(immutable: true) {
     id: ID!
-    emitter: Account!
+    emitter: User!
     transaction: Transaction!
     timestamp: BigInt!
     contract: ERC1155Contract!
     token: ERC1155Token!
-    operator: Account!
-    from: Account
+    operator: User!
+    from: User
     fromBalance: ERC1155Balance
-    to: Account
+    to: User
     toBalance: ERC1155Balance
     value: BigDecimal!
     valueExact: BigInt!
@@ -540,7 +537,7 @@ type ERC1155Transfer implements Event @entity(immutable: true) {
 # NFT 721
 type ERC721Contract @entity(immutable: true) {
     id: Bytes!
-    asAccount: Account!
+    asAccount: User!
     supportsMetadata: Boolean
     name: String
     symbol: String
@@ -552,19 +549,19 @@ type ERC721Token @entity {
     id: ID!
     contract: ERC721Contract!
     identifier: BigInt!
-    owner: Account!
-    approval: Account!
+    owner: User!
+    approval: User!
     uri: String
     transfers: [ERC721Transfer!]! @derivedFrom(field: "token")
     metadata: MetadataActionLog
 
     fileHash: String
     name: String
-    publisher: Account
+    publisher: User
     publisherName: String
     externalLink: String
     description: String
-    artist: Account
+    artist: User
     artistName: String
     editions: Int
     fileType: String
@@ -574,35 +571,35 @@ type ERC721Token @entity {
 type ERC721Operator @entity {
     id: ID!
     contract: ERC721Contract!
-    owner: Account!
-    operator: Account!
+    owner: User!
+    operator: User!
     approved: Boolean!
 }
 type ERC721Transfer implements Event @entity(immutable: true) {
     id: ID!
-    emitter: Account!
+    emitter: User!
     transaction: Transaction!
     timestamp: BigInt!
     contract: ERC721Contract!
     token: ERC721Token!
-    from: Account!
-    to: Account!
+    from: User!
+    to: User!
 }
 
 type MetadataActionLog implements Event @entity {
     id: ID!
-    emitter: Account!
+    emitter: User!
     transaction: Transaction!
     timestamp: BigInt!
-    sender: Account
+    sender: User
     minted: Boolean
     fileHash: String
     name: String
-    publisher: Account
+    publisher: User
     publisherName: String
     externalLink: String
     description: String
-    artist: Account
+    artist: User
     artistName: String
     royalty: [Int!]
     createdAt: BigInt
@@ -619,49 +616,49 @@ type MetadataActionLog implements Event @entity {
 
 type MetadataFlag implements Event @entity(immutable: true) {
     id: ID!
-    emitter: Account!
+    emitter: User!
     transaction: Transaction!
     timestamp: BigInt!
     token: ERC721Token
-    sender: Account
+    sender: User
 
-    flaggedBy: Account
+    flaggedBy: User
     metadata: MetadataActionLog
 }
 
 type MetadataLike implements Event @entity(immutable: true) {
     id: ID!
-    emitter: Account!
+    emitter: User!
     transaction: Transaction!
     timestamp: BigInt!
     token: ERC721Token
-    sender: Account
+    sender: User
 
-    likedBy: Account
+    likedBy: User
     metadata: MetadataActionLog
 }
 
 type MetadataDecline implements Event @entity(immutable: true) {
     id: ID!
-    emitter: Account!
+    emitter: User!
     transaction: Transaction!
     timestamp: BigInt!
     token: ERC721Token
-    sender: Account
+    sender: User
 
-    declinedBy: Account
+    declinedBy: User
     metadata: MetadataActionLog
 }
 
 type ReviewPass implements Event @entity(immutable: true) {
     id: ID!
-    emitter: Account!
+    emitter: User!
     transaction: Transaction!
     timestamp: BigInt!
     token: ERC721Token
-    sender: Account
+    sender: User
 
-    reviewer: Account
+    reviewer: User
     metadata: MetadataActionLog
 }
 
@@ -684,6 +681,6 @@ type NFTStatistic @entity {
 type NFTHolder @entity {
     id: ID!
     nftStats: NFTStatistic
-    holder: Account
+    holder: User
     amount: Int
 }

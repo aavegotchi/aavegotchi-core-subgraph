@@ -68,7 +68,7 @@ export function getNFTHolder(
     if (!holder) {
         holder = new NFTHolder(id);
         holder.amount = 0;
-        holder.holder = holderAddress;
+        holder.holder = holderAddress.toHexString();
         holder.nftStats = metadataId;
     }
 

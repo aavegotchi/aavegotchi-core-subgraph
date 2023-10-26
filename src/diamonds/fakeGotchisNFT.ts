@@ -21,13 +21,13 @@ import { events, transactions } from "@amxx/graphprotocol-utils";
 
 import {
     addToOwnersIfNotExists,
-    fetchAccount,
     removeFromOwnersIfExistsAndBalanceNotZero,
     updateAccountStatsFrom,
     updateAccountStatsTo,
     updateTotalStatsBurn,
     updateTotalStatsMint
 } from "../fetch/account";
+
 
 import {
     METADATA_STATUS_APPROVED,
@@ -50,6 +50,7 @@ import {
     isMint,
     isTransfer
 } from "../helper/entities";
+import { getOrCreateUser } from "../utils/helpers/diamond";
 
 export function handleTransfer(event: TransferEvent): void {
     const isMintFlag = isMint(event);
@@ -64,8 +65,8 @@ export function handleTransfer(event: TransferEvent): void {
     contract.save();
 
     // fetch sender and receiver
-    let from = fetchAccount(event.params._from);
-    let to = fetchAccount(event.params._to);
+    let from = getOrCreateUser(event.params._from.toHexString());
+    let to = getOrCreateUser(event.params._to.toHexString());
 
     // update token owner
     let token = fetchERC721Token(contract, event.params._tokenId);
@@ -74,7 +75,7 @@ export function handleTransfer(event: TransferEvent): void {
 
     // create event entity
     let ev = new ERC721Transfer(events.id(event));
-    ev.emitter = contract.id;
+    ev.emitter = contract.id.toHexString();
     ev.transaction = transactions.log(event).id;
     ev.timestamp = event.block.timestamp;
     ev.contract = contract.id;
@@ -160,8 +161,8 @@ export function handleApproval(event: ApprovalEvent): void {
     let contract = fetchERC721(event.address);
     if (contract != null) {
         let token = fetchERC721Token(contract, event.params._tokenId);
-        let owner = fetchAccount(event.params._owner);
-        let approved = fetchAccount(event.params._approved);
+        let owner = getOrCreateUser(event.params._owner.toHexString());
+        let approved = getOrCreateUser(event.params._approved.toHexString());
 
         token.owner = owner.id;
         token.approval = approved.id;
@@ -184,8 +185,8 @@ export function handleApproval(event: ApprovalEvent): void {
 export function handleApprovalForAll(event: ApprovalForAllEvent): void {
     let contract = fetchERC721(event.address);
     if (contract != null) {
-        let owner = fetchAccount(event.params._owner);
-        let operator = fetchAccount(event.params._operator);
+        let owner = getOrCreateUser(event.params._owner.toHexString());
+        let operator = getOrCreateUser(event.params._operator.toHexString());
         let delegation = fetchERC721Operator(contract, owner, operator);
 
         delegation.approved = event.params._approved;
@@ -213,10 +214,10 @@ export function handleMetadataActionLog(event: MetadataActionLogEvent): void {
             ev.flagCount = 0;
             ev.likeCount = 0;
         }
-        let artist = fetchAccount(event.params.metaData.artist);
-        let publisher = fetchAccount(event.params.metaData.publisher);
+        let artist = getOrCreateUser(event.params.metaData.artist.toHexString());
+        let publisher = getOrCreateUser(event.params.metaData.publisher.toHexString());
 
-        ev.emitter = contract.id;
+        ev.emitter = contract.id.toHexString();
         ev.transaction = transactions.log(event).id;
         ev.timestamp = event.block.timestamp;
         ev.minted = event.params.metaData.minted;
@@ -252,13 +253,13 @@ export function handleMetadataActionLog(event: MetadataActionLogEvent): void {
                 token.metadata = ev.id;
                 token.owner = ev.publisher!;
                 token.contract = event.address;
-                token.artist = event.params.metaData.artist;
+                token.artist = event.params.metaData.artist.toHexString();
                 token.artistName = event.params.metaData.artistName;
                 token.description = event.params.metaData.description;
                 token.externalLink = event.params.metaData.externalLink;
                 token.fileHash = event.params.metaData.fileHash;
                 token.name = event.params.metaData.name;
-                token.publisher = event.params.metaData.publisher;
+                token.publisher = event.params.metaData.publisher.toHexString();
                 token.publisherName = event.params.metaData.publisherName;
                 token.editions = event.params.metaData.editions;
                 token.fileType = event.params.metaData.fileType;
@@ -279,13 +280,13 @@ export function handleMetadataFlag(event: MetadataFlagEvent): void {
     }
     metadata.save();
 
-    let flagger = fetchAccount(event.params._flaggedBy);
+    let flagger = getOrCreateUser(event.params._flaggedBy.toHexString());
     flagger.save();
 
     let metadataflaggedEv = new MetadataFlag(events.id(event));
     let contract = fetchERC721(event.address)!;
     let token = fetchERC721Token(contract, event.params._id);
-    metadataflaggedEv.emitter = contract.id;
+    metadataflaggedEv.emitter = contract.id.toHexString();
     metadataflaggedEv.transaction = transactions.log(event).id;
     metadataflaggedEv.timestamp = event.block.timestamp;
     metadataflaggedEv.token = token.id;
@@ -300,13 +301,13 @@ export function handleMetadataLike(event: MetadataLikeEvent): void {
     metadata.likeCount = metadata.likeCount + 1;
     metadata.save();
 
-    let liker = fetchAccount(event.params._likedBy);
+    let liker = getOrCreateUser(event.params._likedBy.toHexString());
     liker.save();
 
     let metadatalikedEv = new MetadataLike(events.id(event));
     let contract = fetchERC721(event.address)!;
     let token = fetchERC721Token(contract, event.params._id);
-    metadatalikedEv.emitter = contract.id;
+    metadatalikedEv.emitter = contract.id.toHexString();
     metadatalikedEv.transaction = transactions.log(event).id;
     metadatalikedEv.timestamp = event.block.timestamp;
     metadatalikedEv.token = token.id;
@@ -321,13 +322,13 @@ export function handleMetadataDecline(event: MetadataDeclineEvent): void {
     metadata.status = METADATA_STATUS_DECLINED;
     metadata.save();
 
-    let decliner = fetchAccount(event.params._declinedBy);
+    let decliner = getOrCreateUser(event.params._declinedBy.toHexString());
     decliner.save();
 
     let metadatalikedEv = new MetadataDecline(events.id(event));
     let contract = fetchERC721(event.address)!;
     let token = fetchERC721Token(contract, event.params._id);
-    metadatalikedEv.emitter = contract.id;
+    metadatalikedEv.emitter = contract.id.toHexString();
     metadatalikedEv.transaction = transactions.log(event).id;
     metadatalikedEv.timestamp = event.block.timestamp;
     metadatalikedEv.token = token.id;
@@ -342,13 +343,13 @@ export function handleReviewPass(event: ReviewPassEvent): void {
     metadata.status = METADATA_STATUS_PENDING;
     metadata.save();
 
-    let reviewer = fetchAccount(event.params._reviewer);
+    let reviewer = getOrCreateUser(event.params._reviewer.toHexString());
     reviewer.save();
 
     let reviewPassed = new ReviewPass(events.id(event));
     let contract = fetchERC721(event.address)!;
     let token = fetchERC721Token(contract, event.params._id);
-    reviewPassed.emitter = contract.id;
+    reviewPassed.emitter = contract.id.toHexString();
     reviewPassed.transaction = transactions.log(event).id;
     reviewPassed.timestamp = event.block.timestamp;
     reviewPassed.token = token.id;

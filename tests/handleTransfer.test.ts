@@ -15,12 +15,12 @@ import {
 } from "matchstick-as/assembly/index";
 import { Transfer } from "../generated/FAKEGotchisNFTDiamond/IERC721";
 import {
-    Account,
     ERC721Token,
     MetadataActionLog,
     NFTHolder,
     NFTStatistic,
     Transaction,
+    User,
 } from "../generated/schema";
 import {
     ADDRESS_DEAD,
@@ -76,7 +76,7 @@ describe("handleTransfer", () => {
     beforeAll(() => {
         const transaction = new Transaction("abc");
         const log = new MetadataActionLog("1");
-        log.emitter = Bytes.fromHexString(sender);
+        log.emitter = sender;
         log.transaction = transaction.id;
         log.timestamp = BIGINT_ZERO;
         log.editions = 1;
@@ -89,11 +89,11 @@ describe("handleTransfer", () => {
         token.metadata = "1";
         token.contract = ADDRESS_DEAD;
         token.identifier = BIGINT_ONE;
-        token.owner = ADDRESS_DEAD;
-        token.approval = ADDRESS_ZERO;
+        token.owner = ADDRESS_DEAD.toHexString();
+        token.approval = ADDRESS_ZERO.toHexString();
         token.editions = 0;
 
-        const senderAccount = new Account(Bytes.fromHexString(sender));
+        const senderAccount = new User(sender);
         senderAccount.totalPiecesOwnedArray = "{}";
         senderAccount.totalUniquePiecesOwnedArray = "{}";
         senderAccount.totalUniquePiecesOwned = 0;
@@ -101,17 +101,19 @@ describe("handleTransfer", () => {
         senderAccount.currentUniquePiecesOwnedArray = "{}";
         senderAccount.tokens = "{}";
         senderAccount.amountTokens = 0;
+        senderAccount.gotchisLentOut = new Array<BigInt>();
+        senderAccount.gotchisBorrowed = new Array<BigInt>();
 
         const holder = new NFTHolder(
             "0x46a3a41bd932244dd08186e4c19f1a7e48cbcdf4-1"
         );
         holder.amount = 0;
-        holder.holder = Address.fromString(receiver);
+        holder.holder = receiver;
         holder.nftStats = "1";
 
         store.set("MetadataActionLog", "1", log);
         store.set("ERC721Token", tokenEntityId, token);
-        store.set("Account", sender, senderAccount);
+        store.set("User", sender, senderAccount);
         // store.set("NFTStatistic", "1", nftStats);
         store.set(
             "NFTHolder",
@@ -184,9 +186,9 @@ describe("handleTransfer", () => {
         assert.fieldEquals("NFTHolder", idSender, "nftStats", "1");
 
         // account stats
-        assert.fieldEquals("Account", receiver, "totalUniquePiecesOwned", "1");
+        assert.fieldEquals("User", receiver, "totalUniquePiecesOwned", "1");
         assert.fieldEquals(
-            "Account",
+            "User",
             receiver,
             "currentUniquePiecesOwned",
             "1"
@@ -227,17 +229,17 @@ describe("handleTransfer", () => {
         assert.fieldEquals("NFTHolder", idReceiver, "amount", "1");
         assert.fieldEquals("NFTHolder", idReceiver, "nftStats", "1");
 
-        // Account
-        assert.fieldEquals("Account", receiver, "totalUniquePiecesOwned", "1");
+        // User
+        assert.fieldEquals("User", receiver, "totalUniquePiecesOwned", "1");
         assert.fieldEquals(
-            "Account",
+            "User",
             receiver,
             "currentUniquePiecesOwned",
             "0"
         );
 
-        assert.fieldEquals("Account", sender, "totalUniquePiecesOwned", "1");
-        assert.fieldEquals("Account", sender, "currentUniquePiecesOwned", "1");
+        assert.fieldEquals("User", sender, "totalUniquePiecesOwned", "1");
+        assert.fieldEquals("User", sender, "currentUniquePiecesOwned", "1");
     });
 
     test("it should update total, nft and holder stats if tx is burn", () => {
@@ -273,8 +275,8 @@ describe("handleTransfer", () => {
         assert.fieldEquals("NFTHolder", idSender, "amount", "0");
         assert.fieldEquals("NFTHolder", idSender, "nftStats", "1");
 
-        // Account
-        assert.fieldEquals("Account", sender, "totalUniquePiecesOwned", "1");
-        assert.fieldEquals("Account", sender, "currentUniquePiecesOwned", "0");
+        // User
+        assert.fieldEquals("User", sender, "totalUniquePiecesOwned", "1");
+        assert.fieldEquals("User", sender, "currentUniquePiecesOwned", "0");
     });
 });

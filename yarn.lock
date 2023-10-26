@@ -1098,6 +1098,19 @@
     chalk "^4"
     fast-levenshtein "^3.0.0"
 
+"@openzeppelin/contracts@^4.6.0":
+  version "4.9.3"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.9.3.tgz#00d7a8cf35a475b160b3f0293a6403c511099364"
+  integrity sha512-He3LieZ1pP2TNt5JbkPA4PNT9WC3gOTOlDcFGJW4Le4QKqwmiNJCRt44APfxMxvq7OugU/cqYuPcSBzOw38DAg==
+
+"@openzeppelin/subgraphs@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/subgraphs/-/subgraphs-0.1.8.tgz#2e4076ecbd6017a7f5e8215b35827c32b06f8d38"
+  integrity sha512-I7A/m1FZ4Z4m9gttVxsQ6Dt2j53PMug/qj/Jyd4JnkgL4OmdunzsYZbj8dfcBG4nbAeMK3H7V9dKCEqB6PAKHw==
+  dependencies:
+    "@amxx/graphprotocol-utils" "^1.1.0"
+    "@openzeppelin/contracts" "^4.6.0"
+
 "@peculiar/asn1-schema@^2.3.6":
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/@peculiar/asn1-schema/-/asn1-schema-2.3.6.tgz#3dd3c2ade7f702a9a94dfb395c192f5fa5d6b922"

@@ -3,7 +3,7 @@ import { ADDRESS_ZERO, BIGINT_ONE } from "../constants";
 import { ethereum, BigInt } from "@graphprotocol/graph-ts";
 
 import {
-    Account,
+    User,
     ERC1155Contract,
     ERC1155Transfer,
     Generation,
@@ -25,8 +25,6 @@ import {
     transactions,
 } from "@amxx/graphprotocol-utils";
 
-import { fetchAccount } from "../fetch/account";
-
 import {
     fetchERC1155,
     fetchERC1155Token,
@@ -34,20 +32,21 @@ import {
     fetchERC721Operator,
     replaceURI,
 } from "../fetch/erc1155";
+import { getOrCreateUser } from "../utils/helpers/diamond";
 
 function registerTransfer(
     event: ethereum.Event,
     suffix: string,
     contract: ERC1155Contract,
-    operator: Account,
-    from: Account,
-    to: Account,
+    operator: User,
+    from: User,
+    to: User,
     id: BigInt,
     value: BigInt
 ): void {
     let token = fetchERC1155Token(contract, id);
     let ev = new ERC1155Transfer(events.id(event).concat(suffix));
-    ev.emitter = token.contract;
+    ev.emitter = token.contract.toHexString();
     ev.transaction = transactions.log(event).id;
     ev.timestamp = event.block.timestamp;
     ev.contract = contract.id;
@@ -56,7 +55,7 @@ function registerTransfer(
     ev.value = decimals.toDecimals(value);
     ev.valueExact = value;
 
-    if (from.id == constants.ADDRESS_ZERO) {
+    if (from.id == constants.ADDRESS_ZERO.toHexString()) {
         let totalSupply = fetchERC1155Balance(token, null);
         totalSupply.valueExact = totalSupply.valueExact.plus(value);
         totalSupply.value = decimals.toDecimals(totalSupply.valueExact);
@@ -71,7 +70,7 @@ function registerTransfer(
         ev.fromBalance = balance.id;
     }
 
-    if (to.id == constants.ADDRESS_ZERO) {
+    if (to.id == constants.ADDRESS_ZERO.toHexString()) {
         let totalSupply = fetchERC1155Balance(token, null);
         totalSupply.valueExact = totalSupply.valueExact.minus(value);
         totalSupply.value = decimals.toDecimals(totalSupply.valueExact);
@@ -92,9 +91,9 @@ function registerTransfer(
 
 export function handleTransferSingle(event: TransferSingleEvent): void {
     let contract = fetchERC1155(event.address);
-    let operator = fetchAccount(event.params._operator);
-    let from = fetchAccount(event.params._from);
-    let to = fetchAccount(event.params._to);
+    let operator = getOrCreateUser(event.params._operator.toHex());
+    let from = getOrCreateUser(event.params._from.toHex());
+    let to = getOrCreateUser(event.params._to.toHex());
 
     registerTransfer(
         event,
@@ -110,9 +109,9 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
 
 export function handleTransferBatch(event: TransferBatchEvent): void {
     let contract = fetchERC1155(event.address);
-    let operator = fetchAccount(event.params._operator);
-    let from = fetchAccount(event.params._from);
-    let to = fetchAccount(event.params._to);
+    let operator = getOrCreateUser(event.params._operator.toHex());
+    let from = getOrCreateUser(event.params._from.toHex());
+    let to = getOrCreateUser(event.params._to.toHex());
 
     let ids = event.params._ids;
     let values = event.params._values;
@@ -138,8 +137,8 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
 
 export function handleApprovalForAll(event: ApprovalForAllEvent): void {
     let contract = fetchERC1155(event.address);
-    let owner = fetchAccount(event.params._owner);
-    let operator = fetchAccount(event.params._operator);
+    let operator = getOrCreateUser(event.params._operator.toHex());
+    let owner = getOrCreateUser(event.params._owner.toHex());
     let delegation = fetchERC721Operator(contract, owner, operator);
     delegation.approved = event.params._approved;
     delegation.save();

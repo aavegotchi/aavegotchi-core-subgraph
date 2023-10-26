@@ -84,7 +84,7 @@ test("handleERC721Listing - should add price to historicalPrices of aavegotchi i
     listing.save();
 
     let erc721Contract = new ERC721Contract(event.params.erc721TokenAddress);
-    erc721Contract.asAccount = Address.fromString(ZERO_ADDRESS);
+    erc721Contract.asAccount = ZERO_ADDRESS;
     erc721Contract.save();
 
     //try_getERC721Listing
@@ -119,7 +119,7 @@ test("handleERC721Listing - should add price to historicalPrices of portal if li
     portal.save();
 
     let erc721Contract = new ERC721Contract(event.params.erc721TokenAddress);
-    erc721Contract.asAccount = Address.fromString(ZERO_ADDRESS);
+    erc721Contract.asAccount = ZERO_ADDRESS;
     erc721Contract.save();
 
     createMockedFunction(
@@ -188,7 +188,7 @@ test("handleERC721Listing - should set blockCreated to block number when listing
     listing.save();
 
     let erc721Contract = new ERC721Contract(event.params.erc721TokenAddress);
-    erc721Contract.asAccount = Address.fromString(ZERO_ADDRESS);
+    erc721Contract.asAccount = ZERO_ADDRESS;
     erc721Contract.save();
 
     //try_getERC721Listing
@@ -254,7 +254,7 @@ test("handleERC721Listing - reorg: should set block created if cancel events hap
     listing.save();
 
     let erc721Contract = new ERC721Contract(Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d"));
-    erc721Contract.asAccount = Address.fromString(ZERO_ADDRESS);
+    erc721Contract.asAccount = ZERO_ADDRESS;
     erc721Contract.save();
 
     //try_getERC721Listing

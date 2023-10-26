@@ -1,7 +1,7 @@
 import { Address, BigInt, Bytes, json, log } from "@graphprotocol/graph-ts";
 
 import {
-    Account,
+    User,
     MetadataActionLog,
     NFTStatistic,
     Statistic,
@@ -9,29 +9,10 @@ import {
 import { BIGINT_ONE, BIGINT_ZERO } from "../constants";
 import { createJsonFromJSONObject } from "../helper/json";
 
-export function fetchAccount(address: Address): Account {
-    let account = Account.load(address);
-    if (!account) {
-        account = new Account(address);
-        account.tokens = "{}";
-        account.amountTokens = 0;
-
-        account.currentUniquePiecesOwned = 0;
-        account.currentUniquePiecesOwnedArray = "{}";
-        account.totalUniquePiecesOwned = 0;
-        account.totalUniquePiecesOwnedArray = "{}";
-
-        account.totalPiecesOwnedArray = "{}";
-
-        account.save();
-    }
-    return account;
-}
-
 export function updateAccountStatsFrom(
-    account: Account,
+    account: User,
     metadataId: string
-): Account {
+): User {
     const parsedJsonCurrent = json.fromString(
         account.currentUniquePiecesOwnedArray
     );
@@ -59,9 +40,9 @@ export function updateAccountStatsFrom(
 }
 
 export function updateAccountStatsTo(
-    account: Account,
+    account: User,
     metadataId: string
-): Account {
+): User {
     const parsedJsonTotal = json.fromString(
         account.totalUniquePiecesOwnedArray
     );

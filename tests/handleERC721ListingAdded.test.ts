@@ -55,7 +55,7 @@ test("should add gotchi name lower case if token is an aavegtochi", () => {
     gotchi.save();
 
     let erc721Contract = new ERC721Contract(event.params.erc721TokenAddress);
-    erc721Contract.asAccount = Address.fromString(ZERO_ADDRESS);
+    erc721Contract.asAccount = ZERO_ADDRESS;
     erc721Contract.save();
 
     //try_getERC721Listing

@@ -7,7 +7,7 @@ import {
 } from "@graphprotocol/graph-ts";
 
 import {
-    Account,
+    User,
     ERC721Contract,
     ERC721Token,
     ERC721Operator
@@ -15,8 +15,8 @@ import {
 
 import { constants } from "@amxx/graphprotocol-utils";
 
-import { fetchAccount } from "./account";
 import { IERC721 } from "../../generated/FAKEGotchisNFTDiamond/IERC721";
+import { getOrCreateUser } from "../utils/helpers/diamond";
 
 export function fetchERC721(address: Address): ERC721Contract | null {
     let erc721 = IERC721.bind(address);
@@ -29,11 +29,14 @@ export function fetchERC721(address: Address): ERC721Contract | null {
 
     // Detect using ERC165
     let detectionId = address.concat(Bytes.fromHexString("80ac58cd")); // Address + ERC721
-    let detectionAccount = Account.load(detectionId);
+    let detectionAccount = User.load(detectionId.toHex());
 
     // On missing cache
     if (detectionAccount == null) {
-        detectionAccount = new Account(detectionId);
+        detectionAccount = new User(detectionId.toHex());
+        detectionAccount.gotchisLentOut = new Array<BigInt>();
+        detectionAccount.gotchisBorrowed = new Array<BigInt>();
+
         detectionAccount.tokens = "{}";
         let introspection_01ffc9a7 = true;
         let introspection_80ac58cd = true;
@@ -64,10 +67,10 @@ export function fetchERC721(address: Address): ERC721Contract | null {
         contract.name = try_name.reverted ? "" : try_name.value;
         contract.symbol = try_symbol.reverted ? "" : try_symbol.value;
         contract.supportsMetadata = true;
-        contract.asAccount = address;
+        contract.asAccount = address.toHex();
         contract.save();
 
-        let account = fetchAccount(address);
+        let account = getOrCreateUser(address.toHex());
         account.asERC721 = address;
         account.save();
     }
@@ -89,7 +92,7 @@ export function fetchERC721Token(
         token = new ERC721Token(id);
         token.contract = contract.id;
         token.identifier = identifier;
-        token.approval = fetchAccount(constants.ADDRESS_ZERO).id;
+        token.approval = getOrCreateUser(constants.ADDRESS_ZERO.toHex()).id;
 
         if (contract.supportsMetadata) {
             let erc721 = IERC721.bind(Address.fromBytes(contract.id));
@@ -103,15 +106,15 @@ export function fetchERC721Token(
 
 export function fetchERC721Operator(
     contract: ERC721Contract,
-    owner: Account,
-    operator: Account
+    owner: User,
+    operator: User
 ): ERC721Operator {
     let id = contract.id
         .toHex()
         .concat("/")
-        .concat(owner.id.toHex())
+        .concat(owner.id.toString())
         .concat("/")
-        .concat(operator.id.toHex());
+        .concat(operator.id.toString());
     let op = ERC721Operator.load(id);
 
     if (op == null) {
