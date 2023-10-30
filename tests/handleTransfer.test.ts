@@ -15,7 +15,7 @@ import {
 } from "matchstick-as/assembly/index";
 import { Transfer } from "../generated/FAKEGotchisNFTDiamond/IERC721";
 import {
-    ERC721Token,
+    FakeGotchiNFTToken,
     MetadataActionLog,
     NFTHolder,
     NFTStatistic,
@@ -85,7 +85,7 @@ describe("handleTransfer", () => {
             .to!.toHex()
             .concat("/")
             .concat(BIGINT_ONE.toHex());
-        const token = new ERC721Token(tokenEntityId);
+        const token = new FakeGotchiNFTToken(tokenEntityId);
         token.metadata = "1";
         token.contract = ADDRESS_DEAD;
         token.identifier = BIGINT_ONE;
@@ -112,7 +112,7 @@ describe("handleTransfer", () => {
         holder.nftStats = "1";
 
         store.set("MetadataActionLog", "1", log);
-        store.set("ERC721Token", tokenEntityId, token);
+        store.set("FakeGotchiNFTToken", tokenEntityId, token);
         store.set("User", sender, senderAccount);
         // store.set("NFTStatistic", "1", nftStats);
         store.set(

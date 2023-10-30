@@ -9,7 +9,7 @@ import {
 import {
     User,
     ERC721Contract,
-    ERC721Token,
+    FakeGotchiNFTToken,
 } from "../../generated/schema";
 
 import { constants } from "@amxx/graphprotocol-utils";
@@ -77,18 +77,18 @@ export function fetchERC721(address: Address): ERC721Contract | null {
     return contract;
 }
 
-export function fetchERC721Token(
+export function fetchFakeGotchiNFTToken(
     contract: ERC721Contract,
     identifier: BigInt
-): ERC721Token {
+): FakeGotchiNFTToken {
     let id = contract.id
         .toHex()
         .concat("/")
         .concat(identifier.toHex());
-    let token = ERC721Token.load(id);
+    let token = FakeGotchiNFTToken.load(id);
 
     if (token == null) {
-        token = new ERC721Token(id);
+        token = new FakeGotchiNFTToken(id);
         token.contract = contract.id;
         token.identifier = identifier;
         token.approval = getOrCreateUser(constants.ADDRESS_ZERO.toHex()).id;
@@ -100,5 +100,5 @@ export function fetchERC721Token(
         }
     }
 
-    return token as ERC721Token;
+    return token as FakeGotchiNFTToken;
 }

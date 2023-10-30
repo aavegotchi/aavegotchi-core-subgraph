@@ -37,7 +37,7 @@ import {
 
 import {
     fetchERC721,
-    fetchERC721Token,
+    fetchFakeGotchiNFTToken,
 } from "../fetch/erc721";
 import { BigInt } from "@graphprotocol/graph-ts";
 import {
@@ -67,7 +67,7 @@ export function handleTransfer(event: TransferEvent): void {
     let to = getOrCreateUser(event.params._to.toHexString());
 
     // update token owner
-    let token = fetchERC721Token(contract, event.params._tokenId);
+    let token = fetchFakeGotchiNFTToken(contract, event.params._tokenId);
     token.owner = to.id;
     token.save();
 
@@ -188,7 +188,7 @@ export function handleMetadataActionLog(event: MetadataActionLogEvent): void {
             stats.tokenIdCounter = stats.tokenIdCounter + ev.editions;
             for (let i = 0; i < ev.editions; i++) {
                 let id = startId + i;
-                let token = fetchERC721Token(contract, BigInt.fromI32(id));
+                let token = fetchFakeGotchiNFTToken(contract, BigInt.fromI32(id));
                 token.metadata = ev.id;
                 token.owner = ev.publisher!;
                 token.contract = event.address;
@@ -224,7 +224,7 @@ export function handleMetadataFlag(event: MetadataFlagEvent): void {
 
     let metadataflaggedEv = new MetadataFlag(events.id(event));
     let contract = fetchERC721(event.address)!;
-    let token = fetchERC721Token(contract, event.params._id);
+    let token = fetchFakeGotchiNFTToken(contract, event.params._id);
     metadataflaggedEv.emitter = contract.id.toHexString();
     metadataflaggedEv.transaction = transactions.log(event).id;
     metadataflaggedEv.timestamp = event.block.timestamp;
@@ -245,7 +245,7 @@ export function handleMetadataLike(event: MetadataLikeEvent): void {
 
     let metadatalikedEv = new MetadataLike(events.id(event));
     let contract = fetchERC721(event.address)!;
-    let token = fetchERC721Token(contract, event.params._id);
+    let token = fetchFakeGotchiNFTToken(contract, event.params._id);
     metadatalikedEv.emitter = contract.id.toHexString();
     metadatalikedEv.transaction = transactions.log(event).id;
     metadatalikedEv.timestamp = event.block.timestamp;
@@ -266,7 +266,7 @@ export function handleMetadataDecline(event: MetadataDeclineEvent): void {
 
     let metadatalikedEv = new MetadataDecline(events.id(event));
     let contract = fetchERC721(event.address)!;
-    let token = fetchERC721Token(contract, event.params._id);
+    let token = fetchFakeGotchiNFTToken(contract, event.params._id);
     metadatalikedEv.emitter = contract.id.toHexString();
     metadatalikedEv.transaction = transactions.log(event).id;
     metadatalikedEv.timestamp = event.block.timestamp;
@@ -287,7 +287,7 @@ export function handleReviewPass(event: ReviewPassEvent): void {
 
     let reviewPassed = new ReviewPass(events.id(event));
     let contract = fetchERC721(event.address)!;
-    let token = fetchERC721Token(contract, event.params._id);
+    let token = fetchFakeGotchiNFTToken(contract, event.params._id);
     reviewPassed.emitter = contract.id.toHexString();
     reviewPassed.transaction = transactions.log(event).id;
     reviewPassed.timestamp = event.block.timestamp;

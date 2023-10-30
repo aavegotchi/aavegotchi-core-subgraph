@@ -156,7 +156,7 @@ type User @entity {
     FakeGotchiCardBalances: [FakeGotchiCardBalance!]! @derivedFrom(field: "account")
 
         asERC721: ERC721Contract
-    ERC721tokens: [ERC721Token!]! @derivedFrom(field: "owner")
+    FakeGotchiNFTTokens: [FakeGotchiNFTToken!]! @derivedFrom(field: "owner")
 
     events: [Event!]! @derivedFrom(field: "emitter")
 
@@ -504,9 +504,9 @@ type ERC721Contract @entity(immutable: true) {
     supportsMetadata: Boolean
     name: String
     symbol: String
-    tokens: [ERC721Token!]! @derivedFrom(field: "contract")
+    tokens: [FakeGotchiNFTToken!]! @derivedFrom(field: "contract")
 }
-type ERC721Token @entity {
+type FakeGotchiNFTToken @entity {
     id: ID!
     contract: ERC721Contract!
     identifier: BigInt!
@@ -562,7 +562,7 @@ type MetadataFlag implements Event @entity(immutable: true) {
     emitter: User!
     transaction: Transaction!
     timestamp: BigInt!
-    token: ERC721Token
+    token: FakeGotchiNFTToken
     sender: User
 
     flaggedBy: User
@@ -574,7 +574,7 @@ type MetadataLike implements Event @entity(immutable: true) {
     emitter: User!
     transaction: Transaction!
     timestamp: BigInt!
-    token: ERC721Token
+    token: FakeGotchiNFTToken
     sender: User
 
     likedBy: User
@@ -586,7 +586,7 @@ type MetadataDecline implements Event @entity(immutable: true) {
     emitter: User!
     transaction: Transaction!
     timestamp: BigInt!
-    token: ERC721Token
+    token: FakeGotchiNFTToken
     sender: User
 
     declinedBy: User
@@ -598,7 +598,7 @@ type ReviewPass implements Event @entity(immutable: true) {
     emitter: User!
     transaction: Transaction!
     timestamp: BigInt!
-    token: ERC721Token
+    token: FakeGotchiNFTToken
     sender: User
 
     reviewer: User

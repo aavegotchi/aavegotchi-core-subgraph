@@ -23,7 +23,7 @@ import {
     ERC721BuyOrder,
     ERC721Contract,
 } from "../../../generated/schema";
-import { fetchERC721, fetchERC721Token } from "../../fetch/erc721";
+import { fetchERC721, fetchFakeGotchiNFTToken } from "../../fetch/erc721";
 import { BIGINT_ZERO, STATUS_AAVEGOTCHI, ZERO_ADDRESS } from "../constants";
 import {
     Address,
@@ -221,7 +221,7 @@ export function updateERC721ListingInfo(
         let erc721Contract = fetchERC721(listingInfo.erc721TokenAddress);
         
         if (erc721Contract != null) {
-            let erc721Token = fetchERC721Token(
+            let erc721Token = fetchFakeGotchiNFTToken(
                 erc721Contract,
                 listingInfo.erc721TokenId
             );
