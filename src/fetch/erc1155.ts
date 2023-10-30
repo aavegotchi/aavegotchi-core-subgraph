@@ -4,7 +4,7 @@ import {
     User,
     ERC1155Contract,
     ERC1155Token,
-    ERC1155Balance,
+    FakeGotchiCardBalance,
 } from "../../generated/schema";
 
 import { IERC1155 } from "../../generated/FAKEGotchisCardDiamond/IERC1155";
@@ -53,7 +53,7 @@ export function fetchERC1155Token(
         token = new ERC1155Token(id);
         token.contract = contract.id;
         token.identifier = identifier;
-        token.totalSupply = fetchERC1155Balance(token as ERC1155Token, null).id;
+        token.totalSupply = fetchFakeGotchiCardBalance(token as ERC1155Token, null).id;
         token.uri = try_uri.reverted
             ? null
             : replaceURI(try_uri.value, identifier);
@@ -63,17 +63,17 @@ export function fetchERC1155Token(
     return token as ERC1155Token;
 }
 
-export function fetchERC1155Balance(
+export function fetchFakeGotchiCardBalance(
     token: ERC1155Token,
     account: User | null
-): ERC1155Balance {
+): FakeGotchiCardBalance {
     let id = token.id
         .concat("/")
         .concat(account ? account.id.toString() : "totalSupply");
-    let balance = ERC1155Balance.load(id);
+    let balance = FakeGotchiCardBalance.load(id);
 
     if (balance == null) {
-        balance = new ERC1155Balance(id);
+        balance = new FakeGotchiCardBalance(id);
         balance.contract = token.contract;
         balance.token = token.id;
         balance.account = account ? account.id : null;
@@ -82,5 +82,5 @@ export function fetchERC1155Balance(
         balance.save();
     }
 
-    return balance as ERC1155Balance;
+    return balance as FakeGotchiCardBalance;
 }

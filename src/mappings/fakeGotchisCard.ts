@@ -25,7 +25,7 @@ import {
 import {
     fetchERC1155,
     fetchERC1155Token,
-    fetchERC1155Balance,
+    fetchFakeGotchiCardBalance,
     replaceURI,
 } from "../fetch/erc1155";
 import { getOrCreateUser } from "../utils/helpers/diamond";
@@ -42,24 +42,24 @@ function registerTransfer(
     let token = fetchERC1155Token(contract, id);
 
     if (from.id == constants.ADDRESS_ZERO.toHexString()) {
-        let totalSupply = fetchERC1155Balance(token, null);
+        let totalSupply = fetchFakeGotchiCardBalance(token, null);
         totalSupply.valueExact = totalSupply.valueExact.plus(value);
         totalSupply.value = decimals.toDecimals(totalSupply.valueExact);
         totalSupply.save();
     } else {
-        let balance = fetchERC1155Balance(token, from);
+        let balance = fetchFakeGotchiCardBalance(token, from);
         balance.valueExact = balance.valueExact.minus(value);
         balance.value = decimals.toDecimals(balance.valueExact);
         balance.save();
     }
 
     if (to.id == constants.ADDRESS_ZERO.toHexString()) {
-        let totalSupply = fetchERC1155Balance(token, null);
+        let totalSupply = fetchFakeGotchiCardBalance(token, null);
         totalSupply.valueExact = totalSupply.valueExact.minus(value);
         totalSupply.value = decimals.toDecimals(totalSupply.valueExact);
         totalSupply.save();
     } else {
-        let balance = fetchERC1155Balance(token, to);
+        let balance = fetchFakeGotchiCardBalance(token, to);
         balance.valueExact = balance.valueExact.plus(value);
         balance.value = decimals.toDecimals(balance.valueExact);
         balance.save();

@@ -153,7 +153,7 @@ type User @entity {
     # lendGotchis: [GotchiLending!]! @derivedFrom(field: "originalOwner")
 
         asERC1155: ERC1155Contract
-    ERC1155balances: [ERC1155Balance!]! @derivedFrom(field: "account")
+    FakeGotchiCardBalances: [FakeGotchiCardBalance!]! @derivedFrom(field: "account")
 
         asERC721: ERC721Contract
     ERC721tokens: [ERC721Token!]! @derivedFrom(field: "owner")
@@ -477,18 +477,18 @@ type ERC1155Contract @entity(immutable: true) {
     id: Bytes!
     asAccount: User!
     tokens: [ERC1155Token!]! @derivedFrom(field: "contract")
-    balances: [ERC1155Balance!]! @derivedFrom(field: "contract")
+    balances: [FakeGotchiCardBalance!]! @derivedFrom(field: "contract")
 }
 type ERC1155Token @entity {
     id: ID!
     contract: ERC1155Contract!
     identifier: BigInt!
     uri: String
-    totalSupply: ERC1155Balance!
-    balances: [ERC1155Balance!]! @derivedFrom(field: "token")
+    totalSupply: FakeGotchiCardBalance!
+    balances: [FakeGotchiCardBalance!]! @derivedFrom(field: "token")
     metadata: MetadataActionLog
 }
-type ERC1155Balance @entity {
+type FakeGotchiCardBalance @entity {
     id: ID!
     contract: ERC1155Contract!
     token: ERC1155Token!
