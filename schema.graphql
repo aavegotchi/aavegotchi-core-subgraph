@@ -152,7 +152,7 @@ type User @entity {
     # borrowedGotchis: [GotchiLending!]! @derivedFrom(field: "borrower")
     # lendGotchis: [GotchiLending!]! @derivedFrom(field: "originalOwner")
 
-        asERC1155: ERC1155Contract
+        asERC1155: FakeGotchiCardContract
     FakeGotchiCardBalances: [FakeGotchiCardBalance!]! @derivedFrom(field: "account")
 
         asERC721: FakeGotchiNFTContract
@@ -473,7 +473,7 @@ type Transaction @entity(immutable: true) {
 }
 
 # Cards
-type ERC1155Contract @entity(immutable: true) {
+type FakeGotchiCardContract @entity(immutable: true) {
     id: Bytes!
     asAccount: User!
     tokens: [FakeGotchiCardToken!]! @derivedFrom(field: "contract")
@@ -481,7 +481,7 @@ type ERC1155Contract @entity(immutable: true) {
 }
 type FakeGotchiCardToken @entity {
     id: ID!
-    contract: ERC1155Contract!
+    contract: FakeGotchiCardContract!
     identifier: BigInt!
     uri: String
     totalSupply: FakeGotchiCardBalance!
@@ -490,7 +490,7 @@ type FakeGotchiCardToken @entity {
 }
 type FakeGotchiCardBalance @entity {
     id: ID!
-    contract: ERC1155Contract!
+    contract: FakeGotchiCardContract!
     token: FakeGotchiCardToken!
     account: User
     value: BigDecimal!

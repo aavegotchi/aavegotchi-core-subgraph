@@ -2,7 +2,7 @@ import { ethereum, BigInt } from "@graphprotocol/graph-ts";
 
 import {
     User,
-    ERC1155Contract,
+    FakeGotchiCardContract,
     Generation,
 } from "../../generated/schema";
 
@@ -33,7 +33,7 @@ import { getOrCreateUser } from "../utils/helpers/diamond";
 function registerTransfer(
     event: ethereum.Event,
     suffix: string,
-    contract: ERC1155Contract,
+    contract: FakeGotchiCardContract,
     from: User,
     to: User,
     id: BigInt,

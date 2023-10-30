@@ -2,7 +2,7 @@ import { Address, BigInt } from "@graphprotocol/graph-ts";
 
 import {
     User,
-    ERC1155Contract,
+    FakeGotchiCardContract,
     FakeGotchiCardToken,
     FakeGotchiCardBalance,
 } from "../../generated/schema";
@@ -22,10 +22,10 @@ export function replaceURI(uri: string, identifier: BigInt): string {
     );
 }
 
-export function fetchERC1155(address: Address): ERC1155Contract {
-    let contract = ERC1155Contract.load(address);
+export function fetchERC1155(address: Address): FakeGotchiCardContract {
+    let contract = FakeGotchiCardContract.load(address);
     if (!contract) {
-        contract = new ERC1155Contract(address);
+        contract = new FakeGotchiCardContract(address);
         contract.asAccount = address.toHex();
         contract.save();
 
@@ -38,7 +38,7 @@ export function fetchERC1155(address: Address): ERC1155Contract {
 }
 
 export function fetchFakeGotchiCardToken(
-    contract: ERC1155Contract,
+    contract: FakeGotchiCardContract,
     identifier: BigInt
 ): FakeGotchiCardToken {
     let id = contract.id
