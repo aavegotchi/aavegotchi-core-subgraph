@@ -3,7 +3,6 @@ import { ethereum, BigInt } from "@graphprotocol/graph-ts";
 import {
     User,
     ERC1155Contract,
-    ERC1155Transfer,
     Generation,
 } from "../../generated/schema";
 
@@ -41,14 +40,6 @@ function registerTransfer(
     value: BigInt
 ): void {
     let token = fetchERC1155Token(contract, id);
-    let ev = new ERC1155Transfer(events.id(event).concat(suffix));
-    ev.emitter = token.contract.toHexString();
-    ev.transaction = transactions.log(event).id;
-    ev.timestamp = event.block.timestamp;
-    ev.contract = contract.id;
-    ev.token = token.id;
-    ev.value = decimals.toDecimals(value);
-    ev.valueExact = value;
 
     if (from.id == constants.ADDRESS_ZERO.toHexString()) {
         let totalSupply = fetchERC1155Balance(token, null);
@@ -60,9 +51,6 @@ function registerTransfer(
         balance.valueExact = balance.valueExact.minus(value);
         balance.value = decimals.toDecimals(balance.valueExact);
         balance.save();
-
-        ev.from = from.id;
-        ev.fromBalance = balance.id;
     }
 
     if (to.id == constants.ADDRESS_ZERO.toHexString()) {
@@ -76,12 +64,9 @@ function registerTransfer(
         balance.value = decimals.toDecimals(balance.valueExact);
         balance.save();
 
-        ev.to = to.id;
-        ev.toBalance = balance.id;
     }
 
     token.save();
-    ev.save();
 }
 
 export function handleTransferSingle(event: TransferSingleEvent): void {

@@ -1,5 +1,4 @@
 import {
-    ERC721Transfer,
     MetadataActionLog,
     MetadataDecline,
     MetadataFlag,
@@ -72,17 +71,6 @@ export function handleTransfer(event: TransferEvent): void {
     token.owner = to.id;
     token.save();
 
-    // create event entity
-    let ev = new ERC721Transfer(events.id(event));
-    ev.emitter = contract.id.toHexString();
-    ev.transaction = transactions.log(event).id;
-    ev.timestamp = event.block.timestamp;
-    ev.contract = contract.id;
-    ev.token = token.id;
-    ev.from = from.id;
-    ev.to = to.id;
-    ev.save();
-
     // fetch metadata
     let metadata = MetadataActionLog.load(token.metadata!)!;
     let nftStats = getOrCreateNFTStatistic(metadata.id);
@@ -154,31 +142,6 @@ export function handleTransfer(event: TransferEvent): void {
     stats.save();
     to.save();
     from.save();
-}
-
-export function handleApproval(event: ApprovalEvent): void {
-    let contract = fetchERC721(event.address);
-    if (contract != null) {
-        let token = fetchERC721Token(contract, event.params._tokenId);
-        let owner = getOrCreateUser(event.params._owner.toHexString());
-        let approved = getOrCreateUser(event.params._approved.toHexString());
-
-        token.owner = owner.id;
-        token.approval = approved.id;
-
-        token.save();
-        owner.save();
-        approved.save();
-
-        // let ev = new Approval(events.id(event))
-        // ev.emitter     = contract.id
-        // ev.transaction = transactions.log(event).id
-        // ev.timestamp   = event.block.timestamp
-        // ev.token       = token.id
-        // ev.owner       = owner.id
-        // ev.approved    = approved.id
-        // ev.save()
-    }
 }
 
 export function handleMetadataActionLog(event: MetadataActionLogEvent): void {
