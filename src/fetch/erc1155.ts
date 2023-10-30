@@ -3,7 +3,7 @@ import { Address, BigInt } from "@graphprotocol/graph-ts";
 import {
     User,
     ERC1155Contract,
-    ERC1155Token,
+    FakeGotchiCardToken,
     FakeGotchiCardBalance,
 } from "../../generated/schema";
 
@@ -37,34 +37,34 @@ export function fetchERC1155(address: Address): ERC1155Contract {
     return contract;
 }
 
-export function fetchERC1155Token(
+export function fetchFakeGotchiCardToken(
     contract: ERC1155Contract,
     identifier: BigInt
-): ERC1155Token {
+): FakeGotchiCardToken {
     let id = contract.id
         .toHex()
         .concat("/")
         .concat(identifier.toHex());
-    let token = ERC1155Token.load(id);
+    let token = FakeGotchiCardToken.load(id);
 
     if (token == null) {
         let erc1155 = IERC1155.bind(Address.fromBytes(contract.id));
         let try_uri = erc1155.try_uri(identifier);
-        token = new ERC1155Token(id);
+        token = new FakeGotchiCardToken(id);
         token.contract = contract.id;
         token.identifier = identifier;
-        token.totalSupply = fetchFakeGotchiCardBalance(token as ERC1155Token, null).id;
+        token.totalSupply = fetchFakeGotchiCardBalance(token as FakeGotchiCardToken, null).id;
         token.uri = try_uri.reverted
             ? null
             : replaceURI(try_uri.value, identifier);
         token.save();
     }
 
-    return token as ERC1155Token;
+    return token as FakeGotchiCardToken;
 }
 
 export function fetchFakeGotchiCardBalance(
-    token: ERC1155Token,
+    token: FakeGotchiCardToken,
     account: User | null
 ): FakeGotchiCardBalance {
     let id = token.id

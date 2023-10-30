@@ -24,7 +24,7 @@ import {
 
 import {
     fetchERC1155,
-    fetchERC1155Token,
+    fetchFakeGotchiCardToken,
     fetchFakeGotchiCardBalance,
     replaceURI,
 } from "../fetch/erc1155";
@@ -39,7 +39,7 @@ function registerTransfer(
     id: BigInt,
     value: BigInt
 ): void {
-    let token = fetchERC1155Token(contract, id);
+    let token = fetchFakeGotchiCardToken(contract, id);
 
     if (from.id == constants.ADDRESS_ZERO.toHexString()) {
         let totalSupply = fetchFakeGotchiCardBalance(token, null);
@@ -113,7 +113,7 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
 
 export function handleURI(event: URIEvent): void {
     let contract = fetchERC1155(event.address);
-    let token = fetchERC1155Token(contract, event.params._id);
+    let token = fetchFakeGotchiCardToken(contract, event.params._id);
     token.uri = replaceURI(event.params._value, event.params._id);
     token.save();
 }

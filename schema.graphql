@@ -476,10 +476,10 @@ type Transaction @entity(immutable: true) {
 type ERC1155Contract @entity(immutable: true) {
     id: Bytes!
     asAccount: User!
-    tokens: [ERC1155Token!]! @derivedFrom(field: "contract")
+    tokens: [FakeGotchiCardToken!]! @derivedFrom(field: "contract")
     balances: [FakeGotchiCardBalance!]! @derivedFrom(field: "contract")
 }
-type ERC1155Token @entity {
+type FakeGotchiCardToken @entity {
     id: ID!
     contract: ERC1155Contract!
     identifier: BigInt!
@@ -491,7 +491,7 @@ type ERC1155Token @entity {
 type FakeGotchiCardBalance @entity {
     id: ID!
     contract: ERC1155Contract!
-    token: ERC1155Token!
+    token: FakeGotchiCardToken!
     account: User
     value: BigDecimal!
     valueExact: BigInt!
