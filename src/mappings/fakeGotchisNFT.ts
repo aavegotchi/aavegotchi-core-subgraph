@@ -39,7 +39,6 @@ import {
 import {
     fetchERC721,
     fetchERC721Token,
-    fetchERC721Operator
 } from "../fetch/erc721";
 import { BigInt } from "@graphprotocol/graph-ts";
 import {
@@ -179,29 +178,6 @@ export function handleApproval(event: ApprovalEvent): void {
         // ev.owner       = owner.id
         // ev.approved    = approved.id
         // ev.save()
-    }
-}
-
-export function handleApprovalForAll(event: ApprovalForAllEvent): void {
-    let contract = fetchERC721(event.address);
-    if (contract != null) {
-        let owner = getOrCreateUser(event.params._owner.toHexString());
-        let operator = getOrCreateUser(event.params._operator.toHexString());
-        let delegation = fetchERC721Operator(contract, owner, operator);
-
-        delegation.approved = event.params._approved;
-
-        delegation.save();
-
-        // 	let ev = new ApprovalForAll(events.id(event))
-        // 	ev.emitter     = contract.id
-        // 	ev.transaction = transactions.log(event).id
-        // 	ev.timestamp   = event.block.timestamp
-        // 	ev.delegation  = delegation.id
-        // 	ev.owner       = owner.id
-        // 	ev.operator    = operator.id
-        // 	ev.approved    = event.params.approved
-        // 	ev.save()
     }
 }
 

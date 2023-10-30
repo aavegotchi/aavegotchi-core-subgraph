@@ -10,7 +10,6 @@ import {
     User,
     ERC721Contract,
     ERC721Token,
-    ERC721Operator
 } from "../../generated/schema";
 
 import { constants } from "@amxx/graphprotocol-utils";
@@ -102,27 +101,4 @@ export function fetchERC721Token(
     }
 
     return token as ERC721Token;
-}
-
-export function fetchERC721Operator(
-    contract: ERC721Contract,
-    owner: User,
-    operator: User
-): ERC721Operator {
-    let id = contract.id
-        .toHex()
-        .concat("/")
-        .concat(owner.id.toString())
-        .concat("/")
-        .concat(operator.id.toString());
-    let op = ERC721Operator.load(id);
-
-    if (op == null) {
-        op = new ERC721Operator(id);
-        op.contract = contract.id;
-        op.owner = owner.id;
-        op.operator = operator.id;
-    }
-
-    return op as ERC721Operator;
 }

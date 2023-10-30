@@ -5,7 +5,6 @@ import {
     ERC1155Contract,
     ERC1155Token,
     ERC1155Balance,
-    ERC1155Operator,
 } from "../../generated/schema";
 
 import { IERC1155 } from "../../generated/FAKEGotchisCardDiamond/IERC1155";
@@ -84,27 +83,4 @@ export function fetchERC1155Balance(
     }
 
     return balance as ERC1155Balance;
-}
-
-export function fetchERC721Operator(
-    contract: ERC1155Contract,
-    owner: User,
-    operator: User
-): ERC1155Operator {
-    let id = contract.id
-        .toHex()
-        .concat("/")
-        .concat(owner.id.toString())
-        .concat("/")
-        .concat(operator.id.toString());
-    let op = ERC1155Operator.load(id);
-
-    if (op == null) {
-        op = new ERC1155Operator(id);
-        op.contract = contract.id;
-        op.owner = owner.id;
-        op.operator = operator.id;
-    }
-
-    return op as ERC1155Operator;
 }

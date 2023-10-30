@@ -27,7 +27,6 @@ import {
     fetchERC1155,
     fetchERC1155Token,
     fetchERC1155Balance,
-    fetchERC721Operator,
     replaceURI,
 } from "../fetch/erc1155";
 import { getOrCreateUser } from "../utils/helpers/diamond";
@@ -36,7 +35,6 @@ function registerTransfer(
     event: ethereum.Event,
     suffix: string,
     contract: ERC1155Contract,
-    operator: User,
     from: User,
     to: User,
     id: BigInt,
@@ -49,7 +47,6 @@ function registerTransfer(
     ev.timestamp = event.block.timestamp;
     ev.contract = contract.id;
     ev.token = token.id;
-    ev.operator = operator.id;
     ev.value = decimals.toDecimals(value);
     ev.valueExact = value;
 
@@ -89,7 +86,6 @@ function registerTransfer(
 
 export function handleTransferSingle(event: TransferSingleEvent): void {
     let contract = fetchERC1155(event.address);
-    let operator = getOrCreateUser(event.params._operator.toHex());
     let from = getOrCreateUser(event.params._from.toHex());
     let to = getOrCreateUser(event.params._to.toHex());
 
@@ -97,7 +93,6 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
         event,
         "",
         contract,
-        operator,
         from,
         to,
         event.params._id,
@@ -107,7 +102,6 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
 
 export function handleTransferBatch(event: TransferBatchEvent): void {
     let contract = fetchERC1155(event.address);
-    let operator = getOrCreateUser(event.params._operator.toHex());
     let from = getOrCreateUser(event.params._from.toHex());
     let to = getOrCreateUser(event.params._to.toHex());
 
@@ -123,7 +117,6 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
                 event,
                 "/".concat(i.toString()),
                 contract,
-                operator,
                 from,
                 to,
                 ids[i],
@@ -131,15 +124,6 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
             );
         }
     }
-}
-
-export function handleApprovalForAll(event: ApprovalForAllEvent): void {
-    let contract = fetchERC1155(event.address);
-    let operator = getOrCreateUser(event.params._operator.toHex());
-    let owner = getOrCreateUser(event.params._owner.toHex());
-    let delegation = fetchERC721Operator(contract, owner, operator);
-    delegation.approved = event.params._approved;
-    delegation.save();
 }
 
 export function handleURI(event: URIEvent): void {
