@@ -8,7 +8,7 @@ import {
 
 import {
     User,
-    ERC721Contract,
+    FakeGotchiNFTContract,
     FakeGotchiNFTToken,
 } from "../../generated/schema";
 
@@ -17,11 +17,11 @@ import { constants } from "@amxx/graphprotocol-utils";
 import { IERC721 } from "../../generated/FAKEGotchisNFTDiamond/IERC721";
 import { getOrCreateUser } from "../utils/helpers/diamond";
 
-export function fetchERC721(address: Address): ERC721Contract | null {
+export function fetchERC721(address: Address): FakeGotchiNFTContract | null {
     let erc721 = IERC721.bind(address);
 
     // Try load entry
-    let contract = ERC721Contract.load(address);
+    let contract = FakeGotchiNFTContract.load(address);
     if (contract != null) {
         return contract;
     }
@@ -60,7 +60,7 @@ export function fetchERC721(address: Address): ERC721Contract | null {
 
     // If an ERC721, build entry
     if (detectionAccount.asERC721) {
-        contract = new ERC721Contract(address);
+        contract = new FakeGotchiNFTContract(address);
         let try_name = erc721.try_name();
         let try_symbol = erc721.try_symbol();
         contract.name = try_name.reverted ? "" : try_name.value;
@@ -78,7 +78,7 @@ export function fetchERC721(address: Address): ERC721Contract | null {
 }
 
 export function fetchFakeGotchiNFTToken(
-    contract: ERC721Contract,
+    contract: FakeGotchiNFTContract,
     identifier: BigInt
 ): FakeGotchiNFTToken {
     let id = contract.id

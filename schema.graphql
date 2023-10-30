@@ -155,7 +155,7 @@ type User @entity {
         asERC1155: ERC1155Contract
     FakeGotchiCardBalances: [FakeGotchiCardBalance!]! @derivedFrom(field: "account")
 
-        asERC721: ERC721Contract
+        asERC721: FakeGotchiNFTContract
     FakeGotchiNFTTokens: [FakeGotchiNFTToken!]! @derivedFrom(field: "owner")
 
     events: [Event!]! @derivedFrom(field: "emitter")
@@ -498,7 +498,7 @@ type FakeGotchiCardBalance @entity {
 }
 
 # NFT 721
-type ERC721Contract @entity(immutable: true) {
+type FakeGotchiNFTContract @entity(immutable: true) {
     id: Bytes!
     asAccount: User!
     supportsMetadata: Boolean
@@ -508,7 +508,7 @@ type ERC721Contract @entity(immutable: true) {
 }
 type FakeGotchiNFTToken @entity {
     id: ID!
-    contract: ERC721Contract!
+    contract: FakeGotchiNFTContract!
     identifier: BigInt!
     owner: User!
     approval: User!
