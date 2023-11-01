@@ -24,6 +24,9 @@ jobs:
               run: yarn build
             - name: Deploy to Satsuma
               run: |
-                  npx graph deploy --access-token ${{secrets.SATSUMA_ACCESS_TOKEN}} aavegotchi-core-matic subgraph.yaml  --node https://app.satsuma.xyz/api/subgraphs/deploy --version-label ${GITHUB_REF#refs/*/}
-                  npx graph deploy --access-token ${{secrets.SATSUMA_ACCESS_TOKEN}} aavegotchi-core-mumbai subgraph.mumbai.yaml  --node https://app.satsuma.xyz/api/subgraphs/deploy --version-label ${GITHUB_REF#refs/*/}
+                  npx graph deploy aavegotchi-core-matic \
+                    --deploy-key ${{secrets.SATSUMA_ACCESS_TOKEN}} \
+                    --node https://subgraphs.alchemy.com/api/subgraphs/deploy \
+                    --ipfs https://ipfs.satsuma.xyz \
+                    --version-label ${GITHUB_REF#refs/*/}
               shell: bash
