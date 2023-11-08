@@ -153,15 +153,13 @@ type User @entity {
     # lendGotchis: [GotchiLending!]! @derivedFrom(field: "originalOwner")
 
         asERC1155: FakeGotchiCardContract
-    FakeGotchiCardBalances: [FakeGotchiCardBalance!]! @derivedFrom(field: "account")
+    fakeGotchiCardBalances: [FakeGotchiCardBalance!]! @derivedFrom(field: "account")
 
         asERC721: FakeGotchiNFTContract
-    FakeGotchiNFTTokens: [FakeGotchiNFTToken!]! @derivedFrom(field: "owner")
+    fakeGotchiNFTTokens: [FakeGotchiNFTToken!]! @derivedFrom(field: "owner")
 
-    events: [Event!]! @derivedFrom(field: "emitter")
-
-    tokens: String! # from array
-    amountTokens: Int!
+    fakeGotchis: String! # from array
+    amountFakeGotchis: Int!
 
     currentUniquePiecesOwned: Int!
     totalUniquePiecesOwned: Int!

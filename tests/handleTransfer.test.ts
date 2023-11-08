@@ -99,8 +99,8 @@ describe("handleTransfer", () => {
         senderAccount.totalUniquePiecesOwned = 0;
         senderAccount.currentUniquePiecesOwned = 0;
         senderAccount.currentUniquePiecesOwnedArray = "{}";
-        senderAccount.tokens = "{}";
-        senderAccount.amountTokens = 0;
+        senderAccount.fakeGotchis = "{}";
+        senderAccount.amountFakeGotchis = 0;
         senderAccount.gotchisLentOut = new Array<BigInt>();
         senderAccount.gotchisBorrowed = new Array<BigInt>();
 

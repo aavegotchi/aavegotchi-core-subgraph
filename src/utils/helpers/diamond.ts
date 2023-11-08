@@ -98,8 +98,8 @@ export function getOrCreateUser(
         user = new User(id);
         user.gotchisLentOut = new Array<BigInt>();
         user.gotchisBorrowed = new Array<BigInt>();
-        user.tokens = "{}";
-        user.amountTokens = 0;
+        user.fakeGotchis = "{}";
+        user.amountFakeGotchis = 0;
 
         user.currentUniquePiecesOwned = 0;
         user.currentUniquePiecesOwnedArray = "{}";

@@ -36,7 +36,7 @@ export function fetchERC721(address: Address): FakeGotchiNFTContract | null {
         detectionAccount.gotchisLentOut = new Array<BigInt>();
         detectionAccount.gotchisBorrowed = new Array<BigInt>();
 
-        detectionAccount.tokens = "{}";
+        detectionAccount.fakeGotchis = "{}";
         let introspection_01ffc9a7 = true;
         let introspection_80ac58cd = true;
         let introspection_00000000 = true;
@@ -46,7 +46,7 @@ export function fetchERC721(address: Address): FakeGotchiNFTContract | null {
             introspection_00000000;
         detectionAccount.asERC721 = isERC721 ? address : null;
 
-        detectionAccount.amountTokens = 0;
+        detectionAccount.amountFakeGotchis = 0;
 
         detectionAccount.currentUniquePiecesOwned = 0;
         detectionAccount.currentUniquePiecesOwnedArray = "{}";

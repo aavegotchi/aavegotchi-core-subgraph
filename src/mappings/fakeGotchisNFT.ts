@@ -79,7 +79,7 @@ export function handleTransfer(event: TransferEvent): void {
     // update account entity
     if (isMintFlag || isTransferFlag) {
         to = updateAccountStatsTo(to, metadata.id);
-        to.amountTokens = to.amountTokens + 1;
+        to.amountFakeGotchis = to.amountFakeGotchis + 1;
 
         let receiver = getNFTHolder(event.params._to, metadata.id);
         receiver.amount = receiver.amount + 1;
@@ -95,7 +95,7 @@ export function handleTransfer(event: TransferEvent): void {
 
     if (isBurnFlag || isTransferFlag) {
         from = updateAccountStatsFrom(from, metadata.id);
-        from.amountTokens = from.amountTokens - 1;
+        from.amountFakeGotchis = from.amountFakeGotchis - 1;
 
         let sender = getNFTHolder(event.params._from, metadata.id);
         sender.amount = sender.amount - 1;
@@ -108,7 +108,7 @@ export function handleTransfer(event: TransferEvent): void {
         stats = removeFromOwnersIfExistsAndBalanceNotZero(
             stats,
             event.params._from,
-            from.amountTokens
+            from.amountFakeGotchis
         );
     }
 
