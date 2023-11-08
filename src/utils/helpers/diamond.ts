@@ -226,17 +226,12 @@ export function updateERC721ListingInfo(
                 listingInfo.erc721TokenId
             );
     
-            listing.fileHash = erc721Token.fileHash;
             listing.name = erc721Token.name;
             listing.publisher = erc721Token.publisher;
-            listing.externalLink = erc721Token.externalLink;
             listing.description = erc721Token.description;
             listing.artist = erc721Token.artist;
             listing.artistName = erc721Token.artistName;
             listing.editions = erc721Token.editions;
-            listing.fileType = erc721Token.fileType;
-            listing.thumbnailHash = erc721Token.thumbnailHash;
-            listing.thumbnailType = erc721Token.thumbnailType;
         }
 
         if (listing.category.toI32() <= 2) {

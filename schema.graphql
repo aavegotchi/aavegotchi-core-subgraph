@@ -218,18 +218,13 @@ type ERC721Listing @entity {
     whitelist: Whitelist
     priceUpdatedAt: BigInt
 
-    fileHash: String
     name: String
     publisher: User
     publisherName: String
-    externalLink: String
     description: String
     artist: User
     artistName: String
     editions: Int
-    fileType: String
-    thumbnailHash: String
-    thumbnailType: String
 }
 
 type ERC1155Listing @entity {
@@ -522,7 +517,6 @@ type FakeGotchiNFTToken @entity {
     artist: User
     artistName: String
     editions: Int
-    fileType: String
     thumbnailHash: String
     thumbnailType: String
 }

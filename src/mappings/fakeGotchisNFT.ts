@@ -201,7 +201,6 @@ export function handleMetadataActionLog(event: MetadataActionLogEvent): void {
                 token.publisher = event.params.metaData.publisher.toHexString();
                 token.publisherName = event.params.metaData.publisherName;
                 token.editions = event.params.metaData.editions;
-                token.fileType = event.params.metaData.fileType;
                 token.thumbnailHash = event.params.metaData.thumbnailHash;
                 token.thumbnailType = event.params.metaData.thumbnailType;
                 token.save();
