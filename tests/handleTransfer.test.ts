@@ -94,11 +94,11 @@ describe("handleTransfer", () => {
         token.editions = 0;
 
         const senderAccount = new User(sender);
-        senderAccount.totalPiecesOwnedArray = "{}";
-        senderAccount.totalUniquePiecesOwnedArray = "{}";
-        senderAccount.totalUniquePiecesOwned = 0;
-        senderAccount.currentUniquePiecesOwned = 0;
-        senderAccount.currentUniquePiecesOwnedArray = "{}";
+        senderAccount.totalFakeGotchisOwnedArray = "{}";
+        senderAccount.totalUniqueFakeGotchisOwnedArray = "{}";
+        senderAccount.totalUniqueFakeGotchisOwned = 0;
+        senderAccount.currentUniqueFakeGotchisOwned = 0;
+        senderAccount.currentUniqueFakeGotchisOwnedArray = "{}";
         senderAccount.fakeGotchis = "{}";
         senderAccount.amountFakeGotchis = 0;
         senderAccount.gotchisLentOut = new Array<BigInt>();
@@ -186,11 +186,11 @@ describe("handleTransfer", () => {
         assert.fieldEquals("NFTHolder", idSender, "nftStats", "1");
 
         // account stats
-        assert.fieldEquals("User", receiver, "totalUniquePiecesOwned", "1");
+        assert.fieldEquals("User", receiver, "totalUniqueFakeGotchisOwned", "1");
         assert.fieldEquals(
             "User",
             receiver,
-            "currentUniquePiecesOwned",
+            "currentUniqueFakeGotchisOwned",
             "1"
         );
     });
@@ -230,16 +230,16 @@ describe("handleTransfer", () => {
         assert.fieldEquals("NFTHolder", idReceiver, "nftStats", "1");
 
         // User
-        assert.fieldEquals("User", receiver, "totalUniquePiecesOwned", "1");
+        assert.fieldEquals("User", receiver, "totalUniqueFakeGotchisOwned", "1");
         assert.fieldEquals(
             "User",
             receiver,
-            "currentUniquePiecesOwned",
+            "currentUniqueFakeGotchisOwned",
             "0"
         );
 
-        assert.fieldEquals("User", sender, "totalUniquePiecesOwned", "1");
-        assert.fieldEquals("User", sender, "currentUniquePiecesOwned", "1");
+        assert.fieldEquals("User", sender, "totalUniqueFakeGotchisOwned", "1");
+        assert.fieldEquals("User", sender, "currentUniqueFakeGotchisOwned", "1");
     });
 
     test("it should update total, nft and holder stats if tx is burn", () => {
@@ -276,7 +276,7 @@ describe("handleTransfer", () => {
         assert.fieldEquals("NFTHolder", idSender, "nftStats", "1");
 
         // User
-        assert.fieldEquals("User", sender, "totalUniquePiecesOwned", "1");
-        assert.fieldEquals("User", sender, "currentUniquePiecesOwned", "0");
+        assert.fieldEquals("User", sender, "totalUniqueFakeGotchisOwned", "1");
+        assert.fieldEquals("User", sender, "currentUniqueFakeGotchisOwned", "0");
     });
 });

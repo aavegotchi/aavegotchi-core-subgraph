@@ -14,7 +14,7 @@ export function updateAccountStatsFrom(
     metadataId: string
 ): User {
     const parsedJsonCurrent = json.fromString(
-        account.currentUniquePiecesOwnedArray
+        account.currentUniqueFakeGotchisOwnedArray
     );
     const jsonObjCurrent = parsedJsonCurrent.toObject();
 
@@ -26,7 +26,7 @@ export function updateAccountStatsFrom(
         newAmount = entryCurrent.toBigInt().minus(BIGINT_ONE);
     }
     if (newAmount.equals(BIGINT_ZERO)) {
-        account.currentUniquePiecesOwned = account.currentUniquePiecesOwned - 1;
+        account.currentUniqueFakeGotchisOwned = account.currentUniqueFakeGotchisOwned - 1;
     }
 
     // received on token of that series, therefore +1
@@ -34,7 +34,7 @@ export function updateAccountStatsFrom(
 
     let newString = createJsonFromJSONObject(jsonObjCurrent);
 
-    account.currentUniquePiecesOwnedArray = newString;
+    account.currentUniqueFakeGotchisOwnedArray = newString;
 
     return account;
 }
@@ -44,12 +44,12 @@ export function updateAccountStatsTo(
     metadataId: string
 ): User {
     const parsedJsonTotal = json.fromString(
-        account.totalUniquePiecesOwnedArray
+        account.totalUniqueFakeGotchisOwnedArray
     );
     const jsonObjTotal = parsedJsonTotal.toObject();
 
     const parsedJsonCurrent = json.fromString(
-        account.currentUniquePiecesOwnedArray
+        account.currentUniqueFakeGotchisOwnedArray
     );
     const jsonObjCurrent = parsedJsonCurrent.toObject();
 
@@ -67,14 +67,14 @@ export function updateAccountStatsTo(
     }
 
     if (!entryTotal) {
-        account.totalUniquePiecesOwned = account.totalUniquePiecesOwned + 1;
+        account.totalUniqueFakeGotchisOwned = account.totalUniqueFakeGotchisOwned + 1;
         jsonObjTotal.set(metadataId, json.fromString(newAmount.toString()));
     }
 
     // update currentPiecesOwned
     if (newAmount.equals(BIGINT_ONE)) {
         // new piece
-        account.currentUniquePiecesOwned = account.currentUniquePiecesOwned + 1;
+        account.currentUniqueFakeGotchisOwned = account.currentUniqueFakeGotchisOwned + 1;
     }
 
     // received on token of that series, therefore +1
@@ -83,11 +83,11 @@ export function updateAccountStatsTo(
     // create new json object string
     let newString = createJsonFromJSONObject(jsonObjTotal);
 
-    account.totalUniquePiecesOwnedArray = newString;
+    account.totalUniqueFakeGotchisOwnedArray = newString;
 
     newString = createJsonFromJSONObject(jsonObjCurrent);
 
-    account.currentUniquePiecesOwnedArray = newString;
+    account.currentUniqueFakeGotchisOwnedArray = newString;
 
     return account;
 }

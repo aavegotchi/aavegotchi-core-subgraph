@@ -101,12 +101,12 @@ export function getOrCreateUser(
         user.fakeGotchis = "{}";
         user.amountFakeGotchis = 0;
 
-        user.currentUniquePiecesOwned = 0;
-        user.currentUniquePiecesOwnedArray = "{}";
-        user.totalUniquePiecesOwned = 0;
-        user.totalUniquePiecesOwnedArray = "{}";
+        user.currentUniqueFakeGotchisOwned = 0;
+        user.currentUniqueFakeGotchisOwnedArray = "{}";
+        user.totalUniqueFakeGotchisOwned = 0;
+        user.totalUniqueFakeGotchisOwnedArray = "{}";
 
-        user.totalPiecesOwnedArray = "{}";
+        user.totalFakeGotchisOwnedArray = "{}";
     }
 
     return user as User;

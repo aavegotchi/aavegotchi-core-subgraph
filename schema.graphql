@@ -161,12 +161,12 @@ type User @entity {
     fakeGotchis: String! # from array
     amountFakeGotchis: Int!
 
-    currentUniquePiecesOwned: Int!
-    totalUniquePiecesOwned: Int!
+    currentUniqueFakeGotchisOwned: Int!
+    totalUniqueFakeGotchisOwned: Int!
 
-    currentUniquePiecesOwnedArray: String! # from array
-    totalUniquePiecesOwnedArray: String! # from array
-    totalPiecesOwnedArray: String! # from array
+    currentUniqueFakeGotchisOwnedArray: String! # from array
+    totalUniqueFakeGotchisOwnedArray: String! # from array
+    totalFakeGotchisOwnedArray: String! # from array
 }
 
 type ERC721Listing @entity {

@@ -48,12 +48,12 @@ export function fetchERC721(address: Address): FakeGotchiNFTContract | null {
 
         detectionAccount.amountFakeGotchis = 0;
 
-        detectionAccount.currentUniquePiecesOwned = 0;
-        detectionAccount.currentUniquePiecesOwnedArray = "{}";
-        detectionAccount.totalUniquePiecesOwned = 0;
-        detectionAccount.totalUniquePiecesOwnedArray = "{}";
+        detectionAccount.currentUniqueFakeGotchisOwned = 0;
+        detectionAccount.currentUniqueFakeGotchisOwnedArray = "{}";
+        detectionAccount.totalUniqueFakeGotchisOwned = 0;
+        detectionAccount.totalUniqueFakeGotchisOwnedArray = "{}";
 
-        detectionAccount.totalPiecesOwnedArray = "{}";
+        detectionAccount.totalFakeGotchisOwnedArray = "{}";
 
         detectionAccount.save();
     }
