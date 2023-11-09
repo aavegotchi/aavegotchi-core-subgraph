@@ -18,7 +18,7 @@ import {
     getERC721ListingMock,
 } from "./mocks";
 import { getOrCreatePortal } from "../src/utils/helpers/diamond";
-import { Aavegotchi, FakeGotchiNFTContract, ERC721Listing, ItemType } from "../generated/schema";
+import { Aavegotchi, ERC721Listing, ItemType } from "../generated/schema";
 
 test("handleERC721Listing - should add price to historicalPrices of aavegotchi if listing is aavegotchi", () => {
     // prepare event
@@ -73,7 +73,7 @@ test("handleERC721Listing - should add price to historicalPrices of aavegotchi i
     listing.cancelled = false;
     listing.nameLowerCase = "TEST123";
     listing.category = BIGINT_ZERO;
-    listing.erc721TokenAddress = Address.fromString(ZERO_ADDRESS);
+    listing.erc721TokenAddress = event.params.erc721TokenAddress
     listing.tokenId = BIGINT_ZERO;
     listing.seller = Address.fromString(ZERO_ADDRESS);
     listing.timeCreated = BIGINT_ZERO;
@@ -82,10 +82,6 @@ test("handleERC721Listing - should add price to historicalPrices of aavegotchi i
     listing.gotchi = "1";
     listing.blockCreated = BIGINT_ZERO;
     listing.save();
-
-    let FakeGotchiNFTContract = new FakeGotchiNFTContract(event.params.erc721TokenAddress);
-    FakeGotchiNFTContract.asAccount = ZERO_ADDRESS;
-    FakeGotchiNFTContract.save();
 
     //try_getERC721Listing
     createMockedFunction(
@@ -117,10 +113,6 @@ test("handleERC721Listing - should add price to historicalPrices of portal if li
     portal.historicalPrices = [];
 
     portal.save();
-
-    let FakeGotchiNFTContract = new FakeGotchiNFTContract(event.params.erc721TokenAddress);
-    FakeGotchiNFTContract.asAccount = ZERO_ADDRESS;
-    FakeGotchiNFTContract.save();
 
     createMockedFunction(
         event.address,
@@ -177,7 +169,7 @@ test("handleERC721Listing - should set blockCreated to block number when listing
     listing.cancelled = false;
     listing.nameLowerCase = "TEST123";
     listing.category = BIGINT_ZERO;
-    listing.erc721TokenAddress = Address.fromString(ZERO_ADDRESS);
+    listing.erc721TokenAddress = event.params.erc721TokenAddress
     listing.tokenId = BIGINT_ZERO;
     listing.seller = Address.fromString(ZERO_ADDRESS);
     listing.timeCreated = BIGINT_ZERO;
@@ -186,10 +178,6 @@ test("handleERC721Listing - should set blockCreated to block number when listing
     listing.gotchi = "1";
     listing.blockCreated = BIGINT_ZERO;
     listing.save();
-
-    let FakeGotchiNFTContract = new FakeGotchiNFTContract(event.params.erc721TokenAddress);
-    FakeGotchiNFTContract.asAccount = ZERO_ADDRESS;
-    FakeGotchiNFTContract.save();
 
     //try_getERC721Listing
     createMockedFunction(
@@ -243,7 +231,7 @@ test("handleERC721Listing - reorg: should set block created if cancel events hap
     listing.cancelled = false;
     listing.nameLowerCase = "TEST123";
     listing.category = BIGINT_ZERO;
-    listing.erc721TokenAddress = Address.fromString(ZERO_ADDRESS);
+    listing.erc721TokenAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
     listing.tokenId = BIGINT_ZERO;
     listing.seller = Address.fromString(ZERO_ADDRESS);
     listing.timeCreated = BIGINT_ZERO;
@@ -252,10 +240,6 @@ test("handleERC721Listing - reorg: should set block created if cancel events hap
     listing.gotchi = "1";
     listing.blockCreated = BIGINT_ZERO;
     listing.save();
-
-    let FakeGotchiNFTContract = new FakeGotchiNFTContract(Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d"));
-    FakeGotchiNFTContract.asAccount = ZERO_ADDRESS;
-    FakeGotchiNFTContract.save();
 
     //try_getERC721Listing
     createMockedFunction(

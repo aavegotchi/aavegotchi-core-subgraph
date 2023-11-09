@@ -21,9 +21,8 @@ import {
     Whitelist,
     ClaimedToken,
     ERC721BuyOrder,
-    FakeGotchiNFTContract,
 } from "../../../generated/schema";
-import { fetchERC721, fetchFakeGotchiNFTToken } from "../../fetch/erc721";
+import { fetchFakeGotchiNFTToken, getFakeGotchiNFTToken } from "../../fetch/erc721";
 import { BIGINT_ZERO, STATUS_AAVEGOTCHI, ZERO_ADDRESS } from "../constants";
 import {
     Address,
@@ -218,14 +217,12 @@ export function updateERC721ListingInfo(
             listing.blockCreated = event.block.number;
         }
 
-        let FakeGotchiNFTContract = fetchERC721(listingInfo.erc721TokenAddress);
-        
-        if (FakeGotchiNFTContract != null) {
-            let erc721Token = fetchFakeGotchiNFTToken(
-                FakeGotchiNFTContract,
-                listingInfo.erc721TokenId
-            );
-    
+        let erc721Token = getFakeGotchiNFTToken(
+            listingInfo.erc721TokenAddress,
+            listingInfo.erc721TokenId
+        );
+
+        if (erc721Token != null) {
             listing.name = erc721Token.name;
             listing.publisher = erc721Token.publisher;
             listing.description = erc721Token.description;

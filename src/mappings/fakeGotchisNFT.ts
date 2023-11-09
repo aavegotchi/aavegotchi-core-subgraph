@@ -28,7 +28,6 @@ import {
 } from "../utils/constants";
 
 import {
-    fetchERC721,
     fetchFakeGotchiNFTToken,
 } from "../fetch/erc721";
 import { BigInt } from "@graphprotocol/graph-ts";
@@ -47,19 +46,12 @@ export function handleTransfer(event: TransferEvent): void {
     const isBurnFlag = isBurn(event);
     const isTransferFlag = isTransfer(event);
 
-    // fetch contract
-    const contract = fetchERC721(event.address);
-    if (contract == null) {
-        return;
-    }
-    contract.save();
-
     // fetch sender and receiver
     let from = getOrCreateUser(event.params._from.toHexString());
     let to = getOrCreateUser(event.params._to.toHexString());
 
     // update token owner
-    let token = fetchFakeGotchiNFTToken(contract, event.params._tokenId);
+    let token = fetchFakeGotchiNFTToken(event.address, event.params._tokenId);
     token.owner = to.id;
     token.save();
 
@@ -137,67 +129,64 @@ export function handleTransfer(event: TransferEvent): void {
 }
 
 export function handleMetadataActionLog(event: MetadataActionLogEvent): void {
-    let contract = fetchERC721(event.address);
-    if (contract != null) {
-        let ev = MetadataActionLog.load(event.params.id.toString());
-        if (!ev) {
-            ev = new MetadataActionLog(event.params.id.toString());
-            ev.flagCount = 0;
-            ev.likeCount = 0;
+    let ev = MetadataActionLog.load(event.params.id.toString());
+    if (!ev) {
+        ev = new MetadataActionLog(event.params.id.toString());
+        ev.flagCount = 0;
+        ev.likeCount = 0;
+    }
+    let artist = getOrCreateUser(event.params.metaData.artist.toHexString());
+    let publisher = getOrCreateUser(event.params.metaData.publisher.toHexString());
+
+    ev.emitter = event.address.toHexString();
+    ev.timestamp = event.block.timestamp;
+    ev.minted = event.params.metaData.minted;
+    ev.artist = artist.id;
+    ev.artistName = event.params.metaData.artistName;
+    ev.createdAt = event.params.metaData.createdAt;
+    ev.description = event.params.metaData.description;
+    ev.externalLink = event.params.metaData.externalLink;
+    ev.fileHash = event.params.metaData.fileHash;
+    ev.name = event.params.metaData.name;
+    ev.publisher = publisher.id;
+    ev.publisherName = event.params.metaData.publisherName;
+    ev.royalty = event.params.metaData.royalty;
+    ev.status = event.params.metaData.status;
+    ev.editions = event.params.metaData.editions;
+    ev.fileType = event.params.metaData.fileType;
+    ev.thumbnailHash = event.params.metaData.thumbnailHash;
+    ev.thumbnailType = event.params.metaData.thumbnailType;
+
+    ev.save();
+
+    if (ev.status == METADATA_STATUS_APPROVED) {
+        // Update Global Stats
+        let stats = getOrCreateStats();
+        stats.totalFakeGotchiPieces = stats.totalFakeGotchiPieces + 1;
+
+        // create tokens tokens and attach metadata
+        let startId = stats.tokenIdCounter;
+        stats.tokenIdCounter = stats.tokenIdCounter + ev.editions;
+        for (let i = 0; i < ev.editions; i++) {
+            let id = startId + i;
+            let token = fetchFakeGotchiNFTToken(event.address, BigInt.fromI32(id));
+            token.metadata = ev.id;
+            token.owner = ev.publisher!;
+            token.contract = event.address;
+            token.artist = event.params.metaData.artist.toHexString();
+            token.artistName = event.params.metaData.artistName;
+            token.description = event.params.metaData.description;
+            token.externalLink = event.params.metaData.externalLink;
+            token.fileHash = event.params.metaData.fileHash;
+            token.name = event.params.metaData.name;
+            token.publisher = event.params.metaData.publisher.toHexString();
+            token.publisherName = event.params.metaData.publisherName;
+            token.editions = event.params.metaData.editions;
+            token.thumbnailHash = event.params.metaData.thumbnailHash;
+            token.thumbnailType = event.params.metaData.thumbnailType;
+            token.save();
         }
-        let artist = getOrCreateUser(event.params.metaData.artist.toHexString());
-        let publisher = getOrCreateUser(event.params.metaData.publisher.toHexString());
-
-        ev.emitter = contract.id.toHexString();
-        ev.timestamp = event.block.timestamp;
-        ev.minted = event.params.metaData.minted;
-        ev.artist = artist.id;
-        ev.artistName = event.params.metaData.artistName;
-        ev.createdAt = event.params.metaData.createdAt;
-        ev.description = event.params.metaData.description;
-        ev.externalLink = event.params.metaData.externalLink;
-        ev.fileHash = event.params.metaData.fileHash;
-        ev.name = event.params.metaData.name;
-        ev.publisher = publisher.id;
-        ev.publisherName = event.params.metaData.publisherName;
-        ev.royalty = event.params.metaData.royalty;
-        ev.status = event.params.metaData.status;
-        ev.editions = event.params.metaData.editions;
-        ev.fileType = event.params.metaData.fileType;
-        ev.thumbnailHash = event.params.metaData.thumbnailHash;
-        ev.thumbnailType = event.params.metaData.thumbnailType;
-
-        ev.save();
-
-        if (ev.status == METADATA_STATUS_APPROVED) {
-            // Update Global Stats
-            let stats = getOrCreateStats();
-            stats.totalFakeGotchiPieces = stats.totalFakeGotchiPieces + 1;
-
-            // create tokens tokens and attach metadata
-            let startId = stats.tokenIdCounter;
-            stats.tokenIdCounter = stats.tokenIdCounter + ev.editions;
-            for (let i = 0; i < ev.editions; i++) {
-                let id = startId + i;
-                let token = fetchFakeGotchiNFTToken(contract, BigInt.fromI32(id));
-                token.metadata = ev.id;
-                token.owner = ev.publisher!;
-                token.contract = event.address;
-                token.artist = event.params.metaData.artist.toHexString();
-                token.artistName = event.params.metaData.artistName;
-                token.description = event.params.metaData.description;
-                token.externalLink = event.params.metaData.externalLink;
-                token.fileHash = event.params.metaData.fileHash;
-                token.name = event.params.metaData.name;
-                token.publisher = event.params.metaData.publisher.toHexString();
-                token.publisherName = event.params.metaData.publisherName;
-                token.editions = event.params.metaData.editions;
-                token.thumbnailHash = event.params.metaData.thumbnailHash;
-                token.thumbnailType = event.params.metaData.thumbnailType;
-                token.save();
-            }
-            stats.save();
-        }
+        stats.save();
     }
 }
 
