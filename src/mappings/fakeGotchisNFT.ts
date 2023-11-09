@@ -41,8 +41,8 @@ import {
 } from "../fetch/erc721";
 import { BigInt } from "@graphprotocol/graph-ts";
 import {
-    getNFTHolder,
-    getOrCreateNFTStatistic,
+    getFakeGotchiHolder,
+    getOrCreateFakeGotchiStatistic,
     getOrCreateStats,
     isBurn,
     isMint,
@@ -73,7 +73,7 @@ export function handleTransfer(event: TransferEvent): void {
 
     // fetch metadata
     let metadata = MetadataActionLog.load(token.metadata!)!;
-    let nftStats = getOrCreateNFTStatistic(metadata.id);
+    let nftStats = getOrCreateFakeGotchiStatistic(metadata.id);
 
     let stats = getOrCreateStats();
     // update account entity
@@ -81,7 +81,7 @@ export function handleTransfer(event: TransferEvent): void {
         to = updateAccountStatsTo(to, metadata.id);
         to.amountFakeGotchis = to.amountFakeGotchis + 1;
 
-        let receiver = getNFTHolder(event.params._to, metadata.id);
+        let receiver = getFakeGotchiHolder(event.params._to, metadata.id);
         receiver.amount = receiver.amount + 1;
         receiver.save();
 
@@ -97,7 +97,7 @@ export function handleTransfer(event: TransferEvent): void {
         from = updateAccountStatsFrom(from, metadata.id);
         from.amountFakeGotchis = from.amountFakeGotchis - 1;
 
-        let sender = getNFTHolder(event.params._from, metadata.id);
+        let sender = getFakeGotchiHolder(event.params._from, metadata.id);
         sender.amount = sender.amount - 1;
         sender.save();
 

@@ -1,8 +1,8 @@
 import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 import { Transfer } from "../../generated/FAKEGotchisNFTDiamond/IERC721";
 import {
-    NFTHolder,
-    NFTStatistic,
+    FakeGotchiHolder,
+    FakeGotchiStatistic,
     Statistic
 } from "../../generated/schema";
 import { ADDRESS_BURN, ADDRESS_DEAD, ADDRESS_ZERO, BIGINT_ZERO } from "../utils/constants";
@@ -45,10 +45,10 @@ export function getOrCreateStats(): Statistic {
     return stat;
 }
 
-export function getOrCreateNFTStatistic(metadataId: string): NFTStatistic {
-    let stat = NFTStatistic.load(metadataId);
+export function getOrCreateFakeGotchiStatistic(metadataId: string): FakeGotchiStatistic {
+    let stat = FakeGotchiStatistic.load(metadataId);
     if (!stat) {
-        stat = new NFTStatistic(metadataId);
+        stat = new FakeGotchiStatistic(metadataId);
         stat.burned = 0;
         stat.metadata = metadataId;
         stat.amountHolder = 0;
@@ -59,17 +59,17 @@ export function getOrCreateNFTStatistic(metadataId: string): NFTStatistic {
     return stat;
 }
 
-export function getNFTHolder(
+export function getFakeGotchiHolder(
     holderAddress: Address,
     metadataId: string
-): NFTHolder {
+): FakeGotchiHolder {
     let id = holderAddress.toHexString() + "-" + metadataId;
-    let holder = NFTHolder.load(id);
+    let holder = FakeGotchiHolder.load(id);
     if (!holder) {
-        holder = new NFTHolder(id);
+        holder = new FakeGotchiHolder(id);
         holder.amount = 0;
         holder.holder = holderAddress.toHexString();
-        holder.nftStats = metadataId;
+        holder.fakeGotchiStats = metadataId;
     }
 
     return holder;

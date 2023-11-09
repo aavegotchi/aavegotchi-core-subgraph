@@ -3,7 +3,6 @@ import { Address, BigInt, Bytes, json, log } from "@graphprotocol/graph-ts";
 import {
     User,
     MetadataActionLog,
-    NFTStatistic,
     Statistic,
 } from "../../generated/schema";
 import { BIGINT_ONE, BIGINT_ZERO } from "../utils/constants";

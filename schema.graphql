@@ -585,19 +585,19 @@ type Generation @entity {
     amount: Int
 }
 
-type NFTStatistic @entity {
+type FakeGotchiStatistic @entity {
     id: ID!
     metadata: MetadataActionLog
-    holders: [NFTHolder!]! @derivedFrom(field: "nftStats")
+    holders: [FakeGotchiHolder!]! @derivedFrom(field: "fakeGotchiStats")
     burned: Int
     amountHolder: Int
     totalSupply: Int
     tokenIds: [BigInt!]!
 }
 
-type NFTHolder @entity {
+type FakeGotchiHolder @entity {
     id: ID!
-    nftStats: NFTStatistic
+    fakeGotchiStats: FakeGotchiStatistic
     holder: User
     amount: Int
 }
