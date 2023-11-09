@@ -152,11 +152,11 @@ export function addToOwnersIfNotExists(
     totalStats: Statistic,
     owner: Bytes
 ): Statistic {
-    let ownersArray = totalStats.totalOwnersArray;
+    let ownersArray = totalStats.totalFakeGotchiOwnersArray;
     if (ownersArray.indexOf(owner) == -1) {
         ownersArray.push(owner);
-        totalStats.totalOwnersArray = ownersArray;
-        totalStats.totalOwners = ownersArray.length;
+        totalStats.totalFakeGotchiOwnersArray = ownersArray;
+        totalStats.totalFakeGotchiOwners = ownersArray.length;
     }
 
     return totalStats;
@@ -171,12 +171,12 @@ export function removeFromOwnersIfExistsAndBalanceNotZero(
         return totalStats;
     }
 
-    let ownersArray = totalStats.totalOwnersArray;
+    let ownersArray = totalStats.totalFakeGotchiOwnersArray;
     let index = ownersArray.indexOf(owner);
     if (index != -1) {
         ownersArray.splice(index, 1);
-        totalStats.totalOwnersArray = ownersArray;
-        totalStats.totalOwners = ownersArray.length;
+        totalStats.totalFakeGotchiOwnersArray = ownersArray;
+        totalStats.totalFakeGotchiOwners = ownersArray.length;
     }
 
     return totalStats;

@@ -296,8 +296,8 @@ type Statistic @entity {
     totalConsumablesVolume: BigInt!
     totalTicketsVolume: BigInt!
 
-    totalOwners: Int
-    totalOwnersArray: [Bytes!]!
+    totalFakeGotchiOwners: Int
+    totalFakeGotchiOwnersArray: [Bytes!]!
 
     totalFakeGotchiPieces: Int
     totalNFTs: Int

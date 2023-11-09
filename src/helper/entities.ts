@@ -16,10 +16,10 @@ export function getOrCreateStats(): Statistic {
         stat.burnedCards = 0;
         stat.burnedNFTs = 0;
         stat.totalNFTs = 0;
-        stat.totalOwners = 0;
+        stat.totalFakeGotchiOwners = 0;
         stat.totalFakeGotchiPieces = 0;
         stat.totalNFTsArray = "{}";
-        stat.totalOwnersArray = new Array<Bytes>();
+        stat.totalFakeGotchiOwnersArray = new Array<Bytes>();
         stat.tokenIdCounter = 0;
         stat.totalEditionsCirculating = 0;
         stat.totalEditionsMinted = 0;

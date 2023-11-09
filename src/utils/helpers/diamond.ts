@@ -576,10 +576,10 @@ export function getStatisticEntity(): Statistic {
         stats.burnedCards = 0;
         stats.burnedNFTs = 0;
         stats.totalNFTs = 0;
-        stats.totalOwners = 0;
+        stats.totalFakeGotchiOwners = 0;
         stats.totalFakeGotchiPieces = 0;
         stats.totalNFTsArray = "{}";
-        stats.totalOwnersArray = new Array<Bytes>();
+        stats.totalFakeGotchiOwnersArray = new Array<Bytes>();
         stats.tokenIdCounter = 0;
         stats.totalEditionsCirculating = 0;
         stats.totalEditionsMinted = 0;
