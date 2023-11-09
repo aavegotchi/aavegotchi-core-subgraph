@@ -3,7 +3,6 @@ import {
     MetadataDecline,
     MetadataFlag,
     MetadataLike,
-    ReviewPass
 } from "../../generated/schema";
 
 import {
@@ -270,23 +269,4 @@ export function handleMetadataDecline(event: MetadataDeclineEvent): void {
     metadatalikedEv.declinedBy = decliner.id;
     metadatalikedEv.metadata = metadata.id;
     metadatalikedEv.save();
-}
-
-export function handleReviewPass(event: ReviewPassEvent): void {
-    let metadata = MetadataActionLog.load(event.params._id.toString())!;
-    metadata.status = METADATA_STATUS_PENDING;
-    metadata.save();
-
-    let reviewer = getOrCreateUser(event.params._reviewer.toHexString());
-    reviewer.save();
-
-    let reviewPassed = new ReviewPass(events.id(event));
-    let contract = fetchERC721(event.address)!;
-    let token = fetchFakeGotchiNFTToken(contract, event.params._id);
-    reviewPassed.emitter = contract.id.toHexString();
-    reviewPassed.timestamp = event.block.timestamp;
-    reviewPassed.token = token.id;
-    reviewPassed.reviewer = reviewer.id;
-    reviewPassed.metadata = metadata.id;
-    reviewPassed.save();
 }

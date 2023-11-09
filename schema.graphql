@@ -568,17 +568,6 @@ type MetadataDecline implements Event @entity(immutable: true) {
     metadata: MetadataActionLog
 }
 
-type ReviewPass implements Event @entity(immutable: true) {
-    id: ID!
-    emitter: User!
-    timestamp: BigInt!
-    token: FakeGotchiNFTToken
-    sender: User
-
-    reviewer: User
-    metadata: MetadataActionLog
-}
-
 type Generation @entity {
     "a generation is a series"
     id: ID!

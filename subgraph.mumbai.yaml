@@ -298,8 +298,6 @@ dataSources:
                 handler: handleMetadataFlag
               - event: MetadataLike(indexed uint256,address)
                 handler: handleMetadataLike
-              - event: ReviewPass(indexed uint256,address)
-                handler: handleReviewPass
               - event: MetadataDecline(indexed uint256,address)
                 handler: handleMetadataDecline
           file: ./src/mappings/fakeGotchisNFT.ts

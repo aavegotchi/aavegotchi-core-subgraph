@@ -1,7 +1,6 @@
 import {
     Address,
     BigInt,
-    Bytes,
     ethereum,
     store,
 } from "@graphprotocol/graph-ts";
@@ -17,8 +16,7 @@ import { Transfer } from "../generated/FAKEGotchisNFTDiamond/IERC721";
 import {
     FakeGotchiNFTToken,
     MetadataActionLog,
-    NFTHolder,
-    NFTStatistic,
+    FakeGotchiHolder,
     User,
 } from "../generated/schema";
 import {
@@ -101,19 +99,19 @@ describe("handleTransfer", () => {
         senderAccount.gotchisLentOut = new Array<BigInt>();
         senderAccount.gotchisBorrowed = new Array<BigInt>();
 
-        const holder = new NFTHolder(
+        const holder = new FakeGotchiHolder(
             "0x46a3a41bd932244dd08186e4c19f1a7e48cbcdf4-1"
         );
         holder.amount = 0;
         holder.holder = receiver;
-        holder.nftStats = "1";
+        holder.fakeGotchiStats = "1";
 
         store.set("MetadataActionLog", "1", log);
         store.set("FakeGotchiNFTToken", tokenEntityId, token);
         store.set("User", sender, senderAccount);
-        // store.set("NFTStatistic", "1", nftStats);
+        // store.set("FakeGotchiStatistic", "1", fakeGotchiStats);
         store.set(
-            "NFTHolder",
+            "FakeGotchiHolder",
             "0x46a3a41bd932244dd08186e4c19f1a7e48cbcdf4-1",
             holder
         );
@@ -170,17 +168,17 @@ describe("handleTransfer", () => {
         assert.fieldEquals("Statistic", "0", "totalOwners", "1");
 
         // nft stats
-        assert.fieldEquals("NFTStatistic", "1", "burned", "0");
-        assert.fieldEquals("NFTStatistic", "1", "amountHolder", "1");
-        assert.fieldEquals("NFTStatistic", "1", "totalSupply", "1");
-        assert.fieldEquals("NFTStatistic", "1", "metadata", "1");
-        assert.fieldEquals("NFTStatistic", "1", "tokenIds", "[1]");
+        assert.fieldEquals("FakeGotchiStatistic", "1", "burned", "0");
+        assert.fieldEquals("FakeGotchiStatistic", "1", "amountHolder", "1");
+        assert.fieldEquals("FakeGotchiStatistic", "1", "totalSupply", "1");
+        assert.fieldEquals("FakeGotchiStatistic", "1", "metadata", "1");
+        assert.fieldEquals("FakeGotchiStatistic", "1", "tokenIds", "[1]");
 
         // NFT Holder Stats
         let idSender = receiver + "-1";
-        assert.fieldEquals("NFTHolder", idSender, "holder", receiver);
-        assert.fieldEquals("NFTHolder", idSender, "amount", "1");
-        assert.fieldEquals("NFTHolder", idSender, "nftStats", "1");
+        assert.fieldEquals("FakeGotchiHolder", idSender, "holder", receiver);
+        assert.fieldEquals("FakeGotchiHolder", idSender, "amount", "1");
+        assert.fieldEquals("FakeGotchiHolder", idSender, "fakeGotchiStats", "1");
 
         // account stats
         assert.fieldEquals("User", receiver, "totalUniqueFakeGotchisOwned", "1");
@@ -209,22 +207,22 @@ describe("handleTransfer", () => {
         assert.fieldEquals("Statistic", "0", "totalOwners", "1");
 
         // NFT Stats
-        assert.fieldEquals("NFTStatistic", "1", "burned", "0");
-        assert.fieldEquals("NFTStatistic", "1", "amountHolder", "1");
-        assert.fieldEquals("NFTStatistic", "1", "totalSupply", "1");
-        assert.fieldEquals("NFTStatistic", "1", "metadata", "1");
-        assert.fieldEquals("NFTStatistic", "1", "tokenIds", "[1]");
+        assert.fieldEquals("FakeGotchiStatistic", "1", "burned", "0");
+        assert.fieldEquals("FakeGotchiStatistic", "1", "amountHolder", "1");
+        assert.fieldEquals("FakeGotchiStatistic", "1", "totalSupply", "1");
+        assert.fieldEquals("FakeGotchiStatistic", "1", "metadata", "1");
+        assert.fieldEquals("FakeGotchiStatistic", "1", "tokenIds", "[1]");
 
         // NFT Holder Stats
         let idSender = receiver + "-1";
-        assert.fieldEquals("NFTHolder", idSender, "holder", receiver);
-        assert.fieldEquals("NFTHolder", idSender, "amount", "0");
-        assert.fieldEquals("NFTHolder", idSender, "nftStats", "1");
+        assert.fieldEquals("FakeGotchiHolder", idSender, "holder", receiver);
+        assert.fieldEquals("FakeGotchiHolder", idSender, "amount", "0");
+        assert.fieldEquals("FakeGotchiHolder", idSender, "fakeGotchiStats", "1");
 
         let idReceiver = sender + "-1";
-        assert.fieldEquals("NFTHolder", idReceiver, "holder", sender);
-        assert.fieldEquals("NFTHolder", idReceiver, "amount", "1");
-        assert.fieldEquals("NFTHolder", idReceiver, "nftStats", "1");
+        assert.fieldEquals("FakeGotchiHolder", idReceiver, "holder", sender);
+        assert.fieldEquals("FakeGotchiHolder", idReceiver, "amount", "1");
+        assert.fieldEquals("FakeGotchiHolder", idReceiver, "fakeGotchiStats", "1");
 
         // User
         assert.fieldEquals("User", receiver, "totalUniqueFakeGotchisOwned", "1");
@@ -260,17 +258,17 @@ describe("handleTransfer", () => {
         assert.fieldEquals("Statistic", "0", "totalOwners", "0");
 
         // NFT Stats
-        assert.fieldEquals("NFTStatistic", "1", "burned", "1");
-        assert.fieldEquals("NFTStatistic", "1", "amountHolder", "0");
-        assert.fieldEquals("NFTStatistic", "1", "totalSupply", "0");
-        assert.fieldEquals("NFTStatistic", "1", "metadata", "1");
-        assert.fieldEquals("NFTStatistic", "1", "tokenIds", "[]");
+        assert.fieldEquals("FakeGotchiStatistic", "1", "burned", "1");
+        assert.fieldEquals("FakeGotchiStatistic", "1", "amountHolder", "0");
+        assert.fieldEquals("FakeGotchiStatistic", "1", "totalSupply", "0");
+        assert.fieldEquals("FakeGotchiStatistic", "1", "metadata", "1");
+        assert.fieldEquals("FakeGotchiStatistic", "1", "tokenIds", "[]");
 
         // NFT Holder Stats
         let idSender = sender + "-1";
-        assert.fieldEquals("NFTHolder", idSender, "holder", sender);
-        assert.fieldEquals("NFTHolder", idSender, "amount", "0");
-        assert.fieldEquals("NFTHolder", idSender, "nftStats", "1");
+        assert.fieldEquals("FakeGotchiHolder", idSender, "holder", sender);
+        assert.fieldEquals("FakeGotchiHolder", idSender, "amount", "0");
+        assert.fieldEquals("FakeGotchiHolder", idSender, "fakeGotchiStats", "1");
 
         // User
         assert.fieldEquals("User", sender, "totalUniqueFakeGotchisOwned", "1");
