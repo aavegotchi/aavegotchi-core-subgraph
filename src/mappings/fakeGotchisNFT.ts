@@ -1,6 +1,5 @@
 import {
     MetadataActionLog,
-    MetadataFlag,
 } from "../../generated/schema";
 
 import {
@@ -212,17 +211,6 @@ export function handleMetadataFlag(event: MetadataFlagEvent): void {
 
     let flagger = getOrCreateUser(event.params._flaggedBy.toHexString());
     flagger.save();
-
-    let metadataflaggedEv = new MetadataFlag(events.id(event));
-    let contract = fetchERC721(event.address)!;
-    let token = fetchFakeGotchiNFTToken(contract, event.params._id);
-    metadataflaggedEv.emitter = contract.id.toHexString();
-    metadataflaggedEv.timestamp = event.block.timestamp;
-    metadataflaggedEv.token = token.id;
-
-    metadataflaggedEv.flaggedBy = flagger.id;
-    metadataflaggedEv.metadata = metadata.id;
-    metadataflaggedEv.save();
 }
 
 export function handleMetadataLike(event: MetadataLikeEvent): void {

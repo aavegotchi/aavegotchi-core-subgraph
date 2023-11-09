@@ -2,7 +2,6 @@ import { Address, BigInt } from "@graphprotocol/graph-ts";
 
 import {
     User,
-    FakeGotchiCardContract,
     FakeGotchiCardToken,
     FakeGotchiCardBalance,
 } from "../../generated/schema";
@@ -22,36 +21,21 @@ export function replaceURI(uri: string, identifier: BigInt): string {
     );
 }
 
-export function fetchERC1155(address: Address): FakeGotchiCardContract {
-    let contract = FakeGotchiCardContract.load(address);
-    if (!contract) {
-        contract = new FakeGotchiCardContract(address);
-        contract.asAccount = address.toHex();
-        contract.save();
-
-        let account = getOrCreateUser(address.toHex());
-        account.asERC1155 = address;
-        account.save();
-    }
-
-    return contract;
-}
-
 export function fetchFakeGotchiCardToken(
-    contract: FakeGotchiCardContract,
+    contract: Address,
     identifier: BigInt
 ): FakeGotchiCardToken {
-    let id = contract.id
+    let id = contract
         .toHex()
         .concat("/")
         .concat(identifier.toHex());
     let token = FakeGotchiCardToken.load(id);
 
     if (token == null) {
-        let erc1155 = IERC1155.bind(Address.fromBytes(contract.id));
+        let erc1155 = IERC1155.bind(contract);
         let try_uri = erc1155.try_uri(identifier);
         token = new FakeGotchiCardToken(id);
-        token.contract = contract.id;
+        token.contract = contract;
         token.identifier = identifier;
         token.totalSupply = fetchFakeGotchiCardBalance(token as FakeGotchiCardToken, null).id;
         token.uri = try_uri.reverted

@@ -1,8 +1,7 @@
-import { ethereum, BigInt } from "@graphprotocol/graph-ts";
+import { ethereum, BigInt, Address } from "@graphprotocol/graph-ts";
 
 import {
     User,
-    FakeGotchiCardContract,
     Generation,
 } from "../../generated/schema";
 
@@ -23,7 +22,6 @@ import {
 } from "@amxx/graphprotocol-utils";
 
 import {
-    fetchERC1155,
     fetchFakeGotchiCardToken,
     fetchFakeGotchiCardBalance,
     replaceURI,
@@ -33,7 +31,7 @@ import { getOrCreateUser } from "../utils/helpers/diamond";
 function registerTransfer(
     event: ethereum.Event,
     suffix: string,
-    contract: FakeGotchiCardContract,
+    contract: Address,
     from: User,
     to: User,
     id: BigInt,
@@ -70,14 +68,13 @@ function registerTransfer(
 }
 
 export function handleTransferSingle(event: TransferSingleEvent): void {
-    let contract = fetchERC1155(event.address);
     let from = getOrCreateUser(event.params._from.toHex());
     let to = getOrCreateUser(event.params._to.toHex());
 
     registerTransfer(
         event,
         "",
-        contract,
+        event.address,
         from,
         to,
         event.params._id,
@@ -86,7 +83,6 @@ export function handleTransferSingle(event: TransferSingleEvent): void {
 }
 
 export function handleTransferBatch(event: TransferBatchEvent): void {
-    let contract = fetchERC1155(event.address);
     let from = getOrCreateUser(event.params._from.toHex());
     let to = getOrCreateUser(event.params._to.toHex());
 
@@ -101,7 +97,7 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
             registerTransfer(
                 event,
                 "/".concat(i.toString()),
-                contract,
+                event.address,
                 from,
                 to,
                 ids[i],
@@ -112,8 +108,7 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
 }
 
 export function handleURI(event: URIEvent): void {
-    let contract = fetchERC1155(event.address);
-    let token = fetchFakeGotchiCardToken(contract, event.params._id);
+    let token = fetchFakeGotchiCardToken(event.address, event.params._id);
     token.uri = replaceURI(event.params._value, event.params._id);
     token.save();
 }
