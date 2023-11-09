@@ -19,7 +19,6 @@ import {
     MetadataActionLog,
     NFTHolder,
     NFTStatistic,
-    Transaction,
     User,
 } from "../generated/schema";
 import {
@@ -74,10 +73,8 @@ const event = createTransferEvent(sender, receiver, tokenId);
 
 describe("handleTransfer", () => {
     beforeAll(() => {
-        const transaction = new Transaction("abc");
         const log = new MetadataActionLog("1");
         log.emitter = sender;
-        log.transaction = transaction.id;
         log.timestamp = BIGINT_ZERO;
         log.editions = 1;
 

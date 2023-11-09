@@ -157,7 +157,6 @@ export function handleMetadataActionLog(event: MetadataActionLogEvent): void {
         let publisher = getOrCreateUser(event.params.metaData.publisher.toHexString());
 
         ev.emitter = contract.id.toHexString();
-        ev.transaction = transactions.log(event).id;
         ev.timestamp = event.block.timestamp;
         ev.minted = event.params.metaData.minted;
         ev.artist = artist.id;
@@ -225,7 +224,6 @@ export function handleMetadataFlag(event: MetadataFlagEvent): void {
     let contract = fetchERC721(event.address)!;
     let token = fetchFakeGotchiNFTToken(contract, event.params._id);
     metadataflaggedEv.emitter = contract.id.toHexString();
-    metadataflaggedEv.transaction = transactions.log(event).id;
     metadataflaggedEv.timestamp = event.block.timestamp;
     metadataflaggedEv.token = token.id;
 
@@ -246,7 +244,6 @@ export function handleMetadataLike(event: MetadataLikeEvent): void {
     let contract = fetchERC721(event.address)!;
     let token = fetchFakeGotchiNFTToken(contract, event.params._id);
     metadatalikedEv.emitter = contract.id.toHexString();
-    metadatalikedEv.transaction = transactions.log(event).id;
     metadatalikedEv.timestamp = event.block.timestamp;
     metadatalikedEv.token = token.id;
 
@@ -267,7 +264,6 @@ export function handleMetadataDecline(event: MetadataDeclineEvent): void {
     let contract = fetchERC721(event.address)!;
     let token = fetchFakeGotchiNFTToken(contract, event.params._id);
     metadatalikedEv.emitter = contract.id.toHexString();
-    metadatalikedEv.transaction = transactions.log(event).id;
     metadatalikedEv.timestamp = event.block.timestamp;
     metadatalikedEv.token = token.id;
 
@@ -288,7 +284,6 @@ export function handleReviewPass(event: ReviewPassEvent): void {
     let contract = fetchERC721(event.address)!;
     let token = fetchFakeGotchiNFTToken(contract, event.params._id);
     reviewPassed.emitter = contract.id.toHexString();
-    reviewPassed.transaction = transactions.log(event).id;
     reviewPassed.timestamp = event.block.timestamp;
     reviewPassed.token = token.id;
     reviewPassed.reviewer = reviewer.id;

@@ -452,19 +452,6 @@ type ERC721BuyOrder @entity {
     canceled: Boolean
 }
 
-interface Event {
-    id: ID!
-    transaction: Transaction!
-    emitter: User!
-    timestamp: BigInt!
-}
-type Transaction @entity(immutable: true) {
-    id: ID!
-    timestamp: BigInt!
-    blockNumber: BigInt!
-    events: [Event!]! @derivedFrom(field: "transaction")
-}
-
 # Cards
 type FakeGotchiCardContract @entity(immutable: true) {
     id: Bytes!
@@ -524,7 +511,6 @@ type FakeGotchiNFTToken @entity {
 type MetadataActionLog implements Event @entity {
     id: ID!
     emitter: User!
-    transaction: Transaction!
     timestamp: BigInt!
     sender: User
     minted: Boolean
@@ -552,7 +538,6 @@ type MetadataActionLog implements Event @entity {
 type MetadataFlag implements Event @entity(immutable: true) {
     id: ID!
     emitter: User!
-    transaction: Transaction!
     timestamp: BigInt!
     token: FakeGotchiNFTToken
     sender: User
@@ -564,7 +549,6 @@ type MetadataFlag implements Event @entity(immutable: true) {
 type MetadataLike implements Event @entity(immutable: true) {
     id: ID!
     emitter: User!
-    transaction: Transaction!
     timestamp: BigInt!
     token: FakeGotchiNFTToken
     sender: User
@@ -576,7 +560,6 @@ type MetadataLike implements Event @entity(immutable: true) {
 type MetadataDecline implements Event @entity(immutable: true) {
     id: ID!
     emitter: User!
-    transaction: Transaction!
     timestamp: BigInt!
     token: FakeGotchiNFTToken
     sender: User
@@ -588,7 +571,6 @@ type MetadataDecline implements Event @entity(immutable: true) {
 type ReviewPass implements Event @entity(immutable: true) {
     id: ID!
     emitter: User!
-    transaction: Transaction!
     timestamp: BigInt!
     token: FakeGotchiNFTToken
     sender: User
