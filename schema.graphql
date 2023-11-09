@@ -450,19 +450,10 @@ type ERC721BuyOrder @entity {
 }
 
 # Cards
-type FakeGotchiCardToken @entity {
-    id: ID!
-    contract: Bytes!
-    identifier: BigInt!
-    uri: String
-    totalSupply: FakeGotchiCardBalance!
-    balances: [FakeGotchiCardBalance!]! @derivedFrom(field: "token")
-    metadata: MetadataActionLog
-}
 type FakeGotchiCardBalance @entity {
     id: ID!
     contract: Bytes!
-    token: FakeGotchiCardToken!
+    token: BigInt!
     account: User
     value: BigDecimal!
     valueExact: BigInt!

@@ -268,8 +268,6 @@ dataSources:
                 handler: handleTransferSingle
               - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
                 handler: handleTransferBatch
-              - event: URI(string,indexed uint256)
-                handler: handleURI
           file: ./src/mappings/fakeGotchisCard.ts
     - kind: ethereum/contract
       name: FAKEGotchisNFTDiamond

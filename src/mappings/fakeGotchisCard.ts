@@ -22,7 +22,6 @@ import {
 } from "@amxx/graphprotocol-utils";
 
 import {
-    fetchFakeGotchiCardToken,
     fetchFakeGotchiCardBalance,
     replaceURI,
 } from "../fetch/erc1155";
@@ -37,34 +36,30 @@ function registerTransfer(
     id: BigInt,
     value: BigInt
 ): void {
-    let token = fetchFakeGotchiCardToken(contract, id);
-
     if (from.id == constants.ADDRESS_ZERO.toHexString()) {
-        let totalSupply = fetchFakeGotchiCardBalance(token, null);
+        let totalSupply = fetchFakeGotchiCardBalance(id, null, contract);
         totalSupply.valueExact = totalSupply.valueExact.plus(value);
         totalSupply.value = decimals.toDecimals(totalSupply.valueExact);
         totalSupply.save();
     } else {
-        let balance = fetchFakeGotchiCardBalance(token, from);
+        let balance = fetchFakeGotchiCardBalance(id, from, contract);
         balance.valueExact = balance.valueExact.minus(value);
         balance.value = decimals.toDecimals(balance.valueExact);
         balance.save();
     }
 
     if (to.id == constants.ADDRESS_ZERO.toHexString()) {
-        let totalSupply = fetchFakeGotchiCardBalance(token, null);
+        let totalSupply = fetchFakeGotchiCardBalance(id, null, contract);
         totalSupply.valueExact = totalSupply.valueExact.minus(value);
         totalSupply.value = decimals.toDecimals(totalSupply.valueExact);
         totalSupply.save();
     } else {
-        let balance = fetchFakeGotchiCardBalance(token, to);
+        let balance = fetchFakeGotchiCardBalance(id, to, contract);
         balance.valueExact = balance.valueExact.plus(value);
         balance.value = decimals.toDecimals(balance.valueExact);
         balance.save();
 
     }
-
-    token.save();
 }
 
 export function handleTransferSingle(event: TransferSingleEvent): void {
@@ -105,12 +100,6 @@ export function handleTransferBatch(event: TransferBatchEvent): void {
             );
         }
     }
-}
-
-export function handleURI(event: URIEvent): void {
-    let token = fetchFakeGotchiCardToken(event.address, event.params._id);
-    token.uri = replaceURI(event.params._value, event.params._id);
-    token.save();
 }
 
 export function handleNewSeriesStarted(event: NewSeriesStarted): void {
