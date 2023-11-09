@@ -1,15 +1,11 @@
 import {
     MetadataActionLog,
     MetadataFlag,
-    MetadataLike,
 } from "../../generated/schema";
 
 import {
     MetadataActionLog as MetadataActionLogEvent,
     MetadataLike as MetadataLikeEvent,
-    ReviewPass as ReviewPassEvent,
-    Approval as ApprovalEvent,
-    ApprovalForAll as ApprovalForAllEvent,
     Transfer as TransferEvent,
     MetadataFlag as MetadataFlagEvent
 } from "../../generated/FAKEGotchisNFTDiamond/IERC721";
@@ -237,14 +233,4 @@ export function handleMetadataLike(event: MetadataLikeEvent): void {
     let liker = getOrCreateUser(event.params._likedBy.toHexString());
     liker.save();
 
-    let metadatalikedEv = new MetadataLike(events.id(event));
-    let contract = fetchERC721(event.address)!;
-    let token = fetchFakeGotchiNFTToken(contract, event.params._id);
-    metadatalikedEv.emitter = contract.id.toHexString();
-    metadatalikedEv.timestamp = event.block.timestamp;
-    metadatalikedEv.token = token.id;
-
-    metadatalikedEv.likedBy = liker.id;
-    metadatalikedEv.metadata = metadata.id;
-    metadatalikedEv.save();
 }

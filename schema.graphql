@@ -529,32 +529,8 @@ type MetadataActionLog implements Event @entity {
     thumbnailHash: String
     thumbnailType: String
     flagCount: Int
-    flags: [MetadataFlag!]! @derivedFrom(field: "metadata")
     likeCount: Int
-    likes: [MetadataLike!]! @derivedFrom(field: "metadata")
     status: Int
-}
-
-type MetadataFlag implements Event @entity(immutable: true) {
-    id: ID!
-    emitter: User!
-    timestamp: BigInt!
-    token: FakeGotchiNFTToken
-    sender: User
-
-    flaggedBy: User
-    metadata: MetadataActionLog
-}
-
-type MetadataLike implements Event @entity(immutable: true) {
-    id: ID!
-    emitter: User!
-    timestamp: BigInt!
-    token: FakeGotchiNFTToken
-    sender: User
-
-    likedBy: User
-    metadata: MetadataActionLog
 }
 
 type Generation @entity {
