@@ -1,6 +1,5 @@
 import {
     MetadataActionLog,
-    MetadataDecline,
     MetadataFlag,
     MetadataLike,
 } from "../../generated/schema";
@@ -8,7 +7,6 @@ import {
 import {
     MetadataActionLog as MetadataActionLogEvent,
     MetadataLike as MetadataLikeEvent,
-    MetadataDecline as MetadataDeclineEvent,
     ReviewPass as ReviewPassEvent,
     Approval as ApprovalEvent,
     ApprovalForAll as ApprovalForAllEvent,
@@ -247,26 +245,6 @@ export function handleMetadataLike(event: MetadataLikeEvent): void {
     metadatalikedEv.token = token.id;
 
     metadatalikedEv.likedBy = liker.id;
-    metadatalikedEv.metadata = metadata.id;
-    metadatalikedEv.save();
-}
-
-export function handleMetadataDecline(event: MetadataDeclineEvent): void {
-    let metadata = MetadataActionLog.load(event.params._id.toString())!;
-    metadata.status = METADATA_STATUS_DECLINED;
-    metadata.save();
-
-    let decliner = getOrCreateUser(event.params._declinedBy.toHexString());
-    decliner.save();
-
-    let metadatalikedEv = new MetadataDecline(events.id(event));
-    let contract = fetchERC721(event.address)!;
-    let token = fetchFakeGotchiNFTToken(contract, event.params._id);
-    metadatalikedEv.emitter = contract.id.toHexString();
-    metadatalikedEv.timestamp = event.block.timestamp;
-    metadatalikedEv.token = token.id;
-
-    metadatalikedEv.declinedBy = decliner.id;
     metadatalikedEv.metadata = metadata.id;
     metadatalikedEv.save();
 }
