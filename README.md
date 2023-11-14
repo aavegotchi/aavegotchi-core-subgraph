@@ -70,41 +70,6 @@ test("handleMintPortals - should update portal status and stats entity", () => {
 In this section we provide some example queries which should help you to get first ideas of what to fetch from the graph and how to do it. You can insert all events on the Playground and get the results. If you need help on how to integrate those queries in your app please take a look into the [General Section](https://docs.aavegotchi.com/subgraphs/general).
 Events
 
-## Events on chain
-
-You can query the subgraph for almost every event happened on chain. 
-```
-{
-	erc1155Transfers {
-    from {
-      id
-    }
-    to {
-      id
-    }
-    valueExact
-  }  
-  
-  metadataFlags {
-    flaggedBy {
-      id
-    }
-    metadata {
-      id
-    }
-  }
-  
-  metadataLikes {
-    likedBy {
-      id
-    }
-    metadata {
-      id
-    }
-  }
-}
-```
-
 ## Account owned NFTs
 
 You can fetch the NFTs of one Account with the following query:
@@ -126,18 +91,6 @@ account(id:"0x01c28a969a7d0ba03419c8c80be59928c4732cd9") {
 
 ```
 
-## Account balances of Cards
-Its also possible to fetch the Accounts with Cards.
-```
-{
-  erc1155Balances(orderBy: valueExact orderDirection: desc where: {account_not:null valueExact_gt: 0}) {
-    account {
-      id
-    }
-    valueExact
-  }
-}
-```
 ## New NFT proposals
 Further its also possible to fetch upcoming NFTs. 
 ```
