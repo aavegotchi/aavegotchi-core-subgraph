@@ -482,7 +482,7 @@ type FakeGotchiNFTToken @entity {
     thumbnailType: String
 }
 
-type MetadataActionLog implements Event @entity {
+type MetadataActionLog @entity {
     id: ID!
     emitter: User!
     timestamp: BigInt!
