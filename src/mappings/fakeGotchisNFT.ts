@@ -1,4 +1,5 @@
 import {
+  FakeGotchiNFTTransfer,
     MetadataActionLog,
 } from "../../generated/schema";
 
@@ -54,6 +55,15 @@ export function handleTransfer(event: TransferEvent): void {
     let token = fetchFakeGotchiNFTToken(event.address, event.params._tokenId);
     token.owner = to.id;
     token.save();
+
+    // create event entity
+    let ev = new FakeGotchiNFTTransfer(events.id(event));
+    ev.transaction = transactions.log(event).id;
+    ev.timestamp = event.block.timestamp;
+    ev.token = token.id;
+    ev.from = from.id;
+    ev.to = to.id;
+    ev.save();
 
     // fetch metadata
     let metadata = MetadataActionLog.load(token.metadata!)!;
