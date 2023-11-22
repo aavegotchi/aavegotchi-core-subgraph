@@ -58,7 +58,7 @@ export function handleTransfer(event: TransferEvent): void {
 
     // create event entity
     let ev = new FakeGotchiNFTTransfer(events.id(event));
-    ev.transaction = transactions.log(event).id;
+    ev.transaction = event.transaction.hash;
     ev.timestamp = event.block.timestamp;
     ev.token = token.id;
     ev.from = from.id;
