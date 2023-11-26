@@ -215,13 +215,13 @@ type ERC721Listing @entity {
     whitelist: Whitelist
     priceUpdatedAt: BigInt
 
-    name: String
-    publisher: User
-    publisherName: String
-    description: String
-    artist: User
-    artistName: String
-    editions: Int
+    fg_name: String
+    fg_publisher: User
+    fg_publisherName: String
+    fg_description: String
+    fg_artist: User
+    fg_artistName: String
+    fg_editions: Int
 }
 
 type ERC1155Listing @entity {

@@ -223,12 +223,12 @@ export function updateERC721ListingInfo(
         );
 
         if (erc721Token != null) {
-            listing.name = erc721Token.name;
-            listing.publisher = erc721Token.publisher;
-            listing.description = erc721Token.description;
-            listing.artist = erc721Token.artist;
-            listing.artistName = erc721Token.artistName;
-            listing.editions = erc721Token.editions;
+            listing.fg_name = erc721Token.name;
+            listing.fg_publisher = erc721Token.publisher;
+            listing.fg_description = erc721Token.description;
+            listing.fg_artist = erc721Token.artist;
+            listing.fg_artistName = erc721Token.artistName;
+            listing.fg_editions = erc721Token.editions;
         }
 
         if (listing.category.toI32() <= 2) {
