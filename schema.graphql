@@ -529,3 +529,12 @@ type FakeGotchiHolder @entity {
     holder: User
     amount: Int
 }
+
+type FakeGotchiNFTTransfer @entity {
+    id: ID!
+    transaction: Bytes!
+    timestamp: BigInt!
+    token: FakeGotchiNFTToken!
+    from: User!
+    to: User!
+}

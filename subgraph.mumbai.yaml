@@ -1,9 +1,9 @@
 specVersion: 0.0.4
-features:
-    - grafting
-graft:
-    base: QmV3LtUtUCiD774HXR3D9SJBNgw2VNcXZM9McyMGTfotBQ # Subgraph ID of base subgraph
-    block: 28127642 # Block number
+# features:
+#     - grafting
+# graft:
+#     base: QmV3LtUtUCiD774HXR3D9SJBNgw2VNcXZM9McyMGTfotBQ # Subgraph ID of base subgraph
+#     block: 28127642 # Block number
 description: Aavegotchi Core Mumbai
 repository:
 schema:
