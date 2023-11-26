@@ -215,13 +215,13 @@ type ERC721Listing @entity {
     whitelist: Whitelist
     priceUpdatedAt: BigInt
 
-    fg_name: String
-    fg_publisher: User
-    fg_publisherName: String
-    fg_description: String
-    fg_artist: User
-    fg_artistName: String
-    fg_editions: Int
+    fakeGotchi_name: String
+    fakeGotchi_publisher: User
+    fakeGotchi_publisherName: String
+    fakeGotchi_description: String
+    fakeGotchi_artist: User
+    fakeGotchi_artistName: String
+    fakeGotchi_editions: Int
 }
 
 type ERC1155Listing @entity {
