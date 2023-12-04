@@ -229,6 +229,7 @@ export function updateERC721ListingInfo(
             listing.fakeGotchi_artist = erc721Token.artist;
             listing.fakeGotchi_artistName = erc721Token.artistName;
             listing.fakeGotchi_editions = erc721Token.editions;
+            listing.fakeGotchi_publisherName = erc721Token.publisherName;
         }
 
         if (listing.category.toI32() <= 2) {
