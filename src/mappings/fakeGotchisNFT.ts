@@ -198,6 +198,9 @@ export function handleMetadataActionLog(event: MetadataActionLogEvent): void {
         }
         stats.save();
     }
+
+    artist.save();
+    publisher.save();
 }
 
 export function handleMetadataFlag(event: MetadataFlagEvent): void {
