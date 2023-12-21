@@ -484,6 +484,7 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
             event.params.erc721TokenId.toString(),
             event
         )!;
+        gotchi.locked = true;
         listing.collateral = gotchi.collateral;
         gotchi.activeListing = event.params.listingId;
         gotchi.save();
@@ -584,6 +585,7 @@ export function handleERC721ExecutedListing(
         historicalPrices.push(event.params.priceInWei);
         gotchi.historicalPrices = historicalPrices;
         gotchi.activeListing = null;
+        gotchi.locked = false;
         gotchi.save();
     } else if (event.params.category == BigInt.fromI32(4)) {
         let listing = getOrCreateERC721Listing(
@@ -643,6 +645,7 @@ export function handleERC721ListingCancelled(
     } else if (listing.category.equals(BigInt.fromI32(3))) {
         let gotchi = getOrCreateAavegotchi(listing.tokenId.toString(), event)!;
         gotchi.activeListing = null;
+        gotchi.locked = false;
         gotchi.save();
     } else if (listing.category.equals(BigInt.fromI32(4))) {
         let parcel = getOrCreateParcel(
@@ -675,6 +678,7 @@ export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
     } else if (listing.category.equals(BigInt.fromI32(3))) {
         let gotchi = getOrCreateAavegotchi(listing.tokenId.toString(), event)!;
         gotchi.activeListing = null;
+        gotchi.locked = false;
         gotchi.save();
     } else if (listing.category.equals(BigInt.fromI32(4))) {
         let parcel = getOrCreateParcel(
