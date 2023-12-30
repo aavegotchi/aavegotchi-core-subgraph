@@ -43,7 +43,7 @@ test("handleERC721Listing - should add price to historicalPrices of aavegotchi i
     gotchi.gotchiId = BIGINT_ONE;
     gotchi.kinship = BIGINT_ZERO;
     gotchi.gotchiId = BIGINT_ONE;
-    gotchi.portal = "1";
+    // gotchi.portal = "1";
     gotchi.hauntId = BIGINT_ONE;
     gotchi.name = "Test";
     gotchi.nameLowerCase = "test";
@@ -73,7 +73,7 @@ test("handleERC721Listing - should add price to historicalPrices of aavegotchi i
     listing.cancelled = false;
     listing.nameLowerCase = "TEST123";
     listing.category = BIGINT_ZERO;
-    listing.erc721TokenAddress = Address.fromString(ZERO_ADDRESS);
+    listing.erc721TokenAddress = event.params.erc721TokenAddress
     listing.tokenId = BIGINT_ZERO;
     listing.seller = Address.fromString(ZERO_ADDRESS);
     listing.timeCreated = BIGINT_ZERO;
@@ -139,7 +139,7 @@ test("handleERC721Listing - should set blockCreated to block number when listing
     gotchi.gotchiId = BIGINT_ONE;
     gotchi.kinship = BIGINT_ZERO;
     gotchi.gotchiId = BIGINT_ONE;
-    gotchi.portal = "1";
+    // gotchi.portal = "1";
     gotchi.hauntId = BIGINT_ONE;
     gotchi.name = "Test";
     gotchi.nameLowerCase = "test";
@@ -169,7 +169,7 @@ test("handleERC721Listing - should set blockCreated to block number when listing
     listing.cancelled = false;
     listing.nameLowerCase = "TEST123";
     listing.category = BIGINT_ZERO;
-    listing.erc721TokenAddress = Address.fromString(ZERO_ADDRESS);
+    listing.erc721TokenAddress = event.params.erc721TokenAddress
     listing.tokenId = BIGINT_ZERO;
     listing.seller = Address.fromString(ZERO_ADDRESS);
     listing.timeCreated = BIGINT_ZERO;
@@ -201,7 +201,7 @@ test("handleERC721Listing - reorg: should set block created if cancel events hap
     gotchi.gotchiId = BIGINT_ONE;
     gotchi.kinship = BIGINT_ZERO;
     gotchi.gotchiId = BIGINT_ONE;
-    gotchi.portal = "1";
+    // gotchi.portal = "1";
     gotchi.hauntId = BIGINT_ONE;
     gotchi.name = "Test";
     gotchi.nameLowerCase = "test";
@@ -231,7 +231,7 @@ test("handleERC721Listing - reorg: should set block created if cancel events hap
     listing.cancelled = false;
     listing.nameLowerCase = "TEST123";
     listing.category = BIGINT_ZERO;
-    listing.erc721TokenAddress = Address.fromString(ZERO_ADDRESS);
+    listing.erc721TokenAddress = Address.fromString("0x86935F11C86623deC8a25696E1C19a8659CbF95d");
     listing.tokenId = BIGINT_ZERO;
     listing.seller = Address.fromString(ZERO_ADDRESS);
     listing.timeCreated = BIGINT_ZERO;

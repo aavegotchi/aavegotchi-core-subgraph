@@ -151,6 +151,19 @@ type User @entity {
 
     # borrowedGotchis: [GotchiLending!]! @derivedFrom(field: "borrower")
     # lendGotchis: [GotchiLending!]! @derivedFrom(field: "originalOwner")
+
+    fakeGotchiCardBalances: [FakeGotchiCardBalance!]! @derivedFrom(field: "account")
+    fakeGotchiNFTTokens: [FakeGotchiNFTToken!]! @derivedFrom(field: "owner")
+
+    fakeGotchis: String! # from array
+    amountFakeGotchis: Int!
+
+    currentUniqueFakeGotchisOwned: Int!
+    totalUniqueFakeGotchisOwned: Int!
+
+    currentUniqueFakeGotchisOwnedArray: String! # from array
+    totalUniqueFakeGotchisOwnedArray: String! # from array
+    totalFakeGotchisOwnedArray: String! # from array
 }
 
 type ERC721Listing @entity {
@@ -201,6 +214,14 @@ type ERC721Listing @entity {
 
     whitelist: Whitelist
     priceUpdatedAt: BigInt
+
+    fakeGotchi_name: String
+    fakeGotchi_publisher: User
+    fakeGotchi_publisherName: String
+    fakeGotchi_description: String
+    fakeGotchi_artist: User
+    fakeGotchi_artistName: String
+    fakeGotchi_editions: Int
 }
 
 type ERC1155Listing @entity {
@@ -274,6 +295,23 @@ type Statistic @entity {
     totalWearablesVolume: BigInt!
     totalConsumablesVolume: BigInt!
     totalTicketsVolume: BigInt!
+
+    totalFakeGotchiOwners: Int
+    totalFakeGotchiOwnersArray: [Bytes!]!
+
+    totalFakeGotchiPieces: Int
+    totalNFTs: Int
+    totalNFTsArray: String!
+
+    burnedNFTs: Int
+    burnedCards: Int
+
+    tokenIdCounter: Int
+
+    totalEditionsMinted: Int!
+    totalEditionsCirculating: Int!
+
+    totalEditionsCirculatingArray: String!
 }
 
 type ItemType @entity {
@@ -409,4 +447,94 @@ type ERC721BuyOrder @entity {
     executedAt: BigInt
     canceledAt: BigInt
     canceled: Boolean
+}
+
+# Cards
+type FakeGotchiCardBalance @entity {
+    id: ID!
+    contract: Bytes!
+    token: BigInt!
+    account: User
+    value: BigDecimal!
+    valueExact: BigInt!
+}
+
+# NFT 721
+type FakeGotchiNFTToken @entity {
+    id: ID!
+    contract: Bytes!
+    identifier: BigInt!
+    owner: User!
+    approval: User!
+    uri: String
+    metadata: MetadataActionLog
+
+    fileHash: String
+    name: String
+    publisher: User
+    publisherName: String
+    externalLink: String
+    description: String
+    artist: User
+    artistName: String
+    editions: Int
+    thumbnailHash: String
+    thumbnailType: String
+}
+
+type MetadataActionLog @entity {
+    id: ID!
+    emitter: User!
+    timestamp: BigInt!
+    sender: User
+    minted: Boolean
+    fileHash: String
+    name: String
+    publisher: User
+    publisherName: String
+    externalLink: String
+    description: String
+    artist: User
+    artistName: String
+    royalty: [Int!]
+    createdAt: BigInt
+    editions: Int
+    fileType: String
+    thumbnailHash: String
+    thumbnailType: String
+    flagCount: Int
+    likeCount: Int
+    status: Int
+}
+
+type Generation @entity {
+    "a generation is a series"
+    id: ID!
+    amount: Int
+}
+
+type FakeGotchiStatistic @entity {
+    id: ID!
+    metadata: MetadataActionLog
+    holders: [FakeGotchiHolder!]! @derivedFrom(field: "fakeGotchiStats")
+    burned: Int
+    amountHolder: Int
+    totalSupply: Int
+    tokenIds: [BigInt!]!
+}
+
+type FakeGotchiHolder @entity {
+    id: ID!
+    fakeGotchiStats: FakeGotchiStatistic
+    holder: User
+    amount: Int
+}
+
+type FakeGotchiNFTTransfer @entity {
+    id: ID!
+    transaction: Bytes!
+    timestamp: BigInt!
+    token: FakeGotchiNFTToken!
+    from: User!
+    to: User!
 }

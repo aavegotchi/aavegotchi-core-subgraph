@@ -23,6 +23,7 @@ import {
     ClaimedToken,
     ERC721BuyOrder,
 } from "../../../generated/schema";
+import { fetchFakeGotchiNFTToken, getFakeGotchiNFTToken } from "../../fetch/erc721";
 import { BIGINT_ZERO, STATUS_AAVEGOTCHI, ZERO_ADDRESS } from "../constants";
 import {
     Address,
@@ -103,6 +104,15 @@ export function getOrCreateUser(
         user = new User(id);
         user.gotchisLentOut = new Array<BigInt>();
         user.gotchisBorrowed = new Array<BigInt>();
+        user.fakeGotchis = "{}";
+        user.amountFakeGotchis = 0;
+
+        user.currentUniqueFakeGotchisOwned = 0;
+        user.currentUniqueFakeGotchisOwnedArray = "{}";
+        user.totalUniqueFakeGotchisOwned = 0;
+        user.totalUniqueFakeGotchisOwnedArray = "{}";
+
+        user.totalFakeGotchisOwnedArray = "{}";
     }
 
     return user as User;
@@ -212,6 +222,21 @@ export function updateERC721ListingInfo(
 
         if (listing.blockCreated.equals(BIGINT_ZERO)) {
             listing.blockCreated = event.block.number;
+        }
+
+        let erc721Token = getFakeGotchiNFTToken(
+            listingInfo.erc721TokenAddress,
+            listingInfo.erc721TokenId
+        );
+
+        if (erc721Token != null) {
+            listing.fakeGotchi_name = erc721Token.name;
+            listing.fakeGotchi_publisher = erc721Token.publisher;
+            listing.fakeGotchi_description = erc721Token.description;
+            listing.fakeGotchi_artist = erc721Token.artist;
+            listing.fakeGotchi_artistName = erc721Token.artistName;
+            listing.fakeGotchi_editions = erc721Token.editions;
+            listing.fakeGotchi_publisherName = erc721Token.publisherName;
         }
 
         if (listing.category.toI32() <= 2) {
@@ -555,6 +580,18 @@ export function getStatisticEntity(): Statistic {
 
         stats.aavegotchisBorrowed = BIGINT_ZERO;
         stats.aavegotchisSacrificed = BIGINT_ZERO;
+
+        stats.burnedCards = 0;
+        stats.burnedNFTs = 0;
+        stats.totalNFTs = 0;
+        stats.totalFakeGotchiOwners = 0;
+        stats.totalFakeGotchiPieces = 0;
+        stats.totalNFTsArray = "{}";
+        stats.totalFakeGotchiOwnersArray = new Array<Bytes>();
+        stats.tokenIdCounter = 0;
+        stats.totalEditionsCirculating = 0;
+        stats.totalEditionsMinted = 0;
+        stats.totalEditionsCirculatingArray = "{}";
 
         stats.save();
     }

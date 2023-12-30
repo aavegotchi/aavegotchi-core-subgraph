@@ -17,7 +17,8 @@
   "dependencies": {
     "@2fd/graphdoc": "^2.4.0",
     "@graphprotocol/graph-cli": "0.59.0",
-    "@graphprotocol/graph-ts": "0.31.0"
+    "@graphprotocol/graph-ts": "0.31.0",
+    "@openzeppelin/subgraphs": "^0.1.8"
   },
   "devDependencies": {
     "apollo-fetch": "^0.7.0",
@@ -25,6 +26,7 @@
     "ethers": "^5.5.4",
     "jest": "^27.4.7",
     "json-diff": "^0.7.1",
-    "matchstick-as": "^0.6.0"
+    "matchstick-as": "^0.6.0",
+    "@amxx/graphprotocol-utils": "^1.1.0"
   }
 }
