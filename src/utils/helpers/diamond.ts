@@ -1,6 +1,7 @@
 import {
     AavegotchiDiamond,
     ERC1155ExecutedListing,
+    UpdateWearableSet,
 } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
 
 import { RealmDiamond } from "../../../generated/RealmDiamond/RealmDiamond";
@@ -80,6 +81,12 @@ export function getOrCreateAavegotchi(
         gotchi.historicalPrices = [];
         gotchi.kinship = BigInt.fromI32(50);
         gotchi.withSetsRarityScore = BIGINT_ZERO;
+        gotchi = updateAavegotchiInfo(
+            gotchi,
+            BigInt.fromString(gotchi.id),
+            event
+        );
+        gotchi = updateAavegotchiWearables(gotchi, event);
     } else if (gotchi == null && !createIfNotFound) {
         return null;
     }
@@ -646,7 +653,7 @@ export function getOrCreateParcel(
 export function updateAavegotchiWearables(
     gotchi: Aavegotchi,
     event: ethereum.Event
-): void {
+): Aavegotchi {
     let contract = AavegotchiDiamond.bind(event.address);
 
     let bigInts = new Array<BigInt>();
@@ -752,9 +759,7 @@ export function updateAavegotchiWearables(
         ]);
     }
 
-    if (gotchi.status.equals(STATUS_AAVEGOTCHI)) {
-        gotchi.save();
-    }
+    return gotchi;
 }
 
 // @ts-ignore

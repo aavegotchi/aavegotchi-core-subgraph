@@ -98,6 +98,7 @@ import {
     BIGINT_ZERO,
     ZERO_ADDRESS,
     BLOCK_DISABLE_OLD_LENDING_EVENTS,
+    STATUS_AAVEGOTCHI,
 } from "../utils/constants";
 import { Address, BigInt, log, Bytes } from "@graphprotocol/graph-ts";
 
@@ -286,7 +287,11 @@ export function handleSpendSkillpoints(event: SpendSkillpoints): void {
         event
     )!;
     gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
-    updateAavegotchiWearables(gotchi, event);
+    gotchi = updateAavegotchiWearables(gotchi, event);
+
+    if (gotchi.status.equals(STATUS_AAVEGOTCHI)) {
+        gotchi.save();
+    }
 }
 
 // - event: EquipWearables(indexed uint256,uint256,uint256)
@@ -300,7 +305,11 @@ export function handleEquipWearables(event: EquipWearables): void {
 
     gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
 
-    updateAavegotchiWearables(gotchi, event);
+    gotchi = updateAavegotchiWearables(gotchi, event);
+
+    if (gotchi.status.equals(STATUS_AAVEGOTCHI)) {
+        gotchi.save();
+    }
 }
 
 // - event: SetAavegotchiName(indexed uint256,string,string)
