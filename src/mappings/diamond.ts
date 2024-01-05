@@ -1556,8 +1556,6 @@ export function handleGotchiLendingCancelled2(
     // skip if old lending
     if (
         lending.lender === null ||
-        lending.gotchiKinship === null ||
-        lending.gotchiBRS === null ||
         lending.gotchiTokenId === null
     ) {
         return;
@@ -1602,6 +1600,8 @@ export function handleGotchiLendingCancelled2(
     lending.cancelled = true;
     lending.timeEnded = event.block.timestamp;
     lending.completed = false;
+    lending.gotchiKinship = gotchi.kinship;
+    lending.gotchiBRS = gotchi.withSetsRarityScore;
     lending.save();
 
     gotchi.lending = null;
@@ -1615,8 +1615,6 @@ export function handleGotchiLendingClaimed2(
     // skip if old lending
     if (
         lending.lender === null ||
-        lending.gotchiKinship === null ||
-        lending.gotchiBRS === null ||
         lending.gotchiTokenId === null
     ) {
         return;
@@ -1671,8 +1669,6 @@ export function handleGotchiLendingEnded2(event: GotchiLendingEnded1): void {
     // skip if old lending
     if (
         lending.lender === null ||
-        lending.gotchiKinship === null ||
-        lending.gotchiBRS === null ||
         lending.gotchiTokenId === null
     ) {
         return;
@@ -1716,6 +1712,8 @@ export function handleGotchiLendingEnded2(event: GotchiLendingEnded1): void {
     }
     lending.timeEnded = event.block.timestamp;
     lending.completed = true;
+    lending.gotchiKinship = gotchi.kinship;
+    lending.gotchiBRS = gotchi.withSetsRarityScore;
     lending.save();
 
     // remove gotchi from originalOwner gotchisLentout
