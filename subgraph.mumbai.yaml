@@ -113,8 +113,8 @@ dataSources:
               #   handler: handleGotchiLendingEnd
               # - event: GotchiLendingExecute(indexed uint32)
               #   handler: handleGotchiLendingExecute
-              # - event: GotchiLendingCancel(indexed uint32,uint256)
-              #   handler: handleGotchiLendingCancel
+              - event: GotchiLendingCancel(indexed uint32,uint256)
+                handler: handleGotchiLendingCancel
               - event: ERC1155ExecutedToRecipient(indexed uint256,indexed address,indexed address)
                 handler: handleERC1155ExecutedToRecipient
               - event: ERC721ExecutedToRecipient(indexed uint256,indexed address,indexed address)
