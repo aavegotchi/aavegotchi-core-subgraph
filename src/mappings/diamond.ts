@@ -1045,6 +1045,13 @@ export function handleWhitelistOwnershipTransferred(
     createOrUpdateWhitelist(event.params.whitelistId, event);
 }
 
+export function handleGotchiLendingCancel(event: GotchiLendingCancel): void {
+    let lending = getOrCreateGotchiLending(event.params.listingId);
+    // lending = updateGotchiLending(lending, event);
+    lending.cancelled = true;
+    lending.save();
+}
+
 export function handleERC1155ExecutedToRecipient(
     event: ERC1155ExecutedToRecipient
 ): void {
