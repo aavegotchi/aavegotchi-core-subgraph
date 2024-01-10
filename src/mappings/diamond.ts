@@ -1047,6 +1047,10 @@ export function handleWhitelistOwnershipTransferred(
 
 export function handleGotchiLendingCancel(event: GotchiLendingCancel): void {
     let lending = getOrCreateGotchiLending(event.params.listingId);
+    // skip if old lending
+    if (lending.lender === null) {
+        return;
+    }
     // lending = updateGotchiLending(lending, event);
     lending.cancelled = true;
     lending.save();
