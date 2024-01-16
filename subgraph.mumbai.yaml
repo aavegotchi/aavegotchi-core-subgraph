@@ -43,6 +43,8 @@ dataSources:
                 handler: handleDecreaseStake
               - event: SpendSkillpoints(indexed uint256,int16[4])
                 handler: handleSpendSkillpoints
+              - event: ResetSkillpoints(indexed uint256)
+                handler: handleResetSkillpoints
               - event: EquipWearables(indexed uint256,uint16[16],uint16[16])
                 handler: handleEquipWearables
               - event: SetAavegotchiName(indexed uint256,string,string)

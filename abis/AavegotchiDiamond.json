@@ -907,6 +907,19 @@
                 "internalType": "uint256",
                 "name": "_tokenId",
                 "type": "uint256"
+            }
+        ],
+        "name": "ResetSkillpoints",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
             },
             {
                 "indexed": false,
