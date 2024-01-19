@@ -65,6 +65,11 @@ import {
     ERC721BuyOrderAdded,
     ERC721BuyOrderExecuted,
     ERC721BuyOrderCanceled,
+    RoleGranted,
+    RoleApprovalForAll,
+    RoleRevoked,
+    TokensCommitted,
+    TokensReleased,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
     getOrCreateUser,
@@ -111,6 +116,7 @@ import {
     KinshipBurned,
 } from "../../generated/RealmDiamond/RealmDiamond";
 import { updatePermissionsFromBitmap } from "../utils/decimals";
+import * as erc7589 from "./erc-7589";
 
 export function handleBuyPortals(event: BuyPortals): void {
     let contract = AavegotchiDiamond.bind(event.address);
@@ -326,6 +332,18 @@ export function handleEquipWearables(event: EquipWearables): void {
     if (gotchi.status.equals(STATUS_AAVEGOTCHI)) {
         gotchi.save();
     }
+}
+
+// - event: EquipDelegatedWearables(indexed uint256,uint256[16],uint256[16])
+//   handler: handleEquipDelegatedWearables
+
+export function handleEquipDelegatedWearables(event: EquipWearables): void {
+    let gotchi = getOrCreateAavegotchi(
+        event.params._tokenId.toString(),
+        event
+    )!;
+
+    updateAavegotchiWearables(gotchi, event);
 }
 
 // - event: SetAavegotchiName(indexed uint256,string,string)
@@ -1839,4 +1857,24 @@ export function handleKinshipBurned(event: KinshipBurned): void {
     if (!gotchi) return;
     gotchi.kinship = event.params._value;
     gotchi.save();
+}
+
+export function handleRoleGranted(event: RoleGranted): void {
+    erc7589.handleRoleGranted(event);
+}
+
+export function handleRoleRevoked(event: RoleRevoked): void {
+    erc7589.handleRoleRevoked(event);
+}
+
+export function handleRoleApprovalForAll(event: RoleApprovalForAll): void {
+    erc7589.handleRoleApprovalForAll(event);
+}
+
+export function handleTokensCommitted(event: TokensCommitted): void {
+    erc7589.handleTokensCommitted(event);
+}
+
+export function handleTokensReleased(event: TokensReleased): void {
+    erc7589.handleTokensReleased(event);
 }

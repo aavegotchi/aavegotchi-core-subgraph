@@ -650,6 +650,13 @@ export function getOrCreateParcel(
     return parcel as Parcel;
 }
 
+export function updateAavegotchiDelegatedWearables(
+    gotchi: Aavegotchi,
+    event: ethereum.Event
+): Aavegotchi { 
+
+}
+
 export function updateAavegotchiWearables(
     gotchi: Aavegotchi,
     event: ethereum.Event
