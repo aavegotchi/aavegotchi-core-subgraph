@@ -109,7 +109,7 @@ import {
 } from "../utils/constants";
 import { Address, BigInt, log, Bytes } from "@graphprotocol/graph-ts";
 
-import { Parcel } from "../../generated/schema";
+import { Parcel, TokenCommitment } from "../../generated/schema";
 import {
     RealmDiamond,
     MintParcel,
@@ -346,7 +346,28 @@ export function handleEquipDelegatedWearables(event: EquipDelegatedWearables): v
     )!;
     
     if (gotchi.status.equals(STATUS_AAVEGOTCHI)) {
-        gotchi.equippedDelegatedWearables = event.params._newCommitmentIds;
+        const oldCommitmentIds = event.params._oldCommitmentIds;
+        const newCommitmentIds = event.params._newCommitmentIds;
+
+        for(let i = 0; i < oldCommitmentIds.length; i++) {
+            if(oldCommitmentIds[i] == newCommitmentIds[i]) continue
+            if(oldCommitmentIds[i] != BigInt.zero()) {
+                const oldTokenCommitment = TokenCommitment.load(generateTokenCommitmentId(event.address.toHexString(), oldCommitmentIds[i]));
+                if(oldTokenCommitment) {
+                    oldTokenCommitment.usedBalance = oldTokenCommitment.usedBalance.minus(BigInt.fromI32(1));
+                    oldTokenCommitment.save();
+                }
+            }
+
+            if(newCommitmentIds[i] != BigInt.zero()) {
+                const newTokenCommitment = TokenCommitment.load(generateTokenCommitmentId(event.address.toHexString(), newCommitmentIds[i]));
+                if(newTokenCommitment) {
+                    newTokenCommitment.usedBalance = newTokenCommitment.usedBalance.plus(BigInt.fromI32(1));
+                    newTokenCommitment.save();
+                }
+            }
+        }
+        gotchi.equippedDelegatedWearables = event.params._newCommitmentIds.map<i32>((id) => id.toI32());
         gotchi.save();
     }
 }

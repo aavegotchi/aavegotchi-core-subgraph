@@ -95,6 +95,7 @@ export function createMockTokenCommitment(
   tokenCommitment.tokenAddress = tokenAddress
   tokenCommitment.tokenId = tokenId
   tokenCommitment.amount = tokenAmount
+  tokenCommitment.usedBalance = BigInt.zero()
   tokenCommitment.rolesRegistry = rolesRegistryAddress
   tokenCommitment.commitmentId = commitmentId
   tokenCommitment.isReleased = isReleased

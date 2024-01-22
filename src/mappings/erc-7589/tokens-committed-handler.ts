@@ -1,4 +1,4 @@
-import { log } from '@graphprotocol/graph-ts'
+import { BigInt, log } from '@graphprotocol/graph-ts'
 import {
   findOrCreateRolesRegistry,
   generateTokenCommitmentId,
@@ -35,6 +35,7 @@ export function handleTokensCommitted(event: TokensCommitted): void {
   tokenCommitment.tokenAddress = tokenAddress
   tokenCommitment.tokenId = tokenId
   tokenCommitment.amount = event.params._tokenAmount
+  tokenCommitment.usedBalance = BigInt.zero()
   tokenCommitment.isReleased = false
   tokenCommitment.save()
 

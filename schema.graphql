@@ -592,5 +592,6 @@ type TokenCommitment @entity {
   tokenId: BigInt!
   amount: BigInt!
   isReleased: Boolean!
+  usedBalance: BigInt!
   roleAssignments: [RoleAssignment!] @derivedFrom(field: "tokenCommitment")
 }
