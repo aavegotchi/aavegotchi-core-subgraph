@@ -70,6 +70,7 @@ import {
     RoleRevoked,
     TokensCommitted,
     TokensReleased,
+    EquipDelegatedWearables,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
     getOrCreateUser,
@@ -117,6 +118,7 @@ import {
 } from "../../generated/RealmDiamond/RealmDiamond";
 import { updatePermissionsFromBitmap } from "../utils/decimals";
 import * as erc7589 from "./erc-7589";
+import { generateTokenCommitmentId } from "../utils/helpers/erc-7589";
 
 export function handleBuyPortals(event: BuyPortals): void {
     let contract = AavegotchiDiamond.bind(event.address);
@@ -337,13 +339,16 @@ export function handleEquipWearables(event: EquipWearables): void {
 // - event: EquipDelegatedWearables(indexed uint256,uint256[16],uint256[16])
 //   handler: handleEquipDelegatedWearables
 
-export function handleEquipDelegatedWearables(event: EquipWearables): void {
+export function handleEquipDelegatedWearables(event: EquipDelegatedWearables): void {
     let gotchi = getOrCreateAavegotchi(
         event.params._tokenId.toString(),
         event
     )!;
-
-    updateAavegotchiWearables(gotchi, event);
+    
+    if (gotchi.status.equals(STATUS_AAVEGOTCHI)) {
+        gotchi.equippedDelegatedWearables = event.params._newCommitmentIds;
+        gotchi.save();
+    }
 }
 
 // - event: SetAavegotchiName(indexed uint256,string,string)

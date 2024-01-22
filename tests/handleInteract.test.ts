@@ -34,6 +34,7 @@ test("Count as interacted if gotchi is claimed", () => {
     gotchi.numericTraits = [1, 1, 1, 1, 1, 1];
     gotchi.modifiedNumericTraits = [1, 1, 1, 1, 1, 1];
     gotchi.equippedWearables = [1, 1, 1, 1, 1, 1];
+    gotchi.equippedDelegatedWearables = [0, 0, 0, 0, 0, 0];
     gotchi.collateral = Address.fromString(ZERO_ADDRESS);
     gotchi.escrow = Address.fromString(ZERO_ADDRESS);
     gotchi.stakedAmount = BIGINT_ONE;

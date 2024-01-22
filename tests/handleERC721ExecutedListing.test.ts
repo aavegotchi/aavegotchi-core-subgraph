@@ -52,6 +52,7 @@ test("handleERC721Listing - should add price to historicalPrices of aavegotchi i
     gotchi.numericTraits = [1, 1, 1, 1, 1, 1];
     gotchi.modifiedNumericTraits = [1, 1, 1, 1, 1, 1];
     gotchi.equippedWearables = [1, 1, 1, 1, 1, 1];
+    gotchi.equippedDelegatedWearables = [0, 0, 0, 0, 0, 0];
     gotchi.historicalPrices = [];
     gotchi.collateral = Address.fromString(ZERO_ADDRESS);
     gotchi.escrow = Address.fromString(ZERO_ADDRESS);
@@ -148,6 +149,7 @@ test("handleERC721Listing - should set blockCreated to block number when listing
     gotchi.numericTraits = [1, 1, 1, 1, 1, 1];
     gotchi.modifiedNumericTraits = [1, 1, 1, 1, 1, 1];
     gotchi.equippedWearables = [1, 1, 1, 1, 1, 1];
+    gotchi.equippedDelegatedWearables = [0, 0, 0, 0, 0, 0];
     gotchi.historicalPrices = [];
     gotchi.collateral = Address.fromString(ZERO_ADDRESS);
     gotchi.escrow = Address.fromString(ZERO_ADDRESS);
@@ -210,6 +212,7 @@ test("handleERC721Listing - reorg: should set block created if cancel events hap
     gotchi.numericTraits = [1, 1, 1, 1, 1, 1];
     gotchi.modifiedNumericTraits = [1, 1, 1, 1, 1, 1];
     gotchi.equippedWearables = [1, 1, 1, 1, 1, 1];
+    gotchi.equippedDelegatedWearables = [0, 0, 0, 0, 0, 0];
     gotchi.historicalPrices = [];
     gotchi.collateral = Address.fromString(ZERO_ADDRESS);
     gotchi.escrow = Address.fromString(ZERO_ADDRESS);

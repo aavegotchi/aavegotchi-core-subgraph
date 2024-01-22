@@ -123,6 +123,7 @@ test("handleTransferERC721 - should change owner of aavegotchi entity if token i
     gotchi.numericTraits = [1, 1, 1, 1, 1, 1];
     gotchi.modifiedNumericTraits = [1, 1, 1, 1, 1, 1];
     gotchi.equippedWearables = [1, 1, 1, 1, 1, 1];
+    gotchi.equippedDelegatedWearables = [0, 0, 0, 0, 0, 0];
     gotchi.historicalPrices = [];
     gotchi.collateral = Address.fromString(ZERO_ADDRESS);
     gotchi.escrow = Address.fromString(ZERO_ADDRESS);
@@ -226,6 +227,7 @@ test("handleTransferERC721 - should set owner to 0x0 of aavegotchi entity if got
     gotchi.numericTraits = [1, 1, 1, 1, 1, 1];
     gotchi.modifiedNumericTraits = [1, 1, 1, 1, 1, 1];
     gotchi.equippedWearables = [1, 1, 1, 1, 1, 1];
+    gotchi.equippedDelegatedWearables = [0, 0, 0, 0, 0, 0];
     gotchi.historicalPrices = [];
     gotchi.collateral = Address.fromString(ZERO_ADDRESS);
     gotchi.escrow = Address.fromString(ZERO_ADDRESS);

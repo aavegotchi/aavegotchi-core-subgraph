@@ -5,23 +5,24 @@ import { Role, RolesRegistry } from '../../../../generated/schema'
  * @notice Generate a role id.
  * @dev rolesRegistry, nft, roleHash should be created/exist before calling this function.
  * @param rolesRegistry The roles registry used for the role.
- * @param nft The nft of the role.
  * @param roleHash The role hash of the role.
  * @param commitmentId The commitment id of the role.(only for ERC1155)
  * @returns The role id.
  */
 export function generateRoleId(
+  rolesRegistry: RolesRegistry,
   roleHash: Bytes,
   tokenCommitmentId: string,
 ): string {
-  return tokenCommitmentId + '-' + roleHash.toHex()
+  return `${rolesRegistry.id}-${tokenCommitmentId}-${roleHash.toHex()}`
 }
 
 /**
  * @notice Find or create a role.
  * @dev rolesRegistry, nft, roleHash should be created/exist before calling this function.
  * @param rolesRegistry The roles registry used for the role.
- * @param nft The nft of the role.
+ * @param tokenAddress The token address of the role.
+ * @param tokenId The token id of the role.
  * @param roleHash The role hash of the role.
  * @param tokenCommitment The commitment of the role.(only for ERC1155)
  * @returns The role entity created (or found).
@@ -33,7 +34,7 @@ export function findOrCreateRole(
   roleHash: Bytes,
   tokenCommitmentId: string,
 ): Role {
-  const roleId = generateRoleId(roleHash, tokenCommitmentId)
+  const roleId = generateRoleId(rolesRegistry, roleHash, tokenCommitmentId)
   let role = Role.load(roleId)
 
   if (!role) {

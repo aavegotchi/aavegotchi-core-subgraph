@@ -59,6 +59,7 @@ test("add gotchi lending", () => {
     gotchi.numericTraits = [1, 1, 1];
     gotchi.modifiedNumericTraits = [1, 1, 1];
     gotchi.equippedWearables = [1];
+    gotchi.equippedDelegatedWearables = [1];
     gotchi.collateral = address;
     gotchi.escrow = address;
     gotchi.stakedAmount = BIGINT_ONE;

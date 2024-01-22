@@ -1,6 +1,6 @@
 import { log } from '@graphprotocol/graph-ts'
 import { generateTokenCommitmentId, upsertRoleAssignment } from '../../utils/helpers/erc-7589'
-import { User, TokenCommitment } from '../../../generated/schema'
+import { TokenCommitment } from '../../../generated/schema'
 import { RoleGranted } from '../../../generated/AavegotchiDiamond/AavegotchiDiamond'
 import { getOrCreateUser } from '../../utils/helpers/diamond'
 
@@ -33,7 +33,9 @@ export function handleRoleGranted(event: RoleGranted): void {
   }
 
   const grantor = getOrCreateUser(tokenCommitment.grantor)
+  grantor.save()
   const grantee = getOrCreateUser(event.params._grantee.toHex())
+  grantee.save()
   const roleAssignment = upsertRoleAssignment(
     event.params._role,
     event.address.toHex(),

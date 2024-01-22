@@ -6,20 +6,19 @@ import { findOrCreateRole } from './role'
 /**
  * @notice Generate a role assignment id.
  * @dev roleRegistry, grantor, grantee, nft should be created/exist before calling this function.
- * @param roleRegistry The roles registry used for the role assignment.
- * @param grantor The grantor of the role assignment.
+ * @param rolesRegistry The roles registry used for the role assignment.
  * @param grantee The grantee of the role assignment.
- * @param nft The nft of the role assignment.
  * @param roleHash The role hash of the role assignment.
  * @param tokenCommitmentId The token commitment id of the role assignment.(only for ERC1155)
  * @returns The role assignment id.
  */
 export function generateRoleAssignmentId(
+  rolesRegistry: RolesRegistry,
   grantee: User,
   roleHash: Bytes,
   tokenCommitmentId: string,
 ): string {
-    return tokenCommitmentId + '-' + grantee.id + '-' + roleHash.toHex()
+    return `${rolesRegistry.id}-${tokenCommitmentId}-${grantee.id}-${roleHash.toHex()}`
 }
 
 /**
@@ -51,7 +50,7 @@ export function upsertRoleAssignment(
   tokenCommitmentId: string,
 ): RoleAssignment {
   const rolesRegistry = findOrCreateRolesRegistry(rolesRegistryAddress)
-  const roleAssignmentId = generateRoleAssignmentId(grantee, roleHash, tokenCommitmentId)
+  const roleAssignmentId = generateRoleAssignmentId(rolesRegistry, grantee, roleHash, tokenCommitmentId)
   let roleAssignment = RoleAssignment.load(roleAssignmentId)
   const role = findOrCreateRole(rolesRegistry, tokenAddress, tokenId, roleHash, tokenCommitmentId)
 

@@ -25,7 +25,6 @@ export function handleTokensCommitted(event: TokensCommitted): void {
   const tokenId = event.params._tokenId
   const grantor = getOrCreateUser(event.params._grantor.toHexString())
 
-
   const rolesRegistry = findOrCreateRolesRegistry(event.address.toHexString())
   const tokenCommitmentId = generateTokenCommitmentId(rolesRegistry.id, event.params._commitmentId)
 

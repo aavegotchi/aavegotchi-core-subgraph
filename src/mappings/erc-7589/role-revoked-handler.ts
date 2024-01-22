@@ -5,7 +5,7 @@ import {
   generateTokenCommitmentId,
   updateRoleAssignmentExpiration,
 } from '../../utils/helpers/erc-7589'
-import { TokenCommitment, User } from '../../../generated/schema'
+import { TokenCommitment } from '../../../generated/schema'
 import { RoleRevoked } from '../../../generated/AavegotchiDiamond/AavegotchiDiamond'
 import { getOrCreateUser } from '../../utils/helpers/diamond'
 
@@ -30,9 +30,9 @@ export function handleRoleRevoked(event: RoleRevoked): void {
     return
   }
 
-  const revoker = getOrCreateUser(tokenCommitment.grantor)
   const granteeAddress = event.params._grantee.toHex()
-  const grantee = User.load(granteeAddress)
+  const grantee = getOrCreateUser(granteeAddress)
+  grantee.save()
   if (!grantee) {
     log.error('[erc-7589][handleRoleRevoked] grantee {} does not exist, tx {} skipping...', [
       granteeAddress,
@@ -43,6 +43,7 @@ export function handleRoleRevoked(event: RoleRevoked): void {
 
   const rolesRegistry = findOrCreateRolesRegistry(rolesRegistryAddress)
   const roleAssignmentId = generateRoleAssignmentId(
+    rolesRegistry,
     grantee,
     event.params._role,
     tokenCommitmentId,
