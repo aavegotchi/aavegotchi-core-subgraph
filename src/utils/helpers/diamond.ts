@@ -87,7 +87,7 @@ export function getOrCreateAavegotchi(
             event
         );
         gotchi = updateAavegotchiWearables(gotchi, event);
-        gotchi.equippedDelegatedWearables = new Array<i32>(16);
+        gotchi.equippedDelegatedWearables = new Array<i32>(16).fill(0);
     } else if (gotchi == null && !createIfNotFound) {
         return null;
     }

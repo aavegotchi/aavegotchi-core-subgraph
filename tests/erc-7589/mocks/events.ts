@@ -5,8 +5,10 @@ import {
   buildEventParamBoolean,
   buildEventParamBytes,
   buildEventParamUint,
+  buildEventParamUintArray,
 } from '../helpers/events'
 import {
+  EquipDelegatedWearables,
   RoleGranted,
   RoleRevoked,
   TokensCommitted,
@@ -112,5 +114,29 @@ export function createNewTokensReleasedEvent(commitmentId: BigInt): TokensReleas
   event.address = Address.fromString(ZERO_ADDRESS)
   event.parameters = new Array<ethereum.EventParam>()
   event.parameters.push(buildEventParamUint('_commitmentId', commitmentId))
+  return event
+}
+
+/**
+@dev Creates a mock for the event EquipDelegatedWearables
+
+Example:
+     event EquipDelegatedWearables(
+        uint256 indexed _tokenId, 
+        uint256[16] _oldCommitmentIds, 
+        uint256[16] _newCommitmentIds
+    );
+ */
+export function createNewEquipDelegatedWearablesEvent(
+  tokenId: BigInt,
+  oldCommitmentIds: BigInt[],
+  newCommitmentIds: BigInt[],
+): EquipDelegatedWearables {
+  const event = changetype<EquipDelegatedWearables>(newMockEvent())
+  event.address = Address.fromString(ZERO_ADDRESS)
+  event.parameters = new Array<ethereum.EventParam>()
+  event.parameters.push(buildEventParamUint('_tokenId', tokenId))
+  event.parameters.push(buildEventParamUintArray('_oldCommitmentIds', oldCommitmentIds))
+  event.parameters.push(buildEventParamUintArray('_newCommitmentIds', newCommitmentIds))
   return event
 }

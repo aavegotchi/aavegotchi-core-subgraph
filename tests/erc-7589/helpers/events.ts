@@ -42,3 +42,14 @@ export function buildEventParamBytes(name: string, value: Bytes): ethereum.Event
   const ethValue = ethereum.Value.fromFixedBytes(value)
   return new ethereum.EventParam(name, ethValue)
 }
+
+/**
+ * @dev Build an event parameter of type array of UnsignedBigInt
+ * @param name The name of the parameter.
+ * @param value An array of strings to be casted to Array of UnsignedBigInt.
+ * @returns The event parameter.
+ */
+export function buildEventParamUintArray(name: string, value: Array<BigInt>): ethereum.EventParam {
+  const ethValue = ethereum.Value.fromUnsignedBigIntArray(value)
+  return new ethereum.EventParam(name, ethValue)
+}

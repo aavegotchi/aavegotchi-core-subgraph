@@ -66,7 +66,6 @@ import {
     ERC721BuyOrderExecuted,
     ERC721BuyOrderCanceled,
     RoleGranted,
-    RoleApprovalForAll,
     RoleRevoked,
     TokensCommitted,
     TokensReleased,
