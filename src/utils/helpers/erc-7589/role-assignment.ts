@@ -113,14 +113,6 @@ export function updateRoleAssignmentExpiration(
   roleAssignment.expirationDate = blockTimestamp
   roleAssignment.save()
 
-  if (!roleAssignment.revocable) {
-    // smart contract validate that if a role is not revocable, it can only be revoked by the grantee
-    // in that case, we can set the lastNonRevocableExpirationDate to zero, assuming that the grantee is revoking its own role
-    const role = findOrCreateRole(rolesRegistry, tokenAddress, tokenId, roleHash, tokenCommitmentId)
-    role.lastNonRevocableExpirationDate = blockTimestamp
-    role.save()
-  }
-
   log.warning('[updateRoleAssignmentExpiration] RoleAssignment {} expiration date updated, tx {}', [
     roleAssignmentId,
     txHash,

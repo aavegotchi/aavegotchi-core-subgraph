@@ -309,46 +309,4 @@ describe('ERC-7589 RoleRevoked Handler', () => {
       tokenCommitment3.id,
     )
   })
-
-  test('should update lastNonRevocableExpirationDate when grantee is revoking a non revocable role', () => {
-    const tokenCommitment = createMockTokenCommitment(revoker, tokenAddress, tokenId, rolesRegistry, commitmentId, tokenAmount, false)
-    const granteeUser = getOrCreateUser(grantee)
-    const roleAssignment = createMockRoleAssignment(
-      RoleAssignmentId,
-      revoker,
-      grantee,
-      tokenAddress,
-      tokenId,
-      expirationDate,
-      rolesRegistry,
-      tokenCommitment.id,
-    )
-    roleAssignment.revocable = false
-    roleAssignment.save()
-    const role = findOrCreateRole(findOrCreateRolesRegistry(rolesRegistry), tokenAddress, tokenId, RoleAssignmentId, tokenCommitment.id)
-    role.lastNonRevocableExpirationDate = expirationDate
-    role.save()
-    assert.entityCount('RoleAssignment', 1)
-    assert.entityCount('Role', 1)
-    assert.fieldEquals('Role', role.id, 'lastNonRevocableExpirationDate', expirationDate.toString())
-
-    const event = createNewRoleRevokedEvent(tokenCommitment.commitmentId, RoleAssignmentId, grantee)
-    event.address = Address.fromString(rolesRegistry)
-    handleRoleRevoked(event)
-
-    assert.entityCount('RoleAssignment', 1)
-    assert.entityCount('Role', 1)
-    const revokerUser = new User(revoker)
-    validateRole(
-      revokerUser,
-      granteeUser,
-      tokenAddress,
-      tokenId,
-      RoleAssignmentId,
-      ONE,
-      data,
-      rolesRegistry,
-      tokenCommitment.id,
-    )
-  })
 })

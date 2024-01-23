@@ -27,7 +27,6 @@ export function createMockRoleAssignment(
   role.tokenAddress = tokenAddress
   role.tokenId = tokenId
   role.rolesRegistry = rolesRegistryAddress
-  role.lastNonRevocableExpirationDate = BigInt.zero()
   role.tokenCommitment = tokenCommitmentId
   role.save()
 

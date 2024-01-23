@@ -1893,10 +1893,6 @@ export function handleRoleRevoked(event: RoleRevoked): void {
     erc7589.handleRoleRevoked(event);
 }
 
-export function handleRoleApprovalForAll(event: RoleApprovalForAll): void {
-    erc7589.handleRoleApprovalForAll(event);
-}
-
 export function handleTokensCommitted(event: TokensCommitted): void {
     erc7589.handleTokensCommitted(event);
 }

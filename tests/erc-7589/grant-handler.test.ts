@@ -228,33 +228,4 @@ describe('ERC-7589 RoleGranted Handler', () => {
       tokenCommitment3.id,
     )
   })
-
-  test('should update lastNonRevocableExpirationDate when revocable is false', () => {
-    assert.entityCount('RoleAssignment', 0)
-    assert.entityCount('Role', 0)
-    assert.entityCount('User', 1)
-
-    const event1 = createNewRoleGrantedEvent(
-      RoleAssignmentId,
-      commitmentId,
-      Addresses[0],
-      expirationDate,
-      false,
-      data,
-    )
-    handleRoleGranted(event1)
-
-    const grantorUser = new User(grantor)
-    validateRole(
-      grantorUser,
-      new User(Addresses[0]),
-      tokenAddress,
-      tokenId,
-      RoleAssignmentId,
-      expirationDate,
-      data,
-      event1.address.toHex(),
-      generateTokenCommitmentId(rolesRegistry, commitmentId),
-    )
-  })
 })

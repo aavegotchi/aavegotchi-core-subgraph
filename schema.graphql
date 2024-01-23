@@ -545,7 +545,6 @@ type FakeGotchiNFTTransfer @entity {
 type RolesRegistry @entity {
   id: ID! # contractAddress
   roles: [Role!] @derivedFrom(field: "rolesRegistry")
-  roleApprovals: [RoleApproval!] @derivedFrom(field: "rolesRegistry")
 }
 
 type Role @entity {
