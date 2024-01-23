@@ -168,7 +168,6 @@ describe('ERC-7589 RoleRevoked Handler', () => {
       ONE,
       data,
       rolesRegistry,
-      BigInt.zero(),
       tokenCommitmentId1,
     )
     validateRole(
@@ -180,7 +179,6 @@ describe('ERC-7589 RoleRevoked Handler', () => {
       ONE,
       data,
       rolesRegistry,
-      BigInt.zero(),
       tokenCommitmentId2,
     )
     validateRole(
@@ -192,7 +190,6 @@ describe('ERC-7589 RoleRevoked Handler', () => {
       ONE,
       data,
       rolesRegistry,
-      BigInt.zero(),
       tokenCommitmentId3,
     )
   })
@@ -287,7 +284,6 @@ describe('ERC-7589 RoleRevoked Handler', () => {
       ONE,
       data,
       rolesRegistry,
-      BigInt.zero(),
       tokenCommitment1.id,
     )
     validateRole(
@@ -299,7 +295,6 @@ describe('ERC-7589 RoleRevoked Handler', () => {
       ONE,
       data,
       rolesRegistry,
-      BigInt.zero(),
       tokenCommitment2.id,
     )
     validateRole(
@@ -311,7 +306,6 @@ describe('ERC-7589 RoleRevoked Handler', () => {
       ONE,
       data,
       rolesRegistry,
-      BigInt.zero(),
       tokenCommitment3.id,
     )
   })
@@ -354,7 +348,6 @@ describe('ERC-7589 RoleRevoked Handler', () => {
       ONE,
       data,
       rolesRegistry,
-      event.block.timestamp,
       tokenCommitment.id,
     )
   })

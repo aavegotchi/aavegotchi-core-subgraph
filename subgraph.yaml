@@ -165,8 +165,6 @@ dataSources:
                 handler: handleRoleGranted
               - event: RoleRevoked(indexed uint256,indexed bytes32,indexed address)
                 handler: handleRoleRevoked
-              - event: RoleApprovalForAll(indexed address,indexed address,bool)
-                handler: handleRoleApprovalForAll
               - event: TokensCommitted(indexed address,indexed uint256,indexed address,uint256,uint256)
                 handler: handleTokensCommitted
               - event: TokensReleased(indexed uint256)

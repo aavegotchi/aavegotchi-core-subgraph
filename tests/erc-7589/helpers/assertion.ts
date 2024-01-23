@@ -1,7 +1,6 @@
 import { assert } from 'matchstick-as'
 import {
   findOrCreateRolesRegistry,
-  generateRoleApprovalId,
   generateRoleAssignmentId,
   generateRoleId,
   generateTokenCommitmentId,
@@ -20,7 +19,6 @@ export function validateRole(
   expirationDate: BigInt,
   data: Bytes,
   rolesRegistryAddress: string,
-  lastNonRevocableExpirationDate: BigInt,
   tokenCommitmentId: string,
 ): void {
   const rolesRegistry = findOrCreateRolesRegistry(rolesRegistryAddress)
@@ -28,7 +26,6 @@ export function validateRole(
   assert.fieldEquals('Role', roleId, 'roleHash', roleAssignment.toHex())
   assert.fieldEquals('Role', roleId, 'tokenAddress', tokenAddress)
   assert.fieldEquals('Role', roleId, 'tokenId', tokenId.toString())
-  assert.fieldEquals('Role', roleId, 'lastNonRevocableExpirationDate', lastNonRevocableExpirationDate.toString())
 
   const roleAssignmentId = generateRoleAssignmentId(
     rolesRegistry,
@@ -48,26 +45,6 @@ export function validateRole(
   assert.fieldEquals('RoleAssignment', roleAssignmentId, 'grantee', grantee.id)
   assert.fieldEquals('RoleAssignment', roleAssignmentId, 'expirationDate', expirationDate.toString())
   assert.fieldEquals('RoleAssignment', roleAssignmentId, 'data', data.toHex())
-}
-
-export function validateRoleApproval(
-  rolesRegistryAddress: string,
-  grantor: string,
-  operator: string,
-  tokenAddress: string,
-  isApproved: boolean,
-): void {
-  const rolesRegistry = findOrCreateRolesRegistry(rolesRegistryAddress)
-  const roleApprovalId = generateRoleApprovalId(
-    rolesRegistry,
-    new User(grantor.toLowerCase()),
-    new User(operator.toLowerCase()),
-    tokenAddress,
-  )
-  assert.fieldEquals('RoleApproval', roleApprovalId, 'grantor', grantor)
-  assert.fieldEquals('RoleApproval', roleApprovalId, 'operator', operator)
-  assert.fieldEquals('RoleApproval', roleApprovalId, 'tokenAddress', tokenAddress)
-  assert.fieldEquals('RoleApproval', roleApprovalId, 'isApproved', isApproved.toString())
 }
 
 export function validateTokenCommitment(

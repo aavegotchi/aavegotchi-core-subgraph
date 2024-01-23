@@ -1,8 +1,7 @@
 import { BigInt, Bytes } from '@graphprotocol/graph-ts'
-import { RoleAssignment, RoleApproval, Role, TokenCommitment } from '../../../generated/schema'
+import { RoleAssignment, Role, TokenCommitment } from '../../../generated/schema'
 import {
   generateRoleAssignmentId,
-  generateRoleApprovalId,
   generateRoleId,
   findOrCreateRolesRegistry,
   generateTokenCommitmentId,
@@ -52,30 +51,6 @@ export function createMockRoleAssignment(
   newRoleAssignment.tokenCommitment = tokenCommitmentId
   newRoleAssignment.save()
   return newRoleAssignment
-}
-
-export function createMockRoleApproval(
-  grantor: string,
-  operator: string,
-  tokenAddress: string,
-  rolesRegistryAddress: string,
-  isApproved: boolean,
-): RoleApproval {
-  const rolesRegistry = findOrCreateRolesRegistry(rolesRegistryAddress)
-  const roleApprovalId = generateRoleApprovalId(
-    rolesRegistry,
-    new User(grantor),
-    new User(operator),
-    tokenAddress,
-  )
-  const roleApproval = new RoleApproval(roleApprovalId)
-  roleApproval.grantor = grantor
-  roleApproval.operator = operator
-  roleApproval.tokenAddress = tokenAddress
-  roleApproval.rolesRegistry = rolesRegistryAddress
-  roleApproval.isApproved = isApproved
-  roleApproval.save()
-  return roleApproval
 }
 
 export function createMockTokenCommitment(

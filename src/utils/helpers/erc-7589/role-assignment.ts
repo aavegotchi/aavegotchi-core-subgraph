@@ -69,15 +69,6 @@ export function upsertRoleAssignment(
   roleAssignment.data = data
   roleAssignment.updatedAt = timestamp
   roleAssignment.tokenCommitment = tokenCommitmentId
-
-  if (!roleAssignment.revocable) {
-    // if the role is not revocable, we update the lastNonRevocableExpirationDate
-    // since the grantor will not able to revoke the role before this date
-    // this is useful for the revocation check
-    role.lastNonRevocableExpirationDate = expirationDate
-    role.save()
-  }
-
   roleAssignment.save()
   return roleAssignment
 }

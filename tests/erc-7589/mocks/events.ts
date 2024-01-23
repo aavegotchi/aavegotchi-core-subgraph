@@ -8,7 +8,6 @@ import {
 } from '../helpers/events'
 import {
   RoleGranted,
-  RoleApprovalForAll,
   RoleRevoked,
   TokensCommitted,
   TokensReleased,
@@ -66,32 +65,6 @@ export function createNewRoleGrantedEvent(
   event.parameters.push(buildEventParamUint('_expirationDate', expirationDate))
   event.parameters.push(buildEventParamBoolean('_revocable', revocable))
   event.parameters.push(buildEventParamBytes('_data', data))
-  return event
-}
-
-/**
-@dev Creates a mock for the event RoleApprovalForAll
-
-Example:
-    event RoleApprovalForAll(
-        address indexed _tokenAddress,
-        address indexed _operator,
-        bool _isApproved
-    );
- */
-export function createNewRoleApprovalForAllEvent(
-  grantor: string,
-  operator: string,
-  tokenAddress: string,
-  isApproved: boolean,
-): RoleApprovalForAll {
-  const event = changetype<RoleApprovalForAll>(newMockEvent())
-  event.address = Address.fromString(ZERO_ADDRESS)
-  event.parameters = new Array<ethereum.EventParam>()
-  event.transaction.from = Address.fromString(grantor)
-  event.parameters.push(buildEventParamAddress('_tokenAddress', tokenAddress))
-  event.parameters.push(buildEventParamAddress('_operator', operator))
-  event.parameters.push(buildEventParamBoolean('_isApproved', isApproved))
   return event
 }
 

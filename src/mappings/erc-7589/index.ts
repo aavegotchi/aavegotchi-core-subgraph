@@ -1,5 +1,4 @@
 export * from './role-granted-handler'
 export * from './role-revoked-handler'
-export * from './role-approval-for-all-handler'
 export * from './tokens-committed-handler'
 export * from './tokens-released-handler'

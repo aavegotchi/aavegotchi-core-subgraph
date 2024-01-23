@@ -554,7 +554,6 @@ type Role @entity {
   roleHash: Bytes!
   tokenAddress: String!
   tokenId: BigInt!
-  lastNonRevocableExpirationDate: BigInt!
   tokenCommitment: TokenCommitment
   roleAssignments: [RoleAssignment!] @derivedFrom(field: "role")
 }
@@ -572,15 +571,6 @@ type RoleAssignment @entity {
   createdAt: BigInt!
   updatedAt: BigInt!
   tokenCommitment: TokenCommitment
-}
-
-type RoleApproval @entity {
-  id: ID! # rolesRegistryAddress + grantorAddress + operatorAddress + tokenAddress
-  rolesRegistry: RolesRegistry!
-  grantor: User!
-  operator: User!
-  tokenAddress: String!
-  isApproved: Boolean!
 }
 
 type TokenCommitment @entity {

@@ -96,7 +96,6 @@ describe('ERC-7589 RoleGranted Handler', () => {
       expirationDate,
       data,
       event1.address.toHex(),
-      BigInt.zero(),
       tokenCommitment1!.id,
     )
     validateRole(
@@ -108,7 +107,6 @@ describe('ERC-7589 RoleGranted Handler', () => {
       expirationDate,
       data,
       event2.address.toHex(),
-      BigInt.zero(),
       tokenCommitment2.id,
     )
     validateRole(
@@ -120,7 +118,6 @@ describe('ERC-7589 RoleGranted Handler', () => {
       expirationDate,
       data,
       event3.address.toHex(),
-      BigInt.zero(),
       tokenCommitment3.id,
     )
   })
@@ -206,7 +203,6 @@ describe('ERC-7589 RoleGranted Handler', () => {
       expirationDate,
       data,
       rolesRegistry,
-      BigInt.zero(),
       tokenCommitment1.id,
     )
     validateRole(
@@ -218,7 +214,6 @@ describe('ERC-7589 RoleGranted Handler', () => {
       expirationDate,
       data,
       rolesRegistry,
-      BigInt.zero(),
       tokenCommitment2.id,
     )
     validateRole(
@@ -230,7 +225,6 @@ describe('ERC-7589 RoleGranted Handler', () => {
       expirationDate,
       data,
       rolesRegistry,
-      BigInt.zero(),
       tokenCommitment3.id,
     )
   })
@@ -260,7 +254,6 @@ describe('ERC-7589 RoleGranted Handler', () => {
       expirationDate,
       data,
       event1.address.toHex(),
-      expirationDate,
       generateTokenCommitmentId(rolesRegistry, commitmentId),
     )
   })

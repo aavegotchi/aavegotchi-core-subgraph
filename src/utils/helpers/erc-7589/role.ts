@@ -43,7 +43,6 @@ export function findOrCreateRole(
     role.tokenAddress = tokenAddress
     role.tokenId = tokenId
     role.rolesRegistry = rolesRegistry.id
-    role.lastNonRevocableExpirationDate = BigInt.zero()
     role.tokenCommitment = tokenCommitmentId
     role.save()
   }
