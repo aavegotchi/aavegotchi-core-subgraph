@@ -1,18 +1,8 @@
 import { Address, ethereum, store } from "@graphprotocol/graph-ts";
-import {
-    test,
-    assert,
-    clearStore,
-    createMockedFunction,
-} from "matchstick-as/assembly/index";
+import { test, assert, clearStore, createMockedFunction } from "matchstick-as/assembly/index";
 import { ERC721Listing, Portal } from "../generated/schema";
 import { handleClaimAavegotchi } from "../src/mappings/diamond";
-import {
-    BIGINT_ONE,
-    BIGINT_ZERO,
-    PORTAL_STATUS_BOUGHT,
-    ZERO_ADDRESS,
-} from "../src/utils/constants";
+import { BIGINT_ONE, BIGINT_ZERO, PORTAL_STATUS_BOUGHT, ZERO_ADDRESS } from "../src/utils/constants";
 import { getAavegotchiMock, getClaimAavegotchiEvent } from "./mocks";
 
 test("should cancel active listing", () => {
@@ -44,13 +34,14 @@ test("should cancel active listing", () => {
     listing.save();
 
     // create mock for updateAavegotchi and getAavegotchi
-    createMockedFunction(
-        event.address,
-        "getAavegotchi",
-        "getAavegotchi(uint256):((uint256,string,address,uint256,uint256,int16[6],int16[6],uint16[16],address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,bool,(uint256,uint256,(string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))[]))"
-    )
+    createMockedFunction(event.address, "getAavegotchi", "getAavegotchi(uint256):((uint256,string,address,uint256,uint256,int16[6],int16[6],uint16[16],address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256,bool,(uint256,uint256,(string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))[]))")
         .withArgs([ethereum.Value.fromUnsignedBigInt(BIGINT_ONE)])
         .returns(getAavegotchiMock(event));
+
+    // reate mock for findWearableSets
+    createMockedFunction(event.address, "findWearableSets", "findWearableSets(uint256[]):(uint256[])")
+        .withArgs([ethereum.Value.fromUnsignedBigIntArray([BIGINT_ONE])])
+        .returns([ethereum.Value.fromUnsignedBigIntArray([])]);
 
     handleClaimAavegotchi(event);
 
