@@ -610,7 +610,7 @@ export function handleERC721ExecutedListing(
         historicalPrices.push(event.params.priceInWei);
         gotchi.historicalPrices = historicalPrices;
         gotchi.activeListing = null;
-        gotchi.locked = true;
+        gotchi.locked = false;
         gotchi.save();
     } else if (event.params.category == BigInt.fromI32(4)) {
         let listing = getOrCreateERC721Listing(

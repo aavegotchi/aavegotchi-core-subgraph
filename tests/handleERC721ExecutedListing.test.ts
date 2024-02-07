@@ -97,6 +97,7 @@ test("handleERC721Listing - should add price to historicalPrices of aavegotchi i
 
     // assert and clear store
     assert.fieldEquals("Aavegotchi", "1", "historicalPrices", "[1]");
+    assert.fieldEquals("Aavegotchi", "1", "locked", "false");
     clearStore();
 });
 
