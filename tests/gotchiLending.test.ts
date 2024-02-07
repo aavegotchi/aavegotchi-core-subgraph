@@ -150,6 +150,7 @@ test("add gotchi lending", () => {
         "thirdPartyAddress",
         address.toHexString()
     );
+    assert.fieldEquals("Aavegotchi", "1", "locked", "true");
     assert.fieldEquals("GotchiLending", "1", "timeCreated", "1");
     assert.fieldEquals("GotchiLending", "1", "channellingAllowed", "true");
     assert.fieldEquals("GotchiLending", "1", "whitelist", "1");
@@ -266,6 +267,7 @@ test("execute gotchi lending", () => {
         "originalOwner",
         address.toHexString()
     );
+    assert.fieldEquals("Aavegotchi", "1", "locked", "true");
 
     assert.fieldEquals("User", address.toHexString(), "gotchisLentOut", "[1]");
     assert.fieldEquals(
@@ -347,6 +349,8 @@ test("claimed gotchi lending", () => {
         "amount",
         "1"
     );
+
+    assert.fieldEquals("Aavegotchi", "1", "locked", "true");
 });
 
 test("cancel gotchi lending", () => {
@@ -408,6 +412,7 @@ test("cancel gotchi lending", () => {
     assert.fieldEquals("GotchiLending", "1", "gotchiBRS", "1");
     assert.fieldEquals("GotchiLending", "1", "gotchiKinship", "1");
     assert.fieldEquals("GotchiLending", "1", "channellingAllowed", "false");
+    assert.fieldEquals("Aavegotchi", "1", "locked", "false");
 });
 
 test("end gotchi lending", () => {
@@ -496,4 +501,5 @@ test("end gotchi lending", () => {
 
     assert.fieldEquals("Aavegotchi", "1", "lending", "null");
     assert.fieldEquals("Aavegotchi", "1", "lending", "null");
+    assert.fieldEquals("Aavegotchi", "1", "locked", "false");
 });

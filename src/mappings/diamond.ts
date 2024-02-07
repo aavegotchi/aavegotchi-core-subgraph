@@ -610,7 +610,7 @@ export function handleERC721ExecutedListing(
         historicalPrices.push(event.params.priceInWei);
         gotchi.historicalPrices = historicalPrices;
         gotchi.activeListing = null;
-        gotchi.locked = false;
+        gotchi.locked = true;
         gotchi.save();
     } else if (event.params.category == BigInt.fromI32(4)) {
         let listing = getOrCreateERC721Listing(
@@ -1167,6 +1167,7 @@ export function handleGotchiLendingAdded(event: GotchiLendingAdded): void {
     }
     let gotchi = getOrCreateAavegotchi(event.params.tokenId.toString(), event)!;
     gotchi.lending = BigInt.fromString(lending.id);
+    gotchi.locked = true;
     gotchi.save();
 
     lending.gotchi = gotchi.id;
@@ -1249,6 +1250,7 @@ export function handleGotchiLendingCanceled(
 
     const gotchi = getOrCreateAavegotchi(lending.gotchi.toString(), event)!;
     gotchi.lending = null;
+    gotchi.locked = false;
     gotchi.save();
 
     lending.gotchiKinship = gotchi.kinship;
@@ -1288,6 +1290,7 @@ export function handleGotchiLendingExecuted(
     let gotchi = getOrCreateAavegotchi(lending.gotchi, event)!;
     let lender = getOrCreateUser(lending.lender!.toHexString());
     gotchi.originalOwner = lender.id;
+    gotchi.locked = true;
     lender.save();
     gotchi.save();
     lending.gotchiKinship = gotchi.kinship;
@@ -1373,6 +1376,7 @@ export function handleGotchiLendingEnded(event: GotchiLendingEnded): void {
         lending.gotchiTokenId.toString(),
         event
     )!;
+    gotchi.locked = false;
     gotchi.lending = null;
     gotchi.originalOwner = originalOwner.id;
     gotchi.owner = originalOwner.id;
@@ -1498,6 +1502,7 @@ export function handleGotchiLendingAdded2(event: GotchiLendingAdded1): void {
         event.params.param0.tokenId.toString(),
         event
     )!;
+    gotchi.locked = true;
     gotchi.lending = BigInt.fromString(lending.id);
     gotchi.save();
 
@@ -1551,6 +1556,7 @@ export function handleGotchiLendingExecuted2(
     let gotchi = getOrCreateAavegotchi(lending.gotchi, event)!;
     let lender = getOrCreateUser(lending.lender!.toHexString());
     gotchi.originalOwner = lender.id;
+    gotchi.locked = true;
     lender.save();
     gotchi.save();
 
@@ -1631,6 +1637,7 @@ export function handleGotchiLendingCancelled2(
     lending.gotchiBRS = gotchi.withSetsRarityScore;
     lending.save();
 
+    gotchi.locked = false;
     gotchi.lending = null;
     gotchi.save();
 }
@@ -1786,6 +1793,7 @@ export function handleGotchiLendingEnded2(event: GotchiLendingEnded1): void {
     }
 
     gotchi.lending = null;
+    gotchi.locked = false;
     gotchi.originalOwner = originalOwner.id;
     gotchi.owner = originalOwner.id;
     gotchi.save();
