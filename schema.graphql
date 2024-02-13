@@ -46,7 +46,7 @@ type Aavegotchi @entity {
     withSetsNumericTraits: [Int!]
 
     equippedWearables: [Int!]!
-    equippedDelegatedWearables: [Int!]!
+    equippedDelegatedWearables: [Int!]
     equippedSetID: BigInt
     equippedSetName: String
 
