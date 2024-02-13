@@ -46,6 +46,7 @@ type Aavegotchi @entity {
     withSetsNumericTraits: [Int!]
 
     equippedWearables: [Int!]!
+    equippedDelegatedWearables: [Int!]!
     equippedSetID: BigInt
     equippedSetName: String
 
@@ -537,4 +538,49 @@ type FakeGotchiNFTTransfer @entity {
     token: FakeGotchiNFTToken!
     from: User!
     to: User!
+}
+
+# ItemsRolesRegistry
+
+type RolesRegistry @entity {
+  id: ID! # contractAddress
+  roles: [Role!] @derivedFrom(field: "rolesRegistry")
+}
+
+type Role @entity {
+  id: ID! # rolesRegistryAddress + commitmentId + roleHash
+  rolesRegistry: RolesRegistry!
+  roleHash: Bytes!
+  tokenAddress: String!
+  tokenId: BigInt!
+  tokenCommitment: TokenCommitment
+  roleAssignments: [RoleAssignment!] @derivedFrom(field: "role")
+}
+
+type RoleAssignment @entity {
+  id: ID! # rolesRegistryAddress + commitmentId + granteeAddress + roleHash
+  role: Role!
+  tokenAddress: String!
+  tokenId: BigInt!
+  grantor: User!
+  grantee: User!
+  expirationDate: BigInt!
+  revocable: Boolean!
+  data: Bytes!
+  createdAt: BigInt!
+  updatedAt: BigInt!
+  tokenCommitment: TokenCommitment
+}
+
+type TokenCommitment @entity {
+  id: ID! # rolesRegistryAddress + commitmentId
+  rolesRegistry: RolesRegistry!
+  commitmentId: BigInt!
+  grantor: User!
+  tokenAddress: String!
+  tokenId: BigInt!
+  amount: BigInt!
+  isReleased: Boolean!
+  usedBalance: BigInt!
+  roleAssignments: [RoleAssignment!] @derivedFrom(field: "tokenCommitment")
 }
