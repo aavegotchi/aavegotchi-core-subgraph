@@ -18,23 +18,23 @@ export function createMockRoleAssignment(
   tokenId: BigInt,
   expirationDate: BigInt,
   rolesRegistryAddress: string,
-  depositId: string,
+  tokenCommitmentId: string,
 ): RoleAssignment {
   const rolesRegistry = findOrCreateRolesRegistry(rolesRegistryAddress)
-  const roleId = generateRoleId(rolesRegistry, roleHash, depositId)
+  const roleId = generateRoleId(rolesRegistry, roleHash, tokenCommitmentId)
   const role = new Role(roleId)
   role.roleHash = roleHash
   role.tokenAddress = tokenAddress
   role.tokenId = tokenId
   role.rolesRegistry = rolesRegistryAddress
-  role.tokenCommitment = depositId
+  role.tokenCommitment = tokenCommitmentId
   role.save()
 
   const roleAssignmentId = generateRoleAssignmentId(
     rolesRegistry,
     getOrCreateUser(grantee),
     roleHash,
-    depositId,
+    tokenCommitmentId,
   )
   const newRoleAssignment = new RoleAssignment(roleAssignmentId)
   newRoleAssignment.role = role.id
@@ -47,7 +47,7 @@ export function createMockRoleAssignment(
   newRoleAssignment.data = Bytes.fromUTF8('data')
   newRoleAssignment.createdAt = BigInt.fromI32(123)
   newRoleAssignment.updatedAt = BigInt.fromI32(123)
-  newRoleAssignment.tokenCommitment = depositId
+  newRoleAssignment.tokenCommitment = tokenCommitmentId
   newRoleAssignment.save()
   return newRoleAssignment
 }

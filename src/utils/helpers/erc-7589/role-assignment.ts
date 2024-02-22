@@ -34,7 +34,7 @@ export function generateRoleAssignmentId(
  * @param expirationDate The expiration date of the role assignment.
  * @param data The data of the role assignment.
  * @param revocable The revocable of the role assignment.
- * @param depositId The depositId of the role assignment.(only for ERC1155)
+ * @param tokenCommitment The tokens commitment of the role assignment.(only for ERC1155)
  * @returns The role assignment entity created (or found).
  */
 export function upsertRoleAssignment(
@@ -48,12 +48,12 @@ export function upsertRoleAssignment(
   expirationDate: BigInt,
   data: Bytes,
   revocable: boolean,
-  depositId: string,
+  tokenCommitment: string,
 ): RoleAssignment {
   const rolesRegistry = findOrCreateRolesRegistry(rolesRegistryAddress)
-  const roleAssignmentId = generateRoleAssignmentId(rolesRegistry, grantee, roleHash, depositId)
+  const roleAssignmentId = generateRoleAssignmentId(rolesRegistry, grantee, roleHash, tokenCommitment)
   let roleAssignment = RoleAssignment.load(roleAssignmentId)
-  const role = findOrCreateRole(rolesRegistry, tokenAddress, tokenId, roleHash, depositId)
+  const role = findOrCreateRole(rolesRegistry, tokenAddress, tokenId, roleHash, tokenCommitment)
 
   if (!roleAssignment) {
     roleAssignment = new RoleAssignment(roleAssignmentId)
@@ -69,7 +69,7 @@ export function upsertRoleAssignment(
   roleAssignment.revocable = revocable
   roleAssignment.data = data
   roleAssignment.updatedAt = timestamp
-  roleAssignment.tokenCommitment = depositId
+  roleAssignment.tokenCommitment = tokenCommitment
   roleAssignment.save()
   return roleAssignment
 }
@@ -84,7 +84,7 @@ export function upsertRoleAssignment(
  * @param roleAssignmentId The role assignment id of the role assignment.
  * @param blockTimestamp The block timestamp of the role assignment.
  * @param txHash The transaction hash of the role assignment.
- * @param depositId The token commitment id of the role assignment.(only for ERC1155)
+ * @param tokenCommitmentId The token commitment id of the role assignment.(only for ERC1155)
  */
 export function updateRoleAssignmentExpiration(
   rolesRegistry: RolesRegistry,
@@ -94,7 +94,7 @@ export function updateRoleAssignmentExpiration(
   roleAssignmentId: string,
   blockTimestamp: BigInt,
   txHash: string,
-  depositId: string,
+  tokenCommitmentId: string,
 ): void {
   const roleAssignment = RoleAssignment.load(roleAssignmentId)
   if (!roleAssignment) {

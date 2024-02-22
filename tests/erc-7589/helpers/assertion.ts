@@ -19,10 +19,10 @@ export function validateRole(
   expirationDate: BigInt,
   data: Bytes,
   rolesRegistryAddress: string,
-  depositId: string,
+  tokenCommitmentId: string,
 ): void {
   const rolesRegistry = findOrCreateRolesRegistry(rolesRegistryAddress)
-  const roleId = generateRoleId(rolesRegistry, roleAssignment, depositId)
+  const roleId = generateRoleId(rolesRegistry, roleAssignment, tokenCommitmentId)
   assert.fieldEquals('Role', roleId, 'roleHash', roleAssignment.toHex())
   assert.fieldEquals('Role', roleId, 'tokenAddress', tokenAddress)
   assert.fieldEquals('Role', roleId, 'tokenId', tokenId.toString())
@@ -31,13 +31,13 @@ export function validateRole(
     rolesRegistry,
     grantee,
     roleAssignment,
-    depositId,
+    tokenCommitmentId,
   )
   assert.fieldEquals(
     'RoleAssignment',
     roleAssignmentId,
     'role',
-    generateRoleId(rolesRegistry, roleAssignment, depositId),
+    generateRoleId(rolesRegistry, roleAssignment, tokenCommitmentId),
   )
   assert.fieldEquals('RoleAssignment', roleAssignmentId, 'tokenAddress', tokenAddress)
   assert.fieldEquals('RoleAssignment', roleAssignmentId, 'tokenId', tokenId.toString())
