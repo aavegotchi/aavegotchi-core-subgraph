@@ -1,5 +1,5 @@
 import { log } from '@graphprotocol/graph-ts'
-import { generateDepositId, upsertRoleAssignment } from '../../utils/helpers/erc-7589'
+import { generateCommitmentId, upsertRoleAssignment } from '../../utils/helpers/erc-7589'
 import { TokenCommitment } from '../../../generated/schema'
 import { RoleGranted } from '../../../generated/AavegotchiDiamond/AavegotchiDiamond'
 import { getOrCreateUser } from '../../utils/helpers/diamond'
@@ -19,14 +19,14 @@ Example:
     );
 */
 export function handleRoleGranted(event: RoleGranted): void {
-  const tokenCommitmentId = event.params._commitmentId
+  const depositId = event.params._commitmentId
   const rolesRegistryAddress = event.address.toHexString()
-  const depositId = generateDepositId(rolesRegistryAddress, tokenCommitmentId)
-  const tokenCommitment = TokenCommitment.load(depositId)
+  const tokenCommitmentId = generateCommitmentId(rolesRegistryAddress, depositId)
+  const tokenCommitment = TokenCommitment.load(tokenCommitmentId)
 
   if (!tokenCommitment) {
     log.error('[erc-7589][handleRoleGranted] TokenCommitment {} not found, tx hash: {}', [
-      depositId,
+      tokenCommitmentId,
       event.transaction.hash.toHexString(),
     ])
     return

@@ -6,7 +6,7 @@ import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
 import { createMockTokenCommitment } from './mocks/entities'
 import { User, TokenCommitment } from '../../generated/schema'
 import { validateRole } from './helpers/assertion'
-import { generateDepositId } from '../../src/utils/helpers/erc-7589'
+import { generateCommitmentId } from '../../src/utils/helpers/erc-7589'
 
 const RoleAssignmentId = Bytes.fromUTF8('0xGrantRole')
 const tokenAddress = Addresses[0]
@@ -41,7 +41,7 @@ describe('ERC-7589 RoleGranted Handler', () => {
       revocable,
       data,
     )
-    const tokenCommitment1 = TokenCommitment.load(generateDepositId(event1.address.toHexString(), depositId))
+    const tokenCommitment1 = TokenCommitment.load(generateCommitmentId(event1.address.toHexString(), depositId))
     handleRoleGranted(event1)
 
     const event2 = createNewRoleGrantedEvent(

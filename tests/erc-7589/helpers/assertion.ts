@@ -3,7 +3,7 @@ import {
   findOrCreateRolesRegistry,
   generateRoleAssignmentId,
   generateRoleId,
-  generateDepositId,
+  generateCommitmentId,
 } from '../../../src/utils/helpers/erc-7589'
 import { BigInt, Bytes } from '@graphprotocol/graph-ts'
 import { User } from '../../../generated/schema'
@@ -56,7 +56,7 @@ export function validateTokenCommitment(
   rolesRegistryAddress: string,
   isReleased: boolean,
 ): void {
-  const tokenCommitmentId = generateDepositId(rolesRegistryAddress, depositId)
+  const tokenCommitmentId = generateCommitmentId(rolesRegistryAddress, depositId)
   assert.fieldEquals('TokenCommitment', tokenCommitmentId, 'rolesRegistry', rolesRegistryAddress)
   assert.fieldEquals('TokenCommitment', tokenCommitmentId, 'depositId', depositId.toString())
   assert.fieldEquals('TokenCommitment', tokenCommitmentId, 'grantor', grantor)

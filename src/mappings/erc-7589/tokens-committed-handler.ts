@@ -1,7 +1,7 @@
 import { BigInt, log } from '@graphprotocol/graph-ts'
 import {
   findOrCreateRolesRegistry,
-  generateDepositId,
+  generateCommitmentId,
 } from '../../utils/helpers/erc-7589'
 import { TokensCommitted } from '../../../generated/AavegotchiDiamond/AavegotchiDiamond'
 import { getOrCreateUser } from '../../utils/helpers/diamond'
@@ -26,7 +26,7 @@ export function handleTokensCommitted(event: TokensCommitted): void {
   const grantor = getOrCreateUser(event.params._grantor.toHexString())
 
   const rolesRegistry = findOrCreateRolesRegistry(event.address.toHexString())
-  const tokenCommitmentId = generateDepositId(rolesRegistry.id, event.params._commitmentId)
+  const tokenCommitmentId = generateCommitmentId(rolesRegistry.id, event.params._commitmentId)
 
   const tokenCommitment = new TokenCommitment(tokenCommitmentId)
   tokenCommitment.rolesRegistry = rolesRegistry.id

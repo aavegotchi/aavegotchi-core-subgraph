@@ -2,7 +2,7 @@ import { log } from '@graphprotocol/graph-ts'
 import {
   findOrCreateRolesRegistry,
   generateRoleAssignmentId,
-  generateDepositId,
+  generateCommitmentId,
   updateRoleAssignmentExpiration,
 } from '../../utils/helpers/erc-7589'
 import { TokenCommitment } from '../../../generated/schema'
@@ -17,14 +17,14 @@ Example:
     event RoleRevoked(uint256 indexed _commitmentId, bytes32 indexed _role, address indexed _grantee)
 */
 export function handleRoleRevoked(event: RoleRevoked): void {
-  const tokenCommitmentId = event.params._commitmentId
+  const depositId = event.params._commitmentId
   const rolesRegistryAddress = event.address.toHexString()
-  const depositId = generateDepositId(rolesRegistryAddress, tokenCommitmentId)
-  const tokenCommitment = TokenCommitment.load(depositId)
+  const tokenCommitmentId = generateCommitmentId(rolesRegistryAddress, depositId)
+  const tokenCommitment = TokenCommitment.load(tokenCommitmentId)
 
   if (!tokenCommitment) {
     log.error('[erc-7589][handleRoleRevoked] TokenCommitment {} not found, tx {} skipping...', [
-      depositId,
+      tokenCommitmentId,
       event.transaction.hash.toHexString(),
     ])
     return
@@ -46,7 +46,7 @@ export function handleRoleRevoked(event: RoleRevoked): void {
     rolesRegistry,
     grantee,
     event.params._role,
-    depositId,
+    tokenCommitmentId,
   )
   updateRoleAssignmentExpiration(
     rolesRegistry,
@@ -56,7 +56,7 @@ export function handleRoleRevoked(event: RoleRevoked): void {
     roleAssignmentId,
     event.block.timestamp,
     event.transaction.hash.toHexString(),
-    depositId,
+    tokenCommitmentId,
   )
 
   log.warning('[erc-7589][handleRoleRevoked] Revoked RoleAssignment: {} NFT: {} tx: {}', [

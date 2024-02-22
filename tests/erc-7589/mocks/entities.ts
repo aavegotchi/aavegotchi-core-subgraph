@@ -4,7 +4,7 @@ import {
   generateRoleAssignmentId,
   generateRoleId,
   findOrCreateRolesRegistry,
-  generateDepositId,
+  generateCommitmentId,
 } from '../../../src/utils/helpers/erc-7589'
 import { User } from '../../../generated/schema'
 import { getOrCreateUser } from '../../../src/utils/helpers/diamond'
@@ -61,7 +61,7 @@ export function createMockTokenCommitment(
   tokenAmount: BigInt,
   isReleased: boolean,
 ): TokenCommitment {
-  const depositId = generateDepositId(rolesRegistryAddress, tokenCommitmentId)
+  const depositId = generateCommitmentId(rolesRegistryAddress, tokenCommitmentId)
   const tokenCommitment = new TokenCommitment(depositId)
   const grantorUser = getOrCreateUser(grantor)
   grantorUser.save()

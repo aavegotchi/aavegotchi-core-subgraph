@@ -117,7 +117,7 @@ import {
 } from "../../generated/RealmDiamond/RealmDiamond";
 import { updatePermissionsFromBitmap } from "../utils/decimals";
 import * as erc7589 from "./erc-7589";
-import { generateDepositId } from "../utils/helpers/erc-7589";
+import { generateCommitmentId } from "../utils/helpers/erc-7589";
 
 export function handleBuyPortals(event: BuyPortals): void {
     let contract = AavegotchiDiamond.bind(event.address);
@@ -351,7 +351,7 @@ export function handleEquipDelegatedWearables(event: EquipDelegatedWearables): v
         for(let i = 0; i < oldDepositIds.length; i++) {
             if(oldDepositIds[i] == newDepositIds[i]) continue
             if(oldDepositIds[i] != BigInt.zero()) {
-                const oldTokenCommitment = TokenCommitment.load(generateDepositId(event.address.toHexString(), oldDepositIds[i]));
+                const oldTokenCommitment = TokenCommitment.load(generateCommitmentId(event.address.toHexString(), oldDepositIds[i]));
                 if(oldTokenCommitment) {
                     oldTokenCommitment.usedBalance = oldTokenCommitment.usedBalance.minus(BigInt.fromI32(1));
                     oldTokenCommitment.save();
@@ -359,7 +359,7 @@ export function handleEquipDelegatedWearables(event: EquipDelegatedWearables): v
             }
 
             if(newDepositIds[i] != BigInt.zero()) {
-                const newTokenCommitment = TokenCommitment.load(generateDepositId(event.address.toHexString(), newDepositIds[i]));
+                const newTokenCommitment = TokenCommitment.load(generateCommitmentId(event.address.toHexString(), newDepositIds[i]));
                 if(newTokenCommitment) {
                     newTokenCommitment.usedBalance = newTokenCommitment.usedBalance.plus(BigInt.fromI32(1));
                     newTokenCommitment.save();
