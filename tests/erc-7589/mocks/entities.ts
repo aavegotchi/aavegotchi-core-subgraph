@@ -57,12 +57,12 @@ export function createMockTokenCommitment(
   tokenAddress: string,
   tokenId: BigInt,
   rolesRegistryAddress: string,
-  tokenCommitmentId: BigInt,
+  depositId: BigInt,
   tokenAmount: BigInt,
   isReleased: boolean,
 ): TokenCommitment {
-  const depositId = generateTokenCommitmentId(rolesRegistryAddress, tokenCommitmentId)
-  const tokenCommitment = new TokenCommitment(depositId)
+  const tokenCommitmentId = generateTokenCommitmentId(rolesRegistryAddress, depositId)
+  const tokenCommitment = new TokenCommitment(tokenCommitmentId)
   const grantorUser = getOrCreateUser(grantor)
   grantorUser.save()
   tokenCommitment.grantor = getOrCreateUser(grantor).id
@@ -71,7 +71,7 @@ export function createMockTokenCommitment(
   tokenCommitment.amount = tokenAmount
   tokenCommitment.usedBalance = BigInt.zero()
   tokenCommitment.rolesRegistry = rolesRegistryAddress
-  tokenCommitment.depositId = tokenCommitmentId
+  tokenCommitment.depositId = depositId
   tokenCommitment.isReleased = isReleased
   tokenCommitment.save()
 
