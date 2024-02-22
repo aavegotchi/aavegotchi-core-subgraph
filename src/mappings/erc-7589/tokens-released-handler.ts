@@ -1,5 +1,5 @@
 import { log } from '@graphprotocol/graph-ts'
-import { findOrCreateRolesRegistry, generateCommitmentId, updateRoleAssignmentExpiration } from '../../utils/helpers/erc-7589'
+import { findOrCreateRolesRegistry, generateTokenCommitmentId, updateRoleAssignmentExpiration } from '../../utils/helpers/erc-7589'
 import { TokensReleased } from '../../../generated/AavegotchiDiamond/AavegotchiDiamond'
 import { Role, TokenCommitment } from '../../../generated/schema'
 
@@ -11,7 +11,7 @@ Example:
     event TokensReleased(uint256 indexed _commitmentId);
 */
 export function handleTokensReleased(event: TokensReleased): void {
-  const tokenCommitmentId = generateCommitmentId(event.address.toHexString(), event.params._commitmentId)
+  const tokenCommitmentId = generateTokenCommitmentId(event.address.toHexString(), event.params._commitmentId)
   const tokenCommitment = TokenCommitment.load(tokenCommitmentId)
 
   if (!tokenCommitment) {

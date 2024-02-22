@@ -6,6 +6,6 @@ import { BigInt } from '@graphprotocol/graph-ts'
  * @param depositId The tokens commitment id.
  * @returns The tokens commitment id.
  */
-export function generateCommitmentId(rolesRegistryAddress: string, depositId: BigInt): string {
+export function generateTokenCommitmentId(rolesRegistryAddress: string, depositId: BigInt): string {
   return `${rolesRegistryAddress}-${depositId}`
 }

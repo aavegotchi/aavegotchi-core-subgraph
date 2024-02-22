@@ -2,7 +2,7 @@ import { log } from '@graphprotocol/graph-ts'
 import {
   findOrCreateRolesRegistry,
   generateRoleAssignmentId,
-  generateCommitmentId,
+  generateTokenCommitmentId,
   updateRoleAssignmentExpiration,
 } from '../../utils/helpers/erc-7589'
 import { TokenCommitment } from '../../../generated/schema'
@@ -19,7 +19,7 @@ Example:
 export function handleRoleRevoked(event: RoleRevoked): void {
   const depositId = event.params._commitmentId
   const rolesRegistryAddress = event.address.toHexString()
-  const tokenCommitmentId = generateCommitmentId(rolesRegistryAddress, depositId)
+  const tokenCommitmentId = generateTokenCommitmentId(rolesRegistryAddress, depositId)
   const tokenCommitment = TokenCommitment.load(tokenCommitmentId)
 
   if (!tokenCommitment) {

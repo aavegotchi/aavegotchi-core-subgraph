@@ -11,7 +11,7 @@ import {
   findOrCreateRole,
   findOrCreateRolesRegistry,
   generateRoleAssignmentId,
-  generateCommitmentId,
+  generateTokenCommitmentId,
 } from '../../src/utils/helpers/erc-7589'
 import { User } from '../../generated/schema'
 import { validateRole } from './helpers/assertion'
@@ -99,9 +99,9 @@ describe('ERC-7589 RoleRevoked Handler', () => {
     const tokenCommitmentId2 = BigInt.fromI32(3)
     const tokenCommitmentId3 = BigInt.fromI32(4)
 
-    const depositId1 = generateCommitmentId(rolesRegistry, tokenCommitmentId1)
-    const depositId2 = generateCommitmentId(rolesRegistry, tokenCommitmentId2)
-    const depositId3 = generateCommitmentId(rolesRegistry, tokenCommitmentId3)
+    const depositId1 = generateTokenCommitmentId(rolesRegistry, tokenCommitmentId1)
+    const depositId2 = generateTokenCommitmentId(rolesRegistry, tokenCommitmentId2)
+    const depositId3 = generateTokenCommitmentId(rolesRegistry, tokenCommitmentId3)
 
     createMockTokenCommitment(revoker, tokenAddress, tokenId, rolesRegistry, tokenCommitmentId1, tokenAmount, false)
     createMockTokenCommitment(revoker, tokenAddress, tokenId, rolesRegistry, tokenCommitmentId2, tokenAmount, false)
