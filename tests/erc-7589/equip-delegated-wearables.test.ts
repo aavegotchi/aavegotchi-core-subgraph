@@ -8,7 +8,7 @@ import { Aavegotchi } from '../../generated/schema'
 import { getAavegotchiMock } from '../mocks'
 
 const tokenId = BigInt.fromI32(123)
-const commitmentId = BigInt.fromI32(1)
+const depositId = BigInt.fromI32(1)
 const address = Address.fromString(
   "0x1AD3d72e54Fb0eB46e87F82f77B284FC8a66b16C"
 );
@@ -21,12 +21,12 @@ describe('EquipDelegatedWearables Handler', () => {
   test('Should create a update equipDelegatedWearables in aavegotchi entity', () => {
     assert.entityCount('TokenCommitment', 0)
 
-    const oldCommitmentIds = new Array<BigInt>(16).fill(BigInt.zero())
-    const newCommitmentIds = new Array<BigInt>(16).fill(BigInt.zero())
-    newCommitmentIds[0] = commitmentId
+    const oldDepositIds = new Array<BigInt>(16).fill(BigInt.zero())
+    const newDepositIds = new Array<BigInt>(16).fill(BigInt.zero())
+    newDepositIds[0] = depositId
     const equippedDelegatedWearables = new Array<i32>(16).fill(0)
 
-    const event = createNewEquipDelegatedWearablesEvent(tokenId, oldCommitmentIds, newCommitmentIds)
+    const event = createNewEquipDelegatedWearablesEvent(tokenId, oldDepositIds, newDepositIds)
     const gotchi = new Aavegotchi(tokenId.toString());
     gotchi.gotchiId = BigInt.fromString(tokenId.toString());
     gotchi.withSetsRarityScore = BIGINT_ONE;
@@ -105,6 +105,6 @@ describe('EquipDelegatedWearables Handler', () => {
     handleEquipDelegatedWearables(event)
 
     assert.entityCount('Aavegotchi', 1)
-    assert.fieldEquals('Aavegotchi', gotchi.id, 'equippedDelegatedWearables', bigIntArraytoString(newCommitmentIds))
+    assert.fieldEquals('Aavegotchi', gotchi.id, 'equippedDelegatedWearables', bigIntArraytoString(newDepositIds))
   })
 })

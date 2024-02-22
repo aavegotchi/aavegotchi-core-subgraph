@@ -4,7 +4,7 @@ import {
   generateRoleAssignmentId,
   generateRoleId,
   findOrCreateRolesRegistry,
-  generateTokenCommitmentId,
+  generateDepositId,
 } from '../../../src/utils/helpers/erc-7589'
 import { User } from '../../../generated/schema'
 import { getOrCreateUser } from '../../../src/utils/helpers/diamond'
@@ -18,23 +18,23 @@ export function createMockRoleAssignment(
   tokenId: BigInt,
   expirationDate: BigInt,
   rolesRegistryAddress: string,
-  tokenCommitmentId: string,
+  depositId: string,
 ): RoleAssignment {
   const rolesRegistry = findOrCreateRolesRegistry(rolesRegistryAddress)
-  const roleId = generateRoleId(rolesRegistry, roleHash, tokenCommitmentId)
+  const roleId = generateRoleId(rolesRegistry, roleHash, depositId)
   const role = new Role(roleId)
   role.roleHash = roleHash
   role.tokenAddress = tokenAddress
   role.tokenId = tokenId
   role.rolesRegistry = rolesRegistryAddress
-  role.tokenCommitment = tokenCommitmentId
+  role.tokenCommitment = depositId
   role.save()
 
   const roleAssignmentId = generateRoleAssignmentId(
     rolesRegistry,
     getOrCreateUser(grantee),
     roleHash,
-    tokenCommitmentId,
+    depositId,
   )
   const newRoleAssignment = new RoleAssignment(roleAssignmentId)
   newRoleAssignment.role = role.id
@@ -47,7 +47,7 @@ export function createMockRoleAssignment(
   newRoleAssignment.data = Bytes.fromUTF8('data')
   newRoleAssignment.createdAt = BigInt.fromI32(123)
   newRoleAssignment.updatedAt = BigInt.fromI32(123)
-  newRoleAssignment.tokenCommitment = tokenCommitmentId
+  newRoleAssignment.tokenCommitment = depositId
   newRoleAssignment.save()
   return newRoleAssignment
 }
@@ -57,12 +57,12 @@ export function createMockTokenCommitment(
   tokenAddress: string,
   tokenId: BigInt,
   rolesRegistryAddress: string,
-  commitmentId: BigInt,
+  tokenCommitmentId: BigInt,
   tokenAmount: BigInt,
   isReleased: boolean,
 ): TokenCommitment {
-  const tokenCommitmentId = generateTokenCommitmentId(rolesRegistryAddress, commitmentId)
-  const tokenCommitment = new TokenCommitment(tokenCommitmentId)
+  const depositId = generateDepositId(rolesRegistryAddress, tokenCommitmentId)
+  const tokenCommitment = new TokenCommitment(depositId)
   const grantorUser = getOrCreateUser(grantor)
   grantorUser.save()
   tokenCommitment.grantor = getOrCreateUser(grantor).id
@@ -71,7 +71,7 @@ export function createMockTokenCommitment(
   tokenCommitment.amount = tokenAmount
   tokenCommitment.usedBalance = BigInt.zero()
   tokenCommitment.rolesRegistry = rolesRegistryAddress
-  tokenCommitment.commitmentId = commitmentId
+  tokenCommitment.depositId = tokenCommitmentId
   tokenCommitment.isReleased = isReleased
   tokenCommitment.save()
 

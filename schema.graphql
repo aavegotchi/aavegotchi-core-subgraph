@@ -548,7 +548,7 @@ type RolesRegistry @entity {
 }
 
 type Role @entity {
-  id: ID! # rolesRegistryAddress + commitmentId + roleHash
+  id: ID! # rolesRegistryAddress + depositId + roleHash
   rolesRegistry: RolesRegistry!
   roleHash: Bytes!
   tokenAddress: String!
@@ -558,7 +558,7 @@ type Role @entity {
 }
 
 type RoleAssignment @entity {
-  id: ID! # rolesRegistryAddress + commitmentId + granteeAddress + roleHash
+  id: ID! # rolesRegistryAddress + depositId + granteeAddress + roleHash
   role: Role!
   tokenAddress: String!
   tokenId: BigInt!
@@ -573,9 +573,9 @@ type RoleAssignment @entity {
 }
 
 type TokenCommitment @entity {
-  id: ID! # rolesRegistryAddress + commitmentId
+  id: ID! # rolesRegistryAddress + depositId
   rolesRegistry: RolesRegistry!
-  commitmentId: BigInt!
+  depositId: BigInt!
   grantor: User!
   tokenAddress: String!
   tokenId: BigInt!

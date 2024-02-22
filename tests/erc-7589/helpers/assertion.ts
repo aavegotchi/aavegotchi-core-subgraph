@@ -3,7 +3,7 @@ import {
   findOrCreateRolesRegistry,
   generateRoleAssignmentId,
   generateRoleId,
-  generateTokenCommitmentId,
+  generateDepositId,
 } from '../../../src/utils/helpers/erc-7589'
 import { BigInt, Bytes } from '@graphprotocol/graph-ts'
 import { User } from '../../../generated/schema'
@@ -19,10 +19,10 @@ export function validateRole(
   expirationDate: BigInt,
   data: Bytes,
   rolesRegistryAddress: string,
-  tokenCommitmentId: string,
+  depositId: string,
 ): void {
   const rolesRegistry = findOrCreateRolesRegistry(rolesRegistryAddress)
-  const roleId = generateRoleId(rolesRegistry, roleAssignment, tokenCommitmentId)
+  const roleId = generateRoleId(rolesRegistry, roleAssignment, depositId)
   assert.fieldEquals('Role', roleId, 'roleHash', roleAssignment.toHex())
   assert.fieldEquals('Role', roleId, 'tokenAddress', tokenAddress)
   assert.fieldEquals('Role', roleId, 'tokenId', tokenId.toString())
@@ -31,13 +31,13 @@ export function validateRole(
     rolesRegistry,
     grantee,
     roleAssignment,
-    tokenCommitmentId,
+    depositId,
   )
   assert.fieldEquals(
     'RoleAssignment',
     roleAssignmentId,
     'role',
-    generateRoleId(rolesRegistry, roleAssignment, tokenCommitmentId),
+    generateRoleId(rolesRegistry, roleAssignment, depositId),
   )
   assert.fieldEquals('RoleAssignment', roleAssignmentId, 'tokenAddress', tokenAddress)
   assert.fieldEquals('RoleAssignment', roleAssignmentId, 'tokenId', tokenId.toString())
@@ -48,7 +48,7 @@ export function validateRole(
 }
 
 export function validateTokenCommitment(
-  commitmentId: BigInt,
+  depositId: BigInt,
   grantor: string,
   tokenAddress: string,
   tokenId: BigInt,
@@ -56,9 +56,9 @@ export function validateTokenCommitment(
   rolesRegistryAddress: string,
   isReleased: boolean,
 ): void {
-  const tokenCommitmentId = generateTokenCommitmentId(rolesRegistryAddress, commitmentId)
+  const tokenCommitmentId = generateDepositId(rolesRegistryAddress, depositId)
   assert.fieldEquals('TokenCommitment', tokenCommitmentId, 'rolesRegistry', rolesRegistryAddress)
-  assert.fieldEquals('TokenCommitment', tokenCommitmentId, 'commitmentId', commitmentId.toString())
+  assert.fieldEquals('TokenCommitment', tokenCommitmentId, 'depositId', depositId.toString())
   assert.fieldEquals('TokenCommitment', tokenCommitmentId, 'grantor', grantor)
   assert.fieldEquals('TokenCommitment', tokenCommitmentId, 'tokenAddress', tokenAddress)
   assert.fieldEquals('TokenCommitment', tokenCommitmentId, 'tokenId', tokenId.toString())
