@@ -1853,7 +1853,7 @@ export function handleKinshipBurned(event: KinshipBurned): void {
     gotchi.save();
 }
 
-export function handleERC1155BuyOrderAdded(event: ERC1155BuyOrderAdd): void {
+export function handleERC1155BuyOrderAdd(event: ERC1155BuyOrderAdd): void {
     // instantiate entity on subgraph
     let entity = getOrCreateERC1155BuyOrder(event.params.buyOrderId.toString());
     entity.buyer = event.params.buyer;
