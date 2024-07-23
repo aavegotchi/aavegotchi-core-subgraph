@@ -22,6 +22,7 @@ import {
     Whitelist,
     ClaimedToken,
     ERC721BuyOrder,
+    ERC1155BuyOrder,
 } from "../../../generated/schema";
 import { fetchFakeGotchiNFTToken, getFakeGotchiNFTToken } from "../../fetch/erc721";
 import { BIGINT_ZERO, STATUS_AAVEGOTCHI, ZERO_ADDRESS } from "../constants";
@@ -859,6 +860,16 @@ export function getOrCreateERC721BuyOrder(id: string): ERC721BuyOrder {
     let entity = ERC721BuyOrder.load(id);
     if (!entity) {
         entity = new ERC721BuyOrder(id);
+        entity.canceled = false;
+    }
+
+    return entity;
+}
+
+export function getOrCreateERC1155BuyOrder(id: string): ERC1155BuyOrder {
+    let entity = ERC1155BuyOrder.load(id);
+    if (!entity) {
+        entity = new ERC1155BuyOrder(id);
         entity.canceled = false;
     }
 

@@ -65,6 +65,9 @@ import {
     ERC721BuyOrderAdded,
     ERC721BuyOrderExecuted,
     ERC721BuyOrderCanceled,
+    ERC1155BuyOrderAdd,
+    ERC1155BuyOrderExecute,
+    ERC1155BuyOrderCancel,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
     getOrCreateUser,
@@ -90,6 +93,7 @@ import {
     getOrCreateWhitelist,
     itemMaxQuantityToRarity,
     getOrCreateERC721BuyOrder,
+    getOrCreateERC1155BuyOrder,
 } from "../utils/helpers/diamond";
 import {
     BIGINT_ONE,
@@ -1847,4 +1851,46 @@ export function handleKinshipBurned(event: KinshipBurned): void {
     if (!gotchi) return;
     gotchi.kinship = event.params._value;
     gotchi.save();
+}
+
+export function handleERC1155BuyOrderAdded(event: ERC1155BuyOrderAdd): void {
+    // instantiate entity on subgraph
+    let entity = getOrCreateERC1155BuyOrder(event.params.buyOrderId.toString());
+    entity.buyer = event.params.buyer;
+    entity.category = event.params.category;
+    entity.createdAt = event.params.time;
+    entity.duration = event.params.duration;
+    entity.erc1155TokenAddress = event.params.erc1155TokenAddress;
+    entity.erc1155TokenId = event.params.erc1155TokenId;
+    entity.priceInWei = event.params.priceInWei;
+    entity.quantity = event.params.quantity;
+    entity.save();
+}
+
+export function handleERC1155BuyOrderExecute(
+    event: ERC1155BuyOrderExecute
+): void {
+    // update buy order
+    let entity = getOrCreateERC1155BuyOrder(event.params.buyOrderId.toString());
+    entity.erc1155TokenAddress = event.params.erc1155TokenAddress;
+    entity.erc1155TokenId = event.params.erc1155TokenId;
+    entity.priceInWei = event.params.priceInWei;
+    entity.executedQuantity = entity.executedQuantity.plus(event.params.quantity);
+    entity.quantity = entity.quantity.minus(event.params.quantity);
+    entity.completedAt = event.params.time;
+    entity.seller = event.params.seller;
+    if (entity.quantity == BIGINT_ZERO) {
+        entity.quantity = event.params.time;
+    }
+    entity.save();
+}
+
+export function handleERC1155BuyOrderCancel(
+    event: ERC1155BuyOrderCancel
+): void {
+    // update buy order
+    let entity = getOrCreateERC1155BuyOrder(event.params.buyOrderId.toString());
+    entity.canceledAt = event.params.time;
+    entity.canceled = true;
+    entity.save();
 }

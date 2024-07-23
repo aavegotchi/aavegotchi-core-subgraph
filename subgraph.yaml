@@ -159,6 +159,12 @@ dataSources:
                 handler: handleERC721BuyOrderExecuted
               - event: ERC721BuyOrderCanceled(indexed uint256,uint256)
                 handler: handleERC721BuyOrderCanceled
+              - event: ERC1155BuyOrderAdd(indexed uint256,indexed address,address,uint256,indexed uint256,uint256,uint256,uint256,uint256)
+                handler: handleERC1155BuyOrderAdd
+              - event: ERC1155BuyOrderExecute(indexed uint256,indexed address,address,address,uint256,indexed uint256,uint256,uint256,uint256)
+                handler: handleERC1155BuyOrderExecute
+              - event: ERC1155BuyOrderCancel(indexed uint256,uint256)
+                handler: handleERC1155BuyOrderCancel
               # - event: DiamondCut((address,uint8,bytes4[])[],address,bytes)
               #   handler: handleDiamondCut
     # - AavegotchiInteract(indexed uint256,uint256)
