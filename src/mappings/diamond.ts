@@ -65,6 +65,11 @@ import {
     ERC721BuyOrderAdded,
     ERC721BuyOrderExecuted,
     ERC721BuyOrderCanceled,
+    RoleGranted,
+    RoleRevoked,
+    TokensCommitted,
+    TokensReleased,
+    EquipDelegatedWearables,
     ERC1155BuyOrderAdd,
     ERC1155BuyOrderExecute,
     ERC1155BuyOrderCancel,
@@ -107,7 +112,7 @@ import {
 } from "../utils/constants";
 import { Address, BigInt, log, Bytes } from "@graphprotocol/graph-ts";
 
-import { Parcel } from "../../generated/schema";
+import { Parcel, TokenCommitment } from "../../generated/schema";
 import {
     RealmDiamond,
     MintParcel,
@@ -115,6 +120,8 @@ import {
     KinshipBurned,
 } from "../../generated/RealmDiamond/RealmDiamond";
 import { updatePermissionsFromBitmap } from "../utils/decimals";
+import * as erc7589 from "./erc-7589";
+import { generateTokenCommitmentId } from "../utils/helpers/erc-7589";
 
 export function handleBuyPortals(event: BuyPortals): void {
     let contract = AavegotchiDiamond.bind(event.address);
@@ -328,6 +335,42 @@ export function handleEquipWearables(event: EquipWearables): void {
     gotchi = updateAavegotchiWearables(gotchi, event);
 
     if (gotchi.status.equals(STATUS_AAVEGOTCHI)) {
+        gotchi.save();
+    }
+}
+
+// - event: EquipDelegatedWearables(indexed uint256,uint256[16],uint256[16])
+//   handler: handleEquipDelegatedWearables
+
+export function handleEquipDelegatedWearables(event: EquipDelegatedWearables): void {
+    let gotchi = getOrCreateAavegotchi(
+        event.params._tokenId.toString(),
+        event
+    )!;
+
+    if (gotchi.status.equals(STATUS_AAVEGOTCHI)) {
+        const oldCommitmentIds = event.params._oldCommitmentIds;
+        const newCommitmentIds = event.params._newCommitmentIds;
+
+        for(let i = 0; i < oldCommitmentIds.length; i++) {
+            if(oldCommitmentIds[i] == newCommitmentIds[i]) continue
+            if(oldCommitmentIds[i] != BigInt.zero()) {
+                const oldTokenCommitment = TokenCommitment.load(generateTokenCommitmentId(event.address.toHexString(), oldCommitmentIds[i]));
+                if(oldTokenCommitment) {
+                    oldTokenCommitment.usedBalance = oldTokenCommitment.usedBalance.minus(BigInt.fromI32(1));
+                    oldTokenCommitment.save();
+                }
+            }
+
+            if(newCommitmentIds[i] != BigInt.zero()) {
+                const newTokenCommitment = TokenCommitment.load(generateTokenCommitmentId(event.address.toHexString(), newCommitmentIds[i]));
+                if(newTokenCommitment) {
+                    newTokenCommitment.usedBalance = newTokenCommitment.usedBalance.plus(BigInt.fromI32(1));
+                    newTokenCommitment.save();
+                }
+            }
+        }
+        gotchi.equippedDelegatedWearables = event.params._newCommitmentIds.map<i32>((id) => id.toI32());
         gotchi.save();
     }
 }
@@ -1853,6 +1896,21 @@ export function handleKinshipBurned(event: KinshipBurned): void {
     gotchi.save();
 }
 
+export function handleRoleGranted(event: RoleGranted): void {
+    erc7589.handleRoleGranted(event);
+}
+
+export function handleRoleRevoked(event: RoleRevoked): void {
+    erc7589.handleRoleRevoked(event);
+}
+
+export function handleTokensCommitted(event: TokensCommitted): void {
+    erc7589.handleTokensCommitted(event);
+}
+
+export function handleTokensReleased(event: TokensReleased): void {
+    erc7589.handleTokensReleased(event);
+}
 export function handleERC1155BuyOrderAdd(event: ERC1155BuyOrderAdd): void {
     // instantiate entity on subgraph
     let entity = getOrCreateERC1155BuyOrder(event.params.buyOrderId.toString());

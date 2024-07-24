@@ -47,6 +47,8 @@ dataSources:
                 handler: handleResetSkillpoints
               - event: EquipWearables(indexed uint256,uint16[16],uint16[16])
                 handler: handleEquipWearables
+              - event: EquipDelegatedWearables(indexed uint256,uint256[16],uint256[16])
+                handler: handleEquipDelegatedWearables
               - event: SetAavegotchiName(indexed uint256,string,string)
                 handler: handleSetAavegotchiName
               - event: UseConsumables(indexed uint256,uint256[],uint256[])
@@ -159,6 +161,14 @@ dataSources:
                 handler: handleERC721BuyOrderExecuted
               - event: ERC721BuyOrderCanceled(indexed uint256,uint256)
                 handler: handleERC721BuyOrderCanceled
+              - event: RoleGranted(indexed uint256,indexed bytes32,indexed address,uint64,bool,bytes)
+                handler: handleRoleGranted
+              - event: RoleRevoked(indexed uint256,indexed bytes32,indexed address)
+                handler: handleRoleRevoked
+              - event: TokensCommitted(indexed address,indexed uint256,indexed address,uint256,uint256)
+                handler: handleTokensCommitted
+              - event: TokensReleased(indexed uint256)
+                handler: handleTokensReleased
               - event: ERC1155BuyOrderAdd(indexed uint256,indexed address,address,uint256,indexed uint256,uint256,uint256,uint256,uint256)
                 handler: handleERC1155BuyOrderAdd
               - event: ERC1155BuyOrderExecute(indexed uint256,indexed address,address,address,uint256,indexed uint256,uint256,uint256,uint256)

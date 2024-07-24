@@ -25,6 +25,7 @@ test("should update kinship of gotchi", () => {
     gotchi.numericTraits = [1, 2, 3, 4];
     gotchi.modifiedNumericTraits = [1, 2, 3, 4];
     gotchi.equippedWearables = [1, 2, 3, 4];
+    gotchi.equippedDelegatedWearables = [0, 0, 0, 0];
     gotchi.baseRarityScore = BIGINT_ONE;
     gotchi.collateral = new Bytes(0);
     gotchi.escrow = new Bytes(0);
