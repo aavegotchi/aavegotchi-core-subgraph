@@ -28,6 +28,7 @@ test("should update withSetsRarityScore", () => {
     gotchi.numericTraits = [1, 1, 1, 1, 1, 1];
     gotchi.modifiedNumericTraits = [1, 1, 1, 1, 1, 1];
     gotchi.equippedWearables = [1, 1, 1, 1, 1, 1];
+    gotchi.equippedDelegatedWearables = [0, 0, 0, 0, 0, 0];
     gotchi.historicalPrices = [];
     gotchi.collateral = Address.fromString(ZERO_ADDRESS);
     gotchi.escrow = Address.fromString(ZERO_ADDRESS);
