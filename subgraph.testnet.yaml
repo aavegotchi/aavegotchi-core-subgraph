@@ -189,3 +189,57 @@ dataSources:
               - event: KinshipBurned(uint256,uint256)
                 handler: handleKinshipBurned
           file: ./src/mappings/diamond.ts
+    - kind: ethereum/contract
+      name: FAKEGotchisCardDiamond
+      network: polygon-amoy
+      source:
+        address: "0xC80DB01aeDAD5F6E3088c75F60E52f579Cf1D3Cb"
+        abi: IERC1155
+        startBlock: 10125000
+      mapping:
+        kind: ethereum/events
+        apiVersion: 0.0.6
+        language: wasm/assemblyscript
+        entities:
+          - Card
+        abis:
+          - name: IERC721
+            file: ./abis/diamond_erc721.json
+          - name: IERC1155
+            file: ./abis/diamond_erc1155.json
+        eventHandlers:
+          - event: NewSeriesStarted(indexed uint256,indexed uint256)
+            handler: handleNewSeriesStarted
+#          - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+#            handler: handleTransferSingle
+#          - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+#            handler: handleTransferBatch
+        file: ./src/mappings/fakeGotchisCard.ts
+    - kind: ethereum/contract
+      name: FAKEGotchisNFTDiamond
+      network: polygon-amoy
+      source:
+        address: "0xC80DB01aeDAD5F6E3088c75F60E52f579Cf1D3Cb"
+        abi: IERC721
+        startBlock: 10125000
+      mapping:
+        kind: ethereum/events
+        apiVersion: 0.0.6
+        language: wasm/assemblyscript
+        entities:
+          - NFT
+        abis:
+          - name: IERC721
+            file: ./abis/diamond_erc721.json
+          - name: IERC1155
+            file: ./abis/diamond_erc1155.json
+        eventHandlers:
+#          - event: Transfer(indexed address,indexed address,indexed uint256)
+#            handler: handleTransfer
+          - event: MetadataActionLog(indexed uint256,(address,uint16[2],uint16,uint32,uint32,address,uint40,uint8,bool,string,string,string,string,string,string,string,string,string))
+            handler: handleMetadataActionLog
+#          - event: MetadataFlag(indexed uint256,address)
+#            handler: handleMetadataFlag
+#          - event: MetadataLike(indexed uint256,address)
+#            handler: handleMetadataLike
+        file: ./src/mappings/fakeGotchisNFT.ts
