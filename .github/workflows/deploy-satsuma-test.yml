@@ -3,7 +3,7 @@ name: Deploy to Satsuma Service
 on:
     push:
         tags:
-            - "prod-*"
+            - "test-*"
 
 jobs:
     buildAndDeploy:
@@ -19,14 +19,15 @@ jobs:
             - name: Install Libs
               run: yarn --frozen-lockfile
             - name: Codegen
-              run: yarn codegen
+              run: yarn codegen:testnet
             - name: Build
-              run: yarn build
-            - name: Deploy to Satsuma
+              run: yarn build:testnet
+            - name: Deploy to Satsuma on testnet
               run: |
                   npx graph deploy aavegotchi-core-matic \
                     --deploy-key ${{secrets.SATSUMA_ACCESS_TOKEN}} \
                     --node https://subgraphs.alchemy.com/api/subgraphs/deploy \
                     --ipfs https://ipfs.satsuma.xyz \
-                    --version-label ${GITHUB_REF#refs/*/}
+                    --version-label ${GITHUB_REF#refs/*/} \
+                    subgraph.testnet.yaml
               shell: bash
