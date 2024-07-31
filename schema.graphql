@@ -87,6 +87,7 @@ type Aavegotchi @entity {
 
     "Block in which the Aavegotchi was claimed. Should coincide with createdAt"
     claimedAt: BigInt
+    claimedTime: BigInt
 
     timesTraded: BigInt!
 
@@ -125,6 +126,7 @@ type Portal @entity {
     openedAt: BigInt
 
     claimedAt: BigInt
+    claimedTime: BigInt
 
     timesTraded: BigInt!
 
