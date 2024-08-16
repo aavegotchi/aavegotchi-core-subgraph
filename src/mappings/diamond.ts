@@ -1922,6 +1922,7 @@ export function handleERC1155BuyOrderAdd(event: ERC1155BuyOrderAdd): void {
     entity.erc1155TokenId = event.params.erc1155TokenId;
     entity.priceInWei = event.params.priceInWei;
     entity.quantity = event.params.quantity;
+    entity.executedQuantity = BIGINT_ZERO;
     entity.save();
 }
 
