@@ -9,16 +9,16 @@ import { findOrCreateRole } from './role'
  * @param rolesRegistry The roles registry used for the role assignment.
  * @param grantee The grantee of the role assignment.
  * @param roleHash The role hash of the role assignment.
- * @param tokenCommitmentId The token commitment id of the role assignment.(only for ERC1155)
+ * @param depositId The token commitment id of the role assignment.(only for ERC1155)
  * @returns The role assignment id.
  */
 export function generateRoleAssignmentId(
   rolesRegistry: RolesRegistry,
   grantee: User,
   roleHash: Bytes,
-  tokenCommitmentId: string,
+  depositId: string,
 ): string {
-    return `${rolesRegistry.id}-${tokenCommitmentId}-${grantee.id}-${roleHash.toHex()}`
+    return `${rolesRegistry.id}-${depositId}-${grantee.id}-${roleHash.toHex()}`
 }
 
 /**
@@ -28,12 +28,13 @@ export function generateRoleAssignmentId(
  * @param rolesRegistryAddress The roles registry address of the role assignment.
  * @param grantor The grantor of the role assignment.
  * @param grantee The grantee of the role assignment.
- * @param nft The nft of the role assignment.
+ * @param tokenAddress The tokenAddress of the role assignment.
+ * @param tokenId The tokenAddress of the role assignment.
  * @param timestamp The timestamp of the role assignment.
  * @param expirationDate The expiration date of the role assignment.
  * @param data The data of the role assignment.
  * @param revocable The revocable of the role assignment.
- * @param tokenCommitment The tokens commitment of the role assignment.(only for ERC1155)
+ * @param tokenCommitmentId The tokens commitment of the role assignment.(only for ERC1155)
  * @returns The role assignment entity created (or found).
  */
 export function upsertRoleAssignment(
@@ -77,7 +78,8 @@ export function upsertRoleAssignment(
  * @notice Update a role assignment expiration date.
  * @dev roleRegistry, grantor, grantee, nft should be created/exist before calling this function.
  * @param rolesRegistry The roles registry used for the role assignment.
- * @param nft The nft of the role assignment.
+ * @param tokenAddress The tokenAddress of the role assignment.
+ * @param tokenId The tokenId of the role assignment.
  * @param roleHash The role hash of the role assignment.
  * @param roleAssignmentId The role assignment id of the role assignment.
  * @param blockTimestamp The block timestamp of the role assignment.

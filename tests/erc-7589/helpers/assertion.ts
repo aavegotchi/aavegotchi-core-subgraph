@@ -48,7 +48,7 @@ export function validateRole(
 }
 
 export function validateTokenCommitment(
-  commitmentId: BigInt,
+  depositId: BigInt,
   grantor: string,
   tokenAddress: string,
   tokenId: BigInt,
@@ -56,9 +56,9 @@ export function validateTokenCommitment(
   rolesRegistryAddress: string,
   isReleased: boolean,
 ): void {
-  const tokenCommitmentId = generateTokenCommitmentId(rolesRegistryAddress, commitmentId)
+  const tokenCommitmentId = generateTokenCommitmentId(rolesRegistryAddress, depositId)
   assert.fieldEquals('TokenCommitment', tokenCommitmentId, 'rolesRegistry', rolesRegistryAddress)
-  assert.fieldEquals('TokenCommitment', tokenCommitmentId, 'commitmentId', commitmentId.toString())
+  assert.fieldEquals('TokenCommitment', tokenCommitmentId, 'depositId', depositId.toString())
   assert.fieldEquals('TokenCommitment', tokenCommitmentId, 'grantor', grantor)
   assert.fieldEquals('TokenCommitment', tokenCommitmentId, 'tokenAddress', tokenAddress)
   assert.fieldEquals('TokenCommitment', tokenCommitmentId, 'tokenId', tokenId.toString())

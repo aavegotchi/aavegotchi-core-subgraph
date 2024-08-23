@@ -17,9 +17,9 @@ Example:
     event RoleRevoked(uint256 indexed _commitmentId, bytes32 indexed _role, address indexed _grantee)
 */
 export function handleRoleRevoked(event: RoleRevoked): void {
-  const commitmentId = event.params._commitmentId
+  const depositId = event.params._commitmentId
   const rolesRegistryAddress = event.address.toHexString()
-  const tokenCommitmentId = generateTokenCommitmentId(rolesRegistryAddress, commitmentId)
+  const tokenCommitmentId = generateTokenCommitmentId(rolesRegistryAddress, depositId)
   const tokenCommitment = TokenCommitment.load(tokenCommitmentId)
 
   if (!tokenCommitment) {

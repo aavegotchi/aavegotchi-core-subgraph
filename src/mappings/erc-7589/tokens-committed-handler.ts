@@ -30,7 +30,7 @@ export function handleTokensCommitted(event: TokensCommitted): void {
 
   const tokenCommitment = new TokenCommitment(tokenCommitmentId)
   tokenCommitment.rolesRegistry = rolesRegistry.id
-  tokenCommitment.commitmentId = event.params._commitmentId
+  tokenCommitment.depositId = event.params._commitmentId
   tokenCommitment.grantor = grantor.id
   tokenCommitment.tokenAddress = tokenAddress
   tokenCommitment.tokenId = tokenId

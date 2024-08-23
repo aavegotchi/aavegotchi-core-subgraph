@@ -23,14 +23,14 @@ Example:
     event RoleRevoked(uint256 indexed _commitmentId, bytes32 indexed _role, address indexed _grantee)
  */
 export function createNewRoleRevokedEvent(
-  commitmentId: BigInt,
+  depositId: BigInt,
   roleHash: Bytes,
   grantee: string,
 ): RoleRevoked {
   const event = changetype<RoleRevoked>(newMockEvent())
   event.address = Address.fromString(ZERO_ADDRESS)
   event.parameters = new Array<ethereum.EventParam>()
-  event.parameters.push(buildEventParamUint('_commitmentId', commitmentId))
+  event.parameters.push(buildEventParamUint('_commitmentId', depositId))
   event.parameters.push(buildEventParamBytes('_role', roleHash))
   event.parameters.push(buildEventParamAddress('_grantee', grantee))
   return event
@@ -42,7 +42,7 @@ export function createNewRoleRevokedEvent(
 
 Example:
     event RoleGranted(
-        uint256 indexed _commitmentId,
+        uint256 indexed _depositId,
         bytes32 indexed _role,
         address indexed _grantee,
         uint64 _expirationDate,
@@ -52,7 +52,7 @@ Example:
  */
 export function createNewRoleGrantedEvent(
   roleAssignment: Bytes,
-  commitmentId: BigInt,
+  depositId: BigInt,
   grantee: string,
   expirationDate: BigInt,
   revocable: boolean,
@@ -61,7 +61,7 @@ export function createNewRoleGrantedEvent(
   const event = changetype<RoleGranted>(newMockEvent())
   event.address = Address.fromString(ZERO_ADDRESS)
   event.parameters = new Array<ethereum.EventParam>()
-  event.parameters.push(buildEventParamUint('_commitmentId', commitmentId))
+  event.parameters.push(buildEventParamUint('_depositId', depositId))
   event.parameters.push(buildEventParamBytes('_role', roleAssignment))
   event.parameters.push(buildEventParamAddress('_grantee', grantee))
   event.parameters.push(buildEventParamUint('_expirationDate', expirationDate))
@@ -76,7 +76,7 @@ export function createNewRoleGrantedEvent(
 Example:
     event TokensCommitted(
         address indexed _grantor,
-        uint256 indexed _commitmentId,
+        uint256 indexed _depositId,
         address indexed _tokenAddress,
         uint256 _tokenId,
         uint256 _tokenAmount
@@ -85,7 +85,7 @@ Example:
 
 export function createNewTokensCommittedEvent(
   grantor: string,
-  commitmentId: BigInt,
+  depositId: BigInt,
   tokenAddress: string,
   tokenId: BigInt,
   tokenAmount: BigInt,
@@ -95,7 +95,7 @@ export function createNewTokensCommittedEvent(
   event.parameters = new Array<ethereum.EventParam>()
   event.transaction.from = Address.fromString(grantor)
   event.parameters.push(buildEventParamAddress('_grantor', grantor))
-  event.parameters.push(buildEventParamUint('_commitmentId', commitmentId))
+  event.parameters.push(buildEventParamUint('_depositId', depositId))
   event.parameters.push(buildEventParamAddress('_tokenAddress', tokenAddress))
   event.parameters.push(buildEventParamUint('_tokenId', tokenId))
   event.parameters.push(buildEventParamUint('_tokenAmount', tokenAmount))
@@ -106,14 +106,14 @@ export function createNewTokensCommittedEvent(
 @dev Creates a mock for the event TokensReleased
 
 Example:
-    event TokensReleased(uint256 indexed _commitmentId)
+    event TokensReleased(uint256 indexed _depositId)
  */
 
-export function createNewTokensReleasedEvent(commitmentId: BigInt): TokensReleased {
+export function createNewTokensReleasedEvent(depositId: BigInt): TokensReleased {
   const event = changetype<TokensReleased>(newMockEvent())
   event.address = Address.fromString(ZERO_ADDRESS)
   event.parameters = new Array<ethereum.EventParam>()
-  event.parameters.push(buildEventParamUint('_commitmentId', commitmentId))
+  event.parameters.push(buildEventParamUint('_depositId', depositId))
   return event
 }
 
@@ -123,20 +123,20 @@ export function createNewTokensReleasedEvent(commitmentId: BigInt): TokensReleas
 Example:
      event EquipDelegatedWearables(
         uint256 indexed _tokenId, 
-        uint256[16] _oldCommitmentIds, 
-        uint256[16] _newCommitmentIds
+        uint256[16] _oldDepositIds, 
+        uint256[16] _newDepositIds
     );
  */
 export function createNewEquipDelegatedWearablesEvent(
   tokenId: BigInt,
-  oldCommitmentIds: BigInt[],
-  newCommitmentIds: BigInt[],
+  oldDepositIds: BigInt[],
+  newDepositIds: BigInt[],
 ): EquipDelegatedWearables {
   const event = changetype<EquipDelegatedWearables>(newMockEvent())
   event.address = Address.fromString(ZERO_ADDRESS)
   event.parameters = new Array<ethereum.EventParam>()
   event.parameters.push(buildEventParamUint('_tokenId', tokenId))
-  event.parameters.push(buildEventParamUintArray('_oldCommitmentIds', oldCommitmentIds))
-  event.parameters.push(buildEventParamUintArray('_newCommitmentIds', newCommitmentIds))
+  event.parameters.push(buildEventParamUintArray('_oldDepositIds', oldDepositIds))
+  event.parameters.push(buildEventParamUintArray('_newDepositIds', newDepositIds))
   return event
 }

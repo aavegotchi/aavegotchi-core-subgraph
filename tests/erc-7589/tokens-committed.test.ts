@@ -9,7 +9,7 @@ const tokenAddress = Addresses[0]
 const tokenId = BigInt.fromI32(123)
 const tokenAmount = BigInt.fromI32(1)
 const grantor = Addresses[2]
-const commitmentId = BigInt.fromI32(1)
+const depositId = BigInt.fromI32(1)
 
 describe('ERC-7589 TokensCommitted Handler', () => {
   afterEach(() => {
@@ -19,12 +19,12 @@ describe('ERC-7589 TokensCommitted Handler', () => {
   test('Should create a new TokensCommitted entity', () => {
     assert.entityCount('TokenCommitment', 0)
 
-    const event = createNewTokensCommittedEvent(grantor, commitmentId, tokenAddress, tokenId, tokenAmount)
+    const event = createNewTokensCommittedEvent(grantor, depositId, tokenAddress, tokenId, tokenAmount)
     handleTokensCommitted(event)
 
     assert.entityCount('TokenCommitment', 1)
     validateTokenCommitment(
-      commitmentId,
+      depositId,
       grantor,
       tokenAddress,
       tokenId,

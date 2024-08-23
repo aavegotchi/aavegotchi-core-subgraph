@@ -349,21 +349,21 @@ export function handleEquipDelegatedWearables(event: EquipDelegatedWearables): v
     )!;
 
     if (gotchi.status.equals(STATUS_AAVEGOTCHI)) {
-        const oldCommitmentIds = event.params._oldCommitmentIds;
-        const newCommitmentIds = event.params._newCommitmentIds;
+        const oldDepositIds = event.params._oldCommitmentIds;
+        const newDepositIds = event.params._newCommitmentIds;
 
-        for(let i = 0; i < oldCommitmentIds.length; i++) {
-            if(oldCommitmentIds[i] == newCommitmentIds[i]) continue
-            if(oldCommitmentIds[i] != BigInt.zero()) {
-                const oldTokenCommitment = TokenCommitment.load(generateTokenCommitmentId(event.address.toHexString(), oldCommitmentIds[i]));
+        for(let i = 0; i < oldDepositIds.length; i++) {
+            if(oldDepositIds[i] == newDepositIds[i]) continue
+            if(oldDepositIds[i] != BigInt.zero()) {
+                const oldTokenCommitment = TokenCommitment.load(generateTokenCommitmentId(event.address.toHexString(), oldDepositIds[i]));
                 if(oldTokenCommitment) {
                     oldTokenCommitment.usedBalance = oldTokenCommitment.usedBalance.minus(BigInt.fromI32(1));
                     oldTokenCommitment.save();
                 }
             }
 
-            if(newCommitmentIds[i] != BigInt.zero()) {
-                const newTokenCommitment = TokenCommitment.load(generateTokenCommitmentId(event.address.toHexString(), newCommitmentIds[i]));
+            if(newDepositIds[i] != BigInt.zero()) {
+                const newTokenCommitment = TokenCommitment.load(generateTokenCommitmentId(event.address.toHexString(), newDepositIds[i]));
                 if(newTokenCommitment) {
                     newTokenCommitment.usedBalance = newTokenCommitment.usedBalance.plus(BigInt.fromI32(1));
                     newTokenCommitment.save();
