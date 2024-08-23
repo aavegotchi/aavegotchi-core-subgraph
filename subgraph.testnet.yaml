@@ -1,21 +1,16 @@
 specVersion: 0.0.4
-# features:
-#     - grafting
-# graft:
-#     base: QmV3LtUtUCiD774HXR3D9SJBNgw2VNcXZM9McyMGTfotBQ # Subgraph ID of base subgraph
-#     block: 28127642 # Block number
-description: Aavegotchi Core Mumbai
+description: Aavegotchi Core Testnet
 repository:
 schema:
     file: ./schema.graphql
 dataSources:
     - kind: ethereum/contract
       name: AavegotchiDiamond
-      network: mumbai
+      network: polygon-amoy
       source:
-          address: "0x83e73d9cf22dfc3a767ea1ce0611f7f50306622e"
+          address: "0xC80DB01aeDAD5F6E3088c75F60E52f579Cf1D3Cb"
           abi: AavegotchiDiamond
-          startBlock: 34467860
+          startBlock: 9668200
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.6
@@ -31,8 +26,6 @@ dataSources:
           eventHandlers:
               - event: BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
                 handler: handleBuyPortals
-              - event: Xingyun(indexed address,indexed address,uint256,uint256,uint256)
-                handler: handleXingyun
               - event: PortalOpened(indexed uint256)
                 handler: handlePortalOpened
               - event: ClaimAavegotchi(indexed uint256)
@@ -117,8 +110,8 @@ dataSources:
               #   handler: handleGotchiLendingEnd
               # - event: GotchiLendingExecute(indexed uint32)
               #   handler: handleGotchiLendingExecute
-              # - event: GotchiLendingCancel(indexed uint32,uint256)
-              #   handler: handleGotchiLendingCancel
+              - event: GotchiLendingCancel(indexed uint32,uint256)
+                handler: handleGotchiLendingCancel
               - event: ERC1155ExecutedToRecipient(indexed uint256,indexed address,indexed address)
                 handler: handleERC1155ExecutedToRecipient
               - event: ERC721ExecutedToRecipient(indexed uint256,indexed address,indexed address)
@@ -169,72 +162,13 @@ dataSources:
                 handler: handleTokensCommitted
               - event: TokensReleased(indexed uint256)
                 handler: handleTokensReleased
-              # - event: DiamondCut((address,uint8,bytes4[])[],address,bytes)
-              #   handler: handleDiamondCut
-    # - AavegotchiInteract(indexed uint256,uint256)
-    # - AddCollateralType((address,(int16[6],bytes3,bytes3,bytes3,uint8,uint8,uint16,bool)))
-    # - AddItemType((string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))
-    # - AddedAavegotchiBatch(indexed address,uint256[])
-    # - AddedItemsBatch(indexed address,uint256[],uint256[])
-    # - Approval(indexed address,indexed address,indexed uint256)
-    # - ApprovalForAll(indexed address,indexed address,bool)
-    # - ApprovalForAll(indexed address,indexed address,bool)
-    # - BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
-    # - ChangedListingFee(uint256)
-    # - ClaimAavegotchi(indexed uint256)
-    # - CreateHaunt(indexed uint256,uint256,uint256,bytes32)
-    # - DaoTransferred(indexed address,indexed address)
-    # - DaoTreasuryTransferred(indexed address,indexed address)
-    # - DecreaseStake(indexed uint256,uint256)
-    # - ERC1155ExecutedListing(indexed uint256,indexed address,address,address,uint256,indexed uint256,uint256,uint256,uint256)
-    # - ERC1155ListingAdd(indexed uint256,indexed address,address,uint256,indexed uint256,uint256,uint256,uint256)
-    # - ERC1155ListingCancelled(indexed uint256)
-    # - ERC1155ListingCancelled(indexed uint256,uint256,uint256)
-    # - ERC1155ListingRemoved(indexed uint256,uint256,uint256)
-    # - ERC721ExecutedListing(indexed uint256,indexed address,address,address,uint256,indexed uint256,uint256,uint256)
-    # - ERC721ListingAdd(indexed uint256,indexed address,address,uint256,indexed uint256,uint256)
-    # - ERC721ListingCancelled(indexed uint256,uint256,uint256)
-    # - ERC721ListingRemoved(indexed uint256,uint256,uint256)
-    # - EquipWearables(indexed uint256,uint16[16],uint16[16])
-    # - GameManagerTransferred(indexed address,indexed address)
-    # - GrantExperience(uint256[],uint256[])
-    # - IncreaseStake(indexed uint256,uint256)
-    # - ItemTypeMaxQuantity(uint256[],uint256[])
-    # - LockAavegotchi(indexed uint256,uint256)
-    # - MetaTransactionExecuted(address,address,bytes)
-    # - MigrateVouchers(indexed address,uint256[],uint256[])
-    # - OpenPortals(uint256[])
-    # - OwnershipTransferred(indexed address,indexed address)
-    # - PortalOpened(indexed uint256)
-    # - PurchaseItemsWithGhst(indexed address,indexed address,uint256[],uint256[],uint256)
-    # - PurchaseItemsWithVouchers(indexed address,indexed address,uint256[],uint256[])
-    # - SetAavegotchiName(indexed uint256,string,string)
-    # - SetBatchId(indexed uint256,uint256[])
-    # - SpendSkillpoints(indexed uint256,int16[4])
-    # - StoreSvg((bytes32,uint256[])[])
-    # - Transfer(indexed address,indexed address,indexed uint256)
-    # - TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
-    # - TransferFromParent(indexed address,indexed uint256,indexed uint256,uint256)
-    # - TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
-    # - TransferToParent(indexed address,indexed uint256,indexed uint256,uint256)
-    # - TransferToParent(indexed address,indexed uint256,indexed uint256,uint256)
-    # - URI(string,indexed uint256)
-    # - UnLockAavegotchi(indexed uint256,uint256)
-    # - UpdateCollateralModifiers(int16[6],int16[6])
-    # - UpdateERC1155Listing(indexed uint256,uint256,uint256,uint256)
-    # - UseConsumables(indexed uint256,uint256[],uint256[])
-    # - VrfRandomNumber(indexed uint256,uint256,uint256)
-    # - WithdrawnBatch(indexed address,uint256[])
-    # - WithdrawnItems(indexed address,uint256[],uint256[])
-    # - Xingyun(indexed address,indexed address,uint256,uint256,uint256)
-    # -
     - kind: ethereum/contract
       name: RealmDiamond
-      network: mumbai
+      network: polygon-amoy
       source:
-          address: "0x726F201A9aB38cD56D60ee392165F1434C4F193D"
+          address: "0x5a4faEb79951bAAa0866B72fD6517E693c8E4620"
           abi: RealmDiamond
-          startBlock: 26930227
+          startBlock: 5349600
       mapping:
           kind: ethereum/events
           apiVersion: 0.0.6
@@ -257,55 +191,55 @@ dataSources:
           file: ./src/mappings/diamond.ts
     - kind: ethereum/contract
       name: FAKEGotchisCardDiamond
-      network: mumbai
+      network: polygon-amoy
       source:
-          address: "0x118c19F39a4Ad9032B7b7b228A2Cd927d3FddA13"
-          abi: IERC1155
-          startBlock: 28400000
+        address: "0xC80DB01aeDAD5F6E3088c75F60E52f579Cf1D3Cb"
+        abi: IERC1155
+        startBlock: 10125000
       mapping:
-          kind: ethereum/events
-          apiVersion: 0.0.5
-          language: wasm/assemblyscript
-          entities:
-              - Card
-          abis:
-              - name: IERC721
-                file: ./abis/diamond_erc721.json
-              - name: IERC1155
-                file: ./abis/diamond_erc1155.json
-          eventHandlers:
-              - event: NewSeriesStarted(indexed uint256,indexed uint256)
-                handler: handleNewSeriesStarted
-              - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
-                handler: handleTransferSingle
-              - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
-                handler: handleTransferBatch
-          file: ./src/mappings/fakeGotchisCard.ts
+        kind: ethereum/events
+        apiVersion: 0.0.6
+        language: wasm/assemblyscript
+        entities:
+          - Card
+        abis:
+          - name: IERC721
+            file: ./abis/diamond_erc721.json
+          - name: IERC1155
+            file: ./abis/diamond_erc1155.json
+        eventHandlers:
+          - event: NewSeriesStarted(indexed uint256,indexed uint256)
+            handler: handleNewSeriesStarted
+#          - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+#            handler: handleTransferSingle
+#          - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+#            handler: handleTransferBatch
+        file: ./src/mappings/fakeGotchisCard.ts
     - kind: ethereum/contract
       name: FAKEGotchisNFTDiamond
-      network: mumbai
+      network: polygon-amoy
       source:
-          address: "0x330088c3372f4F78cF023DF16E1e1564109191dc"
-          abi: IERC721
-          startBlock: 28400000
+        address: "0xC80DB01aeDAD5F6E3088c75F60E52f579Cf1D3Cb"
+        abi: IERC721
+        startBlock: 10125000
       mapping:
-          kind: ethereum/events
-          apiVersion: 0.0.5
-          language: wasm/assemblyscript
-          entities:
-              - NFT
-          abis:
-              - name: IERC721
-                file: ./abis/diamond_erc721.json
-              - name: IERC1155
-                file: ./abis/diamond_erc1155.json
-          eventHandlers:
-              - event: Transfer(indexed address,indexed address,indexed uint256)
-                handler: handleTransfer
-              - event: MetadataActionLog(indexed uint256,(address,uint16[2],uint16,uint32,uint32,address,uint40,uint8,bool,string,string,string,string,string,string,string,string,string))
-                handler: handleMetadataActionLog
-              - event: MetadataFlag(indexed uint256,address)
-                handler: handleMetadataFlag
-              - event: MetadataLike(indexed uint256,address)
-                handler: handleMetadataLike
-          file: ./src/mappings/fakeGotchisNFT.ts
+        kind: ethereum/events
+        apiVersion: 0.0.6
+        language: wasm/assemblyscript
+        entities:
+          - NFT
+        abis:
+          - name: IERC721
+            file: ./abis/diamond_erc721.json
+          - name: IERC1155
+            file: ./abis/diamond_erc1155.json
+        eventHandlers:
+#          - event: Transfer(indexed address,indexed address,indexed uint256)
+#            handler: handleTransfer
+          - event: MetadataActionLog(indexed uint256,(address,uint16[2],uint16,uint32,uint32,address,uint40,uint8,bool,string,string,string,string,string,string,string,string,string))
+            handler: handleMetadataActionLog
+#          - event: MetadataFlag(indexed uint256,address)
+#            handler: handleMetadataFlag
+#          - event: MetadataLike(indexed uint256,address)
+#            handler: handleMetadataLike
+        file: ./src/mappings/fakeGotchisNFT.ts

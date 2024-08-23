@@ -18,11 +18,11 @@ const revocable = true
 const data = Bytes.fromUTF8('0x1234567890')
 const expirationDate = BigInt.fromI32(99999)
 const rolesRegistry = ZERO_ADDRESS
-const commitmentId = BigInt.fromI32(1)
+const depositId = BigInt.fromI32(1)
 
 describe('ERC-7589 RoleGranted Handler', () => {
   beforeEach(() => {
-    createMockTokenCommitment(grantor, tokenAddress, tokenId, rolesRegistry, commitmentId, tokenAmount, false)
+    createMockTokenCommitment(grantor, tokenAddress, tokenId, rolesRegistry, depositId, tokenAmount, false)
   })
   afterEach(() => {
     clearStore()
@@ -35,18 +35,18 @@ describe('ERC-7589 RoleGranted Handler', () => {
 
     const event1 = createNewRoleGrantedEvent(
       RoleAssignmentId,
-      commitmentId,
+      depositId,
       Addresses[0],
       expirationDate,
       revocable,
       data,
     )
-    const tokenCommitment1 = TokenCommitment.load(generateTokenCommitmentId(event1.address.toHexString(), commitmentId))
+    const tokenCommitment1 = TokenCommitment.load(generateTokenCommitmentId(event1.address.toHexString(), depositId))
     handleRoleGranted(event1)
 
     const event2 = createNewRoleGrantedEvent(
       RoleAssignmentId,
-      commitmentId.plus(BigInt.fromI32(1)),
+      depositId.plus(BigInt.fromI32(1)),
       Addresses[1],
       expirationDate,
       revocable,
@@ -57,7 +57,7 @@ describe('ERC-7589 RoleGranted Handler', () => {
       tokenAddress,
       tokenId,
       event2.address.toHexString(),
-      commitmentId.plus(BigInt.fromI32(1)),
+      depositId.plus(BigInt.fromI32(1)),
       tokenAmount,
       false,
     )
@@ -65,7 +65,7 @@ describe('ERC-7589 RoleGranted Handler', () => {
 
     const event3 = createNewRoleGrantedEvent(
       RoleAssignmentId,
-      commitmentId.plus(BigInt.fromI32(2)),
+      depositId.plus(BigInt.fromI32(2)),
       Addresses[2],
       expirationDate,
       revocable,
@@ -76,7 +76,7 @@ describe('ERC-7589 RoleGranted Handler', () => {
       tokenAddress,
       tokenId,
       event3.address.toHexString(),
-      commitmentId.plus(BigInt.fromI32(2)),
+      depositId.plus(BigInt.fromI32(2)),
       tokenAmount,
       false,
     )
@@ -160,7 +160,7 @@ describe('ERC-7589 RoleGranted Handler', () => {
 
     const event1 = createNewRoleGrantedEvent(
       RoleAssignmentId,
-      tokenCommitment1.commitmentId,
+      tokenCommitment1.depositId,
       Addresses[0],
       expirationDate,
       revocable,
@@ -170,7 +170,7 @@ describe('ERC-7589 RoleGranted Handler', () => {
     handleRoleGranted(event1)
     const event2 = createNewRoleGrantedEvent(
       RoleAssignmentId,
-      tokenCommitment2.commitmentId,
+      tokenCommitment2.depositId,
       Addresses[1],
       expirationDate,
       revocable,
@@ -180,7 +180,7 @@ describe('ERC-7589 RoleGranted Handler', () => {
     handleRoleGranted(event2)
     const event3 = createNewRoleGrantedEvent(
       RoleAssignmentId,
-      tokenCommitment3.commitmentId,
+      tokenCommitment3.depositId,
       Addresses[2],
       expirationDate,
       revocable,

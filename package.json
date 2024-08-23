@@ -5,6 +5,8 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
+    "codegen:testnet": "graph codegen subgraph.testnet.yaml",
+    "build:testnet": "graph build subgraph.testnet.yaml",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ aavegotchi/aavegotchi-core-matic",
     "create-local": "graph create --node http://localhost:8020/ aavegotchi/aavegotchi-core-matic",
     "remove-local": "graph remove --node http://localhost:8020/ aavegotchi/aavegotchi-core-matic",
