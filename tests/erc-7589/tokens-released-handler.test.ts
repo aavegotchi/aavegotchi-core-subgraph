@@ -11,7 +11,7 @@ const tokenId = BigInt.fromI32(123)
 const tokenAmount = BigInt.fromI32(1)
 const grantor = Addresses[2]
 const grantee = Addresses[1]
-const commitmentId = BigInt.fromI32(1)
+const depositId = BigInt.fromI32(1)
 const roleHash = Bytes.fromHexString('0x3d926b0dd5f4880fb18c9a49c890c7d76c2a97e0d4b4c20f1bb3fe6e5f89f5f4')
 
 describe('ERC-7589 TokensReleased Handler', () => {
@@ -20,16 +20,16 @@ describe('ERC-7589 TokensReleased Handler', () => {
   })
 
   test('Should update TokensCommitment entity isReleased to true', () => {
-    const event = createNewTokensReleasedEvent(commitmentId)
+    const event = createNewTokensReleasedEvent(depositId)
 
-    createMockTokenCommitment(grantor, tokenAddress, tokenId, event.address.toHexString(), commitmentId, tokenAmount, false)
+    createMockTokenCommitment(grantor, tokenAddress, tokenId, event.address.toHexString(), depositId, tokenAmount, false)
     assert.entityCount('TokenCommitment', 1)
 
     handleTokensReleased(event)
 
     assert.entityCount('TokenCommitment', 1)
     validateTokenCommitment(
-      commitmentId,
+      depositId,
       grantor,
       tokenAddress,
       tokenId,
@@ -40,7 +40,7 @@ describe('ERC-7589 TokensReleased Handler', () => {
   })
 
   test('Should update roleAssignment expiration date', () => {
-    const event = createNewTokensReleasedEvent(commitmentId)
+    const event = createNewTokensReleasedEvent(depositId)
     const expirationDate = BigInt.fromI32(86400).plus(BigInt.fromI32(event.block.timestamp.toI32()))
 
     const tokenCommitment = createMockTokenCommitment(
@@ -48,7 +48,7 @@ describe('ERC-7589 TokensReleased Handler', () => {
       tokenAddress,
       tokenId,
       event.address.toHexString(),
-      commitmentId,
+      depositId,
       tokenAmount,
       false,
     )
@@ -73,7 +73,7 @@ describe('ERC-7589 TokensReleased Handler', () => {
     assert.entityCount('RoleAssignment', 1)
     assert.fieldEquals('RoleAssignment', roleAssignment.id, 'expirationDate', event.block.timestamp.toString())
     validateTokenCommitment(
-      commitmentId,
+      depositId,
       grantor,
       tokenAddress,
       tokenId,
@@ -86,7 +86,7 @@ describe('ERC-7589 TokensReleased Handler', () => {
   test('Should skip if tokensCommitment does not exist', () => {
     assert.entityCount('TokenCommitment', 0)
 
-    const event = createNewTokensReleasedEvent(commitmentId)
+    const event = createNewTokensReleasedEvent(depositId)
     handleTokensReleased(event)
 
     assert.entityCount('TokenCommitment', 0)

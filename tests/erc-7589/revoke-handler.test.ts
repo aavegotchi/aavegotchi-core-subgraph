@@ -19,7 +19,7 @@ import { getOrCreateUser } from '../../src/utils/helpers/diamond'
 
 const tokenId = BigInt.fromI32(123)
 const RoleAssignmentId = Bytes.fromUTF8('0xGrantRole')
-const commitmentId = BigInt.fromI32(1)
+const depositId = BigInt.fromI32(1)
 const tokenAddress = Addresses[0]
 const tokenAmount = BigInt.fromI32(1)
 const grantee = Addresses[1]
@@ -32,7 +32,7 @@ const TWO = BigInt.fromI32(2)
 
 describe('ERC-7589 RoleRevoked Handler', () => {
   beforeEach(() => {
-    createMockTokenCommitment(revoker, tokenAddress, tokenId, rolesRegistry, commitmentId, tokenAmount, false)
+    createMockTokenCommitment(revoker, tokenAddress, tokenId, rolesRegistry, depositId, tokenAmount, false)
   })
   afterEach(() => {
     clearStore()
@@ -41,7 +41,7 @@ describe('ERC-7589 RoleRevoked Handler', () => {
   test('should not revoke roleAssignment when revoker does not exist', () => {
     assert.entityCount('RoleAssignment', 0)
 
-    const event = createNewRoleRevokedEvent(commitmentId, RoleAssignmentId, grantee)
+    const event = createNewRoleRevokedEvent(depositId, RoleAssignmentId, grantee)
     handleRoleRevoked(event)
 
     assert.entityCount('RoleAssignment', 0)
@@ -50,7 +50,7 @@ describe('ERC-7589 RoleRevoked Handler', () => {
   test('should not revoke roleAssignment when grantee does not exist', () => {
     assert.entityCount('RoleAssignment', 0)
 
-    const event = createNewRoleRevokedEvent(commitmentId, RoleAssignmentId, grantee)
+    const event = createNewRoleRevokedEvent(depositId, RoleAssignmentId, grantee)
     handleRoleRevoked(event)
 
     assert.entityCount('RoleAssignment', 0)
@@ -60,7 +60,7 @@ describe('ERC-7589 RoleRevoked Handler', () => {
     getOrCreateUser(grantee)
     assert.entityCount('RoleAssignment', 0)
 
-    const event = createNewRoleRevokedEvent(commitmentId, RoleAssignmentId, grantee)
+    const event = createNewRoleRevokedEvent(depositId, RoleAssignmentId, grantee)
     handleRoleRevoked(event)
 
     assert.entityCount('RoleAssignment', 0)
@@ -76,11 +76,11 @@ describe('ERC-7589 RoleRevoked Handler', () => {
       tokenId,
       BigInt.fromI32(0),
       rolesRegistry,
-      commitmentId.toString(),
+      depositId.toString(),
     )
     assert.entityCount('RoleAssignment', 1)
 
-    const event = createNewRoleRevokedEvent(commitmentId, RoleAssignmentId, grantee)
+    const event = createNewRoleRevokedEvent(depositId, RoleAssignmentId, grantee)
     handleRoleRevoked(event)
 
     assert.entityCount('RoleAssignment', 1)
@@ -89,7 +89,7 @@ describe('ERC-7589 RoleRevoked Handler', () => {
       findOrCreateRolesRegistry(rolesRegistry),
       granteeUser,
       RoleAssignmentId,
-      commitmentId.toString(),
+      depositId.toString(),
     )
     assert.fieldEquals('RoleAssignment', _id, 'expirationDate', '0')
   })
@@ -260,15 +260,15 @@ describe('ERC-7589 RoleRevoked Handler', () => {
     assert.entityCount('RoleAssignment', 3)
     assert.entityCount('Role', 3)
 
-    const event1 = createNewRoleRevokedEvent(tokenCommitment1.commitmentId, RoleAssignmentId, grantee)
+    const event1 = createNewRoleRevokedEvent(tokenCommitment1.depositId, RoleAssignmentId, grantee)
     event1.address = Address.fromString(rolesRegistry)
     handleRoleRevoked(event1)
 
-    const event2 = createNewRoleRevokedEvent(tokenCommitment2.commitmentId, RoleAssignmentId, grantee)
+    const event2 = createNewRoleRevokedEvent(tokenCommitment2.depositId, RoleAssignmentId, grantee)
     event2.address = Address.fromString(rolesRegistry)
     handleRoleRevoked(event2)
 
-    const event3 = createNewRoleRevokedEvent(tokenCommitment3.commitmentId, RoleAssignmentId, grantee)
+    const event3 = createNewRoleRevokedEvent(tokenCommitment3.depositId, RoleAssignmentId, grantee)
     event3.address = Address.fromString(rolesRegistry)
     handleRoleRevoked(event3)
 

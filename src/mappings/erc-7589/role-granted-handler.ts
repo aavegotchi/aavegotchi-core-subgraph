@@ -19,9 +19,9 @@ Example:
     );
 */
 export function handleRoleGranted(event: RoleGranted): void {
-  const commitmentId = event.params._commitmentId
+  const depositId = event.params._commitmentId
   const rolesRegistryAddress = event.address.toHexString()
-  const tokenCommitmentId = generateTokenCommitmentId(rolesRegistryAddress, commitmentId)
+  const tokenCommitmentId = generateTokenCommitmentId(rolesRegistryAddress, depositId)
   const tokenCommitment = TokenCommitment.load(tokenCommitmentId)
 
   if (!tokenCommitment) {

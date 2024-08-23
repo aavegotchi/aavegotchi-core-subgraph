@@ -6,15 +6,15 @@ import { Role, RolesRegistry } from '../../../../generated/schema'
  * @dev rolesRegistry, nft, roleHash should be created/exist before calling this function.
  * @param rolesRegistry The roles registry used for the role.
  * @param roleHash The role hash of the role.
- * @param commitmentId The commitment id of the role.(only for ERC1155)
+ * @param depositId The depositId of the role (only for ERC1155).
  * @returns The role id.
  */
 export function generateRoleId(
   rolesRegistry: RolesRegistry,
   roleHash: Bytes,
-  tokenCommitmentId: string,
+  depositId: string,
 ): string {
-  return `${rolesRegistry.id}-${tokenCommitmentId}-${roleHash.toHex()}`
+  return `${rolesRegistry.id}-${depositId}-${roleHash.toHex()}`
 }
 
 /**
@@ -32,9 +32,9 @@ export function findOrCreateRole(
   tokenAddress: string,
   tokenId: BigInt,
   roleHash: Bytes,
-  tokenCommitmentId: string,
+  depositId: string,
 ): Role {
-  const roleId = generateRoleId(rolesRegistry, roleHash, tokenCommitmentId)
+  const roleId = generateRoleId(rolesRegistry, roleHash, depositId)
   let role = Role.load(roleId)
 
   if (!role) {
@@ -43,7 +43,7 @@ export function findOrCreateRole(
     role.tokenAddress = tokenAddress
     role.tokenId = tokenId
     role.rolesRegistry = rolesRegistry.id
-    role.tokenCommitment = tokenCommitmentId
+    role.tokenCommitment = depositId
     role.save()
   }
 
@@ -56,7 +56,7 @@ export function findOrCreateRole(
  * @param rolesRegistry The roles registry used for the role.
  * @param nft The nft of the role.
  * @param roleHashes The array of role hashes of the role.
- * @param commitmentId The commitment id of the role.(only for ERC1155)
+ * @param depositId The commitment id of the role.(only for ERC1155)
  * @returns The role entity created (or found).
  */
 export function findOrCreateRoles(
@@ -64,12 +64,12 @@ export function findOrCreateRoles(
   tokenAddress: string,
   tokenId: BigInt,
   roleHashes: Bytes[],
-  tokenCommitmentId: string | null,
+  depositId: string | null,
 ): string[] {
   const roles: string[] = []
 
   for (let i = 0; i < roleHashes.length; i++) {
-    roles.push(findOrCreateRole(rolesRegistry, tokenAddress, tokenId, roleHashes[i], tokenCommitmentId).id)
+    roles.push(findOrCreateRole(rolesRegistry, tokenAddress, tokenId, roleHashes[i], depositId).id)
   }
 
   return roles
