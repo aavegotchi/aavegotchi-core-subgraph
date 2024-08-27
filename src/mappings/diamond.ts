@@ -238,6 +238,7 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
 
     gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
     gotchi.claimedAt = event.block.number;
+    gotchi.claimedTime = event.block.timestamp;
     gotchi.gotchiId = event.params._tokenId;
 
     portal.gotchi = gotchi.id;
@@ -245,6 +246,7 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
     portal.owner = zeroUser.id;
     portal.status = PORTAL_STATUS_CLAIMED;
     portal.claimedAt = event.block.number;
+    portal.claimedTime = event.block.timestamp;
 
     if (portal.activeListing) {
         let listing = getOrCreateERC721Listing(
