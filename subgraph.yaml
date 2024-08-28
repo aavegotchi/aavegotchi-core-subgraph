@@ -2,8 +2,8 @@ specVersion: 0.0.4
 features:
     - grafting
 graft:
-    base: QmPfKa9Fb4uVufG5iuzYR6RSbiRfQwY8YrokqQaEy55uHV # Subgraph ID of base subgraph
-    block: 53455960 # Block number
+    base: QmUnohP6h4vAbm7P3RMWVQ6CZr9TTgWLqduQKfuRa931j5 # Subgraph ID of base subgraph
+    block: 61145800 # Block number
 description: Aavegotchi Core Matic
 repository:
 schema:
