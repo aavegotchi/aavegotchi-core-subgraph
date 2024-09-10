@@ -1938,10 +1938,10 @@ export function handleERC1155BuyOrderExecute(
     entity.priceInWei = event.params.priceInWei;
     entity.executedQuantity = entity.executedQuantity.plus(event.params.quantity);
     entity.quantity = entity.quantity.minus(event.params.quantity);
-    entity.completedAt = event.params.time;
+    entity.lastExecutedAt = event.params.time;
     entity.seller = event.params.seller;
     if (entity.quantity == BIGINT_ZERO) {
-        entity.quantity = event.params.time;
+        entity.completedAt = event.params.time;
     }
     entity.save();
 }
