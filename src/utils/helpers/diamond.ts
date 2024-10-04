@@ -443,6 +443,19 @@ export function updateAavegotchiInfo(
     gotchi.baseRarityScore = gotchiInfo.baseRarityScore;
     gotchi.modifiedRarityScore = gotchiInfo.modifiedRarityScore;
 
+    //Update individual traits
+    gotchi.baseEnergy = gotchiInfo.numericTraits[0];
+    gotchi.baseAggression = gotchiInfo.numericTraits[1];
+    gotchi.baseSpookiness = gotchiInfo.numericTraits[2];
+    gotchi.baseBrain = gotchiInfo.numericTraits[3];
+    gotchi.eyeShape = gotchiInfo.numericTraits[4];
+    gotchi.eyeColor = gotchiInfo.numericTraits[5];
+
+    gotchi.modifiedEnergy = gotchiInfo.modifiedNumericTraits[0];
+    gotchi.modifiedAggression = gotchiInfo.modifiedNumericTraits[1];
+    gotchi.modifiedSpookiness = gotchiInfo.modifiedNumericTraits[2];
+    gotchi.modifiedBrain = gotchiInfo.modifiedNumericTraits[3];
+
     if (!gotchi.withSetsRarityScore) {
       gotchi.withSetsRarityScore = gotchiInfo.modifiedRarityScore;
       gotchi.withSetsNumericTraits = gotchiInfo.modifiedNumericTraits;

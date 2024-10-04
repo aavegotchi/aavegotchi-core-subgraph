@@ -96,6 +96,18 @@ type Aavegotchi @entity {
   activeListing: BigInt
 
   lending: BigInt
+
+  baseEnergy: BigInt!
+  baseAggression: BigInt!
+  baseSpookiness: BigInt!
+  baseBrain: BigInt!
+  eyeShape: BigInt!
+  eyeColor: BigInt!
+
+  modifiedEnergy: BigInt!
+  modifiedAggression: BigInt!
+  modifiedSpookiness: BigInt!
+  modifiedBrain: BigInt!
 }
 
 enum PortalStatus {
