@@ -1,434 +1,447 @@
 type AavegotchiOption @entity {
-    "AavegotchiOption id is composed by <PORTAL-ID>-<GOTCHI-OPTION>"
-    id: ID!
+  "AavegotchiOption id is composed by <PORTAL-ID>-<GOTCHI-OPTION>"
+  id: ID!
 
-    portalOptionId: Int!
+  portalOptionId: Int!
 
-    owner: User!
+  owner: User!
 
-    portal: Portal!
+  portal: Portal!
 
-    randomNumber: BigInt!
+  randomNumber: BigInt!
 
-    numericTraits: [Int!]!
+  numericTraits: [Int!]!
 
-    collateralType: Bytes!
+  collateralType: Bytes!
 
-    minimumStake: BigInt!
+  minimumStake: BigInt!
 
-    baseRarityScore: Int!
+  baseRarityScore: Int!
 }
 
 type Aavegotchi @entity {
-    id: ID!
+  id: ID!
 
-    gotchiId: BigInt!
+  gotchiId: BigInt!
 
-    owner: User
+  owner: User
 
-    originalOwner: User
+  originalOwner: User
 
-    portal: Portal! @derivedFrom(field: "gotchi")
+  portal: Portal! @derivedFrom(field: "gotchi")
 
-    hauntId: BigInt!
+  hauntId: BigInt!
 
-    name: String!
-    nameLowerCase: String!
+  name: String!
+  nameLowerCase: String!
 
-    randomNumber: BigInt!
+  randomNumber: BigInt!
 
-    status: BigInt!
+  status: BigInt!
 
-    numericTraits: [Int!]!
+  numericTraits: [Int!]!
 
-    modifiedNumericTraits: [Int!]!
+  modifiedNumericTraits: [Int!]!
 
-    withSetsNumericTraits: [Int!]
+  withSetsNumericTraits: [Int!]
 
-    equippedWearables: [Int!]!
-    equippedDelegatedWearables: [Int!]
-    equippedSetID: BigInt
-    equippedSetName: String
+  equippedWearables: [Int!]!
+  equippedDelegatedWearables: [Int!]
+  equippedSetID: BigInt
+  equippedSetName: String
 
-    possibleSets: BigInt
-    # equippedSetName: String
-    # equippedSetTraitBonuses:[Int!]
-    # rarityScoreWithSet:BigInt!
-    # numericTraitsWithSet:[Int!]
+  possibleSets: BigInt
+  # equippedSetName: String
+  # equippedSetTraitBonuses:[Int!]
+  # rarityScoreWithSet:BigInt!
+  # numericTraitsWithSet:[Int!]
 
-    collateral: Bytes!
+  collateral: Bytes!
 
-    escrow: Bytes!
+  escrow: Bytes!
 
-    stakedAmount: BigInt!
+  stakedAmount: BigInt!
 
-    minimumStake: BigInt!
+  minimumStake: BigInt!
 
-    kinship: BigInt! #The kinship value of this Aavegotchi. Default is 50.
-    lastInteracted: BigInt!
+  kinship: BigInt! #The kinship value of this Aavegotchi. Default is 50.
+  lastInteracted: BigInt!
 
-    experience: BigInt! #How much XP this Aavegotchi has accrued. Begins at 0.
-    toNextLevel: BigInt!
+  experience: BigInt! #How much XP this Aavegotchi has accrued. Begins at 0.
+  toNextLevel: BigInt!
 
-    usedSkillPoints: BigInt! #number of skill points used
-    level: BigInt! #the current aavegotchi level
-    baseRarityScore: BigInt!
+  usedSkillPoints: BigInt! #number of skill points used
+  level: BigInt! #the current aavegotchi level
+  baseRarityScore: BigInt!
 
-    modifiedRarityScore: BigInt!
+  modifiedRarityScore: BigInt!
 
-    withSetsRarityScore: BigInt
+  withSetsRarityScore: BigInt
 
-    locked: Boolean!
+  locked: Boolean!
 
-    listings: [ERC721Listing!]! @derivedFrom(field: "gotchi")
+  listings: [ERC721Listing!]! @derivedFrom(field: "gotchi")
 
-    "Block in which the Aavegotchi entity was created"
-    createdAt: BigInt
+  "Block in which the Aavegotchi entity was created"
+  createdAt: BigInt
 
-    "Block in which the Aavegotchi was claimed. Should coincide with createdAt"
-    claimedAt: BigInt
-    claimedTime: BigInt
+  "Block in which the Aavegotchi was claimed. Should coincide with createdAt"
+  claimedAt: BigInt
+  claimedTime: BigInt
 
-    timesTraded: BigInt!
+  timesTraded: BigInt!
 
-    historicalPrices: [BigInt!]
+  historicalPrices: [BigInt!]
 
-    activeListing: BigInt
+  activeListing: BigInt
 
-    lending: BigInt
+  lending: BigInt
+
+  baseEnergy: Int!
+  baseAggression: Int!
+  baseSpookiness: Int!
+  baseBrain: Int!
+  eyeShape: Int!
+  eyeColor: Int!
+
+  modifiedEnergy: Int!
+  modifiedAggression: Int!
+  modifiedSpookiness: Int!
+  modifiedBrain: Int!
 }
 
 enum PortalStatus {
-    Bought
-    Opened
-    Claimed
+  Bought
+  Opened
+  Claimed
 }
 
 type Portal @entity {
-    id: ID!
+  id: ID!
 
-    gotchiId: BigInt
+  gotchiId: BigInt
 
-    buyer: User!
+  buyer: User!
 
-    hauntId: BigInt!
+  hauntId: BigInt!
 
-    owner: User!
+  owner: User!
 
-    options: [AavegotchiOption!]! @derivedFrom(field: "portal")
+  options: [AavegotchiOption!]! @derivedFrom(field: "portal")
 
-    gotchi: Aavegotchi
+  gotchi: Aavegotchi
 
-    status: PortalStatus!
+  status: PortalStatus!
 
-    boughtAt: BigInt
+  boughtAt: BigInt
 
-    openedAt: BigInt
+  openedAt: BigInt
 
-    claimedAt: BigInt
-    claimedTime: BigInt
+  claimedAt: BigInt
+  claimedTime: BigInt
 
-    timesTraded: BigInt!
+  timesTraded: BigInt!
 
-    historicalPrices: [BigInt!]
+  historicalPrices: [BigInt!]
 
-    activeListing: BigInt
+  activeListing: BigInt
 }
 
 type User @entity {
-    id: ID!
+  id: ID!
 
-    portalsBought: [Portal!]! @derivedFrom(field: "buyer")
+  portalsBought: [Portal!]! @derivedFrom(field: "buyer")
 
-    gotchisOwned: [Aavegotchi!]! @derivedFrom(field: "owner")
+  gotchisOwned: [Aavegotchi!]! @derivedFrom(field: "owner")
 
-    gotchisOriginalOwned: [Aavegotchi!]! @derivedFrom(field: "originalOwner")
+  gotchisOriginalOwned: [Aavegotchi!]! @derivedFrom(field: "originalOwner")
 
-    portalsOwned: [Portal!]! @derivedFrom(field: "owner")
+  portalsOwned: [Portal!]! @derivedFrom(field: "owner")
 
-    parcelsOwned: [Parcel!]! @derivedFrom(field: "owner")
+  parcelsOwned: [Parcel!]! @derivedFrom(field: "owner")
 
-    gotchisLentOut: [BigInt!]!
+  gotchisLentOut: [BigInt!]!
 
-    gotchisBorrowed: [BigInt!]!
+  gotchisBorrowed: [BigInt!]!
 
-    # borrowedGotchis: [GotchiLending!]! @derivedFrom(field: "borrower")
-    # lendGotchis: [GotchiLending!]! @derivedFrom(field: "originalOwner")
+  # borrowedGotchis: [GotchiLending!]! @derivedFrom(field: "borrower")
+  # lendGotchis: [GotchiLending!]! @derivedFrom(field: "originalOwner")
 
-    fakeGotchiCardBalances: [FakeGotchiCardBalance!]! @derivedFrom(field: "account")
-    fakeGotchiNFTTokens: [FakeGotchiNFTToken!]! @derivedFrom(field: "owner")
+  fakeGotchiCardBalances: [FakeGotchiCardBalance!]!
+    @derivedFrom(field: "account")
+  fakeGotchiNFTTokens: [FakeGotchiNFTToken!]! @derivedFrom(field: "owner")
 
-    fakeGotchis: String! # from array
-    amountFakeGotchis: Int!
+  fakeGotchis: String! # from array
+  amountFakeGotchis: Int!
 
-    currentUniqueFakeGotchisOwned: Int!
-    totalUniqueFakeGotchisOwned: Int!
+  currentUniqueFakeGotchisOwned: Int!
+  totalUniqueFakeGotchisOwned: Int!
 
-    currentUniqueFakeGotchisOwnedArray: String! # from array
-    totalUniqueFakeGotchisOwnedArray: String! # from array
-    totalFakeGotchisOwnedArray: String! # from array
+  currentUniqueFakeGotchisOwnedArray: String! # from array
+  totalUniqueFakeGotchisOwnedArray: String! # from array
+  totalFakeGotchisOwnedArray: String! # from array
 }
 
 type ERC721Listing @entity {
-    id: ID!
-    category: BigInt! # 0 = Closed Portal, 1 = VRF Pending, 2 = Open Portal, 3 = Aavegotchi
-    erc721TokenAddress: Bytes! # The token address of the NFT
-    tokenId: BigInt! # The token ID of the NFT
-    seller: Bytes! # The creator of the listing
-    buyer: Bytes
-    recipient: Bytes
-    timeCreated: BigInt! # Time at which listed was created
-    timePurchased: BigInt # Time when the listing was purchased
-    cancelled: Boolean # If the listing is cancelled
-    priceInWei: BigInt! # How much the listing is (in GHST)
-    gotchi: Aavegotchi # If the listing is for a gotchi, this will be populated
-    portal: Portal # If the listing is for a portal, this will be populated
-    parcel: Parcel # if the listing is for a parcel, this will be populated
-    hauntId: BigInt
-    kinship: BigInt
-    experience: BigInt
-    collateral: Bytes
-    baseRarityScore: BigInt
-    modifiedRarityScore: BigInt
-    equippedWearables: [Int!]
-    blockCreated: BigInt!
+  id: ID!
+  category: BigInt! # 0 = Closed Portal, 1 = VRF Pending, 2 = Open Portal, 3 = Aavegotchi
+  erc721TokenAddress: Bytes! # The token address of the NFT
+  tokenId: BigInt! # The token ID of the NFT
+  seller: Bytes! # The creator of the listing
+  buyer: Bytes
+  recipient: Bytes
+  timeCreated: BigInt! # Time at which listed was created
+  timePurchased: BigInt # Time when the listing was purchased
+  cancelled: Boolean # If the listing is cancelled
+  priceInWei: BigInt! # How much the listing is (in GHST)
+  gotchi: Aavegotchi # If the listing is for a gotchi, this will be populated
+  portal: Portal # If the listing is for a portal, this will be populated
+  parcel: Parcel # if the listing is for a parcel, this will be populated
+  hauntId: BigInt
+  kinship: BigInt
+  experience: BigInt
+  collateral: Bytes
+  baseRarityScore: BigInt
+  modifiedRarityScore: BigInt
+  equippedWearables: [Int!]
+  blockCreated: BigInt!
 
-    fudBoost: BigInt # boost of parcels
-    fomoBoost: BigInt # boost of parcels
-    alphaBoost: BigInt # boost of parcels
-    kekBoost: BigInt # boost of parcels
-    district: BigInt # district of parcel
-    coordinateX: BigInt # coordinate x of parcel
-    coordinateY: BigInt # coordinate y of parcel
-    size: BigInt # size of parcel
-    parcelHash: String # address/hash of parcel
-    nameLowerCase: String
-    amountEquippedWearables: Int
-    soldBefore: Boolean
-    claimedAt: BigInt
+  fudBoost: BigInt # boost of parcels
+  fomoBoost: BigInt # boost of parcels
+  alphaBoost: BigInt # boost of parcels
+  kekBoost: BigInt # boost of parcels
+  district: BigInt # district of parcel
+  coordinateX: BigInt # coordinate x of parcel
+  coordinateY: BigInt # coordinate y of parcel
+  size: BigInt # size of parcel
+  parcelHash: String # address/hash of parcel
+  nameLowerCase: String
+  amountEquippedWearables: Int
+  soldBefore: Boolean
+  claimedAt: BigInt
 
-    # Traits of Gotchi
-    nrgTrait: BigInt
-    aggTrait: BigInt
-    spkTrait: BigInt
-    brnTrait: BigInt
-    eysTrait: BigInt
-    eycTrait: BigInt
+  # Traits of Gotchi
+  nrgTrait: BigInt
+  aggTrait: BigInt
+  spkTrait: BigInt
+  brnTrait: BigInt
+  eysTrait: BigInt
+  eycTrait: BigInt
 
-    whitelist: Whitelist
-    priceUpdatedAt: BigInt
+  whitelist: Whitelist
+  priceUpdatedAt: BigInt
 
-    fakeGotchi_name: String
-    fakeGotchi_publisher: User
-    fakeGotchi_publisherName: String
-    fakeGotchi_description: String
-    fakeGotchi_artist: User
-    fakeGotchi_artistName: String
-    fakeGotchi_editions: Int
+  fakeGotchi_name: String
+  fakeGotchi_publisher: User
+  fakeGotchi_publisherName: String
+  fakeGotchi_description: String
+  fakeGotchi_artist: User
+  fakeGotchi_artistName: String
+  fakeGotchi_editions: Int
 }
 
 type ERC1155Listing @entity {
-    id: ID!
-    category: BigInt! # 0 = Wearable, #1 = Badge, #2 = Consumable, #3 = Ticket
-    erc1155TokenAddress: Bytes!
-    erc1155TypeId: BigInt!
-    seller: Bytes!
-    priceInWei: BigInt!
-    quantity: BigInt!
-    cancelled: Boolean!
-    timeCreated: BigInt! # Time at which listed was created
-    timeLastPurchased: BigInt! # Time when the listing was purchased
-    sold: Boolean!
-    rarityLevel: BigInt
+  id: ID!
+  category: BigInt! # 0 = Wearable, #1 = Badge, #2 = Consumable, #3 = Ticket
+  erc1155TokenAddress: Bytes!
+  erc1155TypeId: BigInt!
+  seller: Bytes!
+  priceInWei: BigInt!
+  quantity: BigInt!
+  cancelled: Boolean!
+  timeCreated: BigInt! # Time at which listed was created
+  timeLastPurchased: BigInt! # Time when the listing was purchased
+  sold: Boolean!
+  rarityLevel: BigInt
 
-    rarityScoreModifier: BigInt
-    nrgTraitModifier: BigInt
-    aggTraitModifier: BigInt
-    spkTraitModifier: BigInt
-    brnTraitModifier: BigInt
-    eysTraitModifier: BigInt
-    eycTraitModifier: BigInt
+  rarityScoreModifier: BigInt
+  nrgTraitModifier: BigInt
+  aggTraitModifier: BigInt
+  spkTraitModifier: BigInt
+  brnTraitModifier: BigInt
+  eysTraitModifier: BigInt
+  eycTraitModifier: BigInt
 
-    whitelist: Whitelist
-    priceUpdatedAt: BigInt
+  whitelist: Whitelist
+  priceUpdatedAt: BigInt
 }
 
 type ERC1155Purchase @entity {
-    id: ID!
-    listingID: BigInt!
-    category: BigInt! # 0 = Wearable, #1 = Badge, #2 = Consumable, #3 = Ticket
-    erc1155TokenAddress: Bytes!
-    erc1155TypeId: BigInt!
-    seller: Bytes!
-    buyer: Bytes!
-    recipient: Bytes
-    priceInWei: BigInt!
-    quantity: BigInt!
-    #cancelled: Boolean!
-    # timeCreated: BigInt! # Time at which listed was created
-    timeLastPurchased: BigInt! # Time when the listing was purchased
-    #sold: Boolean!
-    rarityLevel: BigInt
+  id: ID!
+  listingID: BigInt!
+  category: BigInt! # 0 = Wearable, #1 = Badge, #2 = Consumable, #3 = Ticket
+  erc1155TokenAddress: Bytes!
+  erc1155TypeId: BigInt!
+  seller: Bytes!
+  buyer: Bytes!
+  recipient: Bytes
+  priceInWei: BigInt!
+  quantity: BigInt!
+  #cancelled: Boolean!
+  # timeCreated: BigInt! # Time at which listed was created
+  timeLastPurchased: BigInt! # Time when the listing was purchased
+  #sold: Boolean!
+  rarityLevel: BigInt
 }
 
 type Statistic @entity {
-    "There will be a single Statistic entity with id = '0'"
-    id: ID!
+  "There will be a single Statistic entity with id = '0'"
+  id: ID!
 
-    "Total amount of portals that have been bought."
-    portalsBought: BigInt!
+  "Total amount of portals that have been bought."
+  portalsBought: BigInt!
 
-    "Total amount of portals that have been opened"
-    portalsOpened: BigInt!
+  "Total amount of portals that have been opened"
+  portalsOpened: BigInt!
 
-    "Total amount of Aavegotchis claimed"
-    aavegotchisClaimed: BigInt!
+  "Total amount of Aavegotchis claimed"
+  aavegotchisClaimed: BigInt!
 
-    "Total amount of Aavegotchis sacrificed"
-    aavegotchisSacrificed: BigInt!
+  "Total amount of Aavegotchis sacrificed"
+  aavegotchisSacrificed: BigInt!
 
-    "Total amount of Aavegotchis borrowed"
-    aavegotchisBorrowed: BigInt!
+  "Total amount of Aavegotchis borrowed"
+  aavegotchisBorrowed: BigInt!
 
-    erc721ActiveListingCount: BigInt! #Total # of active ERC721 Listings
-    erc1155ActiveListingCount: BigInt! #Total # of active ERC1155 Listings
-    erc721TotalVolume: BigInt! #Total traded volume in GHST
-    erc1155TotalVolume: BigInt! #Total traded volume in GHST
-    #new
-    totalWearablesVolume: BigInt!
-    totalConsumablesVolume: BigInt!
-    totalTicketsVolume: BigInt!
+  erc721ActiveListingCount: BigInt! #Total # of active ERC721 Listings
+  erc1155ActiveListingCount: BigInt! #Total # of active ERC1155 Listings
+  erc721TotalVolume: BigInt! #Total traded volume in GHST
+  erc1155TotalVolume: BigInt! #Total traded volume in GHST
+  #new
+  totalWearablesVolume: BigInt!
+  totalConsumablesVolume: BigInt!
+  totalTicketsVolume: BigInt!
 
-    totalFakeGotchiOwners: Int
-    totalFakeGotchiOwnersArray: [Bytes!]!
+  totalFakeGotchiOwners: Int
+  totalFakeGotchiOwnersArray: [Bytes!]!
 
-    totalFakeGotchiPieces: Int
-    totalNFTs: Int
-    totalNFTsArray: String!
+  totalFakeGotchiPieces: Int
+  totalNFTs: Int
+  totalNFTsArray: String!
 
-    burnedNFTs: Int
-    burnedCards: Int
+  burnedNFTs: Int
+  burnedCards: Int
 
-    tokenIdCounter: Int
+  tokenIdCounter: Int
 
-    totalEditionsMinted: Int!
-    totalEditionsCirculating: Int!
+  totalEditionsMinted: Int!
+  totalEditionsCirculating: Int!
 
-    totalEditionsCirculatingArray: String!
+  totalEditionsCirculatingArray: String!
 }
 
 type ItemType @entity {
-    id: ID!
-    svgId: BigInt!
-    name: String!
-    desc: String
-    author: String
-    traitModifiers: [Int!]
-    slotPositions: [Boolean!]
-    ghstPrice: BigInt!
-    maxQuantity: BigInt!
-    totalQuantity: BigInt!
-    rarityScoreModifier: Int!
-    canPurchaseWithGhst: Boolean!
-    minLevel: Int
-    canBeTransferred: Boolean!
-    category: Int!
-    kinshipBonus: Int
-    experienceBonus: BigInt
-    consumed: BigInt!
+  id: ID!
+  svgId: BigInt!
+  name: String!
+  desc: String
+  author: String
+  traitModifiers: [Int!]
+  slotPositions: [Boolean!]
+  ghstPrice: BigInt!
+  maxQuantity: BigInt!
+  totalQuantity: BigInt!
+  rarityScoreModifier: Int!
+  canPurchaseWithGhst: Boolean!
+  minLevel: Int
+  canBeTransferred: Boolean!
+  category: Int!
+  kinshipBonus: Int
+  experienceBonus: BigInt
+  consumed: BigInt!
 }
 
 type WearableSet @entity {
-    id: ID!
-    name: String!
-    allowedCollaterals: [Int!]
-    wearableIds: [Int!]
-    traitBonuses: [Int!]
+  id: ID!
+  name: String!
+  allowedCollaterals: [Int!]
+  wearableIds: [Int!]
+  traitBonuses: [Int!]
 }
 
 type Parcel @entity {
-    id: ID!
-    tokenId: BigInt!
-    parcelId: String!
-    owner: User!
-    coordinateX: BigInt!
-    coordinateY: BigInt!
-    district: BigInt!
-    parcelHash: String!
+  id: ID!
+  tokenId: BigInt!
+  parcelId: String!
+  owner: User!
+  coordinateX: BigInt!
+  coordinateY: BigInt!
+  district: BigInt!
+  parcelHash: String!
 
-    fudBoost: BigInt!
-    fomoBoost: BigInt!
-    alphaBoost: BigInt!
-    kekBoost: BigInt!
+  fudBoost: BigInt!
+  fomoBoost: BigInt!
+  alphaBoost: BigInt!
+  kekBoost: BigInt!
 
-    size: BigInt!
+  size: BigInt!
 
-    auctionId: String
-    timesTraded: BigInt!
-    historicalPrices: [BigInt!]
-    activeListing: BigInt
+  auctionId: String
+  timesTraded: BigInt!
+  historicalPrices: [BigInt!]
+  activeListing: BigInt
 }
 
 ### lending
 type GotchiLending @entity {
-    id: ID!
-    rentDuration: BigInt!
-    upfrontCost: BigInt!
-    period: BigInt!
+  id: ID!
+  rentDuration: BigInt!
+  upfrontCost: BigInt!
+  period: BigInt!
 
-    gotchi: Aavegotchi!
+  gotchi: Aavegotchi!
 
-    # gotch filter attributes
-    gotchiBRS: BigInt
-    gotchiTokenId: BigInt!
-    gotchiKinship: BigInt
+  # gotch filter attributes
+  gotchiBRS: BigInt
+  gotchiTokenId: BigInt!
+  gotchiKinship: BigInt
 
-    # profit split
-    splitOwner: BigInt
-    splitBorrower: BigInt
-    splitOther: BigInt
+  # profit split
+  splitOwner: BigInt
+  splitBorrower: BigInt
+  splitOther: BigInt
 
-    # tokens to share
-    tokensToShare: [Bytes!]!
+  # tokens to share
+  tokensToShare: [Bytes!]!
 
-    whitelist: Whitelist
-    whitelistMembers: [Bytes!]!
-    whitelistId: BigInt
-    thirdPartyAddress: Bytes
+  whitelist: Whitelist
+  whitelistMembers: [Bytes!]!
+  whitelistId: BigInt
+  thirdPartyAddress: Bytes
 
-    borrower: Bytes
-    lender: Bytes
-    originalOwner: Bytes
+  borrower: Bytes
+  lender: Bytes
+  originalOwner: Bytes
 
-    cancelled: Boolean!
-    completed: Boolean!
-    lastClaimed: BigInt
+  cancelled: Boolean!
+  completed: Boolean!
+  lastClaimed: BigInt
 
-    timeAgreed: BigInt
-    timeCreated: BigInt
-    timeEnded: BigInt
+  timeAgreed: BigInt
+  timeCreated: BigInt
+  timeEnded: BigInt
 
-    claimed: [ClaimedToken!]! @derivedFrom(field: "lending")
+  claimed: [ClaimedToken!]! @derivedFrom(field: "lending")
 
-    channellingAllowed: Boolean!
+  channellingAllowed: Boolean!
 }
 
 type ClaimedToken @entity {
-    id: ID!
-    lending: GotchiLending!
-    token: Bytes!
-    amount: BigInt!
+  id: ID!
+  lending: GotchiLending!
+  token: Bytes!
+  amount: BigInt!
 }
 
 type Whitelist @entity {
-    id: ID!
-    name: String!
-    members: [Bytes!]!
-    owner: User!
-    ownerAddress: Bytes!
+  id: ID!
+  name: String!
+  members: [Bytes!]!
+  owner: User!
+  ownerAddress: Bytes!
 
-    "Access Right for max borrowed Gotchis, default 1"
-    maxBorrowLimit: Int
+  "Access Right for max borrowed Gotchis, default 1"
+  maxBorrowLimit: Int
 }
 
 #type Upgrade @entity {
@@ -437,19 +450,19 @@ type Whitelist @entity {
 #}
 ## buy order
 type ERC721BuyOrder @entity {
-    id: ID!
-    buyer: Bytes!
-    seller: Bytes
-    erc721TokenAddress: Bytes!
-    erc721TokenId: BigInt!
-    category: BigInt!
-    priceInWei: BigInt!
-    duration: BigInt!
-    validationHash: Bytes!
-    createdAt: BigInt!
-    executedAt: BigInt
-    canceledAt: BigInt
-    canceled: Boolean
+  id: ID!
+  buyer: Bytes!
+  seller: Bytes
+  erc721TokenAddress: Bytes!
+  erc721TokenId: BigInt!
+  category: BigInt!
+  priceInWei: BigInt!
+  duration: BigInt!
+  validationHash: Bytes!
+  createdAt: BigInt!
+  executedAt: BigInt
+  canceledAt: BigInt
+  canceled: Boolean
 }
 
 type ERC1155BuyOrder @entity {
@@ -472,92 +485,92 @@ type ERC1155BuyOrder @entity {
 
 # Cards
 type FakeGotchiCardBalance @entity {
-    id: ID!
-    contract: Bytes!
-    token: BigInt!
-    account: User
-    value: BigDecimal!
-    valueExact: BigInt!
+  id: ID!
+  contract: Bytes!
+  token: BigInt!
+  account: User
+  value: BigDecimal!
+  valueExact: BigInt!
 }
 
 # NFT 721
 type FakeGotchiNFTToken @entity {
-    id: ID!
-    contract: Bytes!
-    identifier: BigInt!
-    owner: User!
-    approval: User!
-    uri: String
-    metadata: MetadataActionLog
+  id: ID!
+  contract: Bytes!
+  identifier: BigInt!
+  owner: User!
+  approval: User!
+  uri: String
+  metadata: MetadataActionLog
 
-    fileHash: String
-    name: String
-    publisher: User
-    publisherName: String
-    externalLink: String
-    description: String
-    artist: User
-    artistName: String
-    editions: Int
-    thumbnailHash: String
-    thumbnailType: String
+  fileHash: String
+  name: String
+  publisher: User
+  publisherName: String
+  externalLink: String
+  description: String
+  artist: User
+  artistName: String
+  editions: Int
+  thumbnailHash: String
+  thumbnailType: String
 }
 
 type MetadataActionLog @entity {
-    id: ID!
-    emitter: User!
-    timestamp: BigInt!
-    sender: User
-    minted: Boolean
-    fileHash: String
-    name: String
-    publisher: User
-    publisherName: String
-    externalLink: String
-    description: String
-    artist: User
-    artistName: String
-    royalty: [Int!]
-    createdAt: BigInt
-    editions: Int
-    fileType: String
-    thumbnailHash: String
-    thumbnailType: String
-    flagCount: Int
-    likeCount: Int
-    status: Int
+  id: ID!
+  emitter: User!
+  timestamp: BigInt!
+  sender: User
+  minted: Boolean
+  fileHash: String
+  name: String
+  publisher: User
+  publisherName: String
+  externalLink: String
+  description: String
+  artist: User
+  artistName: String
+  royalty: [Int!]
+  createdAt: BigInt
+  editions: Int
+  fileType: String
+  thumbnailHash: String
+  thumbnailType: String
+  flagCount: Int
+  likeCount: Int
+  status: Int
 }
 
 type Generation @entity {
-    "a generation is a series"
-    id: ID!
-    amount: Int
+  "a generation is a series"
+  id: ID!
+  amount: Int
 }
 
 type FakeGotchiStatistic @entity {
-    id: ID!
-    metadata: MetadataActionLog
-    holders: [FakeGotchiHolder!]! @derivedFrom(field: "fakeGotchiStats")
-    burned: Int
-    amountHolder: Int
-    totalSupply: Int
-    tokenIds: [BigInt!]!
+  id: ID!
+  metadata: MetadataActionLog
+  holders: [FakeGotchiHolder!]! @derivedFrom(field: "fakeGotchiStats")
+  burned: Int
+  amountHolder: Int
+  totalSupply: Int
+  tokenIds: [BigInt!]!
 }
 
 type FakeGotchiHolder @entity {
-    id: ID!
-    fakeGotchiStats: FakeGotchiStatistic
-    holder: User
-    amount: Int
+  id: ID!
+  fakeGotchiStats: FakeGotchiStatistic
+  holder: User
+  amount: Int
 }
 
 type FakeGotchiNFTTransfer @entity {
-    id: ID!
-    transaction: Bytes!
-    timestamp: BigInt!
-    token: FakeGotchiNFTToken!
-    from: User!
-    to: User!
+  id: ID!
+  transaction: Bytes!
+  timestamp: BigInt!
+  token: FakeGotchiNFTToken!
+  from: User!
+  to: User!
 }
 
 # ItemsRolesRegistry

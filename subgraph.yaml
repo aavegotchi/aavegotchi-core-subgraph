@@ -7,311 +7,246 @@ specVersion: 0.0.4
 description: Aavegotchi Core Matic
 repository:
 schema:
-    file: ./schema.graphql
+  file: ./schema.graphql
 dataSources:
-    - kind: ethereum/contract
-      name: AavegotchiDiamond
-      network: matic
-      source:
-          address: "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
-          abi: AavegotchiDiamond
-          startBlock: 11500000
-      mapping:
-          kind: ethereum/events
-          apiVersion: 0.0.6
-          language: wasm/assemblyscript
-          file: ./src/mappings/diamond.ts
-          entities:
-              - User
-          abis:
-              - name: AavegotchiDiamond
-                file: ./abis/AavegotchiDiamond.json
-              - name: RealmDiamond
-                file: ./abis/RealmDiamond.json
-          eventHandlers:
-              - event: BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
-                handler: handleBuyPortals
-              - event: Xingyun(indexed address,indexed address,uint256,uint256,uint256)
-                handler: handleXingyun
-              - event: PortalOpened(indexed uint256)
-                handler: handlePortalOpened
-              - event: ClaimAavegotchi(indexed uint256)
-                handler: handleClaimAavegotchi
-              - event: IncreaseStake(indexed uint256,uint256)
-                handler: handleIncreaseStake
-              - event: DecreaseStake(indexed uint256,uint256)
-                handler: handleDecreaseStake
-              - event: SpendSkillpoints(indexed uint256,int16[4])
-                handler: handleSpendSkillpoints
-              - event: ResetSkillpoints(indexed uint256)
-                handler: handleResetSkillpoints
-              - event: EquipWearables(indexed uint256,uint16[16],uint16[16])
-                handler: handleEquipWearables
-              - event: EquipDelegatedWearables(indexed uint256,uint256[16],uint256[16])
-                handler: handleEquipDelegatedWearables
-              - event: SetAavegotchiName(indexed uint256,string,string)
-                handler: handleSetAavegotchiName
-              - event: UseConsumables(indexed uint256,uint256[],uint256[])
-                handler: handleUseConsumables
-              - event: GrantExperience(uint256[],uint256[])
-                handler: handleGrantExperience
-              - event: AavegotchiInteract(indexed uint256,uint256)
-                handler: handleAavegotchiInteract
-              - event: Transfer(indexed address,indexed address,indexed uint256)
-                handler: handleTransfer
-              - event: ERC721ListingAdd(indexed uint256,indexed address,address,uint256,indexed uint256,uint256)
-                handler: handleERC721ListingAdd
-              - event: ERC721ExecutedListing(indexed uint256,indexed address,address,address,uint256,indexed uint256,uint256,uint256)
-                handler: handleERC721ExecutedListing
-              - event: ERC721ListingCancelled(indexed uint256,uint256,uint256)
-                handler: handleERC721ListingCancelled
-              - event: ERC721ListingRemoved(indexed uint256,uint256,uint256)
-                handler: handleERC721ListingRemoved
-              - event: ERC1155ListingAdd(indexed uint256,indexed address,address,uint256,indexed uint256,uint256,uint256,uint256)
-                handler: handleERC1155ListingAdd
-              - event: ERC1155ExecutedListing(indexed uint256,indexed address,address,address,uint256,indexed uint256,uint256,uint256,uint256)
-                handler: handleERC1155ExecutedListing
-              - event: ERC1155ListingCancelled(indexed uint256,uint256,uint256)
-                handler: handleERC1155ListingCancelled
-              - event: ERC1155ListingRemoved(indexed uint256,uint256,uint256)
-                handler: handleERC1155ListingRemoved
-              - event: UpdateERC1155Listing(indexed uint256,uint256,uint256,uint256)
-                handler: handleERC1155ListingUpdated
-              - event: AddItemType((string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))
-                handler: handleAddItemType
-              - event: AddWearableSet((string,uint8[],uint16[],int8[5]))
-                handler: handleAddWearableSet
-              - event: PurchaseItemsWithGhst(indexed address,indexed address,uint256[],uint256[],uint256)
-                handler: handlePurchaseItemsWithGhst
-              - event: PurchaseItemsWithVouchers(indexed address,indexed address,uint256[],uint256[])
-                handler: handlePurchaseItemsWithVouchers
-              - event: MigrateVouchers(indexed address,uint256[],uint256[])
-                handler: handleMigrateVouchers
-              - event: UpdateWearableSet(uint256,(string,uint8[],uint16[],int8[5]))
-                handler: handleUpdateWearableSet
-              - event: ItemTypeMaxQuantity(uint256[],uint256[])
-                handler: handleItemTypeMaxQuantity
-              - event: ExperienceTransfer(indexed uint256,indexed uint256,uint256)
-                handler: handleExperienceTransfer
-              - event: ItemModifiersSet(uint256,int8[6],uint8)
-                handler: handleItemModifiersSet
-              - event: WearableSlotPositionsSet(uint256,bool[16])
-                handler: handleWearableSlotPositionsSet
-              - event: MintPortals(indexed address,indexed address,uint256,uint256,uint256)
-                handler: handleMintPortals
-              - event: RemoveExperience(uint256[],uint256[])
-                handler: handleRemoveExperience
-              - event: UpdateItemPrice(uint256,uint256)
-                handler: handleUpdateItemPrice
-              - event: WhitelistCreated(indexed uint32)
-                handler: handleWhitelistCreated
-              - event: WhitelistUpdated(indexed uint32)
-                handler: handleWhitelistUpdated
-              - event: WhitelistOwnershipTransferred(indexed uint32,indexed address)
-                handler: handleWhitelistOwnershipTransferred
-              # - event: GotchiLendingAdd(indexed uint32)
-              #   handler: handleGotchiLendingAdd
-              # - event: GotchiLendingClaim(indexed uint32,address[],uint256[])
-              #   handler: handleGotchiLendingClaim
-              # - event: GotchiLendingEnd(indexed uint32)
-              #   handler: handleGotchiLendingEnd
-              # - event: GotchiLendingExecute(indexed uint32)
-              #   handler: handleGotchiLendingExecute
-              - event: GotchiLendingCancel(indexed uint32,uint256)
-                handler: handleGotchiLendingCancel
-              - event: ERC1155ExecutedToRecipient(indexed uint256,indexed address,indexed address)
-                handler: handleERC1155ExecutedToRecipient
-              - event: ERC721ExecutedToRecipient(indexed uint256,indexed address,indexed address)
-                handler: handleERC721ExecutedToRecipient
-              - event: GotchiLendingAdded(indexed uint32,indexed address,indexed uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
-                handler: handleGotchiLendingAdded
-              - event: GotchiLendingClaimed(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256[],uint256)
-                handler: handleGotchiLendingClaimed
-              - event: GotchiLendingEnded(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
-                handler: handleGotchiLendingEnded
-              - event: GotchiLendingExecuted(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
-                handler: handleGotchiLendingExecuted
-              - event: GotchiLendingCanceled(indexed uint32,indexed address,indexed uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
-                handler: handleGotchiLendingCanceled
-              - event: WhitelistAccessRightSet(indexed uint32,indexed uint256,indexed uint256)
-                handler: handleWhitelistAccessRightSet
-              - event: UpdateItemType(indexed uint256,(string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))
-                handler: handleUpdateItemType
-              - event: ERC721ListingWhitelistSet(indexed uint256,uint32)
-                handler: handleERC721ListingWhitelistSet
-              - event: ERC721ListingPriceUpdate(indexed uint256,uint256,uint256)
-                handler: handleERC721ListingPriceUpdate
-              - event: ERC1155ListingWhitelistSet(indexed uint256,uint32)
-                handler: handleERC1155ListingWhitelistSet
-              - event: ERC1155ListingPriceUpdate(indexed uint256,uint256,uint256)
-                handler: handleERC1155ListingPriceUpdate
-              - event: GotchiLendingAdded((uint32,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256,uint256))
-                handler: handleGotchiLendingAdded2
-              - event: GotchiLendingExecuted((uint32,address,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256,uint256))
-                handler: handleGotchiLendingExecuted2
-              - event: GotchiLendingCancelled((uint32,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256,uint256))
-                handler: handleGotchiLendingCancelled2
-              - event: GotchiLendingClaimed((uint32,address,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256[],uint256,uint256))
-                handler: handleGotchiLendingClaimed2
-              - event: GotchiLendingEnded((uint32,address,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256,uint256))
-                handler: handleGotchiLendingEnded2
-              - event: ERC721BuyOrderAdded(indexed uint256,indexed address,address,uint256,indexed uint256,uint256,uint256,bytes32,uint256)
-                handler: handleERC721BuyOrderAdded
-              - event: ERC721BuyOrderExecuted(indexed uint256,indexed address,address,address,uint256,uint256,uint256)
-                handler: handleERC721BuyOrderExecuted
-              - event: ERC721BuyOrderCanceled(indexed uint256,uint256)
-                handler: handleERC721BuyOrderCanceled
-              - event: RoleGranted(indexed uint256,indexed bytes32,indexed address,uint64,bool,bytes)
-                handler: handleRoleGranted
-              - event: RoleRevoked(indexed uint256,indexed bytes32,indexed address)
-                handler: handleRoleRevoked
-              - event: TokensCommitted(indexed address,indexed uint256,indexed address,uint256,uint256)
-                handler: handleTokensCommitted
-              - event: TokensReleased(indexed uint256)
-                handler: handleTokensReleased
-              - event: ERC1155BuyOrderAdd(indexed uint256,indexed address,address,uint256,indexed uint256,uint256,uint256,uint256,uint256)
-                handler: handleERC1155BuyOrderAdd
-              - event: ERC1155BuyOrderExecute(indexed uint256,indexed address,address,address,uint256,indexed uint256,uint256,uint256,uint256)
-                handler: handleERC1155BuyOrderExecute
-              - event: ERC1155BuyOrderCancel(indexed uint256,uint256)
-                handler: handleERC1155BuyOrderCancel
-              # - event: DiamondCut((address,uint8,bytes4[])[],address,bytes)
-              #   handler: handleDiamondCut
-    # - AavegotchiInteract(indexed uint256,uint256)
-    # - AddCollateralType((address,(int16[6],bytes3,bytes3,bytes3,uint8,uint8,uint16,bool)))
-    # - AddItemType((string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))
-    # - AddedAavegotchiBatch(indexed address,uint256[])
-    # - AddedItemsBatch(indexed address,uint256[],uint256[])
-    # - Approval(indexed address,indexed address,indexed uint256)
-    # - ApprovalForAll(indexed address,indexed address,bool)
-    # - ApprovalForAll(indexed address,indexed address,bool)
-    # - BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
-    # - ChangedListingFee(uint256)
-    # - ClaimAavegotchi(indexed uint256)
-    # - CreateHaunt(indexed uint256,uint256,uint256,bytes32)
-    # - DaoTransferred(indexed address,indexed address)
-    # - DaoTreasuryTransferred(indexed address,indexed address)
-    # - DecreaseStake(indexed uint256,uint256)
-    # - ERC1155ExecutedListing(indexed uint256,indexed address,address,address,uint256,indexed uint256,uint256,uint256,uint256)
-    # - ERC1155ListingAdd(indexed uint256,indexed address,address,uint256,indexed uint256,uint256,uint256,uint256)
-    # - ERC1155ListingCancelled(indexed uint256)
-    # - ERC1155ListingCancelled(indexed uint256,uint256,uint256)
-    # - ERC1155ListingRemoved(indexed uint256,uint256,uint256)
-    # - ERC721ExecutedListing(indexed uint256,indexed address,address,address,uint256,indexed uint256,uint256,uint256)
-    # - ERC721ListingAdd(indexed uint256,indexed address,address,uint256,indexed uint256,uint256)
-    # - ERC721ListingCancelled(indexed uint256,uint256,uint256)
-    # - ERC721ListingRemoved(indexed uint256,uint256,uint256)
-    # - EquipWearables(indexed uint256,uint16[16],uint16[16])
-    # - GameManagerTransferred(indexed address,indexed address)
-    # - GrantExperience(uint256[],uint256[])
-    # - IncreaseStake(indexed uint256,uint256)
-    # - ItemTypeMaxQuantity(uint256[],uint256[])
-    # - LockAavegotchi(indexed uint256,uint256)
-    # - MetaTransactionExecuted(address,address,bytes)
-    # - MigrateVouchers(indexed address,uint256[],uint256[])
-    # - OpenPortals(uint256[])
-    # - OwnershipTransferred(indexed address,indexed address)
-    # - PortalOpened(indexed uint256)
-    # - PurchaseItemsWithGhst(indexed address,indexed address,uint256[],uint256[],uint256)
-    # - PurchaseItemsWithVouchers(indexed address,indexed address,uint256[],uint256[])
-    # - SetAavegotchiName(indexed uint256,string,string)
-    # - SetBatchId(indexed uint256,uint256[])
-    # - SpendSkillpoints(indexed uint256,int16[4])
-    # - StoreSvg((bytes32,uint256[])[])
-    # - Transfer(indexed address,indexed address,indexed uint256)
-    # - TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
-    # - TransferFromParent(indexed address,indexed uint256,indexed uint256,uint256)
-    # - TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
-    # - TransferToParent(indexed address,indexed uint256,indexed uint256,uint256)
-    # - TransferToParent(indexed address,indexed uint256,indexed uint256,uint256)
-    # - URI(string,indexed uint256)
-    # - UnLockAavegotchi(indexed uint256,uint256)
-    # - UpdateCollateralModifiers(int16[6],int16[6])
-    # - UpdateERC1155Listing(indexed uint256,uint256,uint256,uint256)
-    # - UseConsumables(indexed uint256,uint256[],uint256[])
-    # - VrfRandomNumber(indexed uint256,uint256,uint256)
-    # - WithdrawnBatch(indexed address,uint256[])
-    # - WithdrawnItems(indexed address,uint256[],uint256[])
-    # - Xingyun(indexed address,indexed address,uint256,uint256,uint256)
-    # -
-    - kind: ethereum/contract
-      name: RealmDiamond
-      network: matic
-      source:
-          address: "0x1D0360BaC7299C86Ec8E99d0c1C9A95FEfaF2a11"
-          abi: RealmDiamond
-          startBlock: 20667840
-      mapping:
-          kind: ethereum/events
-          apiVersion: 0.0.6
-          language: wasm/assemblyscript
-          entities:
-              - MintParcel
-              - Transfer
-          abis:
-              - name: RealmDiamond
-                file: ./abis/RealmDiamond.json
-          eventHandlers:
-              - event: MintParcel(indexed address,indexed uint256)
-                handler: handleMintParcel
-              - event: Transfer(indexed address,indexed address,indexed uint256)
-                handler: handleTransferParcel
-              - event: ResyncParcel(uint256)
-                handler: handleResyncParcel
-              - event: KinshipBurned(uint256,uint256)
-                handler: handleKinshipBurned
-          file: ./src/mappings/diamond.ts
-    - kind: ethereum/contract
-      name: FAKEGotchisCardDiamond
-      network: matic
-      source:
-          address: "0x9f6BcC63e86D44c46e85564E9383E650dc0b56D7"
-          abi: IERC1155
-          startBlock: 34520146
-      mapping:
-          kind: ethereum/events
-          apiVersion: 0.0.6
-          language: wasm/assemblyscript
-          entities:
-              - Card
-          abis:
-              - name: IERC721
-                file: ./abis/diamond_erc721.json
-              - name: IERC1155
-                file: ./abis/diamond_erc1155.json
-          eventHandlers:
-              - event: NewSeriesStarted(indexed uint256,indexed uint256)
-                handler: handleNewSeriesStarted
-              - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
-                handler: handleTransferSingle
-              - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
-                handler: handleTransferBatch
-          file: ./src/mappings/fakeGotchisCard.ts
-    - kind: ethereum/contract
-      name: FAKEGotchisNFTDiamond
-      network: matic
-      source:
-          address: "0xA4E3513c98b30d4D7cc578d2C328Bd550725D1D0"
-          abi: IERC721
-          startBlock: 34520176
-      mapping:
-          kind: ethereum/events
-          apiVersion: 0.0.6
-          language: wasm/assemblyscript
-          entities:
-              - NFT
-          abis:
-              - name: IERC721
-                file: ./abis/diamond_erc721.json
-              - name: IERC1155
-                file: ./abis/diamond_erc1155.json
-          eventHandlers:
-              - event: Transfer(indexed address,indexed address,indexed uint256)
-                handler: handleTransfer
-              - event: MetadataActionLog(indexed uint256,(address,uint16[2],uint16,uint32,uint32,address,uint40,uint8,bool,string,string,string,string,string,string,string,string,string))
-                handler: handleMetadataActionLog
-              - event: MetadataFlag(indexed uint256,address)
-                handler: handleMetadataFlag
-              - event: MetadataLike(indexed uint256,address)
-                handler: handleMetadataLike
-          file: ./src/mappings/fakeGotchisNFT.ts
+  - kind: ethereum/contract
+    name: AavegotchiDiamond
+    network: matic
+    source:
+      address: "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
+      abi: AavegotchiDiamond
+      startBlock: 11500000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/diamond.ts
+      entities:
+        - User
+      abis:
+        - name: AavegotchiDiamond
+          file: ./abis/AavegotchiDiamond.json
+        - name: RealmDiamond
+          file: ./abis/RealmDiamond.json
+      eventHandlers:
+        - event: BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleBuyPortals
+        - event: Xingyun(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleXingyun
+        - event: PortalOpened(indexed uint256)
+          handler: handlePortalOpened
+        - event: ClaimAavegotchi(indexed uint256)
+          handler: handleClaimAavegotchi
+        - event: IncreaseStake(indexed uint256,uint256)
+          handler: handleIncreaseStake
+        - event: DecreaseStake(indexed uint256,uint256)
+          handler: handleDecreaseStake
+        - event: SpendSkillpoints(indexed uint256,int16[4])
+          handler: handleSpendSkillpoints
+        - event: ResetSkillpoints(indexed uint256)
+          handler: handleResetSkillpoints
+        - event: EquipWearables(indexed uint256,uint16[16],uint16[16])
+          handler: handleEquipWearables
+        - event: EquipDelegatedWearables(indexed uint256,uint256[16],uint256[16])
+          handler: handleEquipDelegatedWearables
+        - event: SetAavegotchiName(indexed uint256,string,string)
+          handler: handleSetAavegotchiName
+        - event: UseConsumables(indexed uint256,uint256[],uint256[])
+          handler: handleUseConsumables
+        - event: GrantExperience(uint256[],uint256[])
+          handler: handleGrantExperience
+        - event: AavegotchiInteract(indexed uint256,uint256)
+          handler: handleAavegotchiInteract
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: ERC721ListingAdd(indexed uint256,indexed address,address,uint256,indexed uint256,uint256)
+          handler: handleERC721ListingAdd
+        - event: ERC721ExecutedListing(indexed uint256,indexed address,address,address,uint256,indexed uint256,uint256,uint256)
+          handler: handleERC721ExecutedListing
+        - event: ERC721ListingCancelled(indexed uint256,uint256,uint256)
+          handler: handleERC721ListingCancelled
+        - event: ERC721ListingRemoved(indexed uint256,uint256,uint256)
+          handler: handleERC721ListingRemoved
+        - event: ERC1155ListingAdd(indexed uint256,indexed address,address,uint256,indexed uint256,uint256,uint256,uint256)
+          handler: handleERC1155ListingAdd
+        - event: ERC1155ExecutedListing(indexed uint256,indexed address,address,address,uint256,indexed uint256,uint256,uint256,uint256)
+          handler: handleERC1155ExecutedListing
+        - event: ERC1155ListingCancelled(indexed uint256,uint256,uint256)
+          handler: handleERC1155ListingCancelled
+        - event: ERC1155ListingRemoved(indexed uint256,uint256,uint256)
+          handler: handleERC1155ListingRemoved
+        - event: UpdateERC1155Listing(indexed uint256,uint256,uint256,uint256)
+          handler: handleERC1155ListingUpdated
+        - event: AddItemType((string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))
+          handler: handleAddItemType
+        - event: AddWearableSet((string,uint8[],uint16[],int8[5]))
+          handler: handleAddWearableSet
+        - event: PurchaseItemsWithGhst(indexed address,indexed address,uint256[],uint256[],uint256)
+          handler: handlePurchaseItemsWithGhst
+        - event: PurchaseItemsWithVouchers(indexed address,indexed address,uint256[],uint256[])
+          handler: handlePurchaseItemsWithVouchers
+        - event: MigrateVouchers(indexed address,uint256[],uint256[])
+          handler: handleMigrateVouchers
+        - event: UpdateWearableSet(uint256,(string,uint8[],uint16[],int8[5]))
+          handler: handleUpdateWearableSet
+        - event: ItemTypeMaxQuantity(uint256[],uint256[])
+          handler: handleItemTypeMaxQuantity
+        - event: ExperienceTransfer(indexed uint256,indexed uint256,uint256)
+          handler: handleExperienceTransfer
+        - event: ItemModifiersSet(uint256,int8[6],uint8)
+          handler: handleItemModifiersSet
+        - event: WearableSlotPositionsSet(uint256,bool[16])
+          handler: handleWearableSlotPositionsSet
+        - event: MintPortals(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleMintPortals
+        - event: RemoveExperience(uint256[],uint256[])
+          handler: handleRemoveExperience
+        - event: UpdateItemPrice(uint256,uint256)
+          handler: handleUpdateItemPrice
+        - event: WhitelistCreated(indexed uint32)
+          handler: handleWhitelistCreated
+        - event: WhitelistUpdated(indexed uint32)
+          handler: handleWhitelistUpdated
+        - event: WhitelistOwnershipTransferred(indexed uint32,indexed address)
+          handler: handleWhitelistOwnershipTransferred
+
+        - event: GotchiLendingCancel(indexed uint32,uint256)
+          handler: handleGotchiLendingCancel
+        - event: ERC1155ExecutedToRecipient(indexed uint256,indexed address,indexed address)
+          handler: handleERC1155ExecutedToRecipient
+        - event: ERC721ExecutedToRecipient(indexed uint256,indexed address,indexed address)
+          handler: handleERC721ExecutedToRecipient
+        - event: GotchiLendingAdded(indexed uint32,indexed address,indexed uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
+          handler: handleGotchiLendingAdded
+        - event: GotchiLendingClaimed(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256[],uint256)
+          handler: handleGotchiLendingClaimed
+        - event: GotchiLendingEnded(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
+          handler: handleGotchiLendingEnded
+        - event: GotchiLendingExecuted(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
+          handler: handleGotchiLendingExecuted
+        - event: GotchiLendingCanceled(indexed uint32,indexed address,indexed uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
+          handler: handleGotchiLendingCanceled
+        - event: WhitelistAccessRightSet(indexed uint32,indexed uint256,indexed uint256)
+          handler: handleWhitelistAccessRightSet
+        - event: UpdateItemType(indexed uint256,(string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))
+          handler: handleUpdateItemType
+        - event: ERC721ListingWhitelistSet(indexed uint256,uint32)
+          handler: handleERC721ListingWhitelistSet
+        - event: ERC721ListingPriceUpdate(indexed uint256,uint256,uint256)
+          handler: handleERC721ListingPriceUpdate
+        - event: ERC1155ListingWhitelistSet(indexed uint256,uint32)
+          handler: handleERC1155ListingWhitelistSet
+        - event: ERC1155ListingPriceUpdate(indexed uint256,uint256,uint256)
+          handler: handleERC1155ListingPriceUpdate
+        - event: GotchiLendingAdded((uint32,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256,uint256))
+          handler: handleGotchiLendingAdded2
+        - event: GotchiLendingExecuted((uint32,address,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256,uint256))
+          handler: handleGotchiLendingExecuted2
+        - event: GotchiLendingCancelled((uint32,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256,uint256))
+          handler: handleGotchiLendingCancelled2
+        - event: GotchiLendingClaimed((uint32,address,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256[],uint256,uint256))
+          handler: handleGotchiLendingClaimed2
+        - event: GotchiLendingEnded((uint32,address,address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256,uint256))
+          handler: handleGotchiLendingEnded2
+        - event: ERC721BuyOrderAdded(indexed uint256,indexed address,address,uint256,indexed uint256,uint256,uint256,bytes32,uint256)
+          handler: handleERC721BuyOrderAdded
+        - event: ERC721BuyOrderExecuted(indexed uint256,indexed address,address,address,uint256,uint256,uint256)
+          handler: handleERC721BuyOrderExecuted
+        - event: ERC721BuyOrderCanceled(indexed uint256,uint256)
+          handler: handleERC721BuyOrderCanceled
+        - event: RoleGranted(indexed uint256,indexed bytes32,indexed address,uint64,bool,bytes)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed uint256,indexed bytes32,indexed address)
+          handler: handleRoleRevoked
+        - event: TokensCommitted(indexed address,indexed uint256,indexed address,uint256,uint256)
+          handler: handleTokensCommitted
+        - event: TokensReleased(indexed uint256)
+          handler: handleTokensReleased
+        - event: ERC1155BuyOrderAdd(indexed uint256,indexed address,address,uint256,indexed uint256,uint256,uint256,uint256,uint256)
+          handler: handleERC1155BuyOrderAdd
+        - event: ERC1155BuyOrderExecute(indexed uint256,indexed address,address,address,uint256,indexed uint256,uint256,uint256,uint256)
+          handler: handleERC1155BuyOrderExecute
+        - event: ERC1155BuyOrderCancel(indexed uint256,uint256)
+          handler: handleERC1155BuyOrderCancel
+
+  - kind: ethereum/contract
+    name: RealmDiamond
+    network: matic
+    source:
+      address: "0x1D0360BaC7299C86Ec8E99d0c1C9A95FEfaF2a11"
+      abi: RealmDiamond
+      startBlock: 20667840
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - MintParcel
+        - Transfer
+      abis:
+        - name: RealmDiamond
+          file: ./abis/RealmDiamond.json
+      eventHandlers:
+        - event: MintParcel(indexed address,indexed uint256)
+          handler: handleMintParcel
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransferParcel
+        - event: ResyncParcel(uint256)
+          handler: handleResyncParcel
+        - event: KinshipBurned(uint256,uint256)
+          handler: handleKinshipBurned
+      file: ./src/mappings/diamond.ts
+  - kind: ethereum/contract
+    name: FAKEGotchisCardDiamond
+    network: matic
+    source:
+      address: "0x9f6BcC63e86D44c46e85564E9383E650dc0b56D7"
+      abi: IERC1155
+      startBlock: 34520146
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Card
+      abis:
+        - name: IERC721
+          file: ./abis/diamond_erc721.json
+        - name: IERC1155
+          file: ./abis/diamond_erc1155.json
+      eventHandlers:
+        - event: NewSeriesStarted(indexed uint256,indexed uint256)
+          handler: handleNewSeriesStarted
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+      file: ./src/mappings/fakeGotchisCard.ts
+  - kind: ethereum/contract
+    name: FAKEGotchisNFTDiamond
+    network: matic
+    source:
+      address: "0xA4E3513c98b30d4D7cc578d2C328Bd550725D1D0"
+      abi: IERC721
+      startBlock: 34520176
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - NFT
+      abis:
+        - name: IERC721
+          file: ./abis/diamond_erc721.json
+        - name: IERC1155
+          file: ./abis/diamond_erc1155.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: MetadataActionLog(indexed uint256,(address,uint16[2],uint16,uint32,uint32,address,uint40,uint8,bool,string,string,string,string,string,string,string,string,string))
+          handler: handleMetadataActionLog
+        - event: MetadataFlag(indexed uint256,address)
+          handler: handleMetadataFlag
+        - event: MetadataLike(indexed uint256,address)
+          handler: handleMetadataLike
+      file: ./src/mappings/fakeGotchisNFT.ts
