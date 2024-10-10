@@ -465,6 +465,24 @@ type ERC721BuyOrder @entity {
   canceled: Boolean
 }
 
+type ERC1155BuyOrder @entity {
+    id: ID!
+    buyer: Bytes!
+    seller: Bytes
+    erc1155TokenAddress: Bytes!
+    erc1155TokenId: BigInt!
+    category: BigInt!
+    priceInWei: BigInt!
+    quantity: BigInt!
+    duration: BigInt!
+    createdAt: BigInt!
+    executedQuantity: BigInt!
+    lastExecutedAt: BigInt
+    completedAt: BigInt
+    canceledAt: BigInt
+    canceled: Boolean
+}
+
 # Cards
 type FakeGotchiCardBalance @entity {
   id: ID!
