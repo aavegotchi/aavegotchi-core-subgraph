@@ -37,10 +37,6 @@ import {
   RemoveExperience,
   UpdateItemPrice,
   GotchiLendingCancel,
-  GotchiLendingExecute,
-  GotchiLendingEnd,
-  GotchiLendingClaim,
-  GotchiLendingAdd,
   WhitelistCreated,
   WhitelistUpdated,
   ERC1155ExecutedToRecipient,
@@ -99,6 +95,7 @@ import {
   itemMaxQuantityToRarity,
   getOrCreateERC721BuyOrder,
   getOrCreateERC1155BuyOrder,
+  getOrCreateERC1155BuyOrderExecution,
 } from "../utils/helpers/diamond";
 import {
   BIGINT_ONE,
@@ -107,7 +104,6 @@ import {
   PORTAL_STATUS_CLAIMED,
   BIGINT_ZERO,
   ZERO_ADDRESS,
-  BLOCK_DISABLE_OLD_LENDING_EVENTS,
   STATUS_AAVEGOTCHI,
 } from "../utils/constants";
 import { Address, BigInt, log, Bytes } from "@graphprotocol/graph-ts";
@@ -1901,6 +1897,21 @@ export function handleERC1155BuyOrderExecute(
     entity.completedAt = event.params.time;
   }
   entity.save();
+
+  let execution = getOrCreateERC1155BuyOrderExecution(
+    event.params.buyOrderId.toString() + "-" + event.transaction.hash.toHex()
+  );
+
+  execution.buyOrder = event.params.buyOrderId.toString();
+  execution.buyer = event.params.buyer;
+  execution.seller = event.params.seller;
+  execution.erc1155TokenAddress = event.params.erc1155TokenAddress;
+  execution.erc1155TokenId = event.params.erc1155TokenId;
+  execution.category = event.params.category;
+  execution.priceInWei = event.params.priceInWei;
+  execution.executedAt = event.params.time;
+  execution.executedQuantity = event.params.quantity;
+  execution.save();
 }
 
 export function handleERC1155BuyOrderCancel(

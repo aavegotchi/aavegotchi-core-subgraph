@@ -466,21 +466,35 @@ type ERC721BuyOrder @entity {
 }
 
 type ERC1155BuyOrder @entity {
-    id: ID!
-    buyer: Bytes!
-    seller: Bytes
-    erc1155TokenAddress: Bytes!
-    erc1155TokenId: BigInt!
-    category: BigInt!
-    priceInWei: BigInt!
-    quantity: BigInt!
-    duration: BigInt!
-    createdAt: BigInt!
-    executedQuantity: BigInt!
-    lastExecutedAt: BigInt
-    completedAt: BigInt
-    canceledAt: BigInt
-    canceled: Boolean
+  id: ID!
+  buyer: Bytes!
+  seller: Bytes
+  erc1155TokenAddress: Bytes!
+  erc1155TokenId: BigInt!
+  category: BigInt!
+  priceInWei: BigInt!
+  quantity: BigInt!
+  duration: BigInt!
+  createdAt: BigInt!
+  executedQuantity: BigInt!
+  lastExecutedAt: BigInt
+  completedAt: BigInt
+  canceledAt: BigInt
+  canceled: Boolean
+  executions: [ERC1155BuyOrderExecution!]! @derivedFrom(field: "buyOrder")
+}
+
+type ERC1155BuyOrderExecution @entity {
+  id: ID!
+  buyOrder: ERC1155BuyOrder!
+  buyer: Bytes!
+  seller: Bytes
+  erc1155TokenAddress: Bytes!
+  erc1155TokenId: BigInt!
+  category: BigInt!
+  priceInWei: BigInt!
+  executedQuantity: BigInt!
+  executedAt: BigInt
 }
 
 # Cards

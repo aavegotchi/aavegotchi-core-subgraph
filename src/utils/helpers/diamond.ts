@@ -1,7 +1,6 @@
 import {
   AavegotchiDiamond,
   ERC1155ExecutedListing,
-  UpdateWearableSet,
 } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
 
 import { RealmDiamond } from "../../../generated/RealmDiamond/RealmDiamond";
@@ -23,20 +22,11 @@ import {
   ClaimedToken,
   ERC721BuyOrder,
   ERC1155BuyOrder,
+  ERC1155BuyOrderExecution,
 } from "../../../generated/schema";
-import {
-  fetchFakeGotchiNFTToken,
-  getFakeGotchiNFTToken,
-} from "../../fetch/erc721";
-import { BIGINT_ZERO, STATUS_AAVEGOTCHI, ZERO_ADDRESS } from "../constants";
-import {
-  Address,
-  BigInt,
-  Bytes,
-  bigInt,
-  ethereum,
-  log,
-} from "@graphprotocol/graph-ts";
+import { getFakeGotchiNFTToken } from "../../fetch/erc721";
+import { BIGINT_ZERO } from "../constants";
+import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 
 export function getOrCreatePortal(
   id: string,
@@ -852,5 +842,15 @@ export function getOrCreateERC1155BuyOrder(id: string): ERC1155BuyOrder {
     entity.canceled = false;
   }
 
+  return entity;
+}
+
+export function getOrCreateERC1155BuyOrderExecution(
+  id: string
+): ERC1155BuyOrderExecution {
+  let entity = ERC1155BuyOrderExecution.load(id);
+  if (!entity) {
+    entity = new ERC1155BuyOrderExecution(id);
+  }
   return entity;
 }
