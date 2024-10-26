@@ -7,6 +7,8 @@
     "build": "graph build",
     "codegen:testnet": "graph codegen subgraph.testnet.yaml",
     "build:testnet": "graph build subgraph.testnet.yaml",
+    "prepare:polygon": "mustache config/polygon.json subgraph.template.yaml > subgraph.yaml",
+    "prepare:amoy": "mustache config/amoy.json subgraph.template.yaml > subgraph.yaml",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ aavegotchi/aavegotchi-core-matic",
     "create-local": "graph create --node http://localhost:8020/ aavegotchi/aavegotchi-core-matic",
     "remove-local": "graph remove --node http://localhost:8020/ aavegotchi/aavegotchi-core-matic",
@@ -20,15 +22,16 @@
     "@2fd/graphdoc": "^2.4.0",
     "@graphprotocol/graph-cli": "0.59.0",
     "@graphprotocol/graph-ts": "0.31.0",
-    "@openzeppelin/subgraphs": "^0.1.8"
+    "@openzeppelin/subgraphs": "^0.1.8",
+    "mustache": "^4.2.0"
   },
   "devDependencies": {
+    "@amxx/graphprotocol-utils": "^1.1.0",
     "apollo-fetch": "^0.7.0",
     "dotenv": "^15.0.0",
     "ethers": "^5.5.4",
     "jest": "^27.4.7",
     "json-diff": "^0.7.1",
-    "matchstick-as": "^0.6.0",
-    "@amxx/graphprotocol-utils": "^1.1.0"
+    "matchstick-as": "^0.6.0"
   }
 }

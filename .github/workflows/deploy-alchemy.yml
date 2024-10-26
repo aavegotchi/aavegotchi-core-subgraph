@@ -1,0 +1,51 @@
+name: Deploy to Alchemy
+
+on:
+  push:
+    tags:
+      - "*-*"
+
+env:
+  NODE_VERSION: 18
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Extract network from tag
+        id: extract-network
+        run: echo "NETWORK=${GITHUB_REF#refs/tags/}" | sed 's/-.*//' >> $GITHUB_OUTPUT
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Yarn
+        run: npm i -g yarn
+
+      - name: Install Dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Prepare
+        run: yarn prepare:${{ steps.extract-network.outputs.NETWORK }}
+
+      - name: Codegen
+        run: yarn codegen
+
+      - name: Build
+        run: yarn build
+
+      - name: Deploy to Alchemy
+        env:
+          SUBGRAPH_NAME: aavegotchi-core-${{ steps.extract-network.outputs.NETWORK }}
+        run: |
+          npx graph deploy ${{ env.SUBGRAPH_NAME }} \
+            --deploy-key ${{ secrets.SATSUMA_ACCESS_TOKEN }} \
+            --node https://subgraphs.alchemy.com/api/subgraphs/deploy \
+            --ipfs https://ipfs.satsuma.xyz \
+            --version-label ${GITHUB_REF#refs/*/}
+        shell: bash
+
