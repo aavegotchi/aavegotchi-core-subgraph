@@ -85,7 +85,7 @@ import {
   getOrCreateWearableSet,
   getOrCreateERC1155Purchase,
   updateERC1155PurchaseInfo,
-  getOrCreateParcel,
+  // getOrCreateParcel,
   updateAavegotchiWearables,
   calculateBaseRarityScore,
   getOrCreateGotchiLending,
@@ -108,7 +108,7 @@ import {
 } from "../utils/constants";
 import { Address, BigInt, log, Bytes } from "@graphprotocol/graph-ts";
 
-import { Parcel, TokenCommitment } from "../../generated/schema";
+import { /*Parcel,*/ TokenCommitment } from "../../generated/schema";
 // import {
 //   RealmDiamond,
 //   MintParcel,
@@ -565,21 +565,18 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
     portal.save();
     listing.portal = event.params.erc721TokenId.toString();
   } else if (listing.category == BigInt.fromI32(4)) {
-    listing.parcel = event.params.erc721TokenId.toString();
-
-    let parcel = Parcel.load(event.params.erc721TokenId.toString())!;
-    parcel.activeListing = event.params.listingId;
-    listing.fudBoost = parcel.fudBoost;
-    listing.fomoBoost = parcel.fomoBoost;
-    listing.alphaBoost = parcel.alphaBoost;
-    listing.kekBoost = parcel.kekBoost;
-
-    listing.district = parcel.district;
-    listing.size = parcel.size;
-
-    listing.coordinateX = parcel.coordinateX;
-    listing.coordinateY = parcel.coordinateY;
-    listing.parcelHash = parcel.parcelHash;
+    // listing.parcel = event.params.erc721TokenId.toString();
+    // let parcel = Parcel.load(event.params.erc721TokenId.toString())!;
+    // parcel.activeListing = event.params.listingId;
+    // listing.fudBoost = parcel.fudBoost;
+    // listing.fomoBoost = parcel.fomoBoost;
+    // listing.alphaBoost = parcel.alphaBoost;
+    // listing.kekBoost = parcel.kekBoost;
+    // listing.district = parcel.district;
+    // listing.size = parcel.size;
+    // listing.coordinateX = parcel.coordinateX;
+    // listing.coordinateY = parcel.coordinateY;
+    // listing.parcelHash = parcel.parcelHash;
   } else {
     //handle external contracts
   }
@@ -654,21 +651,21 @@ export function handleERC721ExecutedListing(
 
     //Parcel -- update number of times traded
 
-    let parcel = getOrCreateParcel(
-      event.params.erc721TokenId,
-      event.params.buyer,
-      event.params.erc721TokenAddress
-    );
-    parcel.timesTraded = parcel.timesTraded.plus(BIGINT_ONE);
-    parcel.activeListing = null;
-    // add to historical prices
-    let historicalPrices = parcel.historicalPrices;
-    if (historicalPrices == null) {
-      historicalPrices = new Array();
-    }
-    historicalPrices.push(event.params.priceInWei);
-    parcel.historicalPrices = historicalPrices;
-    parcel.save();
+    // let parcel = getOrCreateParcel(
+    //   event.params.erc721TokenId,
+    //   event.params.buyer,
+    //   event.params.erc721TokenAddress
+    // );
+    // parcel.timesTraded = parcel.timesTraded.plus(BIGINT_ONE);
+    // parcel.activeListing = null;
+    // // add to historical prices
+    // let historicalPrices = parcel.historicalPrices;
+    // if (historicalPrices == null) {
+    //   historicalPrices = new Array();
+    // }
+    // historicalPrices.push(event.params.priceInWei);
+    // parcel.historicalPrices = historicalPrices;
+    // parcel.save();
   }
 
   let stats = getStatisticEntity();
@@ -699,14 +696,14 @@ export function handleERC721ListingCancelled(
     gotchi.locked = false;
     gotchi.save();
   } else if (listing.category.equals(BigInt.fromI32(4))) {
-    let parcel = getOrCreateParcel(
-      listing.tokenId,
-      listing.seller,
-      Address.fromString(listing.erc721TokenAddress.toHexString()),
-      false
-    );
-    parcel.activeListing = null;
-    parcel.save();
+    // let parcel = getOrCreateParcel(
+    //   listing.tokenId,
+    //   listing.seller,
+    //   Address.fromString(listing.erc721TokenAddress.toHexString()),
+    //   false
+    // );
+    // parcel.activeListing = null;
+    // parcel.save();
   }
 
   listing.cancelled = true;
@@ -732,14 +729,14 @@ export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
     gotchi.locked = false;
     gotchi.save();
   } else if (listing.category.equals(BigInt.fromI32(4))) {
-    let parcel = getOrCreateParcel(
-      listing.tokenId,
-      listing.seller,
-      Address.fromString(listing.erc721TokenAddress.toHexString()),
-      false
-    );
-    parcel.activeListing = null;
-    parcel.save();
+    // let parcel = getOrCreateParcel(
+    //   listing.tokenId,
+    //   listing.seller,
+    //   Address.fromString(listing.erc721TokenAddress.toHexString()),
+    //   false
+    // );
+    // parcel.activeListing = null;
+    // parcel.save();
   }
 
   listing.cancelled = true;
