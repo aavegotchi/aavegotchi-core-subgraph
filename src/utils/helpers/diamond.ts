@@ -25,7 +25,7 @@ import {
   ERC1155BuyOrderExecution,
 } from "../../../generated/schema";
 // import { getFakeGotchiNFTToken } from "../../fetch/erc721";
-import { BIGINT_ZERO } from "../constants";
+import { BIGINT_ZERO, PORTAL_STATUS_BOUGHT } from "../constants";
 import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 
 export function getOrCreatePortal(
@@ -39,6 +39,7 @@ export function getOrCreatePortal(
     portal.timesTraded = BIGINT_ZERO;
     portal.historicalPrices = [];
     portal.hauntId = BIGINT_ZERO;
+    portal.status = PORTAL_STATUS_BOUGHT;
   }
 
   return portal as Portal;
