@@ -16,7 +16,7 @@ import {
   ItemType,
   WearableSet,
   ERC1155Purchase,
-  Parcel,
+  // Parcel,
   GotchiLending,
   Whitelist,
   ClaimedToken,
@@ -571,56 +571,56 @@ export function getStatisticEntity(): Statistic {
   return stats as Statistic;
 }
 
-export function getOrCreateParcel(
-  tokenId: BigInt,
-  owner: Bytes,
-  tokenAddress: Address,
-  updateParcelInfo: boolean = true
-): Parcel {
-  let parcel = Parcel.load(tokenId.toString());
+// export function getOrCreateParcel(
+//   tokenId: BigInt,
+//   owner: Bytes,
+//   tokenAddress: Address,
+//   updateParcelInfo: boolean = true
+// ): Parcel {
+//   let parcel = Parcel.load(tokenId.toString());
 
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (parcel == null) {
-    parcel = new Parcel(tokenId.toString());
-    parcel.timesTraded = BIGINT_ZERO;
-  }
+//   // Entities only exist after they have been saved to the store;
+//   // `null` checks allow to create entities on demand
+//   if (parcel == null) {
+//     parcel = new Parcel(tokenId.toString());
+//     parcel.timesTraded = BIGINT_ZERO;
+//   }
 
-  if (!updateParcelInfo) {
-    return parcel;
-  }
+//   if (!updateParcelInfo) {
+//     return parcel;
+//   }
 
-  log.debug("token address: {}", [tokenAddress.toHexString()]);
+//   log.debug("token address: {}", [tokenAddress.toHexString()]);
 
-  let contract = RealmDiamond.bind(tokenAddress);
-  let parcelInfo = contract.try_getParcelInfo(tokenId);
+//   let contract = RealmDiamond.bind(tokenAddress);
+//   let parcelInfo = contract.try_getParcelInfo(tokenId);
 
-  if (parcelInfo.reverted) {
-  } else {
-    let parcelMetadata = parcelInfo.value;
-    parcel.parcelId = parcelMetadata.parcelId;
-    parcel.tokenId = tokenId;
+//   if (parcelInfo.reverted) {
+//   } else {
+//     let parcelMetadata = parcelInfo.value;
+//     parcel.parcelId = parcelMetadata.parcelId;
+//     parcel.tokenId = tokenId;
 
-    let user = getOrCreateUser(owner.toHexString());
-    user.save();
-    parcel.owner = user.id;
+//     let user = getOrCreateUser(owner.toHexString());
+//     user.save();
+//     parcel.owner = user.id;
 
-    parcel.coordinateX = parcelMetadata.coordinateX;
-    parcel.coordinateY = parcelMetadata.coordinateY;
-    parcel.district = parcelMetadata.district;
-    parcel.parcelHash = parcelMetadata.parcelAddress;
+//     parcel.coordinateX = parcelMetadata.coordinateX;
+//     parcel.coordinateY = parcelMetadata.coordinateY;
+//     parcel.district = parcelMetadata.district;
+//     parcel.parcelHash = parcelMetadata.parcelAddress;
 
-    let boostArray = parcelMetadata.boost;
-    parcel.fudBoost = boostArray[0];
-    parcel.fomoBoost = boostArray[1];
-    parcel.alphaBoost = boostArray[2];
-    parcel.kekBoost = boostArray[3];
+//     let boostArray = parcelMetadata.boost;
+//     parcel.fudBoost = boostArray[0];
+//     parcel.fomoBoost = boostArray[1];
+//     parcel.alphaBoost = boostArray[2];
+//     parcel.kekBoost = boostArray[3];
 
-    parcel.size = parcelMetadata.size;
-  }
+//     parcel.size = parcelMetadata.size;
+//   }
 
-  return parcel as Parcel;
-}
+//   return parcel as Parcel;
+// }
 
 export function updateAavegotchiWearables(
   gotchi: Aavegotchi,
