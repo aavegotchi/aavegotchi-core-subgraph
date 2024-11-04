@@ -121,7 +121,7 @@ type Portal @entity {
 
   gotchiId: BigInt
 
-  buyer: User!
+  buyer: User
 
   hauntId: BigInt!
 
