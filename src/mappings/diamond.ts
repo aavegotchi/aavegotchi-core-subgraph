@@ -1841,12 +1841,12 @@ export function handleERC721BuyOrderCanceled(
   entity.save();
 }
 
-export function handleKinshipBurned(event: any): void {
-  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
-  if (!gotchi) return;
-  gotchi.kinship = event.params._value;
-  gotchi.save();
-}
+// export function handleKinshipBurned(event: any): void {
+//   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
+//   if (!gotchi) return;
+//   gotchi.kinship = event.params._value;
+//   gotchi.save();
+// }
 
 export function handleRoleGranted(event: RoleGranted): void {
   erc7589.handleRoleGranted(event);
