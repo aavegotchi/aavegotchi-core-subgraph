@@ -26,8 +26,8 @@ dataSources:
       abis:
         - name: AavegotchiDiamond
           file: ./abis/AavegotchiDiamond.json
-        - name: RealmDiamond
-          # file: ./abis/RealmDiamond.json
+      #   - name: RealmDiamond
+      #     file: ./abis/RealmDiamond.json
       eventHandlers:
         - event: BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
           handler: handleBuyPortals
