@@ -1,11 +1,5 @@
 {
   "coreAddress": "0x1F0eb9099b9c398323dcf2F133dFdAD9dE7cF994",
   "coreStartBlock": 4273,
-  "realmAddress": "0x0000000000000000000000000000000000000000",
-  "realmStartBlock": 0,
-  "fakeCardAddress": "0x0000000000000000000000000000000000000000",
-  "fakeCardStartBlock": 0,
-  "fakeGotchisAddress": "0x0000000000000000000000000000000000000000",
-  "fakeGotchisStartBlock": 0,
   "network": "geist-polter"
 }
