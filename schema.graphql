@@ -22,7 +22,7 @@ type AavegotchiOption @entity {
 type Aavegotchi @entity {
   id: ID!
 
-  gotchiId: BigInt
+  gotchiId: BigInt!
 
   owner: User
 
@@ -30,22 +30,22 @@ type Aavegotchi @entity {
 
   portal: Portal! @derivedFrom(field: "gotchi")
 
-  hauntId: BigInt
+  hauntId: BigInt!
 
-  name: String
-  nameLowerCase: String
+  name: String!
+  nameLowerCase: String!
 
-  randomNumber: BigInt
+  randomNumber: BigInt!
 
-  status: BigInt
+  status: BigInt!
 
-  numericTraits: [Int!]
+  numericTraits: [Int!]!
 
-  modifiedNumericTraits: [Int!]
+  modifiedNumericTraits: [Int!]!
 
   withSetsNumericTraits: [Int!]
 
-  equippedWearables: [Int!]
+  equippedWearables: [Int!]!
   equippedDelegatedWearables: [Int!]
   equippedSetID: BigInt
   equippedSetName: String
@@ -56,29 +56,29 @@ type Aavegotchi @entity {
   # rarityScoreWithSet:BigInt!
   # numericTraitsWithSet:[Int!]
 
-  collateral: Bytes
+  collateral: Bytes!
 
-  escrow: Bytes
+  escrow: Bytes!
 
-  stakedAmount: BigInt
+  stakedAmount: BigInt!
 
-  minimumStake: BigInt
+  minimumStake: BigInt!
 
-  kinship: BigInt #The kinship value of this Aavegotchi. Default is 50.
-  lastInteracted: BigInt
+  kinship: BigInt! #The kinship value of this Aavegotchi. Default is 50.
+  lastInteracted: BigInt!
 
-  experience: BigInt #How much XP this Aavegotchi has accrued. Begins at 0.
-  toNextLevel: BigInt
+  experience: BigInt! #How much XP this Aavegotchi has accrued. Begins at 0.
+  toNextLevel: BigInt!
 
-  usedSkillPoints: BigInt #number of skill points used
-  level: BigInt #the current aavegotchi level
-  baseRarityScore: BigInt
+  usedSkillPoints: BigInt! #number of skill points used
+  level: BigInt! #the current aavegotchi level
+  baseRarityScore: BigInt!
 
-  modifiedRarityScore: BigInt
+  modifiedRarityScore: BigInt!
 
   withSetsRarityScore: BigInt
 
-  locked: Boolean
+  locked: Boolean!
 
   listings: [ERC721Listing!]! @derivedFrom(field: "gotchi")
 
@@ -89,7 +89,7 @@ type Aavegotchi @entity {
   claimedAt: BigInt
   claimedTime: BigInt
 
-  timesTraded: BigInt
+  timesTraded: BigInt!
 
   historicalPrices: [BigInt!]
 
@@ -97,17 +97,17 @@ type Aavegotchi @entity {
 
   lending: BigInt
 
-  baseEnergy: Int
-  baseAggression: Int
-  baseSpookiness: Int
-  baseBrain: Int
-  eyeShape: Int
-  eyeColor: Int
+  baseEnergy: Int!
+  baseAggression: Int!
+  baseSpookiness: Int!
+  baseBrain: Int!
+  eyeShape: Int!
+  eyeColor: Int!
 
-  modifiedEnergy: Int
-  modifiedAggression: Int
-  modifiedSpookiness: Int
-  modifiedBrain: Int
+  modifiedEnergy: Int!
+  modifiedAggression: Int!
+  modifiedSpookiness: Int!
+  modifiedBrain: Int!
 }
 
 enum PortalStatus {
