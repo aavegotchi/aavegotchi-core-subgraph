@@ -419,7 +419,9 @@ export function updateAavegotchiInfo(
     gotchi.numericTraits = gotchiInfo.numericTraits;
     gotchi.modifiedNumericTraits = gotchiInfo.modifiedNumericTraits;
 
-    gotchi.equippedWearables = gotchiInfo.equippedWearables;
+    gotchi.equippedWearables = gotchiInfo.equippedWearables
+      ? gotchiInfo.equippedWearables
+      : [];
     gotchi.collateral = gotchiInfo.collateral;
     gotchi.escrow = gotchiInfo.escrow;
     gotchi.stakedAmount = gotchiInfo.stakedAmount;
