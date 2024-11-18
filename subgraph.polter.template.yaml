@@ -29,14 +29,6 @@ dataSources:
       #   - name: RealmDiamond
       #     file: ./abis/RealmDiamond.json
       eventHandlers:
-        - event: BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
-          handler: handleBuyPortals
-        - event: Xingyun(indexed address,indexed address,uint256,uint256,uint256)
-          handler: handleXingyun
-        - event: PortalOpened(indexed uint256)
-          handler: handlePortalOpened
-        - event: ClaimAavegotchi(indexed uint256)
-          handler: handleClaimAavegotchi
         - event: IncreaseStake(indexed uint256,uint256)
           handler: handleIncreaseStake
         - event: DecreaseStake(indexed uint256,uint256)
@@ -59,6 +51,7 @@ dataSources:
           handler: handleAavegotchiInteract
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
+          file: ./src/mappings/polter.ts #polter specific transfer handler
         - event: ERC721ListingAdd(indexed uint256,indexed address,address,uint256,indexed uint256,uint256)
           handler: handleERC721ListingAdd
         - event: ERC721ExecutedListing(indexed uint256,indexed address,address,address,uint256,indexed uint256,uint256,uint256)
