@@ -11,11 +11,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: AavegotchiDiamond
-    network: "base-sepolia"
+    network: "{{network}}"
     source:
-      address: "0xb8D555680BCD42724DfdFeEa774D1C7890BE143f"
+      address: "{{coreAddress}}"
       abi: AavegotchiDiamond
-      startBlock: 18371153
+      startBlock: {{coreStartBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
