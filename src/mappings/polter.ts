@@ -1898,6 +1898,8 @@ export function handleTransfer(event: Transfer): void {
       if (gotchi) {
         log.info("Gotchi found for bridged back aavegotchi: {}", [tokenId]);
         gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+        gotchi.originalOwner = ZERO_ADDRESS;
+        gotchi.owner = ZERO_ADDRESS;
         gotchi = updateAavegotchiWearables(gotchi, event);
         log.info("Saving Gotchi: {}", [tokenId]);
         gotchi.save();
