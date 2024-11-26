@@ -31,7 +31,7 @@ import { Address, BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 export function getOrCreatePortal(
   id: string,
   createIfNotFound: boolean = true
-): Portal {
+): Portal | null {
   let portal = Portal.load(id);
 
   if (portal == null && createIfNotFound) {
@@ -40,9 +40,14 @@ export function getOrCreatePortal(
     portal.historicalPrices = [];
     portal.hauntId = BIGINT_ZERO;
     portal.status = PORTAL_STATUS_BOUGHT;
+    return portal as Portal;
   }
 
-  return portal as Portal;
+  if (portal != null) {
+    return portal as Portal;
+  }
+
+  return null;
 }
 
 export function getOrCreateAavegotchiOption(

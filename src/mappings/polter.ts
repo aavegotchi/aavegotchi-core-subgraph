@@ -1904,7 +1904,7 @@ export function handleTransfer(event: Transfer): void {
         gotchi.save();
       }
 
-      if (portal) {
+      if (portal != null) {
         log.info("Portal found for bridged back portal: {}", [tokenId]);
         portal.owner = newOwner.id;
         portal.save();
