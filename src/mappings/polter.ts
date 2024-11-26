@@ -1897,16 +1897,15 @@ export function handleTransfer(event: Transfer): void {
       let portal = getOrCreatePortal(tokenId, false);
 
       if (gotchi) {
+        log.info("Gotchi found for bridged back aavegotchi: {}", [tokenId]);
         gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
         gotchi = updateAavegotchiWearables(gotchi, event);
-        gotchi.claimedAt = event.block.number;
-        gotchi.claimedTime = event.block.timestamp;
-        gotchi.gotchiId = event.params._tokenId;
-
+        log.info("Saving Gotchi: {}", [tokenId]);
         gotchi.save();
       }
 
       if (portal) {
+        log.info("Portal found for bridged back portal: {}", [tokenId]);
         portal.owner = newOwner.id;
         portal.save();
       }
