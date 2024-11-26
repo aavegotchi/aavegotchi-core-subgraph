@@ -1896,6 +1896,9 @@ export function handleTransfer(event: Transfer): void {
       let gotchi = getOrCreateAavegotchi(tokenId, event, false);
       let portal = getOrCreatePortal(tokenId, false);
 
+      log.info("Gotchi: {}", [gotchi ? "true" : "false"]);
+      log.info("Portal: {}", [portal ? "true" : "false"]);
+
       if (gotchi) {
         log.info("Gotchi found for bridged back aavegotchi: {}", [tokenId]);
         gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
