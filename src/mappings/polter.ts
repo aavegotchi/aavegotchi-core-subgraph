@@ -1894,10 +1894,6 @@ export function handleTransfer(event: Transfer): void {
     ) {
       //an aavegotchi (or possibly a closed portal) that has either been sacrificed or bridged back to Polygon
       let gotchi = getOrCreateAavegotchi(tokenId, event, false);
-      let portal = getOrCreatePortal(tokenId, false);
-
-      log.info("Gotchi: {}", [gotchi ? "true" : "false"]);
-      log.info("Portal: {}", [portal ? "true" : "false"]);
 
       if (gotchi) {
         log.info("Gotchi found for bridged back aavegotchi: {}", [tokenId]);
@@ -1905,16 +1901,21 @@ export function handleTransfer(event: Transfer): void {
         gotchi = updateAavegotchiWearables(gotchi, event);
         log.info("Saving Gotchi: {}", [tokenId]);
         gotchi.save();
-      }
+      } else {
+        let portal = getOrCreatePortal(tokenId, true);
 
-      if (portal) {
-        log.info("Portal found for bridged back portal: {}", [tokenId]);
-        portal.owner = newOwner.id;
-        portal.save();
+        if (portal) {
+          log.info("Portal found for bridged back portal: {}", [tokenId]);
+          portal.owner = newOwner.id;
+          portal.save();
+        }
       }
     }
 
-    if (gotchiResponse.value.status.equals(STATUS_CLOSED_PORTAL)) {
+    if (
+      gotchiResponse.value.status.equals(STATUS_CLOSED_PORTAL) &&
+      event.params._to.toHexString() != ZERO_ADDRESS
+    ) {
       let portal = getOrCreatePortal(tokenId, true);
       portal.status = PORTAL_STATUS_BOUGHT;
       portal.owner = newOwner.id;
