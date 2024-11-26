@@ -1888,6 +1888,30 @@ export function handleTransfer(event: Transfer): void {
   let gotchiResponse = contract.try_getAavegotchi(BigInt.fromString(tokenId));
 
   if (!gotchiResponse.reverted) {
+    if (
+      gotchiResponse.value.status.equals(STATUS_CLOSED_PORTAL) &&
+      event.params._to.toHexString() == ZERO_ADDRESS
+    ) {
+      //an aavegotchi (or possibly a closed portal) that has either been sacrificed or bridged back to Polygon
+      let gotchi = getOrCreateAavegotchi(tokenId, event, false);
+      let portal = getOrCreatePortal(tokenId, false);
+
+      if (gotchi) {
+        gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+        gotchi = updateAavegotchiWearables(gotchi, event);
+        gotchi.claimedAt = event.block.number;
+        gotchi.claimedTime = event.block.timestamp;
+        gotchi.gotchiId = event.params._tokenId;
+
+        gotchi.save();
+      }
+
+      if (portal) {
+        portal.owner = newOwner.id;
+        portal.save();
+      }
+    }
+
     if (gotchiResponse.value.status.equals(STATUS_CLOSED_PORTAL)) {
       let portal = getOrCreatePortal(tokenId, true);
       portal.status = PORTAL_STATUS_BOUGHT;
