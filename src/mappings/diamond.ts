@@ -129,20 +129,22 @@ export function handleBuyPortals(event: BuyPortals): void {
 
   for (let i = 0; i < event.params._numAavegotchisToPurchase.toI32(); i++) {
     let id = baseId.plus(BigInt.fromI32(i));
-    let portal = getOrCreatePortal(id.toString());
+    let portal = getOrCreatePortal(id.toString(), true);
 
-    //Add portal hauntId
-    let portalResponse = contract.try_getAavegotchi(id);
-    if (!portalResponse.reverted) {
-      portal.hauntId = portalResponse.value.hauntId;
+    if (portal != null) {
+      //Add portal hauntId
+      let portalResponse = contract.try_getAavegotchi(id);
+      if (!portalResponse.reverted) {
+        portal.hauntId = portalResponse.value.hauntId;
+      }
+
+      portal.status = PORTAL_STATUS_BOUGHT;
+      portal.gotchiId = event.params._tokenId;
+      portal.owner = owner.id;
+      portal.buyer = buyer.id;
+
+      portal.save();
     }
-
-    portal.status = PORTAL_STATUS_BOUGHT;
-    portal.gotchiId = event.params._tokenId;
-    portal.owner = owner.id;
-    portal.buyer = buyer.id;
-
-    portal.save();
   }
 
   stats.portalsBought = stats.portalsBought.plus(
@@ -165,15 +167,17 @@ export function handleXingyun(event: Xingyun): void {
   for (let i = 0; i < event.params._numAavegotchisToPurchase.toI32(); i++) {
     let portal = getOrCreatePortal(baseId.toString());
 
-    portal.hauntId = BIGINT_ONE;
-    portal.status = PORTAL_STATUS_BOUGHT;
-    portal.gotchiId = baseId;
-    portal.boughtAt = event.block.number;
-    portal.owner = owner.id;
-    portal.buyer = buyer.id;
-    portal.timesTraded = BIGINT_ZERO;
+    if (portal != null) {
+      portal.hauntId = BIGINT_ONE;
+      portal.status = PORTAL_STATUS_BOUGHT;
+      portal.gotchiId = baseId;
+      portal.boughtAt = event.block.number;
+      portal.owner = owner.id;
+      portal.buyer = buyer.id;
+      portal.timesTraded = BIGINT_ZERO;
 
-    portal.save();
+      portal.save();
+    }
 
     baseId = baseId.plus(BIGINT_ONE);
   }
@@ -191,36 +195,40 @@ export function handleXingyun(event: Xingyun): void {
 //   handler: handlePortalOpened
 export function handlePortalOpened(event: PortalOpened): void {
   let contract = AavegotchiDiamond.bind(event.address);
+
   let portal = getOrCreatePortal(event.params.tokenId.toString());
-  let response = contract.try_portalAavegotchiTraits(event.params.tokenId);
-  let stats = getStatisticEntity();
 
-  if (!response.reverted) {
-    let array = response.value;
+  if (portal != null) {
+    let response = contract.try_portalAavegotchiTraits(event.params.tokenId);
+    let stats = getStatisticEntity();
 
-    for (let i = 0; i < 10; i++) {
-      let possibleAavegotchiTraits = array[i];
-      let gotchi = getOrCreateAavegotchiOption(portal.id, i);
-      gotchi.portal = portal.id;
-      gotchi.owner = portal.owner;
-      gotchi.randomNumber = possibleAavegotchiTraits.randomNumber;
-      gotchi.numericTraits = possibleAavegotchiTraits.numericTraits;
-      gotchi.collateralType = possibleAavegotchiTraits.collateralType;
-      gotchi.minimumStake = possibleAavegotchiTraits.minimumStake;
-      //calculate base rarity score
-      gotchi.baseRarityScore = calculateBaseRarityScore(gotchi.numericTraits);
+    if (!response.reverted) {
+      let array = response.value;
 
-      gotchi.save();
+      for (let i = 0; i < 10; i++) {
+        let possibleAavegotchiTraits = array[i];
+        let gotchi = getOrCreateAavegotchiOption(portal.id, i);
+        gotchi.portal = portal.id;
+        gotchi.owner = portal.owner;
+        gotchi.randomNumber = possibleAavegotchiTraits.randomNumber;
+        gotchi.numericTraits = possibleAavegotchiTraits.numericTraits;
+        gotchi.collateralType = possibleAavegotchiTraits.collateralType;
+        gotchi.minimumStake = possibleAavegotchiTraits.minimumStake;
+        //calculate base rarity score
+        gotchi.baseRarityScore = calculateBaseRarityScore(gotchi.numericTraits);
+
+        gotchi.save();
+      }
     }
+
+    portal.status = PORTAL_STATUS_OPENED;
+    portal.openedAt = event.block.number;
+
+    stats.portalsOpened = stats.portalsOpened.plus(BIGINT_ONE);
+
+    stats.save();
+    portal.save();
   }
-
-  portal.status = PORTAL_STATUS_OPENED;
-  portal.openedAt = event.block.number;
-
-  stats.portalsOpened = stats.portalsOpened.plus(BIGINT_ONE);
-
-  stats.save();
-  portal.save();
 }
 
 // - event: ClaimAavegotchi(indexed uint256)
@@ -236,25 +244,28 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
   gotchi.claimedTime = event.block.timestamp;
   gotchi.gotchiId = event.params._tokenId;
 
-  portal.gotchi = gotchi.id;
-  let zeroUser = getOrCreateUser(ZERO_ADDRESS);
-  portal.owner = zeroUser.id;
-  portal.status = PORTAL_STATUS_CLAIMED;
-  portal.claimedAt = event.block.number;
-  portal.claimedTime = event.block.timestamp;
+  if (portal != null) {
+    portal.gotchi = gotchi.id;
+    let zeroUser = getOrCreateUser(ZERO_ADDRESS);
+    portal.owner = zeroUser.id;
+    portal.status = PORTAL_STATUS_CLAIMED;
+    portal.claimedAt = event.block.number;
+    portal.claimedTime = event.block.timestamp;
 
-  if (portal.activeListing) {
-    let listing = getOrCreateERC721Listing(portal.activeListing!.toString());
-    listing.cancelled = true;
-    listing.save();
+    if (portal.activeListing) {
+      let listing = getOrCreateERC721Listing(portal.activeListing!.toString());
+      listing.cancelled = true;
+      listing.save();
+    }
+
+    portal.save();
+    zeroUser.save();
   }
 
   stats.aavegotchisClaimed = stats.aavegotchisClaimed.plus(BIGINT_ONE);
 
   stats.save();
   gotchi.save();
-  portal.save();
-  zeroUser.save();
 }
 
 // - event: IncreaseStake(indexed uint256,uint256)
@@ -506,8 +517,10 @@ export function handleTransfer(event: Transfer): void {
       stats.save();
     }
   } else {
-    portal.owner = newOwner.id;
-    portal.save();
+    if (portal != null) {
+      portal.owner = newOwner.id;
+      portal.save();
+    }
   }
 }
 
@@ -561,9 +574,11 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
     }
   } else if (listing.category.lt(BigInt.fromI32(3))) {
     let portal = getOrCreatePortal(event.params.erc721TokenId.toString());
-    portal.activeListing = event.params.listingId;
-    portal.save();
-    listing.portal = event.params.erc721TokenId.toString();
+    if (portal != null) {
+      portal.activeListing = event.params.listingId;
+      portal.save();
+      listing.portal = event.params.erc721TokenId.toString();
+    }
   } else if (listing.category == BigInt.fromI32(4)) {
     // listing.parcel = event.params.erc721TokenId.toString();
     // let parcel = Parcel.load(event.params.erc721TokenId.toString())!;
@@ -610,17 +625,20 @@ export function handleERC721ExecutedListing(
   //Portal -- update number of times traded
   if (event.params.category.lt(BigInt.fromI32(3))) {
     let portal = getOrCreatePortal(event.params.erc721TokenId.toString());
-    portal.timesTraded = portal.timesTraded.plus(BIGINT_ONE);
 
-    // add to historical prices
-    let historicalPrices = portal.historicalPrices;
-    if (historicalPrices == null) {
-      historicalPrices = new Array();
+    if (portal != null) {
+      portal.timesTraded = portal.timesTraded.plus(BIGINT_ONE);
+
+      // add to historical prices
+      let historicalPrices = portal.historicalPrices;
+      if (historicalPrices == null) {
+        historicalPrices = new Array();
+      }
+      historicalPrices.push(event.params.priceInWei);
+      portal.historicalPrices = historicalPrices;
+      portal.activeListing = null;
+      portal.save();
     }
-    historicalPrices.push(event.params.priceInWei);
-    portal.historicalPrices = historicalPrices;
-    portal.activeListing = null;
-    portal.save();
   }
 
   //Aavegotchi -- update number of times traded
@@ -688,8 +706,10 @@ export function handleERC721ListingCancelled(
 
   if (listing.category.lt(BigInt.fromI32(3))) {
     let portal = getOrCreatePortal(listing.tokenId.toString());
-    portal.activeListing = null;
-    portal.save();
+    if (portal != null) {
+      portal.activeListing = null;
+      portal.save();
+    }
   } else if (listing.category.equals(BigInt.fromI32(3))) {
     let gotchi = getOrCreateAavegotchi(listing.tokenId.toString(), event)!;
     gotchi.activeListing = null;
@@ -721,8 +741,10 @@ export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
 
   if (listing.category.lt(BigInt.fromI32(3))) {
     let portal = getOrCreatePortal(listing.tokenId.toString());
-    portal.activeListing = null;
-    portal.save();
+    if (portal != null) {
+      portal.activeListing = null;
+      portal.save();
+    }
   } else if (listing.category.equals(BigInt.fromI32(3))) {
     let gotchi = getOrCreateAavegotchi(listing.tokenId.toString(), event)!;
     gotchi.activeListing = null;
@@ -965,15 +987,17 @@ export function handleMintPortals(event: MintPortals): void {
   for (let i = 0; i < event.params._numAavegotchisToPurchase.toI32(); i++) {
     let portal = getOrCreatePortal(baseId.toString());
 
-    portal.hauntId = event.params._hauntId;
-    portal.status = PORTAL_STATUS_BOUGHT;
-    portal.gotchiId = baseId;
-    portal.boughtAt = event.block.number;
-    portal.owner = owner.id;
-    portal.buyer = buyer.id;
-    portal.timesTraded = BIGINT_ZERO;
+    if (portal != null) {
+      portal.hauntId = event.params._hauntId;
+      portal.status = PORTAL_STATUS_BOUGHT;
+      portal.gotchiId = baseId;
+      portal.boughtAt = event.block.number;
+      portal.owner = owner.id;
+      portal.buyer = buyer.id;
+      portal.timesTraded = BIGINT_ZERO;
 
-    portal.save();
+      portal.save();
+    }
     baseId = baseId.plus(BIGINT_ONE);
   }
 
