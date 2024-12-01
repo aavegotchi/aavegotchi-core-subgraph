@@ -1963,8 +1963,17 @@ export function handleTransfer(event: Transfer): void {
       if (gotchi) {
         gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
         gotchi = updateAavegotchiWearables(gotchi, event);
-        gotchi.claimedAt = event.block.number;
-        gotchi.claimedTime = event.block.timestamp;
+
+        let claimTime = contract.try_aavegotchiClaimTime(
+          BigInt.fromString(tokenId)
+        );
+
+        if (!claimTime.reverted) {
+          gotchi.claimedTime = claimTime.value;
+          //we do not have access to the block number here, so we use the claimed time
+          gotchi.claimedAt = claimTime.value;
+        }
+
         gotchi.gotchiId = event.params._tokenId;
 
         gotchi.save();
