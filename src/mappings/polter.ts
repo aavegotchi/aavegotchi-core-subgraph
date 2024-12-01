@@ -1925,6 +1925,7 @@ export function handleTransfer(event: Transfer): void {
     } else if (gotchiResponse.value.status.equals(STATUS_OPEN_PORTAL)) {
       let portal = getOrCreatePortal(tokenId, true);
       portal.status = PORTAL_STATUS_OPENED;
+      portal.owner = newOwner.id;
 
       //todo
       // portal.openedAt = gotchiResponse.value.ope
