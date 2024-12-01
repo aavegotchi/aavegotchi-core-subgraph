@@ -497,9 +497,12 @@ export function handleTransfer(event: Transfer): void {
 
     //If the Gotchi is being transferred from the socket Vault, we need to sync its metadata
     if (
-      event.params._from.toHexString() ==
-      "0xF1D1d61EEDDa7a10b494aF7af87D932AC910f3C5"
+      event.params._from ==
+      Address.fromString("0xF1D1d61EEDDa7a10b494aF7af87D932AC910f3C5")
     ) {
+      log.debug("Syncing metadata for Gotchi {} from socket vault", [
+        event.params._tokenId.toString(),
+      ]);
       gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
     }
 
