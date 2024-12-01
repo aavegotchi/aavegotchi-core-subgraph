@@ -494,6 +494,15 @@ export function handleTransfer(event: Transfer): void {
     if (!gotchi.modifiedRarityScore) {
       gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
     }
+
+    //If the Gotchi is being transferred from the socket Vault, we need to sync its metadata
+    if (
+      event.params._from.toHexString() ==
+      "0xF1D1d61EEDDa7a10b494aF7af87D932AC910f3C5"
+    ) {
+      gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+    }
+
     gotchi.owner = newOwner.id;
     gotchi.originalOwner = newOwner.id;
     gotchi.save();
