@@ -507,7 +507,10 @@ export function handleTransfer(event: Transfer): void {
       log.debug("Syncing metadata for Gotchi {} from socket vault", [
         event.params._tokenId.toString(),
       ]);
+
+      //Update all the gotchi's metadata
       gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+      gotchi = updateAavegotchiWearables(gotchi, event);
     }
 
     gotchi.owner = newOwner.id;
