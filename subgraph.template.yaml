@@ -3,7 +3,7 @@ features:
   - grafting
 graft:
   base: QmP7WDBUeazfUc96uGa71ukM8ZUZHS3GunviVSrJvxSy62 # Subgraph ID of base subgraph
-  block: 64948301
+  block: 64948299
  # Block number
 description: Aavegotchi Core Matic
 repository:
