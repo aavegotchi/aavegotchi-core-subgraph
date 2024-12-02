@@ -498,7 +498,7 @@ export function handleTransfer(event: Transfer): void {
     //If the Gotchi is being transferred from the socket Vault, we need to sync its metadata
     if (
       event.params._from ==
-      Address.fromString("0xF1D1d61EEDDa7a10b494aF7af87D932AC910f3C5")
+      Address.fromString("0xf1d1d61eedda7a10b494af7af87d932ac910f3c5")
     ) {
       log.debug("Syncing metadata for Gotchi {} from socket vault", [
         event.params._tokenId.toString(),
