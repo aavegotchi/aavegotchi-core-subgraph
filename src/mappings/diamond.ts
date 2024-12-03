@@ -85,7 +85,7 @@ import {
   getOrCreateWearableSet,
   getOrCreateERC1155Purchase,
   updateERC1155PurchaseInfo,
-  // getOrCreateParcel,
+  getOrCreateParcel,
   updateAavegotchiWearables,
   calculateBaseRarityScore,
   getOrCreateGotchiLending,
@@ -108,7 +108,7 @@ import {
 } from "../utils/constants";
 import { Address, BigInt, log, Bytes } from "@graphprotocol/graph-ts";
 
-import { /*Parcel,*/ TokenCommitment } from "../../generated/schema";
+import { /*Parcel,*/ Parcel, TokenCommitment } from "../../generated/schema";
 // import {
 //   RealmDiamond,
 //   MintParcel,
@@ -118,6 +118,12 @@ import { /*Parcel,*/ TokenCommitment } from "../../generated/schema";
 import { updatePermissionsFromBitmap } from "../utils/decimals";
 import * as erc7589 from "./erc-7589";
 import { generateTokenCommitmentId } from "../utils/helpers/erc-7589";
+import {
+  KinshipBurned,
+  MintParcel,
+  RealmDiamond,
+  ResyncParcel,
+} from "../../generated/AavegotchiDiamond/RealmDiamond";
 
 export function handleBuyPortals(event: BuyPortals): void {
   let contract = AavegotchiDiamond.bind(event.address);
@@ -748,14 +754,14 @@ export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
     gotchi.locked = false;
     gotchi.save();
   } else if (listing.category.equals(BigInt.fromI32(4))) {
-    // let parcel = getOrCreateParcel(
-    //   listing.tokenId,
-    //   listing.seller,
-    //   Address.fromString(listing.erc721TokenAddress.toHexString()),
-    //   false
-    // );
-    // parcel.activeListing = null;
-    // parcel.save();
+    let parcel = getOrCreateParcel(
+      listing.tokenId,
+      listing.seller,
+      Address.fromString(listing.erc721TokenAddress.toHexString()),
+      false
+    );
+    parcel.activeListing = null;
+    parcel.save();
   }
 
   listing.cancelled = true;
@@ -1033,54 +1039,53 @@ export function handleDiamondCut(event: DiamondCut): void {
 */
 // export { runTests } from "../tests/aavegotchi.test";
 
-// Realm
-// export function handleResyncParcel(event: ResyncParcel): void {
-//   let parcel = Parcel.load(event.params._tokenId.toString())!;
+export function handleResyncParcel(event: ResyncParcel): void {
+  let parcel = Parcel.load(event.params._tokenId.toString())!;
 
-//   let contract = RealmDiamond.bind(event.address);
-//   let parcelInfo = contract.try_getParcelInfo(event.params._tokenId);
+  let contract = RealmDiamond.bind(event.address);
+  let parcelInfo = contract.try_getParcelInfo(event.params._tokenId);
 
-//   if (!parcelInfo.reverted) {
-//     let parcelMetadata = parcelInfo.value;
-//     parcel.parcelId = parcelMetadata.parcelId;
-//     parcel.tokenId = event.params._tokenId;
-//     parcel.coordinateX = parcelMetadata.coordinateX;
-//     parcel.coordinateY = parcelMetadata.coordinateY;
-//     parcel.district = parcelMetadata.district;
-//     parcel.parcelHash = parcelMetadata.parcelAddress;
+  if (!parcelInfo.reverted) {
+    let parcelMetadata = parcelInfo.value;
+    parcel.parcelId = parcelMetadata.parcelId;
+    parcel.tokenId = event.params._tokenId;
+    parcel.coordinateX = parcelMetadata.coordinateX;
+    parcel.coordinateY = parcelMetadata.coordinateY;
+    parcel.district = parcelMetadata.district;
+    parcel.parcelHash = parcelMetadata.parcelAddress;
 
-//     parcel.size = parcelMetadata.size;
+    parcel.size = parcelMetadata.size;
 
-//     let boostArray = parcelMetadata.boost;
-//     parcel.fudBoost = boostArray[0];
-//     parcel.fomoBoost = boostArray[1];
-//     parcel.alphaBoost = boostArray[2];
-//     parcel.kekBoost = boostArray[3];
-//   }
+    let boostArray = parcelMetadata.boost;
+    parcel.fudBoost = boostArray[0];
+    parcel.fomoBoost = boostArray[1];
+    parcel.alphaBoost = boostArray[2];
+    parcel.kekBoost = boostArray[3];
+  }
 
-//   //update auction too
+  //update auction too
 
-//   // Entities can be written to the store with `.save()`
-//   parcel.save();
-// }
+  // Entities can be written to the store with `.save()`
+  parcel.save();
+}
 
-// export function handleTransferParcel(event: Transfer): void {
-//   let user = getOrCreateUser(event.params._to.toHexString());
-//   user.save();
+export function handleTransferParcel(event: Transfer): void {
+  let user = getOrCreateUser(event.params._to.toHexString());
+  user.save();
 
-//   let parcel = Parcel.load(event.params._tokenId.toString())!;
-//   parcel.owner = user.id;
-//   parcel.save();
-// }
+  let parcel = Parcel.load(event.params._tokenId.toString())!;
+  parcel.owner = user.id;
+  parcel.save();
+}
 
-// export function handleMintParcel(event: MintParcel): void {
-//   let parcel = getOrCreateParcel(
-//     event.params._tokenId,
-//     event.params._owner,
-//     event.address
-//   );
-//   parcel.save();
-// }
+export function handleMintParcel(event: MintParcel): void {
+  let parcel = getOrCreateParcel(
+    event.params._tokenId,
+    event.params._owner,
+    event.address
+  );
+  parcel.save();
+}
 
 // Whitelist
 export function handleWhitelistCreated(event: WhitelistCreated): void {
@@ -1860,12 +1865,12 @@ export function handleERC721BuyOrderCanceled(
   entity.save();
 }
 
-// export function handleKinshipBurned(event: any): void {
-//   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
-//   if (!gotchi) return;
-//   gotchi.kinship = event.params._value;
-//   gotchi.save();
-// }
+export function handleKinshipBurned(event: KinshipBurned): void {
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
+  if (!gotchi) return;
+  gotchi.kinship = event.params._value;
+  gotchi.save();
+}
 
 export function handleRoleGranted(event: RoleGranted): void {
   erc7589.handleRoleGranted(event);
