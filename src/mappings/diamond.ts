@@ -300,6 +300,7 @@ export function handleSpendSkillpoints(event: SpendSkillpoints): void {
 export function handleResetSkillpoints(event: ResetSkillpoints): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event)!;
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+  gotchi = updateAavegotchiWearables(gotchi, event);
 
   if (gotchi.status.equals(STATUS_AAVEGOTCHI)) {
     gotchi.save();
