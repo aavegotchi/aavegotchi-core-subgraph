@@ -5,7 +5,6 @@ import {
   User,
 } from "../../../generated/schema";
 import { getOrCreateUser } from "./aavegotchi";
-import { IERC721 } from "../../../generated/FAKEGotchisNFTDiamond/IERC721";
 import { constants } from "@amxx/graphprotocol-utils";
 import { BigInt } from "@graphprotocol/graph-ts";
 
@@ -25,7 +24,7 @@ export function fetchFakeGotchiNFTToken(
     token.identifier = identifier;
     token.approval = getOrCreateUser(constants.ADDRESS_ZERO.toHex()).id;
 
-    let erc721 = IERC721.bind(Address.fromBytes(contract));
+    let erc721 = FakeGotchiNFTToken.bind(Address.fromBytes(contract));
     let try_tokenURI = erc721.try_tokenURI(identifier);
     token.uri = try_tokenURI.reverted ? "" : try_tokenURI.value;
   }

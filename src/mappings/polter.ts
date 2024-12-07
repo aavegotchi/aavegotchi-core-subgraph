@@ -85,7 +85,6 @@ import {
   getOrCreateWearableSet,
   getOrCreateERC1155Purchase,
   updateERC1155PurchaseInfo,
-  // getOrCreateParcel,
   updateAavegotchiWearables,
   calculateBaseRarityScore,
   getOrCreateGotchiLending,

@@ -9,7 +9,7 @@ import {
   Transfer as TransferEvent,
   MetadataFlag as MetadataFlagEvent,
 } from "../../generated/FAKEGotchisNFTDiamond/IERC721";
-import { events, transactions } from "@amxx/graphprotocol-utils";
+import { events } from "@amxx/graphprotocol-utils";
 
 import {
   addToOwnersIfNotExists,
