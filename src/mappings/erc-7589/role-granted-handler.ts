@@ -1,8 +1,11 @@
-import { log } from '@graphprotocol/graph-ts'
-import { generateTokenCommitmentId, upsertRoleAssignment } from '../../utils/helpers/erc-7589'
-import { TokenCommitment } from '../../../generated/schema'
-import { RoleGranted } from '../../../generated/AavegotchiDiamond/AavegotchiDiamond'
-import { getOrCreateUser } from '../../utils/helpers/diamond'
+import { log } from "@graphprotocol/graph-ts";
+import {
+  generateTokenCommitmentId,
+  upsertRoleAssignment,
+} from "../../utils/helpers/erc-7589";
+import { TokenCommitment } from "../../../generated/schema";
+import { RoleGranted } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
+import { getOrCreateUser } from "../../utils/helpers/aavegotchi";
 
 /** 
 @dev This handler is called when a role is granted.
@@ -19,23 +22,26 @@ Example:
     );
 */
 export function handleRoleGranted(event: RoleGranted): void {
-  const depositId = event.params._commitmentId
-  const rolesRegistryAddress = event.address.toHexString()
-  const tokenCommitmentId = generateTokenCommitmentId(rolesRegistryAddress, depositId)
-  const tokenCommitment = TokenCommitment.load(tokenCommitmentId)
+  const depositId = event.params._commitmentId;
+  const rolesRegistryAddress = event.address.toHexString();
+  const tokenCommitmentId = generateTokenCommitmentId(
+    rolesRegistryAddress,
+    depositId
+  );
+  const tokenCommitment = TokenCommitment.load(tokenCommitmentId);
 
   if (!tokenCommitment) {
-    log.error('[erc-7589][handleRoleGranted] TokenCommitment {} not found, tx hash: {}', [
-      tokenCommitmentId,
-      event.transaction.hash.toHexString(),
-    ])
-    return
+    log.error(
+      "[erc-7589][handleRoleGranted] TokenCommitment {} not found, tx hash: {}",
+      [tokenCommitmentId, event.transaction.hash.toHexString()]
+    );
+    return;
   }
 
-  const grantor = getOrCreateUser(tokenCommitment.grantor)
-  grantor.save()
-  const grantee = getOrCreateUser(event.params._grantee.toHex())
-  grantee.save()
+  const grantor = getOrCreateUser(tokenCommitment.grantor);
+  grantor.save();
+  const grantee = getOrCreateUser(event.params._grantee.toHex());
+  grantee.save();
   const roleAssignment = upsertRoleAssignment(
     event.params._role,
     event.address.toHex(),
@@ -47,11 +53,14 @@ export function handleRoleGranted(event: RoleGranted): void {
     event.params._expirationDate,
     event.params._data,
     event.params._revocable,
-    tokenCommitment.id,
-  )
-  log.warning('[erc-7589][handleRoleGranted] roleAssignment: {} NFT: {} Tx: {}', [
-    roleAssignment.id,
-    `${tokenCommitment.tokenAddress}-${tokenCommitment.tokenId}`,
-    event.transaction.hash.toHex(),
-  ])
+    tokenCommitment.id
+  );
+  log.warning(
+    "[erc-7589][handleRoleGranted] roleAssignment: {} NFT: {} Tx: {}",
+    [
+      roleAssignment.id,
+      `${tokenCommitment.tokenAddress}-${tokenCommitment.tokenId}`,
+      event.transaction.hash.toHex(),
+    ]
+  );
 }

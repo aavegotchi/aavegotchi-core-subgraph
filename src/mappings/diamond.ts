@@ -85,7 +85,6 @@ import {
   getOrCreateWearableSet,
   getOrCreateERC1155Purchase,
   updateERC1155PurchaseInfo,
-  getOrCreateParcel,
   updateAavegotchiWearables,
   calculateBaseRarityScore,
   getOrCreateGotchiLending,
@@ -96,7 +95,10 @@ import {
   getOrCreateERC721BuyOrder,
   getOrCreateERC1155BuyOrder,
   getOrCreateERC1155BuyOrderExecution,
-} from "../utils/helpers/diamond";
+} from "../utils/helpers/aavegotchi";
+
+import { getOrCreateParcel } from "../utils/helpers/realm";
+
 import {
   BIGINT_ONE,
   PORTAL_STATUS_BOUGHT,

@@ -1,11 +1,11 @@
-import { BigInt, log } from '@graphprotocol/graph-ts'
+import { BigInt, log } from "@graphprotocol/graph-ts";
 import {
   findOrCreateRolesRegistry,
   generateTokenCommitmentId,
-} from '../../utils/helpers/erc-7589'
-import { TokensCommitted } from '../../../generated/AavegotchiDiamond/AavegotchiDiamond'
-import { getOrCreateUser } from '../../utils/helpers/diamond'
-import { TokenCommitment } from '../../../generated/schema'
+} from "../../utils/helpers/erc-7589";
+import { TokensCommitted } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
+import { getOrCreateUser } from "../../utils/helpers/aavegotchi";
+import { TokenCommitment } from "../../../generated/schema";
 
 /** 
 @dev This handler is called when tokens are committed.
@@ -21,26 +21,29 @@ Example:
     );
 */
 export function handleTokensCommitted(event: TokensCommitted): void {
-  const tokenAddress = event.params._tokenAddress.toHexString()
-  const tokenId = event.params._tokenId
-  const grantor = getOrCreateUser(event.params._grantor.toHexString())
+  const tokenAddress = event.params._tokenAddress.toHexString();
+  const tokenId = event.params._tokenId;
+  const grantor = getOrCreateUser(event.params._grantor.toHexString());
 
-  const rolesRegistry = findOrCreateRolesRegistry(event.address.toHexString())
-  const tokenCommitmentId = generateTokenCommitmentId(rolesRegistry.id, event.params._commitmentId)
+  const rolesRegistry = findOrCreateRolesRegistry(event.address.toHexString());
+  const tokenCommitmentId = generateTokenCommitmentId(
+    rolesRegistry.id,
+    event.params._commitmentId
+  );
 
-  const tokenCommitment = new TokenCommitment(tokenCommitmentId)
-  tokenCommitment.rolesRegistry = rolesRegistry.id
-  tokenCommitment.depositId = event.params._commitmentId
-  tokenCommitment.grantor = grantor.id
-  tokenCommitment.tokenAddress = tokenAddress
-  tokenCommitment.tokenId = tokenId
-  tokenCommitment.amount = event.params._tokenAmount
-  tokenCommitment.usedBalance = BigInt.zero()
-  tokenCommitment.isReleased = false
-  tokenCommitment.save()
+  const tokenCommitment = new TokenCommitment(tokenCommitmentId);
+  tokenCommitment.rolesRegistry = rolesRegistry.id;
+  tokenCommitment.depositId = event.params._commitmentId;
+  tokenCommitment.grantor = grantor.id;
+  tokenCommitment.tokenAddress = tokenAddress;
+  tokenCommitment.tokenId = tokenId;
+  tokenCommitment.amount = event.params._tokenAmount;
+  tokenCommitment.usedBalance = BigInt.zero();
+  tokenCommitment.isReleased = false;
+  tokenCommitment.save();
 
-  log.warning('[erc-7589][handleTokensCommitted] TokensCommitted {} created, tx hash: {}', [
-    tokenCommitmentId,
-    event.transaction.hash.toHexString(),
-  ])
+  log.warning(
+    "[erc-7589][handleTokensCommitted] TokensCommitted {} created, tx hash: {}",
+    [tokenCommitmentId, event.transaction.hash.toHexString()]
+  );
 }

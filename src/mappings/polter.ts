@@ -96,7 +96,7 @@ import {
   getOrCreateERC721BuyOrder,
   getOrCreateERC1155BuyOrder,
   getOrCreateERC1155BuyOrderExecution,
-} from "../utils/helpers/diamond";
+} from "../utils/helpers/aavegotchi";
 import {
   BIGINT_ONE,
   PORTAL_STATUS_BOUGHT,
