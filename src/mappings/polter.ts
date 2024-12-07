@@ -466,9 +466,10 @@ export function handleExperienceTransfer(event: ExperienceTransfer): void {
 //   handler: handleAavegotchiInteract
 
 export function handleAavegotchiInteract(event: AavegotchiInteract): void {
-  if (event.block.number.le(BigInt.fromI32(40000000))) {
-    return;
-  }
+  //we used this on polygon to speed up syncing
+  // if (event.block.number.le(BigInt.fromI32(40000000))) {
+  //   return;
+  // }
 
   let gotchi = getOrCreateAavegotchi(
     event.params._tokenId.toString(),
