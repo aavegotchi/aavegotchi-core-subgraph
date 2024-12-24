@@ -593,18 +593,18 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
     portal.save();
     listing.portal = event.params.erc721TokenId.toString();
   } else if (listing.category == BigInt.fromI32(4)) {
-    // listing.parcel = event.params.erc721TokenId.toString();
-    // let parcel = Parcel.load(event.params.erc721TokenId.toString())!;
-    // parcel.activeListing = event.params.listingId;
-    // listing.fudBoost = parcel.fudBoost;
-    // listing.fomoBoost = parcel.fomoBoost;
-    // listing.alphaBoost = parcel.alphaBoost;
-    // listing.kekBoost = parcel.kekBoost;
-    // listing.district = parcel.district;
-    // listing.size = parcel.size;
-    // listing.coordinateX = parcel.coordinateX;
-    // listing.coordinateY = parcel.coordinateY;
-    // listing.parcelHash = parcel.parcelHash;
+    listing.parcel = event.params.erc721TokenId.toString();
+    let parcel = Parcel.load(event.params.erc721TokenId.toString())!;
+    parcel.activeListing = event.params.listingId;
+    listing.fudBoost = parcel.fudBoost;
+    listing.fomoBoost = parcel.fomoBoost;
+    listing.alphaBoost = parcel.alphaBoost;
+    listing.kekBoost = parcel.kekBoost;
+    listing.district = parcel.district;
+    listing.size = parcel.size;
+    listing.coordinateX = parcel.coordinateX;
+    listing.coordinateY = parcel.coordinateY;
+    listing.parcelHash = parcel.parcelHash;
   } else {
     //handle external contracts
   }
