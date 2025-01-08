@@ -605,16 +605,15 @@ export function updateAavegotchiWearables(
         let setTypes = getSetTypes.value;
 
         let bestSetID = 0;
-        let highestBRSBonus = 0;
+        let longestSetLength = 0;
         //Iterate through all the possible equipped sets
         for (let index = 0; index < foundSetIDs.length; index++) {
           let setID = foundSetIDs[index];
           let setInfo = setTypes[setID.toI32()];
-          let traitBonuses = setInfo.traitsBonuses;
-          let brsBonus = traitBonuses[0];
+          let setLength = setInfo.wearableIds.length;
 
-          if (brsBonus >= highestBRSBonus) {
-            highestBRSBonus = brsBonus;
+          if (setLength >= longestSetLength) {
+            longestSetLength = setLength;
             bestSetID = setID.toI32();
           }
         }
