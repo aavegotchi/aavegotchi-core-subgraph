@@ -461,6 +461,7 @@ type ERC721BuyOrder @entity {
   validationHash: Bytes!
   createdAt: BigInt!
   executedAt: BigInt
+  executedAtBlock: BigInt
   canceledAt: BigInt
   canceled: Boolean
 }

@@ -2,8 +2,9 @@ specVersion: 0.0.4
 # features:
 #   - grafting
 # graft:
-#   base: QmQ2wyvSmj7fdjtWdKYSNvcLLg9xxoheEAdkYMbiUS7Phu # Subgraph ID of base subgraph
-#   block: 62782000 # Block number
+#   base: QmP7WDBUeazfUc96uGa71ukM8ZUZHS3GunviVSrJvxSy62 # Subgraph ID of base subgraph
+#   block: 64948299
+ # Block number
 description: Aavegotchi Core Matic
 repository:
 schema:
@@ -11,24 +12,32 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: AavegotchiDiamond
-    network: "geist-mainnet"
+    network: "matic"
     source:
-      address: "0x6Acc828BbbC6874de40Ca20bfeA7Cd2a2DA8DA8c"
+      address: "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
       abi: AavegotchiDiamond
-      startBlock: 4273
+      startBlock: 11500000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ./src/mappings/polter.ts
+      file: ./src/mappings/diamond.ts
       entities:
         - User
       abis:
         - name: AavegotchiDiamond
           file: ./abis/AavegotchiDiamond.json
-      #   - name: RealmDiamond
-      #     file: ./abis/RealmDiamond.json
+        - name: RealmDiamond
+          file: ./abis/RealmDiamond.json
       eventHandlers:
+        - event: BuyPortals(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleBuyPortals
+        - event: Xingyun(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleXingyun
+        - event: PortalOpened(indexed uint256)
+          handler: handlePortalOpened
+        - event: ClaimAavegotchi(indexed uint256)
+          handler: handleClaimAavegotchi
         - event: IncreaseStake(indexed uint256,uint256)
           handler: handleIncreaseStake
         - event: DecreaseStake(indexed uint256,uint256)
@@ -161,4 +170,84 @@ dataSources:
         - event: ERC1155BuyOrderCancel(indexed uint256,uint256)
           handler: handleERC1155BuyOrderCancel
 
-
+  - kind: ethereum/contract
+    name: RealmDiamond
+    network: "matic"
+    source:
+      address: "0x1D0360BaC7299C86Ec8E99d0c1C9A95FEfaF2a11"
+      abi: RealmDiamond
+      startBlock: 20667840
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - MintParcel
+        - Transfer
+      abis:
+        - name: RealmDiamond
+          file: ./abis/RealmDiamond.json
+      eventHandlers:
+        - event: MintParcel(indexed address,indexed uint256)
+          handler: handleMintParcel
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransferParcel
+        - event: ResyncParcel(uint256)
+          handler: handleResyncParcel
+        - event: KinshipBurned(uint256,uint256)
+          handler: handleKinshipBurned
+      file: ./src/mappings/diamond.ts
+  - kind: ethereum/contract
+    name: FAKEGotchisCardDiamond
+    network: "matic"
+    source:
+      address: "0x9f6BcC63e86D44c46e85564E9383E650dc0b56D7"
+      abi: IERC1155
+      startBlock: 34520146
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Card
+      abis:
+        - name: IERC721
+          file: ./abis/diamond_erc721.json
+        - name: IERC1155
+          file: ./abis/diamond_erc1155.json
+      eventHandlers:
+        - event: NewSeriesStarted(indexed uint256,indexed uint256)
+          handler: handleNewSeriesStarted
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+      file: ./src/mappings/fakeGotchisCard.ts
+  - kind: ethereum/contract
+    name: FAKEGotchisNFTDiamond
+    network: "matic"
+    source:
+      address: "0xA4E3513c98b30d4D7cc578d2C328Bd550725D1D0"
+      abi: IERC721
+      startBlock: 34520176
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - NFT
+      abis:
+        - name: IERC721
+          file: ./abis/diamond_erc721.json
+        - name: IERC1155
+          file: ./abis/diamond_erc1155.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: MetadataActionLog(indexed uint256,(address,uint16[2],uint16,uint32,uint32,address,uint40,uint8,bool,string,string,string,string,string,string,string,string,string))
+          handler: handleMetadataActionLog
+        - event: MetadataFlag(indexed uint256,address)
+          handler: handleMetadataFlag
+        - event: MetadataLike(indexed uint256,address)
+          handler: handleMetadataLike
+      file: ./src/mappings/fakeGotchisNFT.ts
