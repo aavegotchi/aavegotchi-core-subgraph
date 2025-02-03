@@ -528,9 +528,8 @@ export function handleTransfer(event: Transfer): void {
 
     if (newOwner.id == "0x0000000000000000000000000000000000000000") {
       let stats = getStatisticEntity();
-      stats.aavegotchisSacrificed = stats.aavegotchisSacrificed.plus(
-        BIGINT_ONE
-      );
+      stats.aavegotchisSacrificed =
+        stats.aavegotchisSacrificed.plus(BIGINT_ONE);
       stats.save();
     }
   } else {
@@ -1855,6 +1854,7 @@ export function handleERC721BuyOrderExecuted(
   entity.priceInWei = event.params.priceInWei;
   entity.buyer = event.params.buyer;
   entity.executedAt = event.params.time;
+  entity.executedAtBlock = event.block.number;
   entity.save();
 }
 
