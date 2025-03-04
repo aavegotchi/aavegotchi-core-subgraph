@@ -39,6 +39,8 @@ import {
   GotchiLendingCancel,
   WhitelistCreated,
   WhitelistUpdated,
+  WearablesConfigCreated,
+  WearablesConfigUpdated,
   ERC1155ExecutedToRecipient,
   ERC721ExecutedToRecipient,
   GotchiLendingEnded,
@@ -88,6 +90,7 @@ import {
   updateAavegotchiWearables,
   calculateBaseRarityScore,
   getOrCreateGotchiLending,
+  createOrUpdateWearablesConfig,
   createOrUpdateWhitelist,
   getOrCreateClaimedToken,
   getOrCreateWhitelist,
@@ -1088,6 +1091,25 @@ export function handleMintParcel(event: MintParcel): void {
     event.address
   );
   parcel.save();
+}
+
+// WearablesConfig
+export function handleWearablesConfigCreated(event: WearablesConfigCreated): void {
+  createOrUpdateWearablesConfig(
+    event.params.owner,
+    event.params.tokenId,
+    event.params.wearablesConfigId,
+    event
+  );
+}
+
+export function handleWearablesConfigUpdated(event: WearablesConfigUpdated): void {
+  createOrUpdateWearablesConfig(
+    event.params.owner,
+    event.params.tokenId,
+    event.params.wearablesConfigId,
+    event
+  );
 }
 
 // Whitelist

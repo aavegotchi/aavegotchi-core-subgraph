@@ -15,6 +15,7 @@ import {
   Statistic,
   User,
   WearableSet,
+  WearablesConfig,
   Whitelist,
 } from "../../../generated/schema";
 
@@ -696,8 +697,47 @@ export function calculateBaseRarityScore(numericTraits: Array<i32>): i32 {
   return rarityScore;
 }
 
-// whitelist
+// wearables config
+export function createOrUpdateWearablesConfig(
+  owner: Bytes,
+  tokenId: BigInt,
+  wearablesConfigId: i32,
+  event: ethereum.Event
+): WearablesConfig | null {
+  let contract = AavegotchiDiamond.bind(event.address);
+  let ownerAddress = Address.fromString(owner.toHexString());
+  let gotchi = getOrCreateAavegotchi(tokenId.toString(), event)!;
+  let user = getOrCreateUser(ownerAddress.toHexString())!;
+  let id = `${user.id}-${tokenId}-${wearablesConfigId}`
 
+  let response = contract.try_getWearablesConfig(
+    ownerAddress,
+    tokenId,
+    wearablesConfigId
+  );
+
+  if (response.reverted) {
+    return null;
+  }
+
+  let result = response.value;
+
+  let wearablesConfig = WearablesConfig.load(id);
+  if (!wearablesConfig) {
+    wearablesConfig = new WearablesConfig(id);
+    wearablesConfig.wearablesConfigId = wearablesConfigId;
+    wearablesConfig.gotchi = gotchi.id;
+    wearablesConfig.gotchiTokenId = tokenId;
+    wearablesConfig.owner = user.id;
+    wearablesConfig.ownerAddress = ownerAddress;
+  }
+  wearablesConfig.name = result.name;
+  wearablesConfig.wearables = result.wearables;
+  wearablesConfig.save();
+  return wearablesConfig;
+}
+
+// whitelist
 export function createOrUpdateWhitelist(
   id: BigInt,
   event: ethereum.Event

@@ -447,6 +447,7 @@ type Whitelist @entity {
 type WearablesConfig @entity {
   id: ID!
   name: String!
+  wearablesConfigId: Int!
   gotchi: Aavegotchi!
   gotchiTokenId: BigInt!
   wearables: [Int!]!
