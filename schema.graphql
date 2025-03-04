@@ -444,6 +444,16 @@ type Whitelist @entity {
   maxBorrowLimit: Int
 }
 
+type WearablesConfig @entity {
+  id: ID!
+  name: String!
+  gotchi: Aavegotchi!
+  gotchiTokenId: BigInt!
+  wearables: [Int!]!
+  owner: User!
+  ownerAddress: Bytes!
+}
+
 #type Upgrade @entity {
 #  id: ID!
 #  calldata:
