@@ -169,6 +169,10 @@ dataSources:
           handler: handleERC1155BuyOrderExecute
         - event: ERC1155BuyOrderCancel(indexed uint256,uint256)
           handler: handleERC1155BuyOrderCancel
+        - event: WearablesConfigCreated(indexed address,indexed uint256,indexed uint16,uint16[16],uint256)
+          handler: handleWearablesConfigCreated
+        - event: WearablesConfigUpdated(indexed address,indexed uint256,indexed uint16,uint16[16])
+          handler: handleWearablesConfigUpdated
 
   - kind: ethereum/contract
     name: RealmDiamond
