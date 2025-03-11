@@ -1,4 +1,9 @@
 {
+  "grafting": true,
+  "graft": {
+    "deploymentId": "QmP7WDBUeazfUc96uGa71ukM8ZUZHS3GunviVSrJvxSy62",
+    "startBlock": 68694611
+  },
   "coreAddress": "0x86935F11C86623deC8a25696E1C19a8659CbF95d",
   "coreStartBlock": 11500000,
   "realmAddress": "0x1D0360BaC7299C86Ec8E99d0c1C9A95FEfaF2a11",
