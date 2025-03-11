@@ -1,9 +1,11 @@
 specVersion: 0.0.4
-# features:
-#   - grafting
-# graft:
-#   base: QmQ2wyvSmj7fdjtWdKYSNvcLLg9xxoheEAdkYMbiUS7Phu # Subgraph ID of base subgraph
-#   block: 62782000 # Block number
+{{#grafting}}
+features:
+  - grafting
+graft:
+  base: {{graft.deploymentId}} # Subgraph ID of base subgraph
+  block: {{graft.startBlock}} # Block number to start grafting
+{{/grafting}}
 description: Aavegotchi Core Matic
 repository:
 schema:
