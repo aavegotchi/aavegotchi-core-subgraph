@@ -1,4 +1,4 @@
-import { BigInt, Address } from "@graphprotocol/graph-ts";
+import { Address } from "@graphprotocol/graph-ts";
 
 import { shouldSkipTransfer, updateOwnership } from "./helpers";
 import {
