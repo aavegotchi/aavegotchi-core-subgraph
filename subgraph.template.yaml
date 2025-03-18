@@ -169,6 +169,10 @@ dataSources:
           handler: handleERC1155BuyOrderExecute
         - event: ERC1155BuyOrderCancel(indexed uint256,uint256)
           handler: handleERC1155BuyOrderCancel
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
 
   - kind: ethereum/contract
     name: RealmDiamond
@@ -251,3 +255,25 @@ dataSources:
         - event: MetadataLike(indexed uint256,address)
           handler: handleMetadataLike
       file: ./src/mappings/fakeGotchisNFT.ts
+  - kind: ethereum/contract
+    name: WearableDiamond
+    network: "{{network}}"
+    source:
+      address: "{{wearableAddress}}"
+      abi: AavegotchiDiamond
+      startBlock: {{wearableStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/itemTransfers.ts
+      entities:
+        - ItemTypeOwnership
+      abis:
+        - name: AavegotchiDiamond
+          file: ./abis/AavegotchiDiamond.json
+      eventHandlers:
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
