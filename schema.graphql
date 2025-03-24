@@ -639,5 +639,4 @@ type ItemTypeOwnership @entity {
   owner: Bytes!
   balance: BigInt!
   lastUpdated: BigInt!
-  contract: Bytes! # Track which contract processed the transfer
 }
