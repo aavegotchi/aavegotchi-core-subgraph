@@ -1,4 +1,9 @@
 {
+  "grafting": false,
+  "graft": {
+    "deploymentId": "QmQ2wyvSmj7fdjtWdKYSNvcLLg9xxoheEAdkYMbiUS7Phu",
+    "startBlock": 62782000
+  },
   "coreAddress": "0x226625C1B1174e7BaaE8cDC0432Db0e2ED83b7Ba",
   "coreStartBlock": 4273,
   "network": "geist-polter"

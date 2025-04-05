@@ -2,8 +2,8 @@ specVersion: 0.0.4
 features:
   - grafting
 graft:
-  base: QmcFKMGsBUCCE7fkxHn8FwXkK4eRqWNoLdtY6EwiFqKEBE # Subgraph ID of base subgraph
-  block: 68694611
+  base: QmP7WDBUeazfUc96uGa71ukM8ZUZHS3GunviVSrJvxSy62 # Subgraph ID of base subgraph
+  block: 68694611 # Block number to start grafting
 description: Aavegotchi Core Matic
 repository:
 schema:
@@ -168,6 +168,10 @@ dataSources:
           handler: handleERC1155BuyOrderExecute
         - event: ERC1155BuyOrderCancel(indexed uint256,uint256)
           handler: handleERC1155BuyOrderCancel
+        - event: WearablesConfigCreated(indexed address,indexed uint256,indexed uint16,uint16[16],uint256)
+          handler: handleWearablesConfigCreated
+        - event: WearablesConfigUpdated(indexed address,indexed uint256,indexed uint16,uint16[16])
+          handler: handleWearablesConfigUpdated
 
   - kind: ethereum/contract
     name: RealmDiamond
