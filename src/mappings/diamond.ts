@@ -489,6 +489,13 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   gotchi.lastInteracted = event.block.timestamp;
   // gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
   gotchi.save();
+
+  // Update ERC721Listing if gotchi has an active listing
+  if (gotchi.activeListing) {
+    let listing = getOrCreateERC721Listing(gotchi.activeListing!.toString());
+    listing.kinship = gotchi.kinship;
+    listing.save();
+  }
 }
 
 //ERC721 Transfer
@@ -528,8 +535,9 @@ export function handleTransfer(event: Transfer): void {
 
     if (newOwner.id == "0x0000000000000000000000000000000000000000") {
       let stats = getStatisticEntity();
-      stats.aavegotchisSacrificed =
-        stats.aavegotchisSacrificed.plus(BIGINT_ONE);
+      stats.aavegotchisSacrificed = stats.aavegotchisSacrificed.plus(
+        BIGINT_ONE
+      );
       stats.save();
     }
   } else {
