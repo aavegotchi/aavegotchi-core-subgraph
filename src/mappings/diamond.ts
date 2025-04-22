@@ -131,7 +131,6 @@ import {
   RealmDiamond,
   ResyncParcel,
 } from "../../generated/AavegotchiDiamond/RealmDiamond";
-import { shouldSkipTransfer } from "./helpers";
 import { updateOwnership } from "./helpers";
 
 export function handleBuyPortals(event: BuyPortals): void {
@@ -1105,7 +1104,9 @@ export function handleMintParcel(event: MintParcel): void {
 }
 
 // WearablesConfig
-export function handleWearablesConfigCreated(event: WearablesConfigCreated): void {
+export function handleWearablesConfigCreated(
+  event: WearablesConfigCreated
+): void {
   createOrUpdateWearablesConfig(
     event.params.owner,
     event.params.tokenId,
@@ -1114,7 +1115,9 @@ export function handleWearablesConfigCreated(event: WearablesConfigCreated): voi
   );
 }
 
-export function handleWearablesConfigUpdated(event: WearablesConfigUpdated): void {
+export function handleWearablesConfigUpdated(
+  event: WearablesConfigUpdated
+): void {
   createOrUpdateWearablesConfig(
     event.params.owner,
     event.params.tokenId,
@@ -1983,10 +1986,6 @@ export function handleERC1155BuyOrderCancel(
 }
 
 export function handleTransferSingle(event: TransferSingle): void {
-  if (shouldSkipTransfer(event)) {
-    return;
-  }
-
   const from = event.params._from;
   const to = event.params._to;
   const id = event.params._id.toString();
@@ -2003,8 +2002,6 @@ export function handleTransferSingle(event: TransferSingle): void {
 }
 
 export function handleTransferBatch(event: TransferBatch): void {
-  if (shouldSkipTransfer(event)) return;
-
   const from = event.params._from;
   const to = event.params._to;
   const ids = event.params._ids;

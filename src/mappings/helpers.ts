@@ -11,19 +11,6 @@ export const WEARABLE_TOKEN_ADDRESS = Address.fromString(
   "0x58de9AaBCaeEC0f69883C94318810ad79Cc6a44f"
 );
 
-export function shouldSkipTransfer(event: ethereum.Event): boolean {
-  if (!isWearableTransfer(event.address)) return true;
-
-  // if (
-  //   event.address == AAVEGOTCHI_ADDRESS &&
-  //   event.block.number.gt(MIGRATION_BLOCK)
-  // ) {
-  //   return true;
-  // }
-
-  return false;
-}
-
 export function updateOwnership(
   itemTypeId: string,
   owner: Address,
@@ -48,12 +35,4 @@ export function updateOwnership(
   } else {
     ownership.save();
   }
-}
-
-export function isWearableTransfer(tokenAddress: Address): boolean {
-  // Check if the token address in the event matches the wearable token address
-  return (
-    tokenAddress.equals(WEARABLE_TOKEN_ADDRESS) ||
-    tokenAddress.equals(AAVEGOTCHI_ADDRESS)
-  );
 }

@@ -171,8 +171,12 @@ dataSources:
           handler: handleERC1155BuyOrderCancel
         - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleTransferSingle
+          filter:
+            blockRange: { from: 11500000, to: 35999792 }
         - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
           handler: handleTransferBatch
+          filter:
+            blockRange: { from: 11500000, to: 35999792 }
         - event: WearablesConfigCreated(indexed address,indexed uint256,indexed uint16,uint16[16],uint256)
           handler: handleWearablesConfigCreated
         - event: WearablesConfigUpdated(indexed address,indexed uint256,indexed uint16,uint16[16])

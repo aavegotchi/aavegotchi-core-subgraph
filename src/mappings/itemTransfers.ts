@@ -1,16 +1,12 @@
 import { Address } from "@graphprotocol/graph-ts";
 
-import { shouldSkipTransfer, updateOwnership } from "./helpers";
+import { updateOwnership } from "./helpers";
 import {
   TransferBatch,
   TransferSingle,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 
 export function handleTransferSingle(event: TransferSingle): void {
-  if (shouldSkipTransfer(event)) {
-    return;
-  }
-
   const from = event.params._from;
   const to = event.params._to;
   const id = event.params._id.toString();
@@ -27,8 +23,6 @@ export function handleTransferSingle(event: TransferSingle): void {
 }
 
 export function handleTransferBatch(event: TransferBatch): void {
-  if (shouldSkipTransfer(event)) return;
-
   const from = event.params._from;
   const to = event.params._to;
   const ids = event.params._ids;
