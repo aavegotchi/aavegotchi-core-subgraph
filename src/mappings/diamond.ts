@@ -39,6 +39,8 @@ import {
   GotchiLendingCancel,
   WhitelistCreated,
   WhitelistUpdated,
+  WearablesConfigCreated,
+  WearablesConfigUpdated,
   ERC1155ExecutedToRecipient,
   ERC721ExecutedToRecipient,
   GotchiLendingEnded,
@@ -90,6 +92,7 @@ import {
   updateAavegotchiWearables,
   calculateBaseRarityScore,
   getOrCreateGotchiLending,
+  createOrUpdateWearablesConfig,
   createOrUpdateWhitelist,
   getOrCreateClaimedToken,
   getOrCreateWhitelist,
@@ -493,6 +496,13 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
   gotchi.lastInteracted = event.block.timestamp;
   // gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
   gotchi.save();
+
+  // Update ERC721Listing if gotchi has an active listing
+  if (gotchi.activeListing) {
+    let listing = getOrCreateERC721Listing(gotchi.activeListing!.toString());
+    listing.kinship = gotchi.kinship;
+    listing.save();
+  }
 }
 
 //ERC721 Transfer
@@ -1092,6 +1102,25 @@ export function handleMintParcel(event: MintParcel): void {
     event.address
   );
   parcel.save();
+}
+
+// WearablesConfig
+export function handleWearablesConfigCreated(event: WearablesConfigCreated): void {
+  createOrUpdateWearablesConfig(
+    event.params.owner,
+    event.params.tokenId,
+    event.params.wearablesConfigId,
+    event
+  );
+}
+
+export function handleWearablesConfigUpdated(event: WearablesConfigUpdated): void {
+  createOrUpdateWearablesConfig(
+    event.params.owner,
+    event.params.tokenId,
+    event.params.wearablesConfigId,
+    event
+  );
 }
 
 // Whitelist
@@ -1859,6 +1888,7 @@ export function handleERC721BuyOrderExecuted(
   entity.priceInWei = event.params.priceInWei;
   entity.buyer = event.params.buyer;
   entity.executedAt = event.params.time;
+  entity.executedAtBlock = event.block.number;
   entity.save();
 }
 
