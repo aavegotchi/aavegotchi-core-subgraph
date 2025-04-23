@@ -113,7 +113,7 @@ import {
 } from "../utils/constants";
 import { Address, BigInt, log, Bytes } from "@graphprotocol/graph-ts";
 
-import { /*Parcel,*/ Parcel, TokenCommitment } from "../../generated/schema";
+import { ERC721Listing, Parcel, TokenCommitment } from "../../generated/schema";
 // import {
 //   RealmDiamond,
 //   MintParcel,
@@ -495,13 +495,12 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
 
   // Update ERC721Listing if gotchi has an active listing
   if (gotchi.activeListing) {
-    let listing = getOrCreateERC721Listing(
-      gotchi.activeListing!.toString(),
-      false
-    );
-    listing.kinship = gotchi.kinship;
-    listing.save();
-  }
+    let listing = ERC721Listing.load(gotchi.activeListing!.toString());
+    
+    if (listing) {
+      listing.kinship = gotchi.kinship;
+      listing.save();
+    } 
 }
 
 //ERC721 Transfer
@@ -584,6 +583,7 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
     )!;
     gotchi.locked = true;
     listing.collateral = gotchi.collateral;
+    listing.kinship = gotchi.kinship; // Explicitly set kinship when listing is created
     gotchi.activeListing = event.params.listingId;
     gotchi.save();
     listing.nameLowerCase = gotchi.nameLowerCase;
