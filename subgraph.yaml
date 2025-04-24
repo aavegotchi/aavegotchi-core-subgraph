@@ -3,8 +3,8 @@ specVersion: 0.0.4
 #   - grafting
 # graft:
 #   base: QmP7WDBUeazfUc96uGa71ukM8ZUZHS3GunviVSrJvxSy62 # Subgraph ID of base subgraph
-#   block: 64948299
- # Block number
+#   block: 68694611
+#  Block number
 description: Aavegotchi Core Matic
 repository:
 schema:
@@ -173,6 +173,14 @@ dataSources:
           handler: handleTransferSingle
         - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
           handler: handleTransferBatch
+        - event: WearablesConfigCreated(indexed address,indexed uint256,indexed uint16,uint16[16],uint256)
+          handler: handleWearablesConfigCreated
+        - event: WearablesConfigUpdated(indexed address,indexed uint256,indexed uint16,uint16[16])
+          handler: handleWearablesConfigUpdated
+        - event: TransferToParent(indexed address,indexed uint256,indexed uint256,uint256)
+          handler: handleTransferToParent
+        - event: TransferFromParent(indexed address,indexed uint256,indexed uint256,uint256)
+          handler: handleTransferFromParent
 
   - kind: ethereum/contract
     name: RealmDiamond

@@ -652,3 +652,10 @@ type ItemTypeOwnership @entity {
   balance: BigInt!
   lastUpdated: BigInt!
 }
+
+type PendingEquip @entity {
+  id: ID! # `${txHash}-${logIdx}`  (or just txHash if one equip/tx)
+  sender: Bytes! # original wallet
+  itemId: BigInt!
+  amount: BigInt!
+}
