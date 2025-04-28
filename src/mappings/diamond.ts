@@ -117,7 +117,11 @@ import {
 } from "../utils/constants";
 import { Address, BigInt, log, Bytes, store } from "@graphprotocol/graph-ts";
 
-import { /*Parcel,*/ Parcel, TokenCommitment } from "../../generated/schema";
+import {
+  /*Parcel,*/ Parcel,
+  PendingEquip,
+  TokenCommitment,
+} from "../../generated/schema";
 // import {
 //   RealmDiamond,
 //   MintParcel,
@@ -133,7 +137,7 @@ import {
   RealmDiamond,
   ResyncParcel,
 } from "../../generated/AavegotchiDiamond/RealmDiamond";
-import { AAVEGOTCHI_ADDRESS, updateOwnership } from "./helpers";
+import { updateOwnership } from "./helpers";
 
 export function handleBuyPortals(event: BuyPortals): void {
   let contract = AavegotchiDiamond.bind(event.address);
@@ -1991,9 +1995,7 @@ export function handleTransferSingle(e: TransferSingle): void {
   const from = e.params._from;
   const to = e.params._to;
 
-  // prevent updating balances when equipping/unequipping and delegating?
-  if (to.equals(AAVEGOTCHI_ADDRESS)) return;
-
+  // 1) Normal balance book-keeping
   if (from.notEqual(Address.zero()))
     updateOwnership(
       e.params._id.toString(),
@@ -2009,6 +2011,17 @@ export function handleTransferSingle(e: TransferSingle): void {
       e.params._value,
       e.block.timestamp
     );
+
+  // 2) If it went _into_ the diamond it MIGHT be an equip leg,
+  //    so remember who sent it.
+  if (to.equals(e.address)) {
+    const key = `${e.transaction.hash.toHex()}-${e.logIndex.toString()}`;
+    let p = new PendingEquip(key);
+    p.sender = from; // wallet that paid the item
+    p.itemId = e.params._id;
+    p.amount = e.params._value;
+    p.save();
+  }
 }
 
 export function handleTransferBatch(event: TransferBatch): void {
@@ -2030,4 +2043,37 @@ export function handleTransferBatch(event: TransferBatch): void {
       updateOwnership(id, to, amount, timestamp);
     }
   }
+}
+
+export function handleTransferToParent(e: TransferToParent): void {
+  const itemId = e.params._tokenTypeId.toString(); // 👈 field names from ABI
+  const amt = e.params._value;
+  const ts = e.block.timestamp;
+  const pendId = `${e.transaction.hash.toHex()}-${(
+    e.logIndex.toI32() - 1
+  ).toString()}`;
+
+  let p = PendingEquip.load(pendId);
+
+  if (p) {
+    // 1) undo diamond’s +amt
+    updateOwnership(itemId, e.params._toContract, amt.neg(), ts);
+
+    // 2) give item back to original wallet
+    updateOwnership(itemId, Address.fromBytes(p.sender), amt, ts);
+
+    store.remove("PendingEquip", pendId);
+  } else {
+    // diamond really owned it already
+    updateOwnership(itemId, e.params._toContract, amt.neg(), ts);
+  }
+}
+
+export function handleTransferFromParent(e: TransferFromParent): void {
+  const itemId = e.params._tokenTypeId.toString();
+  const amt = e.params._value;
+  const ts = e.block.timestamp;
+
+  // 1) diamond temporarily regains it
+  updateOwnership(itemId, e.params._fromContract, amt, ts);
 }

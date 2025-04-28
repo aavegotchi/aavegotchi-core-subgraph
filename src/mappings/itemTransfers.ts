@@ -1,18 +1,17 @@
 import { Address } from "@graphprotocol/graph-ts";
 
-import { AAVEGOTCHI_ADDRESS, updateOwnership } from "./helpers";
+import { updateOwnership } from "./helpers";
 import {
   TransferBatch,
   TransferSingle,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
+import { PendingEquip } from "../../generated/schema";
 
 export function handleTransferSingle(e: TransferSingle): void {
   const from = e.params._from;
   const to = e.params._to;
 
-  // prevent updating balances when equipping/unequipping and delegating?
-  if (to.equals(AAVEGOTCHI_ADDRESS)) return;
-
+  // 1) Normal balance book-keeping
   if (from.notEqual(Address.zero()))
     updateOwnership(
       e.params._id.toString(),
@@ -28,6 +27,17 @@ export function handleTransferSingle(e: TransferSingle): void {
       e.params._value,
       e.block.timestamp
     );
+
+  // 2) If it went _into_ the diamond it MIGHT be an equip leg,
+  //    so remember who sent it.
+  if (to.equals(e.address)) {
+    const key = `${e.transaction.hash.toHex()}-${e.logIndex.toString()}`;
+    let p = new PendingEquip(key);
+    p.sender = from; // wallet that paid the item
+    p.itemId = e.params._id;
+    p.amount = e.params._value;
+    p.save();
+  }
 }
 
 export function handleTransferBatch(event: TransferBatch): void {

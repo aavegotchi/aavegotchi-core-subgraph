@@ -2,7 +2,7 @@ import { BigInt, Address, ethereum, store } from "@graphprotocol/graph-ts";
 import { ItemTypeOwnership } from "../../generated/schema";
 
 const MIGRATION_BLOCK = BigInt.fromI32(35999793);
-export const AAVEGOTCHI_ADDRESS = Address.fromString(
+const AAVEGOTCHI_ADDRESS = Address.fromString(
   "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
 );
 
