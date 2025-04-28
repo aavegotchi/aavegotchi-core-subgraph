@@ -541,9 +541,8 @@ export function handleTransfer(event: Transfer): void {
 
     if (newOwner.id == "0x0000000000000000000000000000000000000000") {
       let stats = getStatisticEntity();
-      stats.aavegotchisSacrificed = stats.aavegotchisSacrificed.plus(
-        BIGINT_ONE
-      );
+      stats.aavegotchisSacrificed =
+        stats.aavegotchisSacrificed.plus(BIGINT_ONE);
       stats.save();
     }
   } else {
