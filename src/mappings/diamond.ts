@@ -498,7 +498,10 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
 
   // Update ERC721Listing if gotchi has an active listing
   if (gotchi.activeListing) {
-    let listing = getOrCreateERC721Listing(gotchi.activeListing!.toString());
+    let listing = getOrCreateERC721Listing(
+      gotchi.activeListing!.toString(),
+      false
+    );
     listing.kinship = gotchi.kinship;
     listing.save();
   }
@@ -584,9 +587,11 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
     )!;
     gotchi.locked = true;
     listing.collateral = gotchi.collateral;
+
     gotchi.activeListing = event.params.listingId;
     gotchi.save();
     listing.nameLowerCase = gotchi.nameLowerCase;
+    listing.kinship = gotchi.kinship;
 
     // Traits for Filter in v2
     if (
