@@ -1,4 +1,4 @@
-import { Address } from "@graphprotocol/graph-ts";
+/* import { Address } from "@graphprotocol/graph-ts";
 import {
   FakeGotchiCardBalance,
   FakeGotchiNFTToken,
@@ -7,7 +7,7 @@ import {
 import { getOrCreateUser } from "./aavegotchi";
 import { constants } from "@amxx/graphprotocol-utils";
 import { BigInt } from "@graphprotocol/graph-ts";
-// import { IERC721 } from "../../../generated/FAKEGotchisNFTDiamond/IERC721";
+import { IERC721 } from "../../../generated/FAKEGotchisNFTDiamond/IERC721";
 
 export function fetchFakeGotchiNFTToken(
   contract: Address,
@@ -25,9 +25,7 @@ export function fetchFakeGotchiNFTToken(
     token.identifier = identifier;
     token.approval = getOrCreateUser(constants.ADDRESS_ZERO.toHex()).id;
 
-    let erc721 = /* IERC721.bind(Address.fromBytes(contract)); */ undefined;
-    if (!erc721) return;
-
+    let erc721 = IERC721.bind(Address.fromBytes(contract));
     let try_tokenURI = erc721.try_tokenURI(identifier);
     token.uri = try_tokenURI.reverted ? "" : try_tokenURI.value;
   }
@@ -70,3 +68,4 @@ export function fetchFakeGotchiCardBalance(
 
   return balance as FakeGotchiCardBalance;
 }
+ */

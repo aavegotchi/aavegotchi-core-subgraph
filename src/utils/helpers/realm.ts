@@ -1,11 +1,11 @@
-import { Address } from "@graphprotocol/graph-ts";
+/* import { Address } from "@graphprotocol/graph-ts";
 
 import { Bytes } from "@graphprotocol/graph-ts";
 
 import { Parcel } from "../../../generated/schema";
 import { BIGINT_ZERO } from "../constants";
 import { log } from "@graphprotocol/graph-ts";
-// import { RealmDiamond } from "../../../generated/RealmDiamond/RealmDiamond";
+import { RealmDiamond } from "../../../generated/RealmDiamond/RealmDiamond";
 import { getOrCreateUser } from "./aavegotchi";
 import { BigInt } from "@graphprotocol/graph-ts";
 
@@ -30,7 +30,7 @@ export function getOrCreateParcel(
 
   log.debug("token address: {}", [tokenAddress.toHexString()]);
 
-  let contract = /* RealmDiamond.bind(tokenAddress); */ undefined;
+  let contract = RealmDiamond.bind(tokenAddress);
   if (!contract) return;
 
   let parcelInfo = contract.try_getParcelInfo(tokenId);
@@ -61,3 +61,4 @@ export function getOrCreateParcel(
 
   return parcel as Parcel;
 }
+ */
