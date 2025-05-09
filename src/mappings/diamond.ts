@@ -1997,9 +1997,9 @@ export function handleTransferSingle(event: TransferSingle): void {
   const amount = event.params._value;
   const timestamp = event.block.timestamp;
 
-  if (from.notEqual(Address.zero())) {
-    updateOwnership(id, from, amount.neg(), timestamp);
-  }
+  // if (from.notEqual(Address.zero())) {
+  //   updateOwnership(id, from, amount.neg(), timestamp);
+  // }
 
   if (to.notEqual(Address.zero())) {
     updateOwnership(id, to, amount, timestamp);
@@ -2017,9 +2017,9 @@ export function handleTransferBatch(event: TransferBatch): void {
     const id = ids[i].toString();
     const amount = amounts[i];
 
-    if (from.notEqual(Address.zero())) {
-      updateOwnership(id, from, amount.neg(), timestamp);
-    }
+    // if (from.notEqual(Address.zero())) {
+    //   updateOwnership(id, from, amount.neg(), timestamp);
+    // }
 
     if (to.notEqual(Address.zero())) {
       updateOwnership(id, to, amount, timestamp);
