@@ -767,14 +767,14 @@ export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
     gotchi.locked = false;
     gotchi.save();
   } else if (listing.category.equals(BigInt.fromI32(4))) {
-    // let parcel = getOrCreateParcel(
-    //   listing.tokenId,
-    //   listing.seller,
-    //   Address.fromString(listing.erc721TokenAddress.toHexString()),
-    //   false
-    // );
-    // parcel.activeListing = null;
-    // parcel.save();
+    let parcel = getOrCreateParcel(
+      listing.tokenId,
+      listing.seller,
+      Address.fromString(listing.erc721TokenAddress.toHexString()),
+      false
+    );
+    parcel.activeListing = null;
+    parcel.save();
   }
 
   listing.cancelled = true;
@@ -1092,12 +1092,12 @@ export function handleTransferParcel(event: Transfer): void {
 }
 
 export function handleMintParcel(event: MintParcel): void {
-  // let parcel = getOrCreateParcel(
-  //   event.params._tokenId,
-  //   event.params._owner,
-  //   event.address
-  // );
-  // parcel.save();
+  let parcel = getOrCreateParcel(
+    event.params._tokenId,
+    event.params._owner,
+    event.address
+  );
+  parcel.save();
 }
 
 // WearablesConfig
