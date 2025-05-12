@@ -25,7 +25,7 @@ import {
   AavegotchiDiamond,
   ERC1155ExecutedListing,
 } from "../../../generated/AavegotchiDiamond/AavegotchiDiamond";
-// import { getFakeGotchiNFTToken } from "./fakegotchis";
+import { getFakeGotchiNFTToken } from "./fakegotchis";
 import { BigInt } from "@graphprotocol/graph-ts";
 import { log } from "@graphprotocol/graph-ts";
 
@@ -217,20 +217,20 @@ export function updateERC721ListingInfo(
       listing.blockCreated = event.block.number;
     }
 
-    // let erc721Token = getFakeGotchiNFTToken(
-    //   listingInfo.erc721TokenAddress,
-    //   listingInfo.erc721TokenId
-    // );
+    let erc721Token = getFakeGotchiNFTToken(
+      listingInfo.erc721TokenAddress,
+      listingInfo.erc721TokenId
+    );
 
-    // if (erc721Token != null) {
-    //   listing.fakeGotchi_name = erc721Token.name;
-    //   listing.fakeGotchi_publisher = erc721Token.publisher;
-    //   listing.fakeGotchi_description = erc721Token.description;
-    //   listing.fakeGotchi_artist = erc721Token.artist;
-    //   listing.fakeGotchi_artistName = erc721Token.artistName;
-    //   listing.fakeGotchi_editions = erc721Token.editions;
-    //   listing.fakeGotchi_publisherName = erc721Token.publisherName;
-    // }
+    if (erc721Token != null) {
+      listing.fakeGotchi_name = erc721Token.name;
+      listing.fakeGotchi_publisher = erc721Token.publisher;
+      listing.fakeGotchi_description = erc721Token.description;
+      listing.fakeGotchi_artist = erc721Token.artist;
+      listing.fakeGotchi_artistName = erc721Token.artistName;
+      listing.fakeGotchi_editions = erc721Token.editions;
+      listing.fakeGotchi_publisherName = erc721Token.publisherName;
+    }
 
     if (listing.category.toI32() <= 2) {
       let portal = getOrCreatePortal(

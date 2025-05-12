@@ -31,7 +31,6 @@ export function getOrCreateParcel(
   log.debug("token address: {}", [tokenAddress.toHexString()]);
 
   let contract = RealmDiamond.bind(tokenAddress);
-  if (!contract) return;
 
   let parcelInfo = contract.try_getParcelInfo(tokenId);
 
