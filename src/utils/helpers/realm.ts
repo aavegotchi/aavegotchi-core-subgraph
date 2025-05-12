@@ -1,4 +1,4 @@
-/* import { Address } from "@graphprotocol/graph-ts";
+import { Address } from "@graphprotocol/graph-ts";
 
 import { Bytes } from "@graphprotocol/graph-ts";
 
@@ -61,4 +61,3 @@ export function getOrCreateParcel(
 
   return parcel as Parcel;
 }
- */

@@ -100,7 +100,7 @@ import {
   getOrCreateERC1155BuyOrderExecution,
 } from "../utils/helpers/aavegotchi";
 
-// import { getOrCreateParcel } from "../utils/helpers/realm";
+import { getOrCreateParcel } from "../utils/helpers/realm";
 
 import {
   BIGINT_ONE,
@@ -114,12 +114,7 @@ import {
 import { Address, BigInt, log, Bytes } from "@graphprotocol/graph-ts";
 
 import { /*Parcel,*/ Parcel, TokenCommitment } from "../../generated/schema";
-// import {
-//   RealmDiamond,
-//   MintParcel,
-//   ResyncParcel,
-//   KinshipBurned,
-// } from "../../generated/RealmDiamond/RealmDiamond";
+
 import { updatePermissionsFromBitmap } from "../utils/decimals";
 import * as erc7589 from "./erc-7589";
 import { generateTokenCommitmentId } from "../utils/helpers/erc-7589";

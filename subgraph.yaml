@@ -2,8 +2,9 @@ specVersion: 0.0.4
 # features:
 #   - grafting
 # graft:
-#   base: QmQ2wyvSmj7fdjtWdKYSNvcLLg9xxoheEAdkYMbiUS7Phu # Subgraph ID of base subgraph
-#   block: 62782000 # Block number
+#   base: QmP7WDBUeazfUc96uGa71ukM8ZUZHS3GunviVSrJvxSy62 # Subgraph ID of base subgraph
+#   block: 68694611
+#  Block number
 description: Aavegotchi Core Matic
 repository:
 schema:
@@ -15,7 +16,7 @@ dataSources:
     source:
       address: "0x86e527A5863975d0141514D20248aD17B6BF92D0"
       abi: AavegotchiDiamond
-      startBlock: 24921013
+      startBlock: 24920240
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -172,3 +173,85 @@ dataSources:
           handler: handleWearablesConfigCreated
         - event: WearablesConfigUpdated(indexed address,indexed uint256,indexed uint16,uint16[16])
           handler: handleWearablesConfigUpdated
+
+  - kind: ethereum/contract
+    name: RealmDiamond
+    network: "base-sepolia"
+    source:
+      address: "0xb674fD8E82967d53Bd4513c25DB61943504884aA"
+      abi: RealmDiamond
+      startBlock: 25528181
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - MintParcel
+        - Transfer
+      abis:
+        - name: RealmDiamond
+          file: ./abis/RealmDiamond.json
+      eventHandlers:
+        - event: MintParcel(indexed address,indexed uint256)
+          handler: handleMintParcel
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransferParcel
+        - event: ResyncParcel(uint256)
+          handler: handleResyncParcel
+        - event: KinshipBurned(uint256,uint256)
+          handler: handleKinshipBurned
+      file: ./src/mappings/diamond.ts
+  - kind: ethereum/contract
+    name: FAKEGotchisCardDiamond
+    network: "base-sepolia"
+    source:
+      address: "0xfcf69c08d6AbE469Bd2D55926d83d50B9c502485"
+      abi: IERC1155
+      startBlock: 25536651
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Card
+      abis:
+        - name: IERC721
+          file: ./abis/diamond_erc721.json
+        - name: IERC1155
+          file: ./abis/diamond_erc1155.json
+      eventHandlers:
+        - event: NewSeriesStarted(indexed uint256,indexed uint256)
+          handler: handleNewSeriesStarted
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+      file: ./src/mappings/fakeGotchisCard.ts
+  - kind: ethereum/contract
+    name: FAKEGotchisNFTDiamond
+    network: "base-sepolia"
+    source:
+      address: "0x5b12F03201b4260B8976114Cc549435FFF5eb9aE"
+      abi: IERC721
+      startBlock: 25536675
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - NFT
+      abis:
+        - name: IERC721
+          file: ./abis/diamond_erc721.json
+        - name: IERC1155
+          file: ./abis/diamond_erc1155.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: MetadataActionLog(indexed uint256,(address,uint16[2],uint16,uint32,uint32,address,uint40,uint8,bool,string,string,string,string,string,string,string,string,string))
+          handler: handleMetadataActionLog
+        - event: MetadataFlag(indexed uint256,address)
+          handler: handleMetadataFlag
+        - event: MetadataLike(indexed uint256,address)
+          handler: handleMetadataLike
+      file: ./src/mappings/fakeGotchisNFT.ts

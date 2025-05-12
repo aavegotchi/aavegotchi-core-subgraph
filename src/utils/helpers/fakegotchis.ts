@@ -1,4 +1,4 @@
-/* import { Address } from "@graphprotocol/graph-ts";
+import { Address } from "@graphprotocol/graph-ts";
 import {
   FakeGotchiCardBalance,
   FakeGotchiNFTToken,
@@ -68,4 +68,3 @@ export function fetchFakeGotchiCardBalance(
 
   return balance as FakeGotchiCardBalance;
 }
- */
