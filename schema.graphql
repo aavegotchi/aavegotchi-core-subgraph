@@ -649,6 +649,4 @@ type ItemTypeOwnership @entity {
   id: ID! # Format: itemTypeId-ownerAddress
   itemType: ItemType!
   owner: Bytes!
-  balance: BigInt!
-  lastUpdated: BigInt!
 }
