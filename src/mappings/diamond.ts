@@ -71,6 +71,8 @@ import {
   ERC1155BuyOrderAdd,
   ERC1155BuyOrderExecute,
   ERC1155BuyOrderCancel,
+  TransferSingle,
+  TransferBatch,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -129,6 +131,7 @@ import {
   RealmDiamond,
   ResyncParcel,
 } from "../../generated/AavegotchiDiamond/RealmDiamond";
+import { updateOwnership } from "./helpers";
 
 export function handleBuyPortals(event: BuyPortals): void {
   let contract = AavegotchiDiamond.bind(event.address);
@@ -1985,4 +1988,34 @@ export function handleERC1155BuyOrderCancel(
   entity.canceledAt = event.params.time;
   entity.canceled = true;
   entity.save();
+}
+
+export function handleTransferSingle(event: TransferSingle): void {
+  const to = event.params._to;
+  const id = event.params._id.toString();
+
+  // if (from.notEqual(Address.zero())) {
+  //   updateOwnership(id, from, amount.neg(), timestamp);
+  // }
+
+  if (to.notEqual(Address.zero())) {
+    updateOwnership(id, to);
+  }
+}
+
+export function handleTransferBatch(event: TransferBatch): void {
+  const to = event.params._to;
+  const ids = event.params._ids;
+
+  for (let i = 0; i < ids.length; i++) {
+    const id = ids[i].toString();
+
+    // if (from.notEqual(Address.zero())) {
+    //   updateOwnership(id, from, amount.neg(), timestamp);
+    // }
+
+    if (to.notEqual(Address.zero())) {
+      updateOwnership(id, to);
+    }
+  }
 }
