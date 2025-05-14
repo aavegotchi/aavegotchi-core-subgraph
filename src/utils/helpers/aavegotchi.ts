@@ -708,7 +708,7 @@ export function createOrUpdateWearablesConfig(
   let ownerAddress = Address.fromString(owner.toHexString());
   let gotchi = getOrCreateAavegotchi(tokenId.toString(), event)!;
   let user = getOrCreateUser(ownerAddress.toHexString())!;
-  let id = `${user.id}-${tokenId}-${wearablesConfigId}`
+  let id = `${user.id}-${tokenId}-${wearablesConfigId}`;
 
   let response = contract.try_getWearablesConfig(
     ownerAddress,

@@ -12,11 +12,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: AavegotchiDiamond
-    network: "matic"
+    network: "base-sepolia"
     source:
-      address: "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
+      address: "0x86e527A5863975d0141514D20248aD17B6BF92D0"
       abi: AavegotchiDiamond
-      startBlock: 11500000
+      startBlock: 24920240
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -176,11 +176,11 @@ dataSources:
 
   - kind: ethereum/contract
     name: RealmDiamond
-    network: "matic"
+    network: "base-sepolia"
     source:
-      address: "0x1D0360BaC7299C86Ec8E99d0c1C9A95FEfaF2a11"
+      address: "0xb674fD8E82967d53Bd4513c25DB61943504884aA"
       abi: RealmDiamond
-      startBlock: 20667840
+      startBlock: 25528181
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -203,11 +203,11 @@ dataSources:
       file: ./src/mappings/diamond.ts
   - kind: ethereum/contract
     name: FAKEGotchisCardDiamond
-    network: "matic"
+    network: "base-sepolia"
     source:
-      address: "0x9f6BcC63e86D44c46e85564E9383E650dc0b56D7"
+      address: "0xB60175D86f6Ab871A9aefD3e350a9c5E939F4D3B"
       abi: IERC1155
-      startBlock: 34520146
+      startBlock: 25710591
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -229,11 +229,11 @@ dataSources:
       file: ./src/mappings/fakeGotchisCard.ts
   - kind: ethereum/contract
     name: FAKEGotchisNFTDiamond
-    network: "matic"
+    network: "base-sepolia"
     source:
-      address: "0xA4E3513c98b30d4D7cc578d2C328Bd550725D1D0"
+      address: "0xfE565a266760D5b23FE241D1eb6F52eeba8882E7"
       abi: IERC721
-      startBlock: 34520176
+      startBlock: 25710614
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
