@@ -1055,7 +1055,15 @@ export function handleDiamondCut(event: DiamondCut): void {
 // export { runTests } from "../tests/aavegotchi.test";
 
 export function handleResyncParcel(event: ResyncParcel): void {
-  let parcel = Parcel.load(event.params._tokenId.toString())!;
+  const tokenId = event.params._tokenId.toString();
+  let parcel = Parcel.load(tokenId);
+
+  // Entities only exist after they have been saved to the store;
+  // `null` checks allow to create entities on demand
+  if (parcel == null) {
+    parcel = new Parcel(tokenId);
+    parcel.timesTraded = BIGINT_ZERO;
+  }
 
   let contract = RealmDiamond.bind(event.address);
   let parcelInfo = contract.try_getParcelInfo(event.params._tokenId);
@@ -1070,6 +1078,8 @@ export function handleResyncParcel(event: ResyncParcel): void {
     parcel.parcelHash = parcelMetadata.parcelAddress;
 
     parcel.size = parcelMetadata.size;
+
+    parcel.owner = parcelMetadata.owner.toHexString();
 
     let boostArray = parcelMetadata.boost;
     parcel.fudBoost = boostArray[0];
