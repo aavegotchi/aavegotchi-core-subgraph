@@ -2005,7 +2005,9 @@ export function handleAavegotchiHistory(event: AavegotchiHistory): void {
   gotchi.name = data.name;
   gotchi.createdAt = data.createdAtBlock;
   gotchi.timesTraded = data.timesTraded;
-  gotchi.activeListing = data.activeListing;
+  if (data.activeListing != BIGINT_ZERO) {
+    gotchi.activeListing = data.activeListing;
+  }
 
   // Update historical prices array
   let historicalPrices = data.historicalPrices;
@@ -2036,7 +2038,9 @@ export function handlePortalData(event: PortalData): void {
   // Update trading info
   portal.timesTraded = data.timesTraded;
   portal.historicalPrices = data.historicalPrices;
-  portal.activeListing = data.activeListingId;
+  if (data.activeListingId != BIGINT_ZERO) {
+    portal.activeListing = data.activeListingId;
+  }
 
   // Handle portal options
   let options = data.options;
