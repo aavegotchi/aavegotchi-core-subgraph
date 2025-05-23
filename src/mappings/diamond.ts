@@ -2022,11 +2022,14 @@ export function handlePortalData(event: PortalData): void {
   const data = event.params.data;
   let portal = getOrCreatePortal(data.gotchiId.toString());
 
+  let owner = getOrCreateUser(data.owner.toHexString());
+  owner.save();
+  portal.owner = owner.id;
+
   // Update basic portal info
   portal.gotchiId = data.gotchiId;
   portal.buyer = data.buyer.toHexString();
   portal.hauntId = data.hauntId;
-  portal.owner = data.owner.toHexString();
   portal.status = data.status;
 
   // Update timestamps
@@ -2045,9 +2048,13 @@ export function handlePortalData(event: PortalData): void {
   // Handle portal options
   let options = data.options;
   for (let i = 0; i < options.length; i++) {
-    let option = getOrCreateAavegotchiOption(portal.id, i);
+    let option = getOrCreateAavegotchiOption(
+      portal.id,
+      options[i].portalOptionId.toString()
+    );
     option.portal = portal.id;
     option.owner = portal.owner;
+    option.portalOptionId = options[i].portalOptionId;
     option.randomNumber = options[i].randomNumber;
     option.numericTraits = options[i].numericTraits;
     option.collateralType = options[i].collateralType;
