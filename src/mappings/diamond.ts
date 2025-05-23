@@ -2048,29 +2048,18 @@ export function handlePortalData(event: PortalData): void {
   // Handle portal options
   let options = data.options;
 
-  // Log the options array for debugging
-  log.info("PortalData - Portal ID: {}, Options length: {}", [
-    portal.id,
-    options.length.toString(),
-  ]);
+  for (let i = 0; i < options.length; i++) {
+    let option = getOrCreateAavegotchiOption(portal.id, i);
+    option.portal = portal.id;
+    option.owner = portal.owner;
+    option.portalOptionId = options[i].portalOptionId;
+    option.randomNumber = options[i].randomNumber;
+    option.numericTraits = options[i].numericTraits;
+    option.collateralType = options[i].collateralType;
+    option.minimumStake = options[i].minimumStake;
+    option.baseRarityScore = options[i].baseRarityScore;
 
-  if (options != null && options.length > 0) {
-    for (let i = 0; i < options.length; i++) {
-      let option = getOrCreateAavegotchiOption(
-        portal.id,
-        options[i].portalOptionId
-      );
-      option.portal = portal.id;
-      option.owner = portal.owner;
-      option.portalOptionId = options[i].portalOptionId;
-      option.randomNumber = options[i].randomNumber;
-      option.numericTraits = options[i].numericTraits;
-      option.collateralType = options[i].collateralType;
-      option.minimumStake = options[i].minimumStake;
-      option.baseRarityScore = options[i].baseRarityScore;
-
-      option.save();
-    }
+    option.save();
   }
 
   portal.save();
