@@ -2050,7 +2050,7 @@ export function handlePortalData(event: PortalData): void {
   for (let i = 0; i < options.length; i++) {
     let option = getOrCreateAavegotchiOption(
       portal.id,
-      options[i].portalOptionId.toString()
+      options[i].portalOptionId
     );
     option.portal = portal.id;
     option.owner = portal.owner;
