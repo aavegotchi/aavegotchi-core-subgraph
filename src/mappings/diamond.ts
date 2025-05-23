@@ -2054,7 +2054,7 @@ export function handlePortalData(event: PortalData): void {
     options.length.toString(),
   ]);
 
-  if (options?.length > 0) {
+  if (options != null && options.length > 0) {
     for (let i = 0; i < options.length; i++) {
       let option = getOrCreateAavegotchiOption(
         portal.id,
@@ -2071,8 +2071,6 @@ export function handlePortalData(event: PortalData): void {
 
       option.save();
     }
-  } else {
-    log.warning("PortalData - No options found for portal {}", [portal.id]);
   }
 
   portal.save();
