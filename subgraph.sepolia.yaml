@@ -173,6 +173,11 @@ dataSources:
           handler: handleWearablesConfigCreated
         - event: WearablesConfigUpdated(indexed address,indexed uint256,indexed uint16,uint16[16])
           handler: handleWearablesConfigUpdated
+          
+        - event: AavegotchiHistory((uint256,string,uint256,uint256[],uint256,uint256))
+          handler: handleAavegotchiHistory
+        - event: PortalData((uint256,address,uint256,address,(uint8,uint256,int16[6],address,uint256,uint16)[],string,uint256,uint256,uint256,uint256,uint256,uint256[],uint256))
+          handler: handlePortalData
 
   - kind: ethereum/contract
     name: RealmDiamond

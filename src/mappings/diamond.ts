@@ -71,6 +71,8 @@ import {
   ERC1155BuyOrderAdd,
   ERC1155BuyOrderExecute,
   ERC1155BuyOrderCancel,
+  AavegotchiHistory,
+  PortalData,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -1992,4 +1994,63 @@ export function handleERC1155BuyOrderCancel(
   entity.canceledAt = event.params.time;
   entity.canceled = true;
   entity.save();
+}
+
+export function handleAavegotchiHistory(event: AavegotchiHistory): void {
+  const data = event.params.data;
+  let gotchi = getOrCreateAavegotchi(data.gotchiId.toString(), event);
+  if (!gotchi) return;
+
+  // Update basic info
+  gotchi.name = data.name;
+  gotchi.createdAt = data.createdAtBlock;
+  gotchi.timesTraded = data.timesTraded;
+  gotchi.activeListing = data.activeListing;
+
+  // Update historical prices array
+  let historicalPrices = data.historicalPrices;
+  if (historicalPrices.length > 0) {
+    gotchi.historicalPrices = historicalPrices;
+  }
+
+  gotchi.save();
+}
+
+export function handlePortalData(event: PortalData): void {
+  const data = event.params.data;
+  let portal = getOrCreatePortal(data.gotchiId.toString());
+
+  // Update basic portal info
+  portal.gotchiId = data.gotchiId;
+  portal.buyer = data.buyer.toHexString();
+  portal.hauntId = data.hauntId;
+  portal.owner = data.owner.toHexString();
+  portal.status = data.status;
+
+  // Update timestamps
+  portal.boughtAt = data.boughtAtBlock;
+  portal.openedAt = data.openedAtBlock;
+  portal.claimedAt = data.claimedAtBlock;
+  portal.claimedTime = data.claimedTimestamp;
+
+  // Update trading info
+  portal.timesTraded = data.timesTraded;
+  portal.historicalPrices = data.historicalPrices;
+  portal.activeListing = data.activeListingId;
+
+  // Handle portal options
+  let options = data.options;
+  for (let i = 0; i < options.length; i++) {
+    let option = getOrCreateAavegotchiOption(portal.id, i);
+    option.portal = portal.id;
+    option.owner = portal.owner;
+    option.randomNumber = options[i].randomNumber;
+    option.numericTraits = options[i].numericTraits;
+    option.collateralType = options[i].collateralType;
+    option.minimumStake = options[i].minimumStake;
+    option.baseRarityScore = calculateBaseRarityScore(option.numericTraits);
+    option.save();
+  }
+
+  portal.save();
 }
