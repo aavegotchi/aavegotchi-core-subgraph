@@ -2046,21 +2046,27 @@ export function handlePortalData(event: PortalData): void {
   }
 
   // Handle portal options
-  let options = data.options;
-  for (let i = 0; i < options.length; i++) {
-    let option = getOrCreateAavegotchiOption(
-      portal.id,
-      options[i].portalOptionId
-    );
-    option.portal = portal.id;
-    option.owner = portal.owner;
-    option.portalOptionId = options[i].portalOptionId;
-    option.randomNumber = options[i].randomNumber;
-    option.numericTraits = options[i].numericTraits;
-    option.collateralType = options[i].collateralType;
-    option.minimumStake = options[i].minimumStake;
-    option.baseRarityScore = calculateBaseRarityScore(option.numericTraits);
-    option.save();
+  let contract = AavegotchiDiamond.bind(event.address);
+  let openPortalResponse = contract.try_portalAavegotchiTraits(
+    BigInt.fromString(portal.id)
+  );
+
+  if (!openPortalResponse.reverted) {
+    let array = openPortalResponse.value;
+    for (let i = 0; i < 10; i++) {
+      let possibleAavegotchiTraits = array[i];
+      let gotchi = getOrCreateAavegotchiOption(portal.id, i);
+      gotchi.portal = portal.id;
+      gotchi.owner = portal.owner;
+      gotchi.randomNumber = possibleAavegotchiTraits.randomNumber;
+      gotchi.numericTraits = possibleAavegotchiTraits.numericTraits;
+      gotchi.collateralType = possibleAavegotchiTraits.collateralType;
+      gotchi.minimumStake = possibleAavegotchiTraits.minimumStake;
+      //calculate base rarity score
+      gotchi.baseRarityScore = calculateBaseRarityScore(gotchi.numericTraits);
+
+      gotchi.save();
+    }
   }
 
   portal.save();
