@@ -183,9 +183,9 @@ dataSources:
     name: RealmDiamond
     network: "base-sepolia"
     source:
-      address: "0xb674fD8E82967d53Bd4513c25DB61943504884aA"
+      address: "0xe81088003fe432769946A258F29Ae1F50c591F22"
       abi: RealmDiamond
-      startBlock: 25528181
+      startBlock: 26278630
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -210,9 +210,9 @@ dataSources:
     name: FAKEGotchisCardDiamond
     network: "base-sepolia"
     source:
-      address: "0x8f210fe7288D07B55254597B8Ad00bd3ac3d8D03"
+      address: "0xE4E508dab5D7d98f4c06aB6D24bB225588036C9D"
       abi: IERC1155
-      startBlock: 26247385
+      startBlock: 26286751
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -236,9 +236,9 @@ dataSources:
     name: FAKEGotchisNFTDiamond
     network: "base-sepolia"
     source:
-      address: "0x0C59Bf92608D9E86973bB3926aa6f7048d62c1A9"
+      address: "0xD0dCC1d1E22D490e5270631787E1866E773b16C7"
       abi: IERC721
-      startBlock: 26247420
+      startBlock: 26286758
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
