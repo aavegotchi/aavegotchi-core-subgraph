@@ -12,11 +12,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: AavegotchiDiamond
-    network: "matic"
+    network: "base-sepolia"
     source:
-      address: "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
+      address: "0x5D2364F343f928159492E79067F1883f1f9DE394"
       abi: AavegotchiDiamond
-      startBlock: 11500000
+      startBlock: 26278630
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -173,14 +173,19 @@ dataSources:
           handler: handleWearablesConfigCreated
         - event: WearablesConfigUpdated(indexed address,indexed uint256,indexed uint16,uint16[16])
           handler: handleWearablesConfigUpdated
+          
+        - event: AavegotchiHistory((uint256,string,uint256,uint256[],uint256,uint256))
+          handler: handleAavegotchiHistory
+        - event: PortalData((uint256,address,uint256,address,(uint8,uint256,int16[6],address,uint256,uint16)[],string,uint256,uint256,uint256,uint256,uint256,uint256[],uint256))
+          handler: handlePortalData
 
   - kind: ethereum/contract
     name: RealmDiamond
-    network: "matic"
+    network: "base-sepolia"
     source:
-      address: "0x1D0360BaC7299C86Ec8E99d0c1C9A95FEfaF2a11"
+      address: "0xe81088003fe432769946A258F29Ae1F50c591F22"
       abi: RealmDiamond
-      startBlock: 20667840
+      startBlock: 26278630
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -203,11 +208,11 @@ dataSources:
       file: ./src/mappings/diamond.ts
   - kind: ethereum/contract
     name: FAKEGotchisCardDiamond
-    network: "matic"
+    network: "base-sepolia"
     source:
-      address: "0x9f6BcC63e86D44c46e85564E9383E650dc0b56D7"
+      address: "0xE4E508dab5D7d98f4c06aB6D24bB225588036C9D"
       abi: IERC1155
-      startBlock: 34520146
+      startBlock: 26286751
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -229,11 +234,11 @@ dataSources:
       file: ./src/mappings/fakeGotchisCard.ts
   - kind: ethereum/contract
     name: FAKEGotchisNFTDiamond
-    network: "matic"
+    network: "base-sepolia"
     source:
-      address: "0xA4E3513c98b30d4D7cc578d2C328Bd550725D1D0"
+      address: "0xD0dCC1d1E22D490e5270631787E1866E773b16C7"
       abi: IERC721
-      startBlock: 34520176
+      startBlock: 26286758
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

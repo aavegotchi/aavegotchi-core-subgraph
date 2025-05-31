@@ -12290,5 +12290,162 @@
     ],
     "stateMutability": "view",
     "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "gotchiId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAtBlock",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "historicalPrices",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timesTraded",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "activeListing",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct AavegotchiBridgeFacet.AavegotchiHistoricalRecord",
+        "name": "data",
+        "type": "tuple"
+      }
+    ],
+    "name": "AavegotchiHistory",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "gotchiId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "buyer",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "hauntId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint8",
+                "name": "portalOptionId",
+                "type": "uint8"
+              },
+              {
+                "internalType": "uint256",
+                "name": "randomNumber",
+                "type": "uint256"
+              },
+              {
+                "internalType": "int16[6]",
+                "name": "numericTraits",
+                "type": "int16[6]"
+              },
+              {
+                "internalType": "address",
+                "name": "collateralType",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "minimumStake",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint16",
+                "name": "baseRarityScore",
+                "type": "uint16"
+              }
+            ],
+            "internalType": "struct AavegotchiBridgeFacet.PortalOption[]",
+            "name": "options",
+            "type": "tuple[]"
+          },
+          {
+            "internalType": "string",
+            "name": "status",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "boughtAtBlock",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "openedAtBlock",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "claimedAtBlock",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "claimedTimestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timesTraded",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "historicalPrices",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "activeListingId",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct AavegotchiBridgeFacet.AavegotchiSubgraphPortalData",
+        "name": "data",
+        "type": "tuple"
+      }
+    ],
+    "name": "PortalData",
+    "type": "event"
   }
 ]
