@@ -14,7 +14,7 @@ dataSources:
     name: AavegotchiDiamond
     network: "base-sepolia"
     source:
-      address: "0x5D2364F343f928159492E79067F1883f1f9DE394"
+      address: "0x10759c35F8dE7E6172BB30e0B10312c1a295aC2F"
       abi: AavegotchiDiamond
       startBlock: 26278630
     mapping:
