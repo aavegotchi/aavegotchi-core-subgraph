@@ -2071,6 +2071,6 @@ export function handlePortalData(event: PortalData): void {
 export function handleResyncAavegotchis(event: ResyncAavegotchis): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
   if (!gotchi) return;
-  gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+  gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event, false);
   gotchi.save();
 }
