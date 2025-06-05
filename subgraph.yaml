@@ -185,9 +185,9 @@ dataSources:
     name: RealmDiamond
     network: "base-sepolia"
     source:
-      address: "0xe81088003fe432769946A258F29Ae1F50c591F22"
+      address: "0x37D140074B2f771bEa7ef23288EB87064e45bF8D"
       abi: RealmDiamond
-      startBlock: 26278630
+      startBlock: 26672392
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
