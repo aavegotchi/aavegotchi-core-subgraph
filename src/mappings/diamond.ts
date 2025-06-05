@@ -73,6 +73,7 @@ import {
   ERC1155BuyOrderCancel,
   AavegotchiHistory,
   PortalData,
+  ResyncAavegotchis,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -510,11 +511,13 @@ export function handleTransfer(event: Transfer): void {
   let portal = getOrCreatePortal(id, true);
   // ERC721 transfer can be portal or gotchi based, so we have to check it.
   if (gotchi != null) {
+    // WHY this if there is an update anyway at the end of the if block?
     if (!gotchi.modifiedRarityScore) {
       gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
     }
 
     //If the Gotchi is being transferred from the socket Vault, we need to sync its metadata
+    // TODO: probably we can get rid of this since it was used to bridge to geist?
     if (
       event.params._from.equals(
         Address.fromString("0xf1d1d61eedda7a10b494af7af87d932ac910f3c5")
@@ -2063,4 +2066,11 @@ export function handlePortalData(event: PortalData): void {
   }
 
   portal.save();
+}
+
+export function handleResyncAavegotchis(event: ResyncAavegotchis): void {
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
+  if (!gotchi) return;
+  gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
+  gotchi.save();
 }
