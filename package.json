@@ -9,8 +9,6 @@
     "build:testnet": "graph build subgraph.testnet.yaml",
     "prepare:matic": "mustache config/matic.json subgraph.template.yaml > subgraph.yaml",
     "prepare:amoy": "mustache config/amoy.json subgraph.template.yaml > subgraph.yaml",
-    "prepare:polter": "mustache config/polter.json subgraph.polter.template.yaml > subgraph.yaml",
-    "prepare:geist": "mustache config/geist.json subgraph.polter.template.yaml > subgraph.yaml",
     "prepare:baseSepolia": "mustache config/baseSepolia.json subgraph.sepolia.yaml > subgraph.yaml",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ aavegotchi/aavegotchi-core-matic",
     "create-local": "graph create --node http://localhost:8020/ aavegotchi/aavegotchi-core-matic",

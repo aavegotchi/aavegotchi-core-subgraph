@@ -71,6 +71,9 @@ import {
   ERC1155BuyOrderAdd,
   ERC1155BuyOrderExecute,
   ERC1155BuyOrderCancel,
+  AavegotchiHistory,
+  PortalData,
+  ResyncAavegotchis,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -113,13 +116,8 @@ import {
 } from "../utils/constants";
 import { Address, BigInt, log, Bytes } from "@graphprotocol/graph-ts";
 
-import { /*Parcel,*/ Parcel, TokenCommitment } from "../../generated/schema";
-// import {
-//   RealmDiamond,
-//   MintParcel,
-//   ResyncParcel,
-//   KinshipBurned,
-// } from "../../generated/RealmDiamond/RealmDiamond";
+import { Parcel, TokenCommitment } from "../../generated/schema";
+
 import { updatePermissionsFromBitmap } from "../utils/decimals";
 import * as erc7589 from "./erc-7589";
 import { generateTokenCommitmentId } from "../utils/helpers/erc-7589";
@@ -513,11 +511,13 @@ export function handleTransfer(event: Transfer): void {
   let portal = getOrCreatePortal(id, true);
   // ERC721 transfer can be portal or gotchi based, so we have to check it.
   if (gotchi != null) {
+    // WHY this if there is an update anyway at the end of the if block?
     if (!gotchi.modifiedRarityScore) {
       gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
     }
 
     //If the Gotchi is being transferred from the socket Vault, we need to sync its metadata
+    // TODO: probably we can get rid of this since it was used to bridge to geist?
     if (
       event.params._from.equals(
         Address.fromString("0xf1d1d61eedda7a10b494af7af87d932ac910f3c5")
@@ -611,6 +611,8 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
     listing.parcel = event.params.erc721TokenId.toString();
     let parcel = Parcel.load(event.params.erc721TokenId.toString())!;
     parcel.activeListing = event.params.listingId;
+    parcel.save();
+
     listing.fudBoost = parcel.fudBoost;
     listing.fomoBoost = parcel.fomoBoost;
     listing.alphaBoost = parcel.alphaBoost;
@@ -694,21 +696,21 @@ export function handleERC721ExecutedListing(
 
     //Parcel -- update number of times traded
 
-    // let parcel = getOrCreateParcel(
-    //   event.params.erc721TokenId,
-    //   event.params.buyer,
-    //   event.params.erc721TokenAddress
-    // );
-    // parcel.timesTraded = parcel.timesTraded.plus(BIGINT_ONE);
-    // parcel.activeListing = null;
-    // // add to historical prices
-    // let historicalPrices = parcel.historicalPrices;
-    // if (historicalPrices == null) {
-    //   historicalPrices = new Array();
-    // }
-    // historicalPrices.push(event.params.priceInWei);
-    // parcel.historicalPrices = historicalPrices;
-    // parcel.save();
+    let parcel = getOrCreateParcel(
+      event.params.erc721TokenId,
+      event.params.buyer,
+      event.params.erc721TokenAddress
+    );
+    parcel.timesTraded = parcel.timesTraded.plus(BIGINT_ONE);
+    parcel.activeListing = null;
+    // add to historical prices
+    let historicalPrices = parcel.historicalPrices;
+    if (historicalPrices == null) {
+      historicalPrices = new Array();
+    }
+    historicalPrices.push(event.params.priceInWei);
+    parcel.historicalPrices = historicalPrices;
+    parcel.save();
   }
 
   let stats = getStatisticEntity();
@@ -739,14 +741,14 @@ export function handleERC721ListingCancelled(
     gotchi.locked = false;
     gotchi.save();
   } else if (listing.category.equals(BigInt.fromI32(4))) {
-    // let parcel = getOrCreateParcel(
-    //   listing.tokenId,
-    //   listing.seller,
-    //   Address.fromString(listing.erc721TokenAddress.toHexString()),
-    //   false
-    // );
-    // parcel.activeListing = null;
-    // parcel.save();
+    let parcel = getOrCreateParcel(
+      listing.tokenId,
+      listing.seller,
+      Address.fromString(listing.erc721TokenAddress.toHexString()),
+      false
+    );
+    parcel.activeListing = null;
+    parcel.save();
   }
 
   listing.cancelled = true;
@@ -1058,7 +1060,15 @@ export function handleDiamondCut(event: DiamondCut): void {
 // export { runTests } from "../tests/aavegotchi.test";
 
 export function handleResyncParcel(event: ResyncParcel): void {
-  let parcel = Parcel.load(event.params._tokenId.toString())!;
+  const tokenId = event.params._tokenId.toString();
+  let parcel = Parcel.load(tokenId);
+
+  // Entities only exist after they have been saved to the store;
+  // `null` checks allow to create entities on demand
+  if (parcel == null) {
+    parcel = new Parcel(tokenId);
+    parcel.timesTraded = BIGINT_ZERO;
+  }
 
   let contract = RealmDiamond.bind(event.address);
   let parcelInfo = contract.try_getParcelInfo(event.params._tokenId);
@@ -1073,6 +1083,8 @@ export function handleResyncParcel(event: ResyncParcel): void {
     parcel.parcelHash = parcelMetadata.parcelAddress;
 
     parcel.size = parcelMetadata.size;
+
+    parcel.owner = parcelMetadata.owner.toHexString();
 
     let boostArray = parcelMetadata.boost;
     parcel.fudBoost = boostArray[0];
@@ -1985,4 +1997,80 @@ export function handleERC1155BuyOrderCancel(
   entity.canceledAt = event.params.time;
   entity.canceled = true;
   entity.save();
+}
+
+export function handleAavegotchiHistory(event: AavegotchiHistory): void {
+  const data = event.params.data;
+  let gotchi = getOrCreateAavegotchi(data.gotchiId.toString(), event);
+  if (!gotchi) return;
+
+  // Update basic info
+  gotchi.name = data.name;
+  gotchi.createdAt = data.createdAtBlock;
+  gotchi.timesTraded = data.timesTraded;
+  if (data.activeListing != BIGINT_ZERO) {
+    gotchi.activeListing = data.activeListing;
+  }
+
+  // Update historical prices array
+  let historicalPrices = data.historicalPrices;
+  if (historicalPrices.length > 0) {
+    gotchi.historicalPrices = historicalPrices;
+  }
+
+  gotchi.save();
+}
+
+export function handlePortalData(event: PortalData): void {
+  const data = event.params.data;
+  let portal = getOrCreatePortal(data.gotchiId.toString());
+
+  let owner = getOrCreateUser(data.owner.toHexString());
+  owner.save();
+  portal.owner = owner.id;
+
+  // Update basic portal info
+  portal.gotchiId = data.gotchiId;
+  portal.buyer = data.buyer.toHexString();
+  portal.hauntId = data.hauntId;
+  portal.status = data.status;
+
+  // Update timestamps
+  portal.boughtAt = data.boughtAtBlock;
+  portal.openedAt = data.openedAtBlock;
+  portal.claimedAt = data.claimedAtBlock;
+  portal.claimedTime = data.claimedTimestamp;
+
+  // Update trading info
+  portal.timesTraded = data.timesTraded;
+  portal.historicalPrices = data.historicalPrices;
+  if (data.activeListingId != BIGINT_ZERO) {
+    portal.activeListing = data.activeListingId;
+  }
+
+  // Handle portal options
+  let options = data.options;
+
+  for (let i = 0; i < options.length; i++) {
+    let option = getOrCreateAavegotchiOption(portal.id, i);
+    option.portal = portal.id;
+    option.owner = portal.owner;
+    option.portalOptionId = options[i].portalOptionId;
+    option.randomNumber = options[i].randomNumber;
+    option.numericTraits = options[i].numericTraits;
+    option.collateralType = options[i].collateralType;
+    option.minimumStake = options[i].minimumStake;
+    option.baseRarityScore = options[i].baseRarityScore;
+
+    option.save();
+  }
+
+  portal.save();
+}
+
+export function handleResyncAavegotchis(event: ResyncAavegotchis): void {
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
+  if (!gotchi) return;
+  gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event, false);
+  gotchi.save();
 }
