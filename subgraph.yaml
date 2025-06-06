@@ -21,7 +21,7 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ./src/mappings/diamond.ts
+      file: ./src/mappings/baseDiamond.ts
       entities:
         - User
       abis:
@@ -207,7 +207,7 @@ dataSources:
           handler: handleResyncParcel
         - event: KinshipBurned(uint256,uint256)
           handler: handleKinshipBurned
-      file: ./src/mappings/diamond.ts
+      file: ./src/mappings/baseDiamond.ts
   - kind: ethereum/contract
     name: FAKEGotchisCardDiamond
     network: "base-sepolia"
