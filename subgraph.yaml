@@ -1,10 +1,10 @@
 specVersion: 0.0.4
-# features:
-#   - grafting
-# graft:
-#   base: QmP7WDBUeazfUc96uGa71ukM8ZUZHS3GunviVSrJvxSy62 # Subgraph ID of base subgraph
-#   block: 68694611
-#  Block number
+features:
+  - grafting
+graft:
+  base: QmYzyY1Nrmcf6WiYJ9XmfpUAYac8Mvk8ZS9pYEFuz5Ugfa # Subgraph ID of base subgraph
+  block:  72,590,909
+ Block number
 description: Aavegotchi Core Matic
 repository:
 schema:
@@ -12,16 +12,16 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: AavegotchiDiamond
-    network: "base-sepolia"
+    network: "matic"
     source:
-      address: "0x10759c35F8dE7E6172BB30e0B10312c1a295aC2F"
+      address: "0x86935F11C86623deC8a25696E1C19a8659CbF95d"
       abi: AavegotchiDiamond
-      startBlock: 26278630
+      startBlock: 11500000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
-      file: ./src/mappings/baseDiamond.ts
+      file: ./src/mappings/diamond.ts
       entities:
         - User
       abis:
@@ -173,23 +173,14 @@ dataSources:
           handler: handleWearablesConfigCreated
         - event: WearablesConfigUpdated(indexed address,indexed uint256,indexed uint16,uint16[16])
           handler: handleWearablesConfigUpdated
-          
-        - event: AavegotchiHistory((uint256,string,uint256,uint256[],uint256,uint256))
-          handler: handleAavegotchiHistory
-        - event: PortalData((uint256,address,uint256,address,(uint8,uint256,int16[6],address,uint256,uint16)[],string,uint256,uint256,uint256,uint256,uint256,uint256[],uint256))
-          handler: handlePortalData
-        - event: ResyncAavegotchis(uint256)
-          handler: handleResyncAavegotchis
-        - event: ClaimedAt(uint256,uint256)
-          handler: handleClaimedAt
 
   - kind: ethereum/contract
     name: RealmDiamond
-    network: "base-sepolia"
+    network: "matic"
     source:
-      address: "0x37D140074B2f771bEa7ef23288EB87064e45bF8D"
+      address: "0x1D0360BaC7299C86Ec8E99d0c1C9A95FEfaF2a11"
       abi: RealmDiamond
-      startBlock: 26672392
+      startBlock: 20667840
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -209,14 +200,14 @@ dataSources:
           handler: handleResyncParcel
         - event: KinshipBurned(uint256,uint256)
           handler: handleKinshipBurned
-      file: ./src/mappings/baseDiamond.ts
+      file: ./src/mappings/diamond.ts
   - kind: ethereum/contract
     name: FAKEGotchisCardDiamond
-    network: "base-sepolia"
+    network: "matic"
     source:
-      address: "0xE4E508dab5D7d98f4c06aB6D24bB225588036C9D"
+      address: "0x9f6BcC63e86D44c46e85564E9383E650dc0b56D7"
       abi: IERC1155
-      startBlock: 26286751
+      startBlock: 34520146
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -238,11 +229,11 @@ dataSources:
       file: ./src/mappings/fakeGotchisCard.ts
   - kind: ethereum/contract
     name: FAKEGotchisNFTDiamond
-    network: "base-sepolia"
+    network: "matic"
     source:
-      address: "0xD0dCC1d1E22D490e5270631787E1866E773b16C7"
+      address: "0xA4E3513c98b30d4D7cc578d2C328Bd550725D1D0"
       abi: IERC721
-      startBlock: 26286758
+      startBlock: 34520176
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
