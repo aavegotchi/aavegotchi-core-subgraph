@@ -180,6 +180,8 @@ dataSources:
           handler: handlePortalData
         - event: ResyncAavegotchis(uint256)
           handler: handleResyncAavegotchis
+        - event: ClaimedAt(uint256,uint256)
+          handler: handleClaimedAt
 
   - kind: ethereum/contract
     name: RealmDiamond

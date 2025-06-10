@@ -82,11 +82,18 @@ type Aavegotchi @entity {
 
   listings: [ERC721Listing!]! @derivedFrom(field: "gotchi")
 
-  "Block in which the Aavegotchi entity was created"
+  "Block in which the Aavegotchi entity was created on Base"
   createdAt: BigInt
 
-  "Block in which the Aavegotchi was claimed. Should coincide with createdAt"
+  "Block in which the Aavegotchi was created on Polygon"
+  createdAtPolygon: BigInt
+
+  "Block in which the Aavegotchi was claimed on Base. Should coincide with createdAt"
   claimedAt: BigInt
+
+  "Block in which the Aavegotchi was claimed on Polygon (if migrated). Should coincide with createdAtPolygon"
+  claimedAtPolygon: BigInt
+
   claimedTime: BigInt
 
   timesTraded: BigInt!
@@ -138,6 +145,9 @@ type Portal @entity {
   openedAt: BigInt
 
   claimedAt: BigInt
+
+  claimedAtPolygon: BigInt
+
   claimedTime: BigInt
 
   timesTraded: BigInt!

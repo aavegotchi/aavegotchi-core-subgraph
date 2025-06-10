@@ -74,6 +74,7 @@ import {
   AavegotchiHistory,
   PortalData,
   ResyncAavegotchis,
+  ClaimedAt,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -127,6 +128,7 @@ import {
   RealmDiamond,
   ResyncParcel,
 } from "../../generated/AavegotchiDiamond/RealmDiamond";
+import { MIGRATION_BLOCK } from "../helper";
 
 export function handleBuyPortals(event: BuyPortals): void {
   let contract = AavegotchiDiamond.bind(event.address);
@@ -2004,8 +2006,8 @@ export function handleAavegotchiHistory(event: AavegotchiHistory): void {
 
   // Update basic info
   gotchi.name = data.name;
-  gotchi.createdAt = data.createdAtBlock;
   gotchi.timesTraded = data.timesTraded;
+
   if (data.activeListing != BIGINT_ZERO) {
     gotchi.activeListing = data.activeListing;
   }
@@ -2036,7 +2038,6 @@ export function handlePortalData(event: PortalData): void {
   // Update timestamps
   portal.boughtAt = data.boughtAtBlock;
   portal.openedAt = data.openedAtBlock;
-  portal.claimedAt = data.claimedAtBlock;
   portal.claimedTime = data.claimedTimestamp;
 
   // Update trading info
@@ -2071,4 +2072,24 @@ export function handleResyncAavegotchis(event: ResyncAavegotchis): void {
   if (!gotchi) return;
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event, false);
   gotchi.save();
+}
+
+export function handleClaimedAt(event: ClaimedAt): void {
+  if (event.params._claimedAt !== BIGINT_ZERO) {
+    let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
+    if (!gotchi) return;
+    gotchi.claimedAtPolygon = event.params._claimedAt;
+    gotchi.createdAtPolygon = event.params._claimedAt;
+
+    gotchi.createdAt = MIGRATION_BLOCK;
+    gotchi.claimedAt = MIGRATION_BLOCK;
+
+    gotchi.save();
+
+    let portal = getOrCreatePortal(gotchi.id);
+    portal.claimedAtPolygon = event.params._claimedAt;
+    portal.claimedAt = MIGRATION_BLOCK;
+
+    portal.save();
+  }
 }
