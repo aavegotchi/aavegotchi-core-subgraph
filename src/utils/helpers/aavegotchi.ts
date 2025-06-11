@@ -272,6 +272,7 @@ export function updateERC721ListingInfo(
           listing.soldBefore = false;
         }
         listing.claimedAt = aavegotchi.claimedAt;
+        listing.claimedAtPolygon = aavegotchi.claimedAtPolygon;
       }
     }
   } else {

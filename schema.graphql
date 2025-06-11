@@ -229,6 +229,7 @@ type ERC721Listing @entity {
   amountEquippedWearables: Int
   soldBefore: Boolean
   claimedAt: BigInt
+  claimedAtPolygon: BigInt
 
   # Traits of Gotchi
   nrgTrait: BigInt
