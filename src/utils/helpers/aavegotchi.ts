@@ -272,6 +272,7 @@ export function updateERC721ListingInfo(
           listing.soldBefore = false;
         }
         listing.claimedAt = aavegotchi.claimedAt;
+        listing.claimedAtPolygon = aavegotchi.claimedAtPolygon;
       }
     }
   } else {
@@ -450,7 +451,10 @@ export function updateAavegotchiInfo(
     gotchi.modifiedSpookiness = gotchiInfo.modifiedNumericTraits[2];
     gotchi.modifiedBrain = gotchiInfo.modifiedNumericTraits[3];
 
-    if (!gotchi.withSetsRarityScore) {
+    if (
+      !gotchi.withSetsRarityScore ||
+      gotchi.withSetsRarityScore!.equals(BIGINT_ZERO)
+    ) {
       gotchi.withSetsRarityScore = gotchiInfo.modifiedRarityScore;
       gotchi.withSetsNumericTraits = gotchiInfo.modifiedNumericTraits;
     }
@@ -708,7 +712,7 @@ export function createOrUpdateWearablesConfig(
   let ownerAddress = Address.fromString(owner.toHexString());
   let gotchi = getOrCreateAavegotchi(tokenId.toString(), event)!;
   let user = getOrCreateUser(ownerAddress.toHexString())!;
-  let id = `${user.id}-${tokenId}-${wearablesConfigId}`
+  let id = `${user.id}-${tokenId}-${wearablesConfigId}`;
 
   let response = contract.try_getWearablesConfig(
     ownerAddress,

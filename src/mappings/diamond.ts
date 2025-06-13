@@ -71,6 +71,9 @@ import {
   ERC1155BuyOrderAdd,
   ERC1155BuyOrderExecute,
   ERC1155BuyOrderCancel,
+  AavegotchiHistory,
+  PortalData,
+  ResyncAavegotchis,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -113,13 +116,8 @@ import {
 } from "../utils/constants";
 import { Address, BigInt, log, Bytes } from "@graphprotocol/graph-ts";
 
-import { /*Parcel,*/ Parcel, TokenCommitment } from "../../generated/schema";
-// import {
-//   RealmDiamond,
-//   MintParcel,
-//   ResyncParcel,
-//   KinshipBurned,
-// } from "../../generated/RealmDiamond/RealmDiamond";
+import { Parcel, TokenCommitment } from "../../generated/schema";
+
 import { updatePermissionsFromBitmap } from "../utils/decimals";
 import * as erc7589 from "./erc-7589";
 import { generateTokenCommitmentId } from "../utils/helpers/erc-7589";
@@ -513,11 +511,13 @@ export function handleTransfer(event: Transfer): void {
   let portal = getOrCreatePortal(id, true);
   // ERC721 transfer can be portal or gotchi based, so we have to check it.
   if (gotchi != null) {
+    // WHY this if there is an update anyway at the end of the if block?
     if (!gotchi.modifiedRarityScore) {
       gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event);
     }
 
     //If the Gotchi is being transferred from the socket Vault, we need to sync its metadata
+    // TODO: probably we can get rid of this since it was used to bridge to geist?
     if (
       event.params._from.equals(
         Address.fromString("0xf1d1d61eedda7a10b494af7af87d932ac910f3c5")
@@ -611,6 +611,8 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
     listing.parcel = event.params.erc721TokenId.toString();
     let parcel = Parcel.load(event.params.erc721TokenId.toString())!;
     parcel.activeListing = event.params.listingId;
+    parcel.save();
+
     listing.fudBoost = parcel.fudBoost;
     listing.fomoBoost = parcel.fomoBoost;
     listing.alphaBoost = parcel.alphaBoost;
@@ -694,21 +696,21 @@ export function handleERC721ExecutedListing(
 
     //Parcel -- update number of times traded
 
-    // let parcel = getOrCreateParcel(
-    //   event.params.erc721TokenId,
-    //   event.params.buyer,
-    //   event.params.erc721TokenAddress
-    // );
-    // parcel.timesTraded = parcel.timesTraded.plus(BIGINT_ONE);
-    // parcel.activeListing = null;
-    // // add to historical prices
-    // let historicalPrices = parcel.historicalPrices;
-    // if (historicalPrices == null) {
-    //   historicalPrices = new Array();
-    // }
-    // historicalPrices.push(event.params.priceInWei);
-    // parcel.historicalPrices = historicalPrices;
-    // parcel.save();
+    let parcel = getOrCreateParcel(
+      event.params.erc721TokenId,
+      event.params.buyer,
+      event.params.erc721TokenAddress
+    );
+    parcel.timesTraded = parcel.timesTraded.plus(BIGINT_ONE);
+    parcel.activeListing = null;
+    // add to historical prices
+    let historicalPrices = parcel.historicalPrices;
+    if (historicalPrices == null) {
+      historicalPrices = new Array();
+    }
+    historicalPrices.push(event.params.priceInWei);
+    parcel.historicalPrices = historicalPrices;
+    parcel.save();
   }
 
   let stats = getStatisticEntity();
@@ -739,14 +741,14 @@ export function handleERC721ListingCancelled(
     gotchi.locked = false;
     gotchi.save();
   } else if (listing.category.equals(BigInt.fromI32(4))) {
-    // let parcel = getOrCreateParcel(
-    //   listing.tokenId,
-    //   listing.seller,
-    //   Address.fromString(listing.erc721TokenAddress.toHexString()),
-    //   false
-    // );
-    // parcel.activeListing = null;
-    // parcel.save();
+    let parcel = getOrCreateParcel(
+      listing.tokenId,
+      listing.seller,
+      Address.fromString(listing.erc721TokenAddress.toHexString()),
+      false
+    );
+    parcel.activeListing = null;
+    parcel.save();
   }
 
   listing.cancelled = true;
@@ -1058,7 +1060,15 @@ export function handleDiamondCut(event: DiamondCut): void {
 // export { runTests } from "../tests/aavegotchi.test";
 
 export function handleResyncParcel(event: ResyncParcel): void {
-  let parcel = Parcel.load(event.params._tokenId.toString())!;
+  const tokenId = event.params._tokenId.toString();
+  let parcel = Parcel.load(tokenId);
+
+  // Entities only exist after they have been saved to the store;
+  // `null` checks allow to create entities on demand
+  if (parcel == null) {
+    parcel = new Parcel(tokenId);
+    parcel.timesTraded = BIGINT_ZERO;
+  }
 
   let contract = RealmDiamond.bind(event.address);
   let parcelInfo = contract.try_getParcelInfo(event.params._tokenId);
@@ -1073,6 +1083,8 @@ export function handleResyncParcel(event: ResyncParcel): void {
     parcel.parcelHash = parcelMetadata.parcelAddress;
 
     parcel.size = parcelMetadata.size;
+
+    parcel.owner = parcelMetadata.owner.toHexString();
 
     let boostArray = parcelMetadata.boost;
     parcel.fudBoost = boostArray[0];
