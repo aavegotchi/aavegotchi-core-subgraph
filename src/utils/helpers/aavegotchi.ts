@@ -451,7 +451,10 @@ export function updateAavegotchiInfo(
     gotchi.modifiedSpookiness = gotchiInfo.modifiedNumericTraits[2];
     gotchi.modifiedBrain = gotchiInfo.modifiedNumericTraits[3];
 
-    if (!gotchi.withSetsRarityScore) {
+    if (
+      !gotchi.withSetsRarityScore ||
+      gotchi.withSetsRarityScore.equals(BIGINT_ZERO)
+    ) {
       gotchi.withSetsRarityScore = gotchiInfo.modifiedRarityScore;
       gotchi.withSetsNumericTraits = gotchiInfo.modifiedNumericTraits;
     }
