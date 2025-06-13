@@ -453,7 +453,7 @@ export function updateAavegotchiInfo(
 
     if (
       !gotchi.withSetsRarityScore ||
-      gotchi.withSetsRarityScore.equals(BIGINT_ZERO)
+      gotchi.withSetsRarityScore!.equals(BIGINT_ZERO)
     ) {
       gotchi.withSetsRarityScore = gotchiInfo.modifiedRarityScore;
       gotchi.withSetsNumericTraits = gotchiInfo.modifiedNumericTraits;
