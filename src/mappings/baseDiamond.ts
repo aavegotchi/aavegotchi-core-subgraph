@@ -2076,20 +2076,23 @@ export function handleResyncAavegotchis(event: ResyncAavegotchis): void {
 
 export function handleClaimedAt(event: ClaimedAt): void {
   if (event.params._claimedAt !== BIGINT_ZERO) {
-    let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
+    const tokenId = event.params._tokenId.toString();
+
+    let portal = getOrCreatePortal(tokenId);
+    portal.claimedAtPolygon = event.params._claimedAt;
+    portal.claimedAt = MIGRATION_BLOCK;
+
+    let gotchi = getOrCreateAavegotchi(tokenId, event);
     if (!gotchi) return;
     gotchi.claimedAtPolygon = event.params._claimedAt;
     gotchi.createdAtPolygon = event.params._claimedAt;
 
+    gotchi.claimedTime = portal.claimedTime;
+
     gotchi.createdAt = MIGRATION_BLOCK;
     gotchi.claimedAt = MIGRATION_BLOCK;
 
-    gotchi.save();
-
-    let portal = getOrCreatePortal(gotchi.id);
-    portal.claimedAtPolygon = event.params._claimedAt;
-    portal.claimedAt = MIGRATION_BLOCK;
-
     portal.save();
+    gotchi.save();
   }
 }
