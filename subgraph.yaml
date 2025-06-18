@@ -14,9 +14,9 @@ dataSources:
     name: AavegotchiDiamond
     network: "base-sepolia"
     source:
-      address: "0xedb308770a3Fb62DE14c2E603E275bA1D0E5e5Cf"
+      address: "0x6Cff314D21244BB4a907A5D5E5305abE07eefAeC"
       abi: AavegotchiDiamond
-      startBlock: 27198563
+      startBlock: 27212107
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
