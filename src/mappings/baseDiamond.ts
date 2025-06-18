@@ -2090,19 +2090,6 @@ export function handleClaimedAt(event: ClaimedAt): void {
     portal.claimedAtPolygon = event.params._claimedAt;
     portal.claimedAt = MIGRATION_BLOCK;
 
-    // This exception is needed if this event is fired before of the handlePortalData
-    // Ensure the portal has a valid owner (use the gotchi's owner)
-    if (!portal.owner) {
-      if (gotchi.owner) {
-        portal.owner = gotchi.owner!;
-      } else {
-        // Fallback to zero address if neither gotchi nor portal have an owner
-        let zeroUser = getOrCreateUser(ZERO_ADDRESS);
-        portal.owner = zeroUser.id;
-        zeroUser.save();
-      }
-    }
-
     portal.save();
   }
 }
