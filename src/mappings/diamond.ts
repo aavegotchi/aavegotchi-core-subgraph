@@ -391,8 +391,10 @@ export function handleSetAavegotchiName(event: SetAavegotchiName): void {
       gotchi.activeListing!.toString(),
       false
     );
-    listing.nameLowerCase = gotchi.nameLowerCase;
-    listing.save();
+    if (listing) {
+      listing.nameLowerCase = gotchi.nameLowerCase;
+      listing.save();
+    }
   }
 }
 
@@ -499,8 +501,10 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
       gotchi.activeListing!.toString(),
       false
     );
-    listing.kinship = gotchi.kinship;
-    listing.save();
+    if (listing) {
+      listing.kinship = gotchi.kinship;
+      listing.save();
+    }
   }
 }
 

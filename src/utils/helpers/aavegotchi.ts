@@ -114,7 +114,7 @@ export function getOrCreateUser(
 export function getOrCreateERC721Listing(
   id: string,
   createIfNotFound: boolean = true
-): ERC721Listing {
+): ERC721Listing | null {
   let listing = ERC721Listing.load(id);
 
   if (listing == null && createIfNotFound) {
@@ -123,7 +123,7 @@ export function getOrCreateERC721Listing(
     listing.timeCreated = BIGINT_ZERO;
   }
 
-  return listing as ERC721Listing;
+  return listing;
 }
 
 export function getOrCreateERC1155Listing(
@@ -463,7 +463,7 @@ export function updateAavegotchiInfo(
     }
 
     if (gotchi.activeListing && updateListing) {
-      let listing = getOrCreateERC721Listing(gotchi.activeListing!.toString());
+      let listing = getOrCreateERC721Listing(gotchi.activeListing!.toString())!;
       listing.kinship = gotchi.kinship;
       listing.experience = gotchi.experience;
       listing.nameLowerCase = gotchi.nameLowerCase;

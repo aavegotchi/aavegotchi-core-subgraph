@@ -381,8 +381,10 @@ export function handleSetAavegotchiName(event: SetAavegotchiName): void {
       gotchi.activeListing!.toString(),
       false
     );
-    listing.nameLowerCase = gotchi.nameLowerCase;
-    listing.save();
+    if (listing) {
+      listing.nameLowerCase = gotchi.nameLowerCase;
+      listing.save();
+    }
   }
 }
 
