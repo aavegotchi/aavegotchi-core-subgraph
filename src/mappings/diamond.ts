@@ -255,7 +255,7 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
   portal.claimedTime = event.block.timestamp;
 
   if (portal.activeListing) {
-    let listing = getOrCreateERC721Listing(portal.activeListing!.toString());
+    let listing = getOrCreateERC721Listing(portal.activeListing!.toString())!;
     listing.cancelled = true;
     listing.save();
   }
