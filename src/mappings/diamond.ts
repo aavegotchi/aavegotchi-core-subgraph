@@ -116,7 +116,7 @@ import {
 } from "../utils/constants";
 import { Address, BigInt, log, Bytes } from "@graphprotocol/graph-ts";
 
-import { Parcel, TokenCommitment } from "../../generated/schema";
+import { Parcel, TokenCommitment, ERC721Listing } from "../../generated/schema";
 
 import { updatePermissionsFromBitmap } from "../utils/decimals";
 import * as erc7589 from "./erc-7589";
@@ -385,12 +385,11 @@ export function handleSetAavegotchiName(event: SetAavegotchiName): void {
   gotchi.save();
 
   if (gotchi.activeListing) {
-    let listing = getOrCreateERC721Listing(
-      gotchi.activeListing!.toString(),
-      false
-    );
-    listing.nameLowerCase = gotchi.nameLowerCase;
-    listing.save();
+    let listing = ERC721Listing.load(gotchi.activeListing!.toString());
+    if (listing) {
+      listing.nameLowerCase = gotchi.nameLowerCase;
+      listing.save();
+    }
   }
 }
 
@@ -493,12 +492,11 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
 
   // Update ERC721Listing if gotchi has an active listing
   if (gotchi.activeListing) {
-    let listing = getOrCreateERC721Listing(
-      gotchi.activeListing!.toString(),
-      false
-    );
-    listing.kinship = gotchi.kinship;
-    listing.save();
+    let listing = ERC721Listing.load(gotchi.activeListing!.toString());
+    if (listing) {
+      listing.kinship = gotchi.kinship;
+      listing.save();
+    }
   }
 }
 
