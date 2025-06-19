@@ -711,7 +711,7 @@ export function createOrUpdateWearablesConfig(
   let contract = AavegotchiDiamond.bind(event.address);
   let ownerAddress = Address.fromString(owner.toHexString());
   let gotchi = getOrCreateAavegotchi(tokenId.toString(), event)!;
-  let user = getOrCreateUser(ownerAddress.toHexString())!;
+  let user = getOrCreateUser(ownerAddress.toHexString());
   let id = `${user.id}-${tokenId}-${wearablesConfigId}`;
 
   let response = contract.try_getWearablesConfig(
