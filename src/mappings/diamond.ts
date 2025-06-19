@@ -255,7 +255,7 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
   portal.claimedTime = event.block.timestamp;
 
   if (portal.activeListing) {
-    let listing = getOrCreateERC721Listing(portal.activeListing!.toString());
+    let listing = getOrCreateERC721Listing(portal.activeListing!.toString())!;
     listing.cancelled = true;
     listing.save();
   }
@@ -391,8 +391,10 @@ export function handleSetAavegotchiName(event: SetAavegotchiName): void {
       gotchi.activeListing!.toString(),
       false
     );
-    listing.nameLowerCase = gotchi.nameLowerCase;
-    listing.save();
+    if (listing) {
+      listing.nameLowerCase = gotchi.nameLowerCase;
+      listing.save();
+    }
   }
 }
 
@@ -499,8 +501,10 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
       gotchi.activeListing!.toString(),
       false
     );
-    listing.kinship = gotchi.kinship;
-    listing.save();
+    if (listing) {
+      listing.kinship = gotchi.kinship;
+      listing.save();
+    }
   }
 }
 
@@ -574,7 +578,7 @@ export function handleTransferBatch(event: TransferBatch): void {}
 
 export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
-  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+  listing = updateERC721ListingInfo(listing!, event.params.listingId, event);
 
   if (listing.category == BigInt.fromI32(3)) {
     listing.gotchi = event.params.erc721TokenId.toString();
@@ -644,7 +648,7 @@ export function handleERC721ExecutedListing(
   event: ERC721ExecutedListing
 ): void {
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
-  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+  listing = updateERC721ListingInfo(listing!, event.params.listingId, event);
 
   listing.buyer = event.params.buyer;
   listing.timePurchased = event.params.time;
@@ -686,7 +690,7 @@ export function handleERC721ExecutedListing(
     gotchi.save();
   } else if (event.params.category == BigInt.fromI32(4)) {
     let listing = getOrCreateERC721Listing(event.params.listingId.toString());
-    listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+    listing = updateERC721ListingInfo(listing!, event.params.listingId, event);
 
     listing.buyer = event.params.buyer;
     listing.timePurchased = event.params.time;
@@ -727,7 +731,7 @@ export function handleERC721ListingCancelled(
   event: ERC721ListingCancelled
 ): void {
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
-  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+  listing = updateERC721ListingInfo(listing!, event.params.listingId, event);
 
   if (listing.category.lt(BigInt.fromI32(3))) {
     let portal = getOrCreatePortal(listing.tokenId.toString());
@@ -760,7 +764,7 @@ handler:handleERC721ListingRemoved
 
 export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
-  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+  listing = updateERC721ListingInfo(listing!, event.params.listingId, event);
 
   if (listing.category.lt(BigInt.fromI32(3))) {
     let portal = getOrCreatePortal(listing.tokenId.toString());
@@ -1218,7 +1222,7 @@ export function handleERC721ExecutedToRecipient(
 ): void {
   // update listing
   let listing = getOrCreateERC721Listing(event.params.listingId.toString());
-  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+  listing = updateERC721ListingInfo(listing!, event.params.listingId, event);
   listing.recipient = event.params.recipient;
   listing.buyer = event.params.buyer;
   listing.save();

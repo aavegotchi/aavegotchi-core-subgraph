@@ -114,7 +114,7 @@ export function getOrCreateUser(
 export function getOrCreateERC721Listing(
   id: string,
   createIfNotFound: boolean = true
-): ERC721Listing {
+): ERC721Listing | null {
   let listing = ERC721Listing.load(id);
 
   if (listing == null && createIfNotFound) {
@@ -123,7 +123,7 @@ export function getOrCreateERC721Listing(
     listing.timeCreated = BIGINT_ZERO;
   }
 
-  return listing as ERC721Listing;
+  return listing;
 }
 
 export function getOrCreateERC1155Listing(
@@ -463,22 +463,27 @@ export function updateAavegotchiInfo(
     }
 
     if (gotchi.activeListing && updateListing) {
-      let listing = getOrCreateERC721Listing(gotchi.activeListing!.toString());
-      listing.kinship = gotchi.kinship;
-      listing.experience = gotchi.experience;
-      listing.nameLowerCase = gotchi.nameLowerCase;
-      if (
-        gotchi.withSetsNumericTraits != null &&
-        gotchi.withSetsNumericTraits!.length == 6
-      ) {
-        listing.nrgTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![0]);
-        listing.aggTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![1]);
-        listing.spkTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![2]);
-        listing.brnTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![3]);
-        listing.eysTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![4]);
-        listing.eycTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![5]);
+      let listing = getOrCreateERC721Listing(
+        gotchi.activeListing!.toString(),
+        false
+      );
+      if (listing) {
+        listing.kinship = gotchi.kinship;
+        listing.experience = gotchi.experience;
+        listing.nameLowerCase = gotchi.nameLowerCase;
+        if (
+          gotchi.withSetsNumericTraits != null &&
+          gotchi.withSetsNumericTraits!.length == 6
+        ) {
+          listing.nrgTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![0]);
+          listing.aggTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![1]);
+          listing.spkTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![2]);
+          listing.brnTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![3]);
+          listing.eysTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![4]);
+          listing.eycTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![5]);
+        }
+        listing.save();
       }
-      listing.save();
     }
 
     gotchi.locked = gotchiInfo.locked;
@@ -707,7 +712,7 @@ export function createOrUpdateWearablesConfig(
   let contract = AavegotchiDiamond.bind(event.address);
   let ownerAddress = Address.fromString(owner.toHexString());
   let gotchi = getOrCreateAavegotchi(tokenId.toString(), event)!;
-  let user = getOrCreateUser(ownerAddress.toHexString())!;
+  let user = getOrCreateUser(ownerAddress.toHexString());
   let id = `${user.id}-${tokenId}-${wearablesConfigId}`
 
   let response = contract.try_getWearablesConfig(
