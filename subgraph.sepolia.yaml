@@ -117,8 +117,6 @@ dataSources:
           handler: handleERC1155ExecutedToRecipient
         - event: ERC721ExecutedToRecipient(indexed uint256,indexed address,indexed address)
           handler: handleERC721ExecutedToRecipient
-        - event: GotchiLendingAdded(indexed uint32,indexed address,indexed uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
-          handler: handleGotchiLendingAdded
         - event: GotchiLendingClaimed(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256[],uint256)
           handler: handleGotchiLendingClaimed
         - event: GotchiLendingEnded(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
