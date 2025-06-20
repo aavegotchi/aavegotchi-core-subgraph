@@ -117,14 +117,6 @@ dataSources:
           handler: handleERC1155ExecutedToRecipient
         - event: ERC721ExecutedToRecipient(indexed uint256,indexed address,indexed address)
           handler: handleERC721ExecutedToRecipient
-        - event: GotchiLendingClaimed(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256[],uint256)
-          handler: handleGotchiLendingClaimed
-        - event: GotchiLendingEnded(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
-          handler: handleGotchiLendingEnded
-        - event: GotchiLendingExecuted(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
-          handler: handleGotchiLendingExecuted
-        - event: GotchiLendingCanceled(indexed uint32,indexed address,indexed uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
-          handler: handleGotchiLendingCanceled
         - event: WhitelistAccessRightSet(indexed uint32,indexed uint256,indexed uint256)
           handler: handleWhitelistAccessRightSet
         - event: UpdateItemType(indexed uint256,(string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))
