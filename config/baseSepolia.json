@@ -1,8 +1,8 @@
 {
   "coreAddress": "0xf28469b81871D924ae70664FEBf5AF626AAe5087",
   "coreStartBlock": 27243836,
-  "realmAddress": "0x37D140074B2f771bEa7ef23288EB87064e45bF8D",
-  "realmStartBlock": 26672392,
+  "realmAddress": "0xD30400839aCbFfE2847095BC3Be7c510CE812300",
+  "realmStartBlock": 27493601,
   "fakeCardAddress": "0xE4E508dab5D7d98f4c06aB6D24bB225588036C9D",
   "fakeCardStartBlock": 26286751,
   "fakeGotchisAddress": "0xD0dCC1d1E22D490e5270631787E1866E773b16C7",
