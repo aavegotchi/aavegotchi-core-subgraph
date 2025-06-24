@@ -70,6 +70,8 @@ import {
   PortalData,
   ResyncAavegotchis,
   ClaimedAt,
+  TransferBatch,
+  TransferSingle,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -124,6 +126,7 @@ import {
   ResyncParcel,
 } from "../../generated/AavegotchiDiamond/RealmDiamond";
 import { MIGRATION_BLOCK } from "../helper";
+import { updateOwnership } from "../utils/helpers/diamond";
 
 export function handleBuyPortals(event: BuyPortals): void {
   let contract = AavegotchiDiamond.bind(event.address);
@@ -1832,5 +1835,35 @@ export function handleClaimedAt(event: ClaimedAt): void {
 
     portal.save();
     gotchi.save();
+  }
+}
+
+export function handleTransferSingle(event: TransferSingle): void {
+  const to = event.params._to;
+  const id = event.params._id.toString();
+
+  // if (from.notEqual(Address.zero())) {
+  //   updateOwnership(id, from, amount.neg(), timestamp);
+  // }
+
+  if (to.notEqual(Address.zero())) {
+    updateOwnership(id, to);
+  }
+}
+
+export function handleTransferBatch(event: TransferBatch): void {
+  const to = event.params._to;
+  const ids = event.params._ids;
+
+  for (let i = 0; i < ids.length; i++) {
+    const id = ids[i].toString();
+
+    // if (from.notEqual(Address.zero())) {
+    //   updateOwnership(id, from, amount.neg(), timestamp);
+    // }
+
+    if (to.notEqual(Address.zero())) {
+      updateOwnership(id, to);
+    }
   }
 }

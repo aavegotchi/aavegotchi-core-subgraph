@@ -360,6 +360,7 @@ type ItemType @entity {
   kinshipBonus: Int
   experienceBonus: BigInt
   consumed: BigInt!
+  owners: [ItemTypeOwnership!]! @derivedFrom(field: "itemType") # Add this line
 }
 
 type WearableSet @entity {
@@ -653,4 +654,10 @@ type TokenCommitment @entity {
   isReleased: Boolean!
   usedBalance: BigInt!
   roleAssignments: [RoleAssignment!] @derivedFrom(field: "tokenCommitment")
+}
+
+type ItemTypeOwnership @entity {
+  id: ID! # Format: itemTypeId-ownerAddress
+  itemType: ItemType!
+  owner: Bytes!
 }

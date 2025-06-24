@@ -117,16 +117,6 @@ dataSources:
           handler: handleERC1155ExecutedToRecipient
         - event: ERC721ExecutedToRecipient(indexed uint256,indexed address,indexed address)
           handler: handleERC721ExecutedToRecipient
-        - event: GotchiLendingAdded(indexed uint32,indexed address,indexed uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
-          handler: handleGotchiLendingAdded
-        - event: GotchiLendingClaimed(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256[],uint256)
-          handler: handleGotchiLendingClaimed
-        - event: GotchiLendingEnded(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
-          handler: handleGotchiLendingEnded
-        - event: GotchiLendingExecuted(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
-          handler: handleGotchiLendingExecuted
-        - event: GotchiLendingCanceled(indexed uint32,indexed address,indexed uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
-          handler: handleGotchiLendingCanceled
         - event: WhitelistAccessRightSet(indexed uint32,indexed uint256,indexed uint256)
           handler: handleWhitelistAccessRightSet
         - event: UpdateItemType(indexed uint256,(string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))
@@ -183,13 +173,18 @@ dataSources:
         - event: ClaimedAt(uint256,uint256)
           handler: handleClaimedAt
 
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch
+
   - kind: ethereum/contract
     name: RealmDiamond
     network: "base-sepolia"
     source:
-      address: "0x37D140074B2f771bEa7ef23288EB87064e45bF8D"
+      address: "0xD30400839aCbFfE2847095BC3Be7c510CE812300"
       abi: RealmDiamond
-      startBlock: 26672392
+      startBlock: 27493601
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -264,3 +259,25 @@ dataSources:
         - event: MetadataLike(indexed uint256,address)
           handler: handleMetadataLike
       file: ./src/mappings/fakeGotchisNFT.ts
+  - kind: ethereum/contract
+    name: WearableDiamond
+    network: "base-sepolia"
+    source:
+      address: "0xAfdfE373C57Ac5CddbD57DEA6f3fF67C36D8ACFE"
+      abi: AavegotchiDiamond
+      startBlock: 27243887
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/itemTransfers.ts
+      entities:
+        - ItemTypeOwnership
+      abis:
+        - name: AavegotchiDiamond
+          file: ./abis/AavegotchiDiamond.json
+      eventHandlers:
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch

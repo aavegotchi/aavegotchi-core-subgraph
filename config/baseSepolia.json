@@ -7,5 +7,7 @@
   "fakeCardStartBlock": 26286751,
   "fakeGotchisAddress": "0xD0dCC1d1E22D490e5270631787E1866E773b16C7",
   "fakeGotchisStartBlock": 26286758,
+  "wearableAddress": "0xAfdfE373C57Ac5CddbD57DEA6f3fF67C36D8ACFE",
+  "wearableStartBlock": 27243887,
   "network": "base-sepolia"
 }
