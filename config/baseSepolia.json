@@ -1,5 +1,5 @@
 {
-  "coreAddress": "0xf28469b81871D924ae70664FEBf5AF626AAe5087",
+  "coreAddress": "0x8804AD8031dD98f4968dBD4ffBc129bCeEfd20fC",
   "coreStartBlock": 27243836,
   "realmAddress": "0xD30400839aCbFfE2847095BC3Be7c510CE812300",
   "realmStartBlock": 27464245,
@@ -7,7 +7,7 @@
   "fakeCardStartBlock": 26286751,
   "fakeGotchisAddress": "0xD0dCC1d1E22D490e5270631787E1866E773b16C7",
   "fakeGotchisStartBlock": 26286758,
-  "wearableAddress": "0xAfdfE373C57Ac5CddbD57DEA6f3fF67C36D8ACFE",
+  "wearableAddress": "0x725CC5175ab79bF57f3088A2a095cf8B339BfE23",
   "wearableStartBlock": 27243887,
   "network": "base-sepolia"
 }
