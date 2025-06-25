@@ -173,11 +173,6 @@ dataSources:
         - event: ClaimedAt(uint256,uint256)
           handler: handleClaimedAt
 
-        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
-          handler: handleTransferSingle
-        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
-          handler: handleTransferBatch
-
   - kind: ethereum/contract
     name: RealmDiamond
     network: "base-sepolia"
