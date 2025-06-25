@@ -14,7 +14,7 @@ dataSources:
     name: AavegotchiDiamond
     network: "base-sepolia"
     source:
-      address: "0x7a3f4Ee3dB389Cfc583Fc6DC8Bdfd3696A6Ded18"
+      address: "0x16684d57314Cb70658390ff6b61D2eE98747129d"
       abi: AavegotchiDiamond
       startBlock: 27243836
     mapping:
@@ -258,7 +258,7 @@ dataSources:
     name: WearableDiamond
     network: "base-sepolia"
     source:
-      address: "0x38A2b518C9caEd07273371Bb4Fe8Df260e8bD8d9"
+      address: "0x690FBcC024dB6243576e31E2E8E88a0F7f988345"
       abi: AavegotchiDiamond
       startBlock: 27243887
     mapping:
