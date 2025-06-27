@@ -20,7 +20,7 @@ import {
 } from "../../../generated/schema";
 
 import { AavegotchiOption, Portal } from "../../../generated/schema";
-import { BIGINT_ZERO, PORTAL_STATUS_BOUGHT } from "../constants";
+import { BIGINT_ZERO, PORTAL_STATUS_BOUGHT, ZERO_ADDRESS } from "../constants";
 import {
   AavegotchiDiamond,
   ERC1155ExecutedListing,
@@ -411,7 +411,11 @@ export function updateAavegotchiInfo(
     let owner = getOrCreateUser(gotchiInfo.owner.toHexString());
     owner.save();
     gotchi.owner = owner.id;
-    if (!gotchi.originalOwner) {
+
+    const hasNoOriginalOwner =
+      !gotchi.originalOwner || gotchi.originalOwner == ZERO_ADDRESS;
+
+    if (hasNoOriginalOwner) {
       gotchi.originalOwner = owner.id;
     }
     gotchi.name = gotchiInfo.name;
