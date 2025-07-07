@@ -1,4 +1,4 @@
-import { BigInt, Address, ethereum, store } from "@graphprotocol/graph-ts";
+import { BigInt, Address, store } from "@graphprotocol/graph-ts";
 import { ItemTypeOwnership } from "../../../generated/schema";
 
 export function updateOwnership(
