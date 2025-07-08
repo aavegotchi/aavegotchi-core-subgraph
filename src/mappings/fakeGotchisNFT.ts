@@ -36,6 +36,7 @@ import {
   isTransfer,
 } from "../helper/entities";
 import { getOrCreateUser } from "../utils/helpers/aavegotchi";
+import { FixBurnedStats } from "../../generated/FAKEGotchisCardDiamond/IERC721";
 
 export function handleTransfer(event: TransferEvent): void {
   const isMintFlag = isMint(event);
@@ -219,4 +220,29 @@ export function handleMetadataLike(event: MetadataLikeEvent): void {
 
   let liker = getOrCreateUser(event.params._likedBy.toHexString());
   liker.save();
+}
+
+export function handleFixBurnedStats(event: FixBurnedStats): void {
+  for (let i = 0; i < event.params.metadataIds.length; i++) {
+    let metadataId = event.params.metadataIds[i].toString();
+    let burnedCount = event.params.burnedCounts[i];
+
+    let metadata = MetadataActionLog.load(metadataId)!;
+    let nftStats = getOrCreateFakeGotchiStatistic(metadataId);
+
+    // Fix metadata.editions and burned count
+    metadata.editions = nftStats.totalSupply;
+    nftStats.burned = burnedCount;
+
+    // Sort the existing tokenIds (this fixes the ordering issue)
+    let sortedTokenIds = nftStats.tokenIds.sort((a, b) => {
+      if (a.lt(b)) return -1;
+      if (a.gt(b)) return 1;
+      return 0;
+    });
+    nftStats.tokenIds = sortedTokenIds;
+
+    metadata.save();
+    nftStats.save();
+  }
 }

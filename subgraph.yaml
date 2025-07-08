@@ -204,7 +204,7 @@ dataSources:
     name: FAKEGotchisCardDiamond
     network: "base-sepolia"
     source:
-      address: "0x5bf14d25143e3b0a4966b16ac7010CbB96b04ef1"
+      address: "0xa3Ac88A7eE4C38F71bd8C06158Edf7b42C4909bA"
       abi: IERC1155
       startBlock: 26286751
     mapping:
@@ -230,7 +230,7 @@ dataSources:
     name: FAKEGotchisNFTDiamond
     network: "base-sepolia"
     source:
-      address: "0x147cd59995E9F3925A883F81330577041f7AaC3E"
+      address: "0x90C1c5EfbCBb288f961E46D1A9FcbfC762a765Ff"
       abi: IERC721
       startBlock: 26286758
     mapping:
