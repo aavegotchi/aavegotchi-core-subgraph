@@ -260,14 +260,18 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
     }
 
     // Find and update burned tokens
+    // Only process tokens that are in the expected sequential range
     for (let tokenOffset = 0; tokenOffset < originalEditions; tokenOffset++) {
       let tokenId = startTokenId.plus(BigInt.fromI32(tokenOffset));
 
       if (!activeTokenSet.has(tokenId.toString())) {
-        // This token was burned, set its owner to burn address
+        // This token was burned, try to fetch and update it
         let burnedToken = fetchFakeGotchiNFTToken(event.address, tokenId);
-        burnedToken.owner = BURN_ADDRESS;
-        burnedToken.save();
+
+        if (burnedToken.owner != BURN_ADDRESS && burnedToken.metadata) {
+          burnedToken.owner = BURN_ADDRESS;
+          burnedToken.save();
+        }
       }
     }
 
