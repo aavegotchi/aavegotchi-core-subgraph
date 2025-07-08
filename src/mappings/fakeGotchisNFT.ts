@@ -232,7 +232,7 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
 
     // Fix metadata.editions and burned count
     metadata.editions = nftStats.totalSupply;
-    nftStats.burned = burnedCount;
+    nftStats.burned = burnedCount.toI32();
 
     // Sort the existing tokenIds (this fixes the ordering issue)
     let sortedTokenIds = nftStats.tokenIds.sort((a, b) => {
