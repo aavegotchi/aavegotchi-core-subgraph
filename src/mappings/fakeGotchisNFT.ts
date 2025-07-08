@@ -223,16 +223,14 @@ export function handleMetadataLike(event: MetadataLikeEvent): void {
 }
 
 export function handleFixBurnedStats(event: FixBurnedStats): void {
+  const BURN_ADDRESS = "0xffffffffffffffffffffffffffffffffffffffffff"; // Standard burn address
+
   for (let i = 0; i < event.params.metadataIds.length; i++) {
     let metadataId = event.params.metadataIds[i].toString();
     let burnedCount = event.params.burnedCounts[i];
 
     let metadata = MetadataActionLog.load(metadataId)!;
     let nftStats = getOrCreateFakeGotchiStatistic(metadataId);
-
-    // Fix metadata.editions and burned count
-    metadata.editions = nftStats.totalSupply;
-    nftStats.burned = burnedCount.toI32();
 
     // Sort the existing tokenIds (this fixes the ordering issue)
     let sortedTokenIds = nftStats.tokenIds.sort((a, b) => {
@@ -241,6 +239,41 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
       return 0;
     });
     nftStats.tokenIds = sortedTokenIds;
+
+    // Get original editions from any existing token (all tokens have same editions value)
+    let originalEditions = 0;
+    let startTokenId = BigInt.fromI32(0);
+
+    if (sortedTokenIds.length > 0) {
+      let sampleToken = fetchFakeGotchiNFTToken(
+        event.address,
+        sortedTokenIds[0]
+      );
+      originalEditions = sampleToken.editions;
+      startTokenId = sortedTokenIds[0];
+    }
+
+    // Find burned token IDs by comparing original range with active tokens
+    let activeTokenSet = new Set<string>();
+    for (let j = 0; j < sortedTokenIds.length; j++) {
+      activeTokenSet.add(sortedTokenIds[j].toString());
+    }
+
+    // Find and update burned tokens
+    for (let tokenOffset = 0; tokenOffset < originalEditions; tokenOffset++) {
+      let tokenId = startTokenId.plus(BigInt.fromI32(tokenOffset));
+
+      if (!activeTokenSet.has(tokenId.toString())) {
+        // This token was burned, set its owner to burn address
+        let burnedToken = fetchFakeGotchiNFTToken(event.address, tokenId);
+        burnedToken.owner = BURN_ADDRESS;
+        burnedToken.save();
+      }
+    }
+
+    // Fix metadata.editions and burned count
+    metadata.editions = nftStats.totalSupply;
+    nftStats.burned = burnedCount.toI32();
 
     metadata.save();
     nftStats.save();
