@@ -37,6 +37,7 @@ import {
 } from "../helper/entities";
 import { getOrCreateUser } from "../utils/helpers/aavegotchi";
 import { FixBurnedStats } from "../../generated/FAKEGotchisCardDiamond/IERC721";
+import { log } from "matchstick-as";
 
 export function handleTransfer(event: TransferEvent): void {
   const isMintFlag = isMint(event);
@@ -266,9 +267,13 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
 
       if (!activeTokenSet.has(tokenId.toString())) {
         // This token was burned, try to fetch and update it
+        log.debug("Burned token id: {}", [tokenId.toString()]);
         let burnedToken = fetchFakeGotchiNFTToken(event.address, tokenId);
+        log.debug("Burned token owner: {}", [burnedToken.owner]);
+        log.debug("Burned token metadata: {}", [burnedToken.metadata]);
 
         if (burnedToken.owner != BURN_ADDRESS && burnedToken.metadata) {
+          log.debug("Burned token burn address: {}", [BURN_ADDRESS]);
           burnedToken.owner = BURN_ADDRESS;
           burnedToken.save();
         }
