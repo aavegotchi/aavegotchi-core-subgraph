@@ -278,6 +278,7 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
           ]);
 
           let burnUser = getOrCreateUser(ADDRESS_BURN.toHexString());
+          burnUser.save();
           log.debug("Burned token burn user: {}", [burnUser.id]);
           burnedToken.owner = burnUser.id;
           log.debug("Burned token new owner: {}", [burnedToken.owner]);
