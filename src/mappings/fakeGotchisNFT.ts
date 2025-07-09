@@ -26,7 +26,7 @@ import {
 } from "../utils/constants";
 
 import { fetchFakeGotchiNFTToken } from "../utils/helpers/fakegotchis";
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, log } from "@graphprotocol/graph-ts";
 import {
   getFakeGotchiHolder,
   getOrCreateFakeGotchiStatistic,
@@ -269,8 +269,13 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
         let burnedToken = fetchFakeGotchiNFTToken(event.address, tokenId);
 
         if (burnedToken.owner != BURN_ADDRESS && burnedToken.metadata) {
+          log.debug("Burned token id: {}", [tokenId.toString()]);
+          log.debug("Burned token owner: {}", [burnedToken.owner]);
+          log.debug("Burned token burn address: {}", [BURN_ADDRESS]);
+
           let burnUser = getOrCreateUser(BURN_ADDRESS);
           burnedToken.owner = burnUser.id;
+          log.debug("Burned token new owner: {}", [burnedToken.owner]);
           burnedToken.save();
         }
       }
