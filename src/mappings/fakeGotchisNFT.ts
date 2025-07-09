@@ -21,6 +21,7 @@ import {
 } from "../fetch/account";
 
 import {
+  ADDRESS_BURN,
   METADATA_STATUS_APPROVED,
   METADATA_STATUS_PAUSED,
 } from "../utils/constants";
@@ -223,8 +224,6 @@ export function handleMetadataLike(event: MetadataLikeEvent): void {
 }
 
 export function handleFixBurnedStats(event: FixBurnedStats): void {
-  const BURN_ADDRESS = "0xffffffffffffffffffffffffffffffffffffffffff"; // Standard burn address
-
   for (let i = 0; i < event.params.metadataIds.length; i++) {
     let metadataId = event.params.metadataIds[i].toString();
     let burnedCount = event.params.burnedCounts[i];
@@ -268,12 +267,18 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
         // This token was burned, try to fetch and update it
         let burnedToken = fetchFakeGotchiNFTToken(event.address, tokenId);
 
-        if (burnedToken.owner != BURN_ADDRESS && burnedToken.metadata) {
+        if (
+          burnedToken.owner != ADDRESS_BURN.toHexString() &&
+          burnedToken.metadata
+        ) {
           log.debug("Burned token id: {}", [tokenId.toString()]);
           log.debug("Burned token owner: {}", [burnedToken.owner]);
-          log.debug("Burned token burn address: {}", [BURN_ADDRESS]);
+          log.debug("Burned token burn address: {}", [
+            ADDRESS_BURN.toHexString(),
+          ]);
 
-          let burnUser = getOrCreateUser(BURN_ADDRESS);
+          let burnUser = getOrCreateUser(ADDRESS_BURN.toHexString());
+          log.debug("Burned token burn user: {}", [burnUser.id]);
           burnedToken.owner = burnUser.id;
           log.debug("Burned token new owner: {}", [burnedToken.owner]);
           burnedToken.save();
