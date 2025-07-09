@@ -232,11 +232,26 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
     let nftStats = getOrCreateFakeGotchiStatistic(metadataId);
 
     // Sort the existing tokenIds (this fixes the ordering issue)
+    log.debug("Before sorting tokenIds for metadataId {}: [{}]", [
+      metadataId,
+      nftStats.tokenIds
+        .map<string>((id: BigInt) => id.toString())
+        .join(", "),
+    ]);
+
     let sortedTokenIds = nftStats.tokenIds.sort((a, b) => {
       if (a.lt(b)) return -1;
       if (a.gt(b)) return 1;
       return 0;
     });
+
+    log.debug("After sorting tokenIds for metadataId {}: [{}]", [
+      metadataId,
+      sortedTokenIds
+        .map<string>((id: BigInt) => id.toString())
+        .join(", "),
+    ]);
+
     nftStats.tokenIds = sortedTokenIds;
 
     // Get original editions from any existing token (all tokens have same editions value)
@@ -250,6 +265,13 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
       );
       originalEditions = sampleToken.editions;
       startTokenId = sortedTokenIds[0];
+
+      log.debug(
+        "Detected startTokenId {} with originalEditions {} for metadataId {}",
+        [startTokenId.toString(), originalEditions.toString(), metadataId]
+      );
+    } else {
+      log.warning("No tokenIds found for metadataId {}", [metadataId]);
     }
 
     // Find burned token IDs by comparing original range with active tokens
@@ -260,6 +282,13 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
 
     // Find and update burned tokens
     // Only process tokens that are in the expected sequential range
+    log.debug("Checking range {} to {} for burned tokens (metadataId: {})", [
+      startTokenId.toString(),
+      startTokenId.plus(BigInt.fromI32(originalEditions - 1)).toString(),
+      metadataId,
+    ]);
+
+    let burnedTokensFixed = 0;
     for (let tokenOffset = 0; tokenOffset < originalEditions; tokenOffset++) {
       let tokenId = startTokenId.plus(BigInt.fromI32(tokenOffset));
 
@@ -271,21 +300,26 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
           burnedToken.owner != ADDRESS_BURN.toHexString() &&
           burnedToken.metadata
         ) {
-          log.debug("Burned token id: {}", [tokenId.toString()]);
-          log.debug("Burned token owner: {}", [burnedToken.owner]);
-          log.debug("Burned token burn address: {}", [
+          log.debug("Fixing burned token {} owner from {} to {}", [
+            tokenId.toString(),
+            burnedToken.owner,
             ADDRESS_BURN.toHexString(),
           ]);
 
           let burnUser = getOrCreateUser(ADDRESS_BURN.toHexString());
           burnUser.save();
-          log.debug("Burned token burn user: {}", [burnUser.id]);
+
           burnedToken.owner = burnUser.id;
-          log.debug("Burned token new owner: {}", [burnedToken.owner]);
           burnedToken.save();
+          burnedTokensFixed++;
         }
       }
     }
+
+    log.info("Fixed {} burned tokens for metadataId {}", [
+      burnedTokensFixed.toString(),
+      metadataId,
+    ]);
 
     // Fix metadata.editions and burned count
     metadata.editions = nftStats.totalSupply;
