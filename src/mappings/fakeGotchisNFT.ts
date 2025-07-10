@@ -279,6 +279,18 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
     metadata.editions = nftStats.totalSupply;
     nftStats.burned = burnedCount.toI32();
 
+    if (metadataId == "338") {
+      log.debug(
+        "Updated stats for metadataId {} - original editions: {}, current supply: {}, burned: {}",
+        [
+          metadataId,
+          metadata.editions.toString(),
+          nftStats.totalSupply.toString(),
+          nftStats.burned.toString(),
+        ]
+      );
+    }
+
     metadata.save();
     nftStats.save();
   }
