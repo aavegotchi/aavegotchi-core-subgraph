@@ -242,15 +242,9 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
 
     nftStats.tokenIds = sortedTokenIds;
 
-    // Get original editions from any existing token
-    let originalEditions = 0;
-    if (sortedTokenIds.length > 0) {
-      let sampleToken = fetchFakeGotchiNFTToken(
-        event.address,
-        sortedTokenIds[0]
-      );
-      originalEditions = sampleToken.editions;
-    }
+    // Get original editions from the first token using startTokenId
+    let sampleToken = fetchFakeGotchiNFTToken(event.address, startTokenId);
+    let originalEditions = sampleToken.editions;
 
     // Find burned token IDs by comparing original range with active tokens
     let activeTokenSet = new Set<string>();
