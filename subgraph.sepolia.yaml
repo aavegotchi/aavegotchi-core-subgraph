@@ -253,7 +253,7 @@ dataSources:
           handler: handleMetadataFlag
         - event: MetadataLike(indexed uint256,address)
           handler: handleMetadataLike
-        - event: FixBurnedStats(uint256[],uint256[])
+        - event: FixBurnedStats(uint256[],uint256[],uint256[])
           handler: handleFixBurnedStats
       file: ./src/mappings/fakeGotchisNFT.ts
   - kind: ethereum/contract

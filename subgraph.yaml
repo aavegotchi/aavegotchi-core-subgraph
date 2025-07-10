@@ -204,7 +204,7 @@ dataSources:
     name: FAKEGotchisCardDiamond
     network: "base-sepolia"
     source:
-      address: "0xc57E6537d9511f59D5eea48785d5b65c9264e512"
+      address: "0x634A12899C8E1eE2E500B13B9ddB597715e3Cd3B"
       abi: IERC1155
       startBlock: 26286751
     mapping:
@@ -230,7 +230,7 @@ dataSources:
     name: FAKEGotchisNFTDiamond
     network: "base-sepolia"
     source:
-      address: "0xF0aaeaF461B5708193AA7667C94fc609835bBA33"
+      address: "0x0a6F43f4eFA9aad0e29553fbF41B7eacBfF4dBA3"
       abi: IERC721
       startBlock: 26286758
     mapping:
@@ -253,7 +253,7 @@ dataSources:
           handler: handleMetadataFlag
         - event: MetadataLike(indexed uint256,address)
           handler: handleMetadataLike
-        - event: FixBurnedStats(uint256[],uint256[])
+        - event: FixBurnedStats(uint256[],uint256[],uint256[])
           handler: handleFixBurnedStats
       file: ./src/mappings/fakeGotchisNFT.ts
   - kind: ethereum/contract

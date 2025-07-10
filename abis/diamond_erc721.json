@@ -1263,6 +1263,12 @@
         "internalType": "uint256[]",
         "name": "burnedCounts",
         "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "startingTokenIds",
+        "type": "uint256[]"
       }
     ],
     "name": "FixBurnedStats",

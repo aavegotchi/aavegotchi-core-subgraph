@@ -227,12 +227,13 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
   for (let i = 0; i < event.params.metadataIds.length; i++) {
     let metadataId = event.params.metadataIds[i].toString();
     let burnedCount = event.params.burnedCounts[i];
+    // NEW: Get the starting token ID directly from the event
+    let startTokenId = event.params.startingTokenIds[i];
 
     let metadata = MetadataActionLog.load(metadataId)!;
     let nftStats = getOrCreateFakeGotchiStatistic(metadataId);
 
     // Sort the existing tokenIds (this fixes the ordering issue)
-
     let sortedTokenIds = nftStats.tokenIds.sort((a, b) => {
       if (a.lt(b)) return -1;
       if (a.gt(b)) return 1;
@@ -241,17 +242,14 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
 
     nftStats.tokenIds = sortedTokenIds;
 
-    // Get original editions from any existing token (all tokens have same editions value)
+    // Get original editions from any existing token
     let originalEditions = 0;
-    let startTokenId = BigInt.fromI32(0);
-
     if (sortedTokenIds.length > 0) {
       let sampleToken = fetchFakeGotchiNFTToken(
         event.address,
         sortedTokenIds[0]
       );
       originalEditions = sampleToken.editions;
-      startTokenId = sortedTokenIds[0];
     }
 
     // Find burned token IDs by comparing original range with active tokens
@@ -260,8 +258,7 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
       activeTokenSet.add(sortedTokenIds[j].toString());
     }
 
-    // Find and update burned tokens
-    // Only process tokens that are in the expected sequential range
+    // Find and update burned tokens - now with the CORRECT starting point
     let burnedTokensFixed = 0;
     for (let tokenOffset = 0; tokenOffset < originalEditions; tokenOffset++) {
       let tokenId = startTokenId.plus(BigInt.fromI32(tokenOffset));
