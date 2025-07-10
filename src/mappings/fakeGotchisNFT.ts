@@ -226,8 +226,6 @@ export function handleMetadataLike(event: MetadataLikeEvent): void {
 export function handleFixBurnedStats(event: FixBurnedStats): void {
   for (let i = 0; i < event.params.metadataIds.length; i++) {
     let metadataId = event.params.metadataIds[i].toString();
-    let burnedCount = event.params.burnedCounts[i];
-    // NEW: Get the starting token ID directly from the event
     let startTokenId = event.params.startingTokenIds[i];
 
     let metadata = MetadataActionLog.load(metadataId)!;
@@ -277,19 +275,7 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
 
     // Fix metadata.editions and burned count
     metadata.editions = nftStats.totalSupply;
-    nftStats.burned = burnedCount.toI32();
-
-    if (metadataId == "338") {
-      log.debug(
-        "Updated stats for metadataId {} - original editions: {}, current supply: {}, burned: {}",
-        [
-          metadataId,
-          metadata.editions.toString(),
-          nftStats.totalSupply.toString(),
-          nftStats.burned.toString(),
-        ]
-      );
-    }
+    nftStats.burned = burnedTokensFixed;
 
     metadata.save();
     nftStats.save();
