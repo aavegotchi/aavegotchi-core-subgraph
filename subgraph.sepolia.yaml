@@ -173,33 +173,33 @@ dataSources:
         - event: ClaimedAt(uint256,uint256)
           handler: handleClaimedAt
 
-  - kind: ethereum/contract
-    name: RealmDiamond
-    network: "{{network}}"
-    source:
-      address: "{{realmAddress}}"
-      abi: RealmDiamond
-      startBlock: {{realmStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - MintParcel
-        - Transfer
-      abis:
-        - name: RealmDiamond
-          file: ./abis/RealmDiamond.json
-      eventHandlers:
-        - event: MintParcel(indexed address,indexed uint256)
-          handler: handleMintParcel
-        - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleTransferParcel
-        - event: ResyncParcel(uint256)
-          handler: handleResyncParcel
-        - event: KinshipBurned(uint256,uint256)
-          handler: handleKinshipBurned
-      file: ./src/mappings/baseDiamond.ts
+  # - kind: ethereum/contract
+  #   name: RealmDiamond
+  #   network: "{{network}}"
+  #   source:
+  #     address: "{{realmAddress}}"
+  #     abi: RealmDiamond
+  #     startBlock: {{realmStartBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - MintParcel
+  #       - Transfer
+  #     abis:
+  #       - name: RealmDiamond
+  #         file: ./abis/RealmDiamond.json
+  #     eventHandlers:
+  #       - event: MintParcel(indexed address,indexed uint256)
+  #         handler: handleMintParcel
+  #       - event: Transfer(indexed address,indexed address,indexed uint256)
+  #         handler: handleTransferParcel
+  #       - event: ResyncParcel(uint256)
+  #         handler: handleResyncParcel
+  #       - event: KinshipBurned(uint256,uint256)
+  #         handler: handleKinshipBurned
+  #     file: ./src/mappings/baseDiamond.ts
   - kind: ethereum/contract
     name: FAKEGotchisCardDiamond
     network: "{{network}}"
@@ -253,4 +253,28 @@ dataSources:
           handler: handleMetadataFlag
         - event: MetadataLike(indexed uint256,address)
           handler: handleMetadataLike
+        - event: FixBurnedStats(uint256[],uint256[],uint256[])
+          handler: handleFixBurnedStats
       file: ./src/mappings/fakeGotchisNFT.ts
+  - kind: ethereum/contract
+    name: WearableDiamond
+    network: "{{network}}"
+    source:
+      address: "{{wearableAddress}}"
+      abi: AavegotchiDiamond
+      startBlock: {{wearableStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/itemTransfers.ts
+      entities:
+        - ItemTypeOwnership
+      abis:
+        - name: AavegotchiDiamond
+          file: ./abis/AavegotchiDiamond.json
+      eventHandlers:
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch

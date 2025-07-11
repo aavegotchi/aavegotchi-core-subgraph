@@ -14,7 +14,7 @@ dataSources:
     name: AavegotchiDiamond
     network: "base-sepolia"
     source:
-      address: "0xf28469b81871D924ae70664FEBf5AF626AAe5087"
+      address: "0x03A74B3e2DD81F5E8FFA1Fb96bb81B35cF3ed5d2"
       abi: AavegotchiDiamond
       startBlock: 27243836
     mapping:
@@ -117,16 +117,6 @@ dataSources:
           handler: handleERC1155ExecutedToRecipient
         - event: ERC721ExecutedToRecipient(indexed uint256,indexed address,indexed address)
           handler: handleERC721ExecutedToRecipient
-        - event: GotchiLendingAdded(indexed uint32,indexed address,indexed uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
-          handler: handleGotchiLendingAdded
-        - event: GotchiLendingClaimed(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256[],uint256)
-          handler: handleGotchiLendingClaimed
-        - event: GotchiLendingEnded(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
-          handler: handleGotchiLendingEnded
-        - event: GotchiLendingExecuted(indexed uint32,indexed address,indexed address,uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
-          handler: handleGotchiLendingExecuted
-        - event: GotchiLendingCanceled(indexed uint32,indexed address,indexed uint32,uint96,uint32,uint8[3],address,address,uint32,address[],uint256)
-          handler: handleGotchiLendingCanceled
         - event: WhitelistAccessRightSet(indexed uint32,indexed uint256,indexed uint256)
           handler: handleWhitelistAccessRightSet
         - event: UpdateItemType(indexed uint256,(string,string,string,int8[6],bool[16],uint8[],(uint8,uint8,uint8,uint8),uint256,uint256,uint256,uint32,uint8,bool,uint16,bool,uint8,int16,uint32))
@@ -183,38 +173,38 @@ dataSources:
         - event: ClaimedAt(uint256,uint256)
           handler: handleClaimedAt
 
-  - kind: ethereum/contract
-    name: RealmDiamond
-    network: "base-sepolia"
-    source:
-      address: "0x37D140074B2f771bEa7ef23288EB87064e45bF8D"
-      abi: RealmDiamond
-      startBlock: 26672392
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - MintParcel
-        - Transfer
-      abis:
-        - name: RealmDiamond
-          file: ./abis/RealmDiamond.json
-      eventHandlers:
-        - event: MintParcel(indexed address,indexed uint256)
-          handler: handleMintParcel
-        - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleTransferParcel
-        - event: ResyncParcel(uint256)
-          handler: handleResyncParcel
-        - event: KinshipBurned(uint256,uint256)
-          handler: handleKinshipBurned
-      file: ./src/mappings/baseDiamond.ts
+  # - kind: ethereum/contract
+  #   name: RealmDiamond
+  #   network: "base-sepolia"
+  #   source:
+  #     address: "0xD30400839aCbFfE2847095BC3Be7c510CE812300"
+  #     abi: RealmDiamond
+  #     startBlock: 27464245
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - MintParcel
+  #       - Transfer
+  #     abis:
+  #       - name: RealmDiamond
+  #         file: ./abis/RealmDiamond.json
+  #     eventHandlers:
+  #       - event: MintParcel(indexed address,indexed uint256)
+  #         handler: handleMintParcel
+  #       - event: Transfer(indexed address,indexed address,indexed uint256)
+  #         handler: handleTransferParcel
+  #       - event: ResyncParcel(uint256)
+  #         handler: handleResyncParcel
+  #       - event: KinshipBurned(uint256,uint256)
+  #         handler: handleKinshipBurned
+  #     file: ./src/mappings/baseDiamond.ts
   - kind: ethereum/contract
     name: FAKEGotchisCardDiamond
     network: "base-sepolia"
     source:
-      address: "0xE4E508dab5D7d98f4c06aB6D24bB225588036C9D"
+      address: "0x139E8A05239778540dA798957A9Cc380F77192Dc"
       abi: IERC1155
       startBlock: 26286751
     mapping:
@@ -240,7 +230,7 @@ dataSources:
     name: FAKEGotchisNFTDiamond
     network: "base-sepolia"
     source:
-      address: "0xD0dCC1d1E22D490e5270631787E1866E773b16C7"
+      address: "0xF62f629b7cBdef543B5d6a5E10c8061a88A443Cf"
       abi: IERC721
       startBlock: 26286758
     mapping:
@@ -263,4 +253,28 @@ dataSources:
           handler: handleMetadataFlag
         - event: MetadataLike(indexed uint256,address)
           handler: handleMetadataLike
+        - event: FixBurnedStats(uint256[],uint256[],uint256[])
+          handler: handleFixBurnedStats
       file: ./src/mappings/fakeGotchisNFT.ts
+  - kind: ethereum/contract
+    name: WearableDiamond
+    network: "base-sepolia"
+    source:
+      address: "0x7e1Df5ad57C011E3bFA029041935aece51f35ccC"
+      abi: AavegotchiDiamond
+      startBlock: 27243887
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/itemTransfers.ts
+      entities:
+        - ItemTypeOwnership
+      abis:
+        - name: AavegotchiDiamond
+          file: ./abis/AavegotchiDiamond.json
+      eventHandlers:
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+        - event: TransferBatch(indexed address,indexed address,indexed address,uint256[],uint256[])
+          handler: handleTransferBatch

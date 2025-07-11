@@ -21,12 +21,13 @@ import {
 } from "../fetch/account";
 
 import {
+  ADDRESS_BURN,
   METADATA_STATUS_APPROVED,
   METADATA_STATUS_PAUSED,
 } from "../utils/constants";
 
 import { fetchFakeGotchiNFTToken } from "../utils/helpers/fakegotchis";
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, log } from "@graphprotocol/graph-ts";
 import {
   getFakeGotchiHolder,
   getOrCreateFakeGotchiStatistic,
@@ -36,6 +37,7 @@ import {
   isTransfer,
 } from "../helper/entities";
 import { getOrCreateUser } from "../utils/helpers/aavegotchi";
+import { FixBurnedStats } from "../../generated/FAKEGotchisCardDiamond/IERC721";
 
 export function handleTransfer(event: TransferEvent): void {
   const isMintFlag = isMint(event);
@@ -219,4 +221,64 @@ export function handleMetadataLike(event: MetadataLikeEvent): void {
 
   let liker = getOrCreateUser(event.params._likedBy.toHexString());
   liker.save();
+}
+
+export function handleFixBurnedStats(event: FixBurnedStats): void {
+  for (let i = 0; i < event.params.metadataIds.length; i++) {
+    let metadataId = event.params.metadataIds[i].toString();
+    let burnedCount = event.params.burnedCounts[i];
+    let startTokenId = event.params.startingTokenIds[i];
+
+    let metadata = MetadataActionLog.load(metadataId)!;
+    let nftStats = getOrCreateFakeGotchiStatistic(metadataId);
+
+    // Sort the existing tokenIds (this fixes the ordering issue)
+    let sortedTokenIds = nftStats.tokenIds.sort((a, b) => {
+      if (a.lt(b)) return -1;
+      if (a.gt(b)) return 1;
+      return 0;
+    });
+
+    nftStats.tokenIds = sortedTokenIds;
+
+    // Get original editions from the first token using startTokenId
+    let sampleToken = fetchFakeGotchiNFTToken(event.address, startTokenId);
+    let originalEditions = sampleToken.editions;
+
+    // Find burned token IDs by comparing original range with active tokens
+    let activeTokenSet = new Set<string>();
+    for (let j = 0; j < sortedTokenIds.length; j++) {
+      activeTokenSet.add(sortedTokenIds[j].toString());
+    }
+
+    // Find and update burned tokens - now with the CORRECT starting point
+    let burnedTokensFixed = 0;
+    for (let tokenOffset = 0; tokenOffset < originalEditions; tokenOffset++) {
+      let tokenId = startTokenId.plus(BigInt.fromI32(tokenOffset));
+
+      if (!activeTokenSet.has(tokenId.toString())) {
+        // This token was burned, try to fetch and update it
+        let burnedToken = fetchFakeGotchiNFTToken(event.address, tokenId);
+
+        if (
+          burnedToken.owner != ADDRESS_BURN.toHexString() &&
+          burnedToken.metadata
+        ) {
+          let burnUser = getOrCreateUser(ADDRESS_BURN.toHexString());
+          burnUser.save();
+
+          burnedToken.owner = burnUser.id;
+          burnedToken.save();
+          burnedTokensFixed++;
+        }
+      }
+    }
+
+    // Fix metadata.editions and burned count
+    nftStats.burned = burnedCount.toI32();
+    metadata.editions = nftStats.totalSupply;
+
+    metadata.save();
+    nftStats.save();
+  }
 }

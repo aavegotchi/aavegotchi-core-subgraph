@@ -8,6 +8,7 @@ import {
 import {
   ADDRESS_BURN,
   ADDRESS_DEAD,
+  ADDRESS_ONE,
   ADDRESS_ZERO,
   BIGINT_ZERO,
 } from "../utils/constants";
@@ -95,7 +96,9 @@ export function isMint(event: Transfer): boolean {
 export function isBurn(event: Transfer): boolean {
   let to = event.params._to;
 
-  if ([ADDRESS_ZERO, ADDRESS_BURN, ADDRESS_DEAD].indexOf(to) !== -1) {
+  if (
+    [ADDRESS_ZERO, ADDRESS_ONE, ADDRESS_BURN, ADDRESS_DEAD].indexOf(to) !== -1
+  ) {
     return true;
   }
 
