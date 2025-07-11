@@ -415,9 +415,8 @@ export function updateAavegotchiInfo(
     const hasNoOriginalOwner =
       !gotchi.originalOwner || gotchi.originalOwner == ZERO_ADDRESS;
 
-    if (hasNoOriginalOwner) {
-      gotchi.originalOwner = owner.id;
-    }
+    if (hasNoOriginalOwner) gotchi.originalOwner = owner.id;
+
     gotchi.name = gotchiInfo.name;
     gotchi.nameLowerCase = gotchiInfo.name.toLowerCase();
     gotchi.randomNumber = gotchiInfo.randomNumber;
