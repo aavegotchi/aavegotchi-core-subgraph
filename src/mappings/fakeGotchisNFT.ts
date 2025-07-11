@@ -275,8 +275,8 @@ export function handleFixBurnedStats(event: FixBurnedStats): void {
     }
 
     // Fix metadata.editions and burned count
+    nftStats.burned = burnedCount.toI32();
     metadata.editions = nftStats.totalSupply;
-    nftStats.burned = burnedCount;
 
     metadata.save();
     nftStats.save();
