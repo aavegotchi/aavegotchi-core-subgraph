@@ -467,6 +467,24 @@ type WearablesConfig @entity {
   ownerAddress: Bytes!
 }
 
+type EquippedWearableOwner @entity {
+  id: ID!
+  gotchi: Aavegotchi!
+  gotchiId: BigInt!
+  wearableId: Int!
+  slotPosition: Int!
+  owner: User!
+  ownerAddress: Bytes!
+  equippedAt: BigInt!
+  unequippedAt: BigInt
+  "true if this is a delegated wearable"
+  isDelegated: Boolean!
+  "depositId for delegated wearables, 0 for normal wearables"
+  depositId: BigInt!
+  "true if the wearable is currently equipped"
+  isCurrentlyEquipped: Boolean!
+}
+
 #type Upgrade @entity {
 #  id: ID!
 #  calldata:

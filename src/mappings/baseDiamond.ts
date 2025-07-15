@@ -97,6 +97,10 @@ import {
   getOrCreateERC721BuyOrder,
   getOrCreateERC1155BuyOrder,
   getOrCreateERC1155BuyOrderExecution,
+  handleWearableEquipping,
+  handleWearableUnequipping,
+  handleWearableReplacing,
+  resyncEquippedWearableOwners,
 } from "../utils/helpers/aavegotchi";
 
 // import { getOrCreateParcel } from "../utils/helpers/realm";
@@ -318,6 +322,57 @@ export function handleEquipWearables(event: EquipWearables): void {
   gotchi = updateAavegotchiWearables(gotchi, event);
 
   if (gotchi.status.equals(STATUS_AAVEGOTCHI)) {
+    let oldWearables = event.params._oldWearables;
+    let newWearables = event.params._newWearables;
+    let owner = getOrCreateUser(gotchi.owner!);
+
+    // Compare each slot to detect equipping/unequipping
+    for (let i = 0; i < oldWearables.length; i++) {
+      let oldWearableId = oldWearables[i];
+      let newWearableId = newWearables[i];
+
+      // Handle unequipping (wearable was equipped, now it's not)
+      if (oldWearableId != 0 && newWearableId == 0) {
+        handleWearableUnequipping(
+          gotchi.id,
+          i,
+          oldWearableId,
+          event.block.timestamp
+        );
+      }
+
+      // Handle equipping (no wearable was equipped, now there is one)
+      else if (oldWearableId == 0 && newWearableId != 0) {
+        handleWearableEquipping(
+          gotchi.id,
+          i,
+          newWearableId,
+          owner,
+          event.block.timestamp,
+          event.block.number
+        );
+      }
+
+      // Handle replacing (one wearable was equipped, now a different one is)
+      else if (
+        oldWearableId != 0 &&
+        newWearableId != 0 &&
+        oldWearableId != newWearableId
+      ) {
+        handleWearableReplacing(
+          gotchi.id,
+          i,
+          oldWearableId,
+          newWearableId,
+          owner,
+          event.block.timestamp,
+          event.block.number
+        );
+      }
+
+      // If oldWearableId == newWearableId (including both being 0), no change needed
+    }
+
     gotchi.save();
   }
 }
@@ -336,6 +391,8 @@ export function handleEquipDelegatedWearables(
 
     for (let i = 0; i < oldDepositIds.length; i++) {
       if (oldDepositIds[i] == newDepositIds[i]) continue;
+
+      // Handle unequipping of delegated wearables
       if (oldDepositIds[i] != BigInt.zero()) {
         const oldTokenCommitment = TokenCommitment.load(
           generateTokenCommitmentId(
@@ -348,9 +405,19 @@ export function handleEquipDelegatedWearables(
             BigInt.fromI32(1)
           );
           oldTokenCommitment.save();
+
+          // Mark the delegated wearable as unequipped
+          handleWearableUnequipping(
+            gotchi.id,
+            i,
+            oldTokenCommitment.tokenId.toI32(),
+            event.block.timestamp,
+            true // isDelegated
+          );
         }
       }
 
+      // Handle equipping of delegated wearables
       if (newDepositIds[i] != BigInt.zero()) {
         const newTokenCommitment = TokenCommitment.load(
           generateTokenCommitmentId(
@@ -363,6 +430,21 @@ export function handleEquipDelegatedWearables(
             BigInt.fromI32(1)
           );
           newTokenCommitment.save();
+
+          // Get the original owner from the token commitment
+          let originalOwner = getOrCreateUser(newTokenCommitment.grantor);
+
+          // Handle delegated wearable equipping
+          handleWearableEquipping(
+            gotchi.id,
+            i,
+            newTokenCommitment.tokenId.toI32(),
+            originalOwner,
+            event.block.timestamp,
+            event.block.number,
+            true, // isDelegated
+            newDepositIds[i] // depositId
+          );
         }
       }
     }
@@ -1803,6 +1885,14 @@ export function handleResyncAavegotchis(event: ResyncAavegotchis): void {
   if (!gotchi) return;
   gotchi = updateAavegotchiInfo(gotchi, event.params._tokenId, event, false);
   gotchi = updateAavegotchiWearables(gotchi, event);
+
+  // Bootstrap equipped wearable ownership for pre-migration equipped wearables
+  resyncEquippedWearableOwners(
+    gotchi,
+    event.block.timestamp,
+    event.block.number
+  );
+
   gotchi.save();
 }
 
