@@ -1124,6 +1124,8 @@ export function handleResyncParcel(event: ResyncParcel): void {
   const tokenId = event.params._tokenId.toString();
   let parcel = Parcel.load(tokenId);
 
+  log.debug("Resyncing parcel: {}", [tokenId]);
+
   // Entities only exist after they have been saved to the store;
   // `null` checks allow to create entities on demand
   if (parcel == null) {
@@ -1145,7 +1147,8 @@ export function handleResyncParcel(event: ResyncParcel): void {
 
     parcel.size = parcelMetadata.size;
 
-    parcel.owner = parcelMetadata.owner.toHexString();
+    const owner = getOrCreateUser(parcelMetadata.owner.toHexString());
+    parcel.owner = owner.id;
 
     let boostArray = parcelMetadata.boost;
     parcel.fudBoost = boostArray[0];
@@ -1170,6 +1173,7 @@ export function handleTransferParcel(event: Transfer): void {
 }
 
 export function handleMintParcel(event: MintParcel): void {
+  log.debug("Minting parcel: {}", [event.params._tokenId.toString()]);
   let parcel = getOrCreateParcel(
     event.params._tokenId,
     event.params._owner,
