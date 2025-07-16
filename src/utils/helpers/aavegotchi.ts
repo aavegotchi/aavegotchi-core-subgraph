@@ -692,7 +692,7 @@ export function updateAavegotchiWearables(
 }
 
 // @ts-ignore
-export function calculateBaseRarityScore(numericTraits: Array<i32>): i32 {
+export function calculateBaseRarityScore(numericTraits: Array<number>): number {
   let rarityScore = 0;
 
   for (let index = 0; index < numericTraits.length; index++) {
@@ -709,7 +709,7 @@ export function calculateBaseRarityScore(numericTraits: Array<i32>): i32 {
 export function createOrUpdateWearablesConfig(
   owner: Bytes,
   tokenId: BigInt,
-  wearablesConfigId: i32,
+  wearablesConfigId: number,
   event: ethereum.Event
 ): WearablesConfig | null {
   let contract = AavegotchiDiamond.bind(event.address);
@@ -855,37 +855,7 @@ export function getOrCreateERC1155BuyOrderExecution(
 
 // Helper functions for managing EquippedWearableOwner entities
 
-export function createEquippedWearableOwnerRecord(
-  gotchiId: string,
-  slotPosition: i32,
-  wearableId: i32,
-  owner: User,
-  timestamp: BigInt,
-  isDelegated: boolean,
-  depositId: BigInt,
-  blockNumber: BigInt
-): EquippedWearableOwner {
-  let historicalId = `${gotchiId}-${slotPosition}-${wearableId}-${blockNumber}${
-    isDelegated ? "-delegated" : ""
-  }`;
-
-  let record = new EquippedWearableOwner(historicalId);
-  record.gotchi = gotchiId;
-  record.gotchiId = BigInt.fromString(gotchiId);
-  record.wearableId = wearableId;
-  record.slotPosition = slotPosition;
-  record.owner = owner.id;
-  record.ownerAddress = Address.fromString(owner.id);
-  record.equippedAt = timestamp;
-  record.unequippedAt = null;
-  record.isDelegated = isDelegated;
-  record.depositId = depositId;
-  record.isCurrentlyEquipped = true;
-
-  return record;
-}
-
-export function createCurrentWearableRecord(
+export function createOrUpdateEquippedWearableRecord(
   gotchiId: string,
   slotPosition: i32,
   wearableId: i32,
@@ -894,22 +864,28 @@ export function createCurrentWearableRecord(
   isDelegated: boolean,
   depositId: BigInt
 ): EquippedWearableOwner {
-  let currentId = `${gotchiId}-${slotPosition}-${wearableId}-current${
+  // Simplified ID generation - one unique record per gotchi/slot/wearable/delegation combination
+  let id = `${gotchiId}-${slotPosition}-${wearableId}${
     isDelegated ? "-delegated" : ""
   }`;
 
-  let record = new EquippedWearableOwner(currentId);
+  let record = EquippedWearableOwner.load(id);
+  if (!record) {
+    record = new EquippedWearableOwner(id);
+  }
+
+  // Always update these fields (handles re-equipping scenario)
   record.gotchi = gotchiId;
   record.gotchiId = BigInt.fromString(gotchiId);
   record.wearableId = wearableId;
   record.slotPosition = slotPosition;
   record.owner = owner.id;
   record.ownerAddress = Address.fromString(owner.id);
-  record.equippedAt = timestamp;
-  record.unequippedAt = null;
+  record.equippedAt = timestamp; // Updates to new equip time when re-equipped
   record.isDelegated = isDelegated;
   record.depositId = depositId;
   record.isCurrentlyEquipped = true;
+  record.unequippedAt = null; // Reset when re-equipped
 
   return record;
 }
@@ -921,15 +897,15 @@ export function markWearableAsUnequipped(
   timestamp: BigInt,
   isDelegated: boolean
 ): void {
-  let currentId = `${gotchiId}-${slotPosition}-${wearableId}-current${
+  let id = `${gotchiId}-${slotPosition}-${wearableId}${
     isDelegated ? "-delegated" : ""
   }`;
-  let currentRecord = EquippedWearableOwner.load(currentId);
+  let record = EquippedWearableOwner.load(id);
 
-  if (currentRecord) {
-    currentRecord.unequippedAt = timestamp;
-    currentRecord.isCurrentlyEquipped = false;
-    currentRecord.save();
+  if (record) {
+    record.unequippedAt = timestamp;
+    record.isCurrentlyEquipped = false;
+    record.save();
   }
 }
 
@@ -939,25 +915,11 @@ export function handleWearableEquipping(
   wearableId: i32,
   owner: User,
   timestamp: BigInt,
-  blockNumber: BigInt,
   isDelegated: boolean = false,
   depositId: BigInt = BigInt.zero()
 ): void {
-  // Create historical record
-  let historicalRecord = createEquippedWearableOwnerRecord(
-    gotchiId,
-    slotPosition,
-    wearableId,
-    owner,
-    timestamp,
-    isDelegated,
-    depositId,
-    blockNumber
-  );
-  historicalRecord.save();
-
-  // Create/update current record
-  let currentRecord = createCurrentWearableRecord(
+  // Create or update single record
+  let record = createOrUpdateEquippedWearableRecord(
     gotchiId,
     slotPosition,
     wearableId,
@@ -966,7 +928,7 @@ export function handleWearableEquipping(
     isDelegated,
     depositId
   );
-  currentRecord.save();
+  record.save();
 }
 
 export function handleWearableUnequipping(
@@ -992,7 +954,6 @@ export function handleWearableReplacing(
   newWearableId: i32,
   owner: User,
   timestamp: BigInt,
-  blockNumber: BigInt,
   isDelegated: boolean = false,
   depositId: BigInt = BigInt.zero()
 ): void {
@@ -1012,7 +973,6 @@ export function handleWearableReplacing(
     newWearableId,
     owner,
     timestamp,
-    blockNumber,
     isDelegated,
     depositId
   );
@@ -1020,8 +980,7 @@ export function handleWearableReplacing(
 
 export function resyncEquippedWearableOwners(
   gotchi: Aavegotchi,
-  timestamp: BigInt,
-  blockNumber: BigInt
+  timestamp: BigInt
 ): void {
   let owner = getOrCreateUser(gotchi.owner!);
   let equippedWearables = gotchi.equippedWearables;
@@ -1032,21 +991,43 @@ export function resyncEquippedWearableOwners(
     // Only create records for equipped wearables (non-zero)
     if (wearableId != 0) {
       // Check if record already exists to avoid duplicates
-      let currentId = `${gotchi.id}-${i}-${wearableId}-current`;
-      let existingRecord = EquippedWearableOwner.load(currentId);
+      let id = `${gotchi.id}-${i}-${wearableId}`;
+      let existingRecord = EquippedWearableOwner.load(id);
 
       if (!existingRecord) {
-        // Create both historical and current records
+        // Create record
         handleWearableEquipping(
           gotchi.id,
           i,
           wearableId,
           owner,
           timestamp,
-          blockNumber,
           false, // Since no delegated wearables exist yet on baseDiamond
           BigInt.zero()
         );
+      }
+    }
+  }
+}
+
+export function updateEquippedWearableOwnersOnTransfer(
+  gotchi: Aavegotchi,
+  newOwner: User
+): void {
+  let equippedWearables = gotchi.equippedWearables;
+
+  // Update regular equipped wearables
+  for (let i = 0; i < equippedWearables.length; i++) {
+    let wearableId = equippedWearables[i];
+
+    if (wearableId != 0) {
+      let id = `${gotchi.id}-${i}-${wearableId}`;
+      let record = EquippedWearableOwner.load(id);
+
+      if (record && record.isCurrentlyEquipped) {
+        record.owner = newOwner.id;
+        record.ownerAddress = Address.fromString(newOwner.id);
+        record.save();
       }
     }
   }

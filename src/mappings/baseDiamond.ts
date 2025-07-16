@@ -101,6 +101,7 @@ import {
   handleWearableUnequipping,
   handleWearableReplacing,
   resyncEquippedWearableOwners,
+  updateEquippedWearableOwnersOnTransfer,
 } from "../utils/helpers/aavegotchi";
 
 // import { getOrCreateParcel } from "../utils/helpers/realm";
@@ -348,8 +349,7 @@ export function handleEquipWearables(event: EquipWearables): void {
           i,
           newWearableId,
           owner,
-          event.block.timestamp,
-          event.block.number
+          event.block.timestamp
         );
       }
 
@@ -365,8 +365,7 @@ export function handleEquipWearables(event: EquipWearables): void {
           oldWearableId,
           newWearableId,
           owner,
-          event.block.timestamp,
-          event.block.number
+          event.block.timestamp
         );
       }
 
@@ -406,13 +405,13 @@ export function handleEquipDelegatedWearables(
           );
           oldTokenCommitment.save();
 
-          // Mark the delegated wearable as unequipped
+          // Mark the wearable as unequipped (delegated if depositId != 0)
           handleWearableUnequipping(
             gotchi.id,
             i,
             oldTokenCommitment.tokenId.toI32(),
             event.block.timestamp,
-            true // isDelegated
+            !oldDepositIds[i].equals(BigInt.zero()) // isDelegated = depositId != 0
           );
         }
       }
@@ -434,21 +433,20 @@ export function handleEquipDelegatedWearables(
           // Get the original owner from the token commitment
           let originalOwner = getOrCreateUser(newTokenCommitment.grantor);
 
-          // Handle delegated wearable equipping
+          // Handle wearable equipping (delegated if depositId != 0)
           handleWearableEquipping(
             gotchi.id,
             i,
             newTokenCommitment.tokenId.toI32(),
             originalOwner,
             event.block.timestamp,
-            event.block.number,
-            true, // isDelegated
+            !newDepositIds[i].equals(BigInt.zero()), // isDelegated = depositId != 0
             newDepositIds[i] // depositId
           );
         }
       }
     }
-    gotchi.equippedDelegatedWearables = event.params._newCommitmentIds.map<i32>(
+    gotchi.equippedDelegatedWearables = event.params._newCommitmentIds.map(
       (id) => id.toI32()
     );
     gotchi.save();
@@ -612,6 +610,10 @@ export function handleTransfer(event: Transfer): void {
 
     gotchi.owner = newOwner.id;
     gotchi.originalOwner = newOwner.id;
+
+    // Update equipped wearable owners when gotchi is transferred
+    updateEquippedWearableOwnersOnTransfer(gotchi, newOwner);
+
     gotchi.save();
 
     if (newOwner.id == "0x0000000000000000000000000000000000000000") {
@@ -1887,11 +1889,7 @@ export function handleResyncAavegotchis(event: ResyncAavegotchis): void {
   gotchi = updateAavegotchiWearables(gotchi, event);
 
   // Bootstrap equipped wearable ownership for pre-migration equipped wearables
-  resyncEquippedWearableOwners(
-    gotchi,
-    event.block.timestamp,
-    event.block.number
-  );
+  resyncEquippedWearableOwners(gotchi, event.block.timestamp);
 
   gotchi.save();
 }
