@@ -101,7 +101,6 @@ import {
   getOrCreateERC721BuyOrder,
   getOrCreateERC1155BuyOrder,
   getOrCreateERC1155BuyOrderExecution,
-  updateEquippedWearableOwnersOnTransfer,
 } from "../utils/helpers/aavegotchi";
 
 import { getOrCreateParcel } from "../utils/helpers/realm";
@@ -370,7 +369,7 @@ export function handleEquipDelegatedWearables(
         }
       }
     }
-    gotchi.equippedDelegatedWearables = event.params._newCommitmentIds.map(
+    gotchi.equippedDelegatedWearables = event.params._newCommitmentIds.map<i32>(
       (id) => id.toI32()
     );
     gotchi.save();
@@ -536,9 +535,6 @@ export function handleTransfer(event: Transfer): void {
 
     gotchi.owner = newOwner.id;
     gotchi.originalOwner = newOwner.id;
-
-    // Update equipped wearable owners when gotchi is transferred
-    updateEquippedWearableOwnersOnTransfer(gotchi, newOwner);
 
     gotchi.save();
 

@@ -692,7 +692,7 @@ export function updateAavegotchiWearables(
 }
 
 // @ts-ignore
-export function calculateBaseRarityScore(numericTraits: Array<number>): number {
+export function calculateBaseRarityScore(numericTraits: Array<i32>): i32 {
   let rarityScore = 0;
 
   for (let index = 0; index < numericTraits.length; index++) {
@@ -709,7 +709,7 @@ export function calculateBaseRarityScore(numericTraits: Array<number>): number {
 export function createOrUpdateWearablesConfig(
   owner: Bytes,
   tokenId: BigInt,
-  wearablesConfigId: number,
+  wearablesConfigId: i32,
   event: ethereum.Event
 ): WearablesConfig | null {
   let contract = AavegotchiDiamond.bind(event.address);
