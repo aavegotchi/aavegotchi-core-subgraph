@@ -1145,8 +1145,7 @@ export function handleResyncParcel(event: ResyncParcel): void {
 
     parcel.size = parcelMetadata.size;
 
-    const owner = getOrCreateUser(parcelMetadata.owner.toHexString());
-    parcel.owner = owner.id;
+    parcel.owner = parcelMetadata.owner.toHexString();
 
     let boostArray = parcelMetadata.boost;
     parcel.fudBoost = boostArray[0];
