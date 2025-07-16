@@ -104,7 +104,7 @@ import {
   updateEquippedWearableOwnersOnTransfer,
 } from "../utils/helpers/aavegotchi";
 
-// import { getOrCreateParcel } from "../utils/helpers/realm";
+import { getOrCreateParcel } from "../utils/helpers/realm";
 
 import {
   BIGINT_ONE,
@@ -122,12 +122,12 @@ import { Parcel, TokenCommitment, ERC721Listing } from "../../generated/schema";
 import { updatePermissionsFromBitmap } from "../utils/decimals";
 import * as erc7589 from "./erc-7589";
 import { generateTokenCommitmentId } from "../utils/helpers/erc-7589";
-// import {
-//   KinshipBurned,
-//   MintParcel,
-//   RealmDiamond,
-//   ResyncParcel,
-// } from "../../generated/AavegotchiDiamond/RealmDiamond";
+import {
+  KinshipBurned,
+  MintParcel,
+  RealmDiamond,
+  ResyncParcel,
+} from "../../generated/AavegotchiDiamond/RealmDiamond";
 import { MIGRATION_BLOCK } from "../helper";
 
 export function handleBuyPortals(event: BuyPortals): void {
@@ -763,9 +763,7 @@ export function handleERC721ExecutedListing(
     gotchi.activeListing = null;
     gotchi.locked = false;
     gotchi.save();
-  }
-  // TODO (Base): Uncomment when parcel contract is deployed
-  /* else if (event.params.category == BigInt.fromI32(4)) {
+  } else if (event.params.category == BigInt.fromI32(4)) {
     let listing = getOrCreateERC721Listing(event.params.listingId.toString());
     listing = updateERC721ListingInfo(listing, event.params.listingId, event);
 
@@ -790,7 +788,7 @@ export function handleERC721ExecutedListing(
     historicalPrices.push(event.params.priceInWei);
     parcel.historicalPrices = historicalPrices;
     parcel.save();
-  } */
+  }
 
   let stats = getStatisticEntity();
   stats.erc721TotalVolume = stats.erc721TotalVolume.plus(
@@ -819,9 +817,7 @@ export function handleERC721ListingCancelled(
     gotchi.activeListing = null;
     gotchi.locked = false;
     gotchi.save();
-  }
-  // TODO (Base): Uncomment when parcel contract is deployed
-  /* else if (listing.category.equals(BigInt.fromI32(4))) {
+  } else if (listing.category.equals(BigInt.fromI32(4))) {
     let parcel = getOrCreateParcel(
       listing.tokenId,
       listing.seller,
@@ -830,7 +826,7 @@ export function handleERC721ListingCancelled(
     );
     parcel.activeListing = null;
     parcel.save();
-  } */
+  }
 
   listing.cancelled = true;
   listing.save();
@@ -854,9 +850,7 @@ export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
     gotchi.activeListing = null;
     gotchi.locked = false;
     gotchi.save();
-  }
-  // TODO (Base): Uncomment when parcel contract is deployed
-  /* else if (listing.category.equals(BigInt.fromI32(4))) {
+  } else if (listing.category.equals(BigInt.fromI32(4))) {
     let parcel = getOrCreateParcel(
       listing.tokenId,
       listing.seller,
@@ -865,7 +859,7 @@ export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
     );
     parcel.activeListing = null;
     parcel.save();
-  } */
+  }
 
   listing.cancelled = true;
   listing.save();
@@ -1126,8 +1120,7 @@ export function handleUpdateItemPrice(event: UpdateItemPrice): void {
   item.save();
 }
 
-// TODO (Base): Uncomment when parcel contract is deployed
-/* export function handleResyncParcel(event: ResyncParcel): void {
+export function handleResyncParcel(event: ResyncParcel): void {
   const tokenId = event.params._tokenId.toString();
   let parcel = Parcel.load(tokenId);
 
@@ -1165,7 +1158,7 @@ export function handleUpdateItemPrice(event: UpdateItemPrice): void {
 
   // Entities can be written to the store with `.save()`
   parcel.save();
-} */
+}
 
 export function handleTransferParcel(event: Transfer): void {
   let user = getOrCreateUser(event.params._to.toHexString());
@@ -1176,15 +1169,14 @@ export function handleTransferParcel(event: Transfer): void {
   parcel.save();
 }
 
-// TODO (Base): Uncomment when parcel contract is deployed
-/* export function handleMintParcel(event: MintParcel): void {
+export function handleMintParcel(event: MintParcel): void {
   let parcel = getOrCreateParcel(
     event.params._tokenId,
     event.params._owner,
     event.address
   );
   parcel.save();
-} */
+}
 
 // WearablesConfig
 export function handleWearablesConfigCreated(
@@ -1733,13 +1725,12 @@ export function handleERC721BuyOrderCanceled(
   entity.save();
 }
 
-// TODO (Base): Uncomment when parcel contract is deployed
-/* export function handleKinshipBurned(event: KinshipBurned): void {
+export function handleKinshipBurned(event: KinshipBurned): void {
   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
   if (!gotchi) return;
   gotchi.kinship = event.params._value;
   gotchi.save();
-} */
+}
 
 export function handleRoleGranted(event: RoleGranted): void {
   erc7589.handleRoleGranted(event);

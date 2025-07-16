@@ -173,33 +173,33 @@ dataSources:
         - event: ClaimedAt(uint256,uint256)
           handler: handleClaimedAt
 
-  # - kind: ethereum/contract
-  #   name: RealmDiamond
-  #   network: "base-sepolia"
-  #   source:
-  #     address: "0xD30400839aCbFfE2847095BC3Be7c510CE812300"
-  #     abi: RealmDiamond
-  #     startBlock: 27464245
-  #   mapping:
-  #     kind: ethereum/events
-  #     apiVersion: 0.0.6
-  #     language: wasm/assemblyscript
-  #     entities:
-  #       - MintParcel
-  #       - Transfer
-  #     abis:
-  #       - name: RealmDiamond
-  #         file: ./abis/RealmDiamond.json
-  #     eventHandlers:
-  #       - event: MintParcel(indexed address,indexed uint256)
-  #         handler: handleMintParcel
-  #       - event: Transfer(indexed address,indexed address,indexed uint256)
-  #         handler: handleTransferParcel
-  #       - event: ResyncParcel(uint256)
-  #         handler: handleResyncParcel
-  #       - event: KinshipBurned(uint256,uint256)
-  #         handler: handleKinshipBurned
-  #     file: ./src/mappings/baseDiamond.ts
+  - kind: ethereum/contract
+    name: RealmDiamond
+    network: "base-sepolia"
+    source:
+      address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+      abi: RealmDiamond
+      startBlock: 27464245
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - MintParcel
+        - Transfer
+      abis:
+        - name: RealmDiamond
+          file: ./abis/RealmDiamond.json
+      eventHandlers:
+        - event: MintParcel(indexed address,indexed uint256)
+          handler: handleMintParcel
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransferParcel
+        - event: ResyncParcel(uint256)
+          handler: handleResyncParcel
+        - event: KinshipBurned(uint256,uint256)
+          handler: handleKinshipBurned
+      file: ./src/mappings/baseDiamond.ts
   - kind: ethereum/contract
     name: FAKEGotchisCardDiamond
     network: "base-sepolia"
