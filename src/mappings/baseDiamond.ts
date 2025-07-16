@@ -446,7 +446,7 @@ export function handleEquipDelegatedWearables(
         }
       }
     }
-    gotchi.equippedDelegatedWearables = event.params._newCommitmentIds.map(
+    gotchi.equippedDelegatedWearables = event.params._newCommitmentIds.map<i32>(
       (id) => id.toI32()
     );
     gotchi.save();
