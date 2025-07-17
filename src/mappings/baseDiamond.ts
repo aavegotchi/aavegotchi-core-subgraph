@@ -1134,9 +1134,6 @@ export function handleResyncParcel(event: ResyncParcel): void {
   let contract = RealmDiamond.bind(event.address);
   let parcelInfo = contract.try_getParcelInfo(event.params._tokenId);
 
-  log.info("parcelInfo: {}", [parcelInfo.value.parcelId.toString()]);
-  log.info("parcelInfo owner: {}", [parcelInfo.value.owner.toHexString()]);
-
   if (!parcelInfo.reverted) {
     let parcelMetadata = parcelInfo.value;
     parcel.parcelId = parcelMetadata.parcelId;
@@ -1148,7 +1145,9 @@ export function handleResyncParcel(event: ResyncParcel): void {
 
     parcel.size = parcelMetadata.size;
 
-    parcel.owner = parcelMetadata.owner.toHexString();
+    let user = getOrCreateUser(parcelMetadata.owner.toHexString());
+    user.save();
+    parcel.owner = user.id;
 
     let boostArray = parcelMetadata.boost;
     parcel.fudBoost = boostArray[0];
@@ -1157,9 +1156,6 @@ export function handleResyncParcel(event: ResyncParcel): void {
     parcel.kekBoost = boostArray[3];
   }
 
-  //update auction too
-
-  // Entities can be written to the store with `.save()`
   parcel.save();
 }
 
@@ -1173,7 +1169,6 @@ export function handleTransferParcel(event: Transfer): void {
 }
 
 export function handleMintParcel(event: MintParcel): void {
-  log.info("MintParcel: {}", [event.params._tokenId.toString()]);
   let parcel = getOrCreateParcel(
     event.params._tokenId,
     event.params._owner,
