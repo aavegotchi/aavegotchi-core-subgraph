@@ -177,7 +177,7 @@ dataSources:
     name: RealmDiamond
     network: "base-sepolia"
     source:
-      address: "0x331f97b45Cd0AA642Ce57ABFb93d26D32D0E8115"
+      address: "0xF5Bc2D611C89C8C331F5969Abcc55E0C440EF43D"
       abi: RealmDiamond
       startBlock: 27464245
     mapping:
