@@ -104,7 +104,7 @@ import {
   updateEquippedWearableOwnersOnTransfer,
 } from "../utils/helpers/aavegotchi";
 
-import { getOrCreateParcel } from "../utils/helpers/realm";
+// import { getOrCreateParcel } from "../utils/helpers/realm";
 
 import {
   BIGINT_ONE,
@@ -767,7 +767,9 @@ export function handleERC721ExecutedListing(
     gotchi.activeListing = null;
     gotchi.locked = false;
     gotchi.save();
-  } else if (event.params.category == BigInt.fromI32(4)) {
+  }
+  // TODO (BASE): ADD BACK
+  /* else if (event.params.category == BigInt.fromI32(4)) {
     let listing = getOrCreateERC721Listing(event.params.listingId.toString());
     listing = updateERC721ListingInfo(listing, event.params.listingId, event);
 
@@ -792,7 +794,7 @@ export function handleERC721ExecutedListing(
     historicalPrices.push(event.params.priceInWei);
     parcel.historicalPrices = historicalPrices;
     parcel.save();
-  }
+  } */
 
   let stats = getStatisticEntity();
   stats.erc721TotalVolume = stats.erc721TotalVolume.plus(
@@ -821,7 +823,9 @@ export function handleERC721ListingCancelled(
     gotchi.activeListing = null;
     gotchi.locked = false;
     gotchi.save();
-  } else if (listing.category.equals(BigInt.fromI32(4))) {
+  }
+  // TODO (BASE): ADD BACK
+  /* else if (listing.category.equals(BigInt.fromI32(4))) {
     let parcel = getOrCreateParcel(
       listing.tokenId,
       listing.seller,
@@ -830,7 +834,7 @@ export function handleERC721ListingCancelled(
     );
     parcel.activeListing = null;
     parcel.save();
-  }
+  } */
 
   listing.cancelled = true;
   listing.save();
@@ -854,7 +858,9 @@ export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
     gotchi.activeListing = null;
     gotchi.locked = false;
     gotchi.save();
-  } else if (listing.category.equals(BigInt.fromI32(4))) {
+  }
+  // TODO (BASE): ADD BACK
+  /* else if (listing.category.equals(BigInt.fromI32(4))) {
     let parcel = getOrCreateParcel(
       listing.tokenId,
       listing.seller,
@@ -863,7 +869,7 @@ export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
     );
     parcel.activeListing = null;
     parcel.save();
-  }
+  } */
 
   listing.cancelled = true;
   listing.save();
