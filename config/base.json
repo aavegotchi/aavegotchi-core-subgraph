@@ -1,13 +1,13 @@
 {
-  "coreAddress": "0x03A74B3e2DD81F5E8FFA1Fb96bb81B35cF3ed5d2",
-  "coreStartBlock": 27243836,
-  "realmAddress": "0xF5Bc2D611C89C8C331F5969Abcc55E0C440EF43D",
+  "coreAddress": "0xA99c4B08201F2913Db8D28e71d020c4298F29dBF",
+  "coreStartBlock": 33201946,
+  "realmAddress": "",
   "realmStartBlock": 27464245,
-  "fakeCardAddress": "0x139E8A05239778540dA798957A9Cc380F77192Dc",
-  "fakeCardStartBlock": 26286751,
-  "fakeGotchisAddress": "0xF62f629b7cBdef543B5d6a5E10c8061a88A443Cf",
-  "fakeGotchisStartBlock": 26286758,
-  "wearableAddress": "0x7e1Df5ad57C011E3bFA029041935aece51f35ccC",
-  "wearableStartBlock": 27243887,
+  "fakeCardAddress": "0xe46B8902dAD841476d9Fee081F1d62aE317206A9",
+  "fakeCardStartBlock": 33221297,
+  "fakeGotchisAddress": "0xAb59CA4A16925b0a4BaC5026C94bEB20A29Df479",
+  "fakeGotchisStartBlock": 33221313,
+  "wearableAddress": "0x052e6c114a166B0e91C2340370d72D4C33752B4b",
+  "wearableStartBlock": 33202019,
   "network": "base"
 }

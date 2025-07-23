@@ -173,33 +173,33 @@ dataSources:
         - event: ClaimedAt(uint256,uint256)
           handler: handleClaimedAt
 
-  - kind: ethereum/contract
-    name: RealmDiamond
-    network: "{{network}}"
-    source:
-      address: "{{realmAddress}}"
-      abi: RealmDiamond
-      startBlock: {{realmStartBlock}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.6
-      language: wasm/assemblyscript
-      entities:
-        - MintParcel
-        - Transfer
-      abis:
-        - name: RealmDiamond
-          file: ./abis/RealmDiamond.json
-      eventHandlers:
-        - event: MintParcel(indexed address,indexed uint256)
-          handler: handleMintParcel
-        - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleTransferParcel
-        - event: ResyncParcel(uint256)
-          handler: handleResyncParcel
-        - event: KinshipBurned(uint256,uint256)
-          handler: handleKinshipBurned
-      file: ./src/mappings/baseDiamond.ts
+  # - kind: ethereum/contract
+  #   name: RealmDiamond
+  #   network: "{{network}}"
+  #   source:
+  #     address: "{{realmAddress}}"
+  #     abi: RealmDiamond
+  #     startBlock: {{realmStartBlock}}
+  #   mapping:
+  #     kind: ethereum/events
+  #     apiVersion: 0.0.6
+  #     language: wasm/assemblyscript
+  #     entities:
+  #       - MintParcel
+  #       - Transfer
+  #     abis:
+  #       - name: RealmDiamond
+  #         file: ./abis/RealmDiamond.json
+  #     eventHandlers:
+  #       - event: MintParcel(indexed address,indexed uint256)
+  #         handler: handleMintParcel
+  #       - event: Transfer(indexed address,indexed address,indexed uint256)
+  #         handler: handleTransferParcel
+  #       - event: ResyncParcel(uint256)
+  #         handler: handleResyncParcel
+  #       - event: KinshipBurned(uint256,uint256)
+  #         handler: handleKinshipBurned
+  #     file: ./src/mappings/baseDiamond.ts
   - kind: ethereum/contract
     name: FAKEGotchisCardDiamond
     network: "{{network}}"
