@@ -471,25 +471,24 @@ export function updateAavegotchiInfo(
     }
 
     if (gotchi.activeListing && updateListing) {
-      let listing = getOrCreateERC721Listing(
-        gotchi.activeListing!.toString(),
-        false
-      );
-      listing.kinship = gotchi.kinship;
-      listing.experience = gotchi.experience;
-      listing.nameLowerCase = gotchi.nameLowerCase;
-      if (
-        gotchi.withSetsNumericTraits != null &&
-        gotchi.withSetsNumericTraits!.length == 6
-      ) {
-        listing.nrgTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![0]);
-        listing.aggTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![1]);
-        listing.spkTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![2]);
-        listing.brnTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![3]);
-        listing.eysTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![4]);
-        listing.eycTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![5]);
+      let listing = ERC721Listing.load(gotchi.activeListing!.toString());
+      if (listing) {
+        listing.kinship = gotchi.kinship;
+        listing.experience = gotchi.experience;
+        listing.nameLowerCase = gotchi.nameLowerCase;
+        if (
+          gotchi.withSetsNumericTraits != null &&
+          gotchi.withSetsNumericTraits!.length == 6
+        ) {
+          listing.nrgTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![0]);
+          listing.aggTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![1]);
+          listing.spkTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![2]);
+          listing.brnTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![3]);
+          listing.eysTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![4]);
+          listing.eycTrait = BigInt.fromI32(gotchi.withSetsNumericTraits![5]);
+        }
+        listing.save();
       }
-      listing.save();
     }
 
     gotchi.locked = gotchiInfo.locked;
