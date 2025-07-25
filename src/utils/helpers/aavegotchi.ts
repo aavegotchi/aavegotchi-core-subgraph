@@ -471,7 +471,10 @@ export function updateAavegotchiInfo(
     }
 
     if (gotchi.activeListing && updateListing) {
-      let listing = getOrCreateERC721Listing(gotchi.activeListing!.toString());
+      let listing = getOrCreateERC721Listing(
+        gotchi.activeListing!.toString(),
+        false
+      );
       listing.kinship = gotchi.kinship;
       listing.experience = gotchi.experience;
       listing.nameLowerCase = gotchi.nameLowerCase;
