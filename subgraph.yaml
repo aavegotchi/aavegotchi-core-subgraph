@@ -173,33 +173,33 @@ dataSources:
         - event: ClaimedAt(uint256,uint256)
           handler: handleClaimedAt
 
-  # - kind: ethereum/contract
-  #   name: RealmDiamond
-  #   network: "base"
-  #   source:
-  #     address: "0xF5Bc2D611C89C8C331F5969Abcc55E0C440EF43D"
-  #     abi: RealmDiamond
-  #     startBlock: 27464245
-  #   mapping:
-  #     kind: ethereum/events
-  #     apiVersion: 0.0.6
-  #     language: wasm/assemblyscript
-  #     entities:
-  #       - MintParcel
-  #       - Transfer
-  #     abis:
-  #       - name: RealmDiamond
-  #         file: ./abis/RealmDiamond.json
-  #     eventHandlers:
-  #       - event: MintParcel(indexed address,indexed uint256)
-  #         handler: handleMintParcel
-  #       - event: Transfer(indexed address,indexed address,indexed uint256)
-  #         handler: handleTransferParcel
-  #       - event: ResyncParcel(uint256)
-  #         handler: handleResyncParcel
-  #       - event: KinshipBurned(uint256,uint256)
-  #         handler: handleKinshipBurned
-  #     file: ./src/mappings/baseDiamond.ts
+  - kind: ethereum/contract
+    name: RealmDiamond
+    network: "base"
+    source:
+      address: "0x4B0040c3646D3c44B8a28Ad7055cfCF536c05372"
+      abi: RealmDiamond
+      startBlock: 33969747
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - MintParcel
+        - Transfer
+      abis:
+        - name: RealmDiamond
+          file: ./abis/RealmDiamond.json
+      eventHandlers:
+        - event: MintParcel(indexed address,indexed uint256)
+          handler: handleMintParcel
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransferParcel
+        - event: ResyncParcel(uint256)
+          handler: handleResyncParcel
+        - event: KinshipBurned(uint256,uint256)
+          handler: handleKinshipBurned
+      file: ./src/mappings/baseDiamond.ts
   - kind: ethereum/contract
     name: FAKEGotchisCardDiamond
     network: "base"

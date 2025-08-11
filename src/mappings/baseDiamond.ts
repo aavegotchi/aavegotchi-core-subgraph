@@ -104,7 +104,7 @@ import {
   updateEquippedWearableOwnersOnTransfer,
 } from "../utils/helpers/aavegotchi";
 
-// import { getOrCreateParcel } from "../utils/helpers/realm";
+import { getOrCreateParcel } from "../utils/helpers/realm";
 
 import {
   BIGINT_ONE,
@@ -122,13 +122,12 @@ import { Parcel, TokenCommitment, ERC721Listing } from "../../generated/schema";
 import { updatePermissionsFromBitmap } from "../utils/decimals";
 import * as erc7589 from "./erc-7589";
 import { generateTokenCommitmentId } from "../utils/helpers/erc-7589";
-// TODO: Uncomment when RealmDiamond is re-enabled in subgraph.yaml
-// import {
-//   KinshipBurned,
-//   MintParcel,
-//   RealmDiamond,
-//   ResyncParcel,
-// } from "../../generated/AavegotchiDiamond/RealmDiamond";
+import {
+  KinshipBurned,
+  MintParcel,
+  RealmDiamond,
+  ResyncParcel,
+} from "../../generated/AavegotchiDiamond/RealmDiamond";
 import { MIGRATION_BLOCK } from "../helper";
 
 export function handleBuyPortals(event: BuyPortals): void {
@@ -685,9 +684,7 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
     portal.activeListing = event.params.listingId;
     portal.save();
     listing.portal = event.params.erc721TokenId.toString();
-  }
-  // TODO (BASE): ADD BACK IN LATER
-  /* else if (listing.category == BigInt.fromI32(4)) {
+  } else if (listing.category == BigInt.fromI32(4)) {
     listing.parcel = event.params.erc721TokenId.toString();
     let parcel = Parcel.load(event.params.erc721TokenId.toString())!;
     parcel.activeListing = event.params.listingId;
@@ -702,8 +699,7 @@ export function handleERC721ListingAdd(event: ERC721ListingAdd): void {
     listing.coordinateX = parcel.coordinateX;
     listing.coordinateY = parcel.coordinateY;
     listing.parcelHash = parcel.parcelHash;
-  } */
-  else {
+  } else {
     //handle external contracts
   }
 
@@ -767,9 +763,7 @@ export function handleERC721ExecutedListing(
     gotchi.activeListing = null;
     gotchi.locked = false;
     gotchi.save();
-  }
-  // TODO (BASE): ADD BACK
-  /* else if (event.params.category == BigInt.fromI32(4)) {
+  } else if (event.params.category == BigInt.fromI32(4)) {
     let listing = getOrCreateERC721Listing(event.params.listingId.toString());
     listing = updateERC721ListingInfo(listing, event.params.listingId, event);
 
@@ -794,7 +788,7 @@ export function handleERC721ExecutedListing(
     historicalPrices.push(event.params.priceInWei);
     parcel.historicalPrices = historicalPrices;
     parcel.save();
-  } */
+  }
 
   let stats = getStatisticEntity();
   stats.erc721TotalVolume = stats.erc721TotalVolume.plus(
@@ -823,9 +817,7 @@ export function handleERC721ListingCancelled(
     gotchi.activeListing = null;
     gotchi.locked = false;
     gotchi.save();
-  }
-  // TODO (BASE): ADD BACK
-  /* else if (listing.category.equals(BigInt.fromI32(4))) {
+  } else if (listing.category.equals(BigInt.fromI32(4))) {
     let parcel = getOrCreateParcel(
       listing.tokenId,
       listing.seller,
@@ -834,7 +826,7 @@ export function handleERC721ListingCancelled(
     );
     parcel.activeListing = null;
     parcel.save();
-  } */
+  }
 
   listing.cancelled = true;
   listing.save();
@@ -858,9 +850,7 @@ export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
     gotchi.activeListing = null;
     gotchi.locked = false;
     gotchi.save();
-  }
-  // TODO (BASE): ADD BACK
-  /* else if (listing.category.equals(BigInt.fromI32(4))) {
+  } else if (listing.category.equals(BigInt.fromI32(4))) {
     let parcel = getOrCreateParcel(
       listing.tokenId,
       listing.seller,
@@ -869,7 +859,7 @@ export function handleERC721ListingRemoved(event: ERC721ListingRemoved): void {
     );
     parcel.activeListing = null;
     parcel.save();
-  } */
+  }
 
   listing.cancelled = true;
   listing.save();
@@ -1130,65 +1120,62 @@ export function handleUpdateItemPrice(event: UpdateItemPrice): void {
   item.save();
 }
 
-// TODO (BASE): ADD BACK IN LATER
-// export function handleResyncParcel(event: ResyncParcel): void {
-//   const tokenId = event.params._tokenId.toString();
-//   let parcel = Parcel.load(tokenId);
+export function handleResyncParcel(event: ResyncParcel): void {
+  const tokenId = event.params._tokenId.toString();
+  let parcel = Parcel.load(tokenId);
 
-//   // Entities only exist after they have been saved to the store;
-//   // `null` checks allow to create entities on demand
-//   if (parcel == null) {
-//     parcel = new Parcel(tokenId);
-//     parcel.timesTraded = BIGINT_ZERO;
-//   }
+  // Entities only exist after they have been saved to the store;
+  // `null` checks allow to create entities on demand
+  if (parcel == null) {
+    parcel = new Parcel(tokenId);
+    parcel.timesTraded = BIGINT_ZERO;
+  }
 
-//   let contract = RealmDiamond.bind(event.address);
-//   let parcelInfo = contract.try_getParcelInfo(event.params._tokenId);
+  let contract = RealmDiamond.bind(event.address);
+  let parcelInfo = contract.try_getParcelInfo(event.params._tokenId);
 
-//   if (!parcelInfo.reverted) {
-//     let parcelMetadata = parcelInfo.value;
-//     parcel.parcelId = parcelMetadata.parcelId;
-//     parcel.tokenId = event.params._tokenId;
-//     parcel.coordinateX = parcelMetadata.coordinateX;
-//     parcel.coordinateY = parcelMetadata.coordinateY;
-//     parcel.district = parcelMetadata.district;
-//     parcel.parcelHash = parcelMetadata.parcelAddress;
+  if (!parcelInfo.reverted) {
+    let parcelMetadata = parcelInfo.value;
+    parcel.parcelId = parcelMetadata.parcelId;
+    parcel.tokenId = event.params._tokenId;
+    parcel.coordinateX = parcelMetadata.coordinateX;
+    parcel.coordinateY = parcelMetadata.coordinateY;
+    parcel.district = parcelMetadata.district;
+    parcel.parcelHash = parcelMetadata.parcelAddress;
 
-//     parcel.size = parcelMetadata.size;
+    parcel.size = parcelMetadata.size;
 
-//     let user = getOrCreateUser(parcelMetadata.owner.toHexString());
-//     user.save();
-//     parcel.owner = user.id;
+    let user = getOrCreateUser(parcelMetadata.owner.toHexString());
+    user.save();
+    parcel.owner = user.id;
 
-//     let boostArray = parcelMetadata.boost;
-//     parcel.fudBoost = boostArray[0];
-//     parcel.fomoBoost = boostArray[1];
-//     parcel.alphaBoost = boostArray[2];
-//     parcel.kekBoost = boostArray[3];
-//   }
+    let boostArray = parcelMetadata.boost;
+    parcel.fudBoost = boostArray[0];
+    parcel.fomoBoost = boostArray[1];
+    parcel.alphaBoost = boostArray[2];
+    parcel.kekBoost = boostArray[3];
+  }
 
-//   parcel.save();
-// }
+  parcel.save();
+}
 
-// TODO (BASE): ADD BACK IN LATER
-// export function handleTransferParcel(event: Transfer): void {
-//   let user = getOrCreateUser(event.params._to.toHexString());
-//   user.save();
+export function handleTransferParcel(event: Transfer): void {
+  let user = getOrCreateUser(event.params._to.toHexString());
+  user.save();
 
-//   let parcel = Parcel.load(event.params._tokenId.toString())!;
-//   parcel.owner = user.id;
-//   parcel.save();
-// }
+  let parcel = Parcel.load(event.params._tokenId.toString())!;
+  parcel.owner = user.id;
+  parcel.save();
+}
 
-// TODO (BASE): ADD BACK IN LATER
-// export function handleMintParcel(event: MintParcel): void {
-//   let parcel = getOrCreateParcel(
-//     event.params._tokenId,
-//     event.params._owner,
-//     event.address
-//   );
-//   parcel.save();
-// }
+export function handleMintParcel(event: MintParcel): void {
+  let parcel = getOrCreateParcel(
+    event.params._tokenId,
+    event.params._owner,
+    event.address
+  );
+  parcel.save();
+}
 
 // WearablesConfig
 export function handleWearablesConfigCreated(
@@ -1737,13 +1724,12 @@ export function handleERC721BuyOrderCanceled(
   entity.save();
 }
 
-// TODO (BASE): ADD BACK IN LATER
-// export function handleKinshipBurned(event: KinshipBurned): void {
-//   let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
-//   if (!gotchi) return;
-//   gotchi.kinship = event.params._value;
-//   gotchi.save();
-// }
+export function handleKinshipBurned(event: KinshipBurned): void {
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event);
+  if (!gotchi) return;
+  gotchi.kinship = event.params._value;
+  gotchi.save();
+}
 
 export function handleRoleGranted(event: RoleGranted): void {
   erc7589.handleRoleGranted(event);
