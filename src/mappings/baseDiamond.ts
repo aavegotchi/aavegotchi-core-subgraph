@@ -463,7 +463,10 @@ export function handleSetAavegotchiName(event: SetAavegotchiName): void {
   gotchi.save();
 
   if (gotchi.activeListing) {
-    let listing = ERC721Listing.load(gotchi.activeListing!.toString());
+    let listing = getOrCreateERC721Listing(
+      gotchi.activeListing!.toString(),
+      false
+    );
     if (listing) {
       listing.nameLowerCase = gotchi.nameLowerCase;
       listing.save();
@@ -568,7 +571,10 @@ export function handleAavegotchiInteract(event: AavegotchiInteract): void {
 
   // Update ERC721Listing if gotchi has an active listing
   if (gotchi.activeListing) {
-    let listing = ERC721Listing.load(gotchi.activeListing!.toString());
+    let listing = getOrCreateERC721Listing(
+      gotchi.activeListing!.toString(),
+      false
+    );
     if (listing) {
       listing.kinship = gotchi.kinship;
       listing.save();
