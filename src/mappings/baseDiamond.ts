@@ -257,8 +257,6 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
   if (portal.activeListing) {
     let listing = ERC721Listing.load(portal.activeListing!.toString());
 
-    log.debug("Listing: {}", [listing?.id!]);
-
     //Listings may not exist on Base because the listing IDs were migrated too
     if (listing == null || !listing) {
       log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
@@ -267,8 +265,6 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
         event.transaction.hash.toHexString(),
       ]);
     } else {
-      log.debug("Update ERC721Listing: {}", [listing?.id!]);
-
       listing = updateERC721ListingInfo(listing, portal.activeListing!, event);
       listing.cancelled = true;
       listing.save();
