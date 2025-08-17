@@ -255,10 +255,23 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
   portal.claimedTime = event.block.timestamp;
 
   if (portal.activeListing) {
-    let listing = getOrCreateERC721Listing(portal.activeListing!.toString());
-    listing = updateERC721ListingInfo(listing, portal.activeListing!, event);
-    listing.cancelled = true;
-    listing.save();
+    let listing = getOrCreateERC721Listing(
+      portal.activeListing!.toString(),
+      false
+    );
+
+    //Listings may not exist on Base because the listing IDs were migrated too
+    if (listing == null || listing == undefined || !listing) {
+      log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
+        portal.activeListing!.toString(),
+        event.block.number.toString(),
+        event.transaction.hash.toHexString(),
+      ]);
+    } else {
+      listing = updateERC721ListingInfo(listing, portal.activeListing!, event);
+      listing.cancelled = true;
+      listing.save();
+    }
   }
 
   stats.aavegotchisClaimed = stats.aavegotchisClaimed.plus(BIGINT_ONE);
