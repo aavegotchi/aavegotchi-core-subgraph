@@ -261,7 +261,7 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
     );
 
     //Listings may not exist on Base because the listing IDs were migrated too
-    if (listing == null || listing == undefined || !listing) {
+    if (listing == null || !listing) {
       log.warning("Listing {} couldn't be updated at block: {} tx_hash: {}", [
         portal.activeListing!.toString(),
         event.block.number.toString(),
