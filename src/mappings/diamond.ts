@@ -254,6 +254,7 @@ export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
 
   if (portal.activeListing) {
     let listing = getOrCreateERC721Listing(portal.activeListing!.toString());
+    listing = updateERC721ListingInfo(listing, portal.activeListing!, event);
     listing.cancelled = true;
     listing.save();
   }
