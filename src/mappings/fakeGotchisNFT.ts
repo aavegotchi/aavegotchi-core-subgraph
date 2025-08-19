@@ -158,7 +158,7 @@ export function handleMetadataActionLog(event: MetadataActionLogEvent): void {
   ev.externalLink = event.params.metaData.externalLink;
   ev.fileHash = event.params.metaData.fileHash;
   ev.name = event.params.metaData.name;
-  log.info("name: {}", [ev.name]);
+  log.info("name: {}", [ev.name || ""]);
   ev.publisher = publisher.id;
   ev.publisherName = event.params.metaData.publisherName;
   ev.royalty = event.params.metaData.royalty;
