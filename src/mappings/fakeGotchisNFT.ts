@@ -136,13 +136,15 @@ export function handleTransfer(event: TransferEvent): void {
 }
 
 export function handleMetadataActionLog(event: MetadataActionLogEvent): void {
-  log.info("handleMetadataActionLog: {}", [event.params.id.toString()]);
   let ev = MetadataActionLog.load(event.params.id.toString());
+
   if (!ev) {
     ev = new MetadataActionLog(event.params.id.toString());
     ev.flagCount = 0;
     ev.likeCount = 0;
+    ev.minted = false; // Initialize as not minted
   }
+
   let artist = getOrCreateUser(event.params.metaData.artist.toHexString());
   let publisher = getOrCreateUser(
     event.params.metaData.publisher.toHexString()
@@ -150,7 +152,6 @@ export function handleMetadataActionLog(event: MetadataActionLogEvent): void {
 
   ev.emitter = event.address.toHexString();
   ev.timestamp = event.block.timestamp;
-  ev.minted = event.params.metaData.minted;
   ev.artist = artist.id;
   ev.artistName = event.params.metaData.artistName;
   ev.createdAt = event.params.metaData.createdAt;
@@ -169,14 +170,18 @@ export function handleMetadataActionLog(event: MetadataActionLogEvent): void {
 
   ev.save();
 
-  if (ev.status == METADATA_STATUS_APPROVED) {
+  // Only create tokens if this is the first time processing AND status is approved AND not already minted
+  if (ev.status == METADATA_STATUS_APPROVED && !ev.minted) {
+    log.info("Creating tokens for metadata ID: {} (first time processing)", [
+      ev.id,
+    ]);
+
     // Update Global Stats
     let stats = getOrCreateStats();
     stats.totalFakeGotchiPieces = stats.totalFakeGotchiPieces + 1;
 
     // create tokens tokens and attach metadata
     let startId = stats.tokenIdCounter;
-    log.info("startId: {}", [startId.toString()]);
     stats.tokenIdCounter = stats.tokenIdCounter + ev.editions;
     for (let i = 0; i < ev.editions; i++) {
       let id = startId + i;
@@ -197,7 +202,16 @@ export function handleMetadataActionLog(event: MetadataActionLogEvent): void {
       token.thumbnailType = event.params.metaData.thumbnailType;
       token.save();
     }
+
+    // Mark as minted to prevent duplicate processing
+    ev.minted = true;
+    ev.save();
     stats.save();
+  } else if (ev.status == METADATA_STATUS_APPROVED && ev.minted) {
+    log.warning(
+      "Skipping token creation for metadata ID: {} - already processed",
+      [ev.id]
+    );
   }
 
   artist.save();
