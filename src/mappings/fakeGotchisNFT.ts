@@ -136,6 +136,7 @@ export function handleTransfer(event: TransferEvent): void {
 }
 
 export function handleMetadataActionLog(event: MetadataActionLogEvent): void {
+  log.info("handleMetadataActionLog: {}", [event.params.id.toString()]);
   let ev = MetadataActionLog.load(event.params.id.toString());
   if (!ev) {
     ev = new MetadataActionLog(event.params.id.toString());
@@ -157,6 +158,7 @@ export function handleMetadataActionLog(event: MetadataActionLogEvent): void {
   ev.externalLink = event.params.metaData.externalLink;
   ev.fileHash = event.params.metaData.fileHash;
   ev.name = event.params.metaData.name;
+  log.info("name: {}", [ev.name]);
   ev.publisher = publisher.id;
   ev.publisherName = event.params.metaData.publisherName;
   ev.royalty = event.params.metaData.royalty;
@@ -175,6 +177,7 @@ export function handleMetadataActionLog(event: MetadataActionLogEvent): void {
 
     // create tokens tokens and attach metadata
     let startId = stats.tokenIdCounter;
+    log.info("startId: {}", [startId.toString()]);
     stats.tokenIdCounter = stats.tokenIdCounter + ev.editions;
     for (let i = 0; i < ev.editions; i++) {
       let id = startId + i;
