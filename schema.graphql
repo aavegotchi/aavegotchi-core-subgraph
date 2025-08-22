@@ -681,3 +681,16 @@ type ItemTypeOwnership @entity {
   balance: BigInt!
   lastUpdated: BigInt!
 }
+
+type AavegotchiSVG @entity {
+  id: ID!
+  svg: String!
+  left: String
+  right: String
+  back: String
+}
+
+type PortalSVG @entity {
+  id: ID!
+  svgs: [String!]!
+}

@@ -187,7 +187,7 @@ dataSources:
       language: wasm/assemblyscript
       file: ./src/mappings/aavegotchiSVG.ts
       entities:
-        - Aavegotchi
+        - AavegotchiSVG
       abis:
         - name: AavegotchiDiamond
           file: ./abis/AavegotchiDiamond.json
@@ -204,6 +204,33 @@ dataSources:
           handler: handleResyncAavegotchis
       blockHandlers:
         - handler: handleBlock
+        
+  # Portal SVG-specific data source for visual updates
+  - kind: ethereum/contract
+    name: AavegotchiDiamondPortalSVG
+    network: "{{network}}"
+    source:
+      address: "{{coreAddress}}"
+      abi: AavegotchiDiamond
+      startBlock: {{coreStartBlock}}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - ClaimAavegotchi
+        - EquipWearables
+      abis:
+        - name: AavegotchiDiamond
+          file: ./abis/AavegotchiDiamond.json
+      eventHandlers:
+        - event: PortalOpened(indexed uint256)
+          handler: handlePortalOpened
+        - event: OpenPortals(uint256[])
+          handler: handleOpenPortals
+        - event: PortalData((uint256,address,uint256,address,(uint8,uint256,int16[6],address,uint256,uint16)[],string,uint256,uint256,uint256,uint256,uint256,uint256[],uint256))
+          handler: handlePortalData
+      file: ./src/mappings/portalSVG.ts
 
   - kind: ethereum/contract
     name: RealmDiamond
