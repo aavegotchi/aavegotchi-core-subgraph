@@ -9,5 +9,6 @@
   "fakeGotchisStartBlock": 26286758,
   "wearableAddress": "0x7e1Df5ad57C011E3bFA029041935aece51f35ccC",
   "wearableStartBlock": 27243887,
+  "sideviewsActivatedBlock": 27243836,
   "network": "base-sepolia"
 }

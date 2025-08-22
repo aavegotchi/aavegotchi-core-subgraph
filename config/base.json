@@ -9,5 +9,6 @@
   "fakeGotchisStartBlock": 33221313,
   "wearableAddress": "0x052e6c114a166B0e91C2340370d72D4C33752B4b",
   "wearableStartBlock": 33202019,
+  "sideviewsActivatedBlock": 33201946,
   "network": "base"
 }

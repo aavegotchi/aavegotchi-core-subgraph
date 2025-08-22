@@ -173,6 +173,38 @@ dataSources:
         - event: ClaimedAt(uint256,uint256)
           handler: handleClaimedAt
 
+    # SVG-specific data source for visual updates
+  - kind: ethereum/contract
+    name: AavegotchiDiamondSVG
+    network: "base"
+    source:
+      address: "0xA99c4B08201F2913Db8D28e71d020c4298F29dBF"
+      abi: AavegotchiDiamond
+      startBlock: 33201946
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/aavegotchiSVG.ts
+      entities:
+        - Aavegotchi
+      abis:
+        - name: AavegotchiDiamond
+          file: ./abis/AavegotchiDiamond.json
+      eventHandlers:
+        - event: ClaimAavegotchi(indexed uint256)
+          handler: handleClaimAavegotchi
+        - event: EquipWearables(indexed uint256,uint16[16],uint16[16])
+          handler: handleEquipWearables
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: AavegotchiHistory((uint256,string,uint256,uint256[],uint256,uint256))
+          handler: handleAavegotchiHistory
+        - event: ResyncAavegotchis(uint256)
+          handler: handleResyncAavegotchis
+      blockHandlers:
+        - handler: handleBlock
+
   - kind: ethereum/contract
     name: RealmDiamond
     network: "base"
