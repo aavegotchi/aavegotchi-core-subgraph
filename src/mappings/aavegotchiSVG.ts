@@ -1,9 +1,5 @@
 import { Address, BigInt, ethereum, log } from "@graphprotocol/graph-ts";
 
-import {
-  AAVEGOTCHI_BRIDGE_VAULT_MATIC,
-  BLOCK_SIDEVIEWS_ACTIVATED,
-} from "../utils/svg/constants";
 import { updateSideViews, updateSvg } from "../utils/svg/helper";
 import {
   AavegotchiHistory,
@@ -12,7 +8,10 @@ import {
   ResyncAavegotchis,
   Transfer,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
-import { AAVEGOTCHI_DIAMOND } from "../utils/constants";
+import {
+  AAVEGOTCHI_DIAMOND,
+  BLOCK_SIDEVIEWS_ACTIVATED,
+} from "../utils/constants";
 
 export function handleClaimAavegotchi(event: ClaimAavegotchi): void {
   let gotchi = event.block.number.ge(BLOCK_SIDEVIEWS_ACTIVATED)
@@ -122,23 +121,6 @@ export function handleBlock(block: ethereum.Block): void {
       if (gotchi != null) {
         gotchi.save();
       }
-    }
-  }
-}
-
-export function handleTransfer(event: Transfer): void {
-  if (event.params._from == Address.fromString(AAVEGOTCHI_BRIDGE_VAULT_MATIC)) {
-    log.info("Transfer from bridge vault for gotchi {}", [
-      event.params._tokenId.toString(),
-    ]);
-
-    //  - if from is bridge vault, update svg because the equipped wearables may have changed
-    let gotchi = event.block.number.ge(BLOCK_SIDEVIEWS_ACTIVATED)
-      ? updateSideViews(event.params._tokenId, event.address)
-      : updateSvg(event.params._tokenId, event.address);
-    if (gotchi != null) {
-      log.info("saving gotchi {}", [event.params._tokenId.toString()]);
-      gotchi.save();
     }
   }
 }

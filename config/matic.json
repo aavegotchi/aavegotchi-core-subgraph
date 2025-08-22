@@ -7,6 +7,6 @@
   "fakeCardStartBlock": 34520146,
   "fakeGotchisAddress": "0xA4E3513c98b30d4D7cc578d2C328Bd550725D1D0",
   "fakeGotchisStartBlock": 34520176,
-  "blockSideviewsActivated": 39130900,
+  "sideviewsActivatedBlock": 39130900,
   "network": "matic"
 }

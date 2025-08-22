@@ -41,3 +41,6 @@ export const METADATA_STATUS_DECLINED = 3;
 
 // Dynamic address from config - populated by prepare script
 export const AAVEGOTCHI_DIAMOND = "0xA99c4B08201F2913Db8D28e71d020c4298F29dBF";
+
+// Dynamic block number from config - populated by prepare script
+export const BLOCK_SIDEVIEWS_ACTIVATED = BigInt.fromI32(33201946);
