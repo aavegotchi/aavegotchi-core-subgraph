@@ -70,6 +70,7 @@ import {
   PortalData,
   ResyncAavegotchis,
   ClaimedAt,
+  EscrowUpdated,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -1916,4 +1917,13 @@ export function handleClaimedAt(event: ClaimedAt): void {
     portal.save();
     gotchi.save();
   }
+}
+
+// - event: EscrowUpdated(indexed uint256,address)
+//   handler: handleEscrowUpdated
+
+export function handleEscrowUpdated(event: EscrowUpdated): void {
+  let gotchi = getOrCreateAavegotchi(event.params._tokenId.toString(), event)!;
+  gotchi.escrow = event.params._newEscrow;
+  gotchi.save();
 }

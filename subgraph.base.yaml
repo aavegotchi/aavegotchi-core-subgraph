@@ -172,6 +172,8 @@ dataSources:
           handler: handleResyncAavegotchis
         - event: ClaimedAt(uint256,uint256)
           handler: handleClaimedAt
+        - event: EscrowUpdated(indexed uint256,address)
+          handler: handleEscrowUpdated
 
   - kind: ethereum/contract
     name: RealmDiamond
