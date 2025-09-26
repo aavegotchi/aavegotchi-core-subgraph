@@ -95,6 +95,7 @@ import {
   getOrCreateClaimedToken,
   getOrCreateWhitelist,
   itemMaxQuantityToRarity,
+  computeItemTypeGhstPrice,
   getOrCreateERC721BuyOrder,
   getOrCreateERC1155BuyOrder,
   getOrCreateERC1155BuyOrderExecution,
@@ -977,7 +978,7 @@ export function handleAddItemType(event: AddItemType): void {
   itemType.traitModifiers = itemInfo.traitModifiers;
 
   itemType.slotPositions = itemInfo.slotPositions;
-  itemType.ghstPrice = itemInfo.ghstPrice;
+  itemType.ghstPrice = computeItemTypeGhstPrice(itemInfo.maxQuantity);
   itemType.maxQuantity = itemInfo.maxQuantity;
   itemType.totalQuantity = itemInfo.totalQuantity;
   itemType.rarityScoreModifier = itemInfo.rarityScoreModifier;
@@ -1001,6 +1002,7 @@ export function handleItemTypeMaxQuantity(event: ItemTypeMaxQuantity): void {
 
     let itemType = getOrCreateItemType(itemId.toString())!;
     itemType.maxQuantity = maxQuantity;
+    itemType.ghstPrice = computeItemTypeGhstPrice(maxQuantity);
     itemType.save();
   }
 }
@@ -1128,7 +1130,7 @@ export function handleERC1155ListingUpdated(event: UpdateERC1155Listing): void {
 
 export function handleUpdateItemPrice(event: UpdateItemPrice): void {
   let item = getOrCreateItemType(event.params._itemId.toString())!;
-  item.ghstPrice = event.params._priceInWei;
+  item.ghstPrice = computeItemTypeGhstPrice(item.maxQuantity);
   item.save();
 }
 
@@ -1331,7 +1333,7 @@ export function handleUpdateItemType(event: UpdateItemType): void {
   item.author = event.params._itemType.author;
   item.traitModifiers = event.params._itemType.traitModifiers;
   item.slotPositions = event.params._itemType.slotPositions;
-  item.ghstPrice = event.params._itemType.ghstPrice;
+  item.ghstPrice = computeItemTypeGhstPrice(event.params._itemType.maxQuantity);
   item.maxQuantity = event.params._itemType.maxQuantity;
   item.totalQuantity = event.params._itemType.totalQuantity;
   item.rarityScoreModifier = event.params._itemType.rarityScoreModifier;

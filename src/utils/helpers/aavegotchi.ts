@@ -299,6 +299,22 @@ export function itemMaxQuantityToRarity(bigInt: BigInt): BigInt {
   return BigInt.fromI32(0);
 }
 
+// Computes the GHST price (in wei) from the maxQuantity using rarity tiers
+export function computeItemTypeGhstPrice(maxQuantity: BigInt): BigInt {
+  let rarityIndex = itemMaxQuantityToRarity(maxQuantity).toI32();
+  // Prices in GHST units by rarity index (0..5):
+  // 0: Common=5, 1: Uncommon=10, 2: Rare=100, 3: Legendary=300, 4: Mythical=2000, 5: Godlike=10000
+  let priceGhst = 5;
+  if (rarityIndex == 1) priceGhst = 10;
+  else if (rarityIndex == 2) priceGhst = 100;
+  else if (rarityIndex == 3) priceGhst = 300;
+  else if (rarityIndex == 4) priceGhst = 2000;
+  else if (rarityIndex == 5) priceGhst = 10000;
+
+  // Store as GHST whole units (unscaled) for ItemType.ghstPrice
+  return BigInt.fromI32(priceGhst);
+}
+
 export function updateERC1155ListingInfo(
   listing: ERC1155Listing,
   listingID: BigInt,
@@ -523,7 +539,7 @@ export function updateItemTypeInfo(
     itemType.traitModifiers = itemInfo.traitModifiers;
 
     itemType.slotPositions = itemInfo.slotPositions;
-    itemType.ghstPrice = itemInfo.ghstPrice;
+    itemType.ghstPrice = computeItemTypeGhstPrice(itemInfo.maxQuantity);
     itemType.maxQuantity = itemInfo.maxQuantity;
     itemType.totalQuantity = itemInfo.totalQuantity;
     itemType.rarityScoreModifier = itemInfo.rarityScoreModifier;
