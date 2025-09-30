@@ -558,13 +558,9 @@ type SwapAction @entity {
   tokenOut: Bytes!
   amountIn: BigInt!
   amountOut: BigInt!
-  recipient: Bytes!
   createdAt: BigInt!
+  fromAddress: Bytes!
   txHash: Bytes!
-  listingId: BigInt
-  erc1155ListingId: BigInt
-  tokenId: BigInt
-  nftContract: Bytes
 }
 
 # Cards

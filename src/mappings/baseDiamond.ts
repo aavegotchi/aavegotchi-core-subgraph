@@ -1358,9 +1358,9 @@ export function handleTokenSwapped(event: TokenSwapped): void {
   action.tokenOut = event.params.tokenOut;
   action.amountIn = event.params.amountIn;
   action.amountOut = event.params.amountOut;
-  action.recipient = event.params.recipient;
   action.createdAt = event.block.timestamp;
   action.txHash = event.transaction.hash;
+  action.fromAddress = event.transaction.from;
   action.save();
 }
 
