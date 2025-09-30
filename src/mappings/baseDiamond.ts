@@ -71,6 +71,9 @@ import {
   ResyncAavegotchis,
   ClaimedAt,
   EscrowUpdated,
+  SwapAndPurchase,
+  SwapAndPurchaseERC1155,
+  TokenSwapped,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -118,7 +121,13 @@ import {
 } from "../utils/constants";
 import { Address, BigInt, log, Bytes } from "@graphprotocol/graph-ts";
 
-import { Parcel, TokenCommitment, ERC721Listing } from "../../generated/schema";
+import {
+  Parcel,
+  TokenCommitment,
+  ERC721Listing,
+  ERC1155Purchase,
+  SwapAction,
+} from "../../generated/schema";
 
 import { updatePermissionsFromBitmap } from "../utils/decimals";
 import * as erc7589 from "./erc-7589";
@@ -1306,6 +1315,53 @@ export function handleERC721ExecutedToRecipient(
   listing.recipient = event.params.recipient;
   listing.buyer = event.params.buyer;
   listing.save();
+}
+
+// Swap-and-buy helpers
+export function handleSwapAndPurchase(event: SwapAndPurchase): void {
+  let listing = getOrCreateERC721Listing(event.params.listingId.toString());
+  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+
+  listing.purchasedWithSwap = true;
+  listing.swapTokenIn = event.params.tokenIn;
+  listing.swapAmountIn = event.params.swapAmount;
+  listing.swapGhstReceived = event.params.ghstReceived;
+
+  listing.save();
+}
+
+export function handleSwapAndPurchaseERC1155(
+  event: SwapAndPurchaseERC1155
+): void {
+  // Purchase id mirrors the id created in handleERC1155ExecutedListing
+  let purchaseID =
+    event.params.listingId.toString() +
+    "_" +
+    event.params.buyer.toHexString() +
+    "_" +
+    event.block.timestamp.toString();
+
+  let purchase = ERC1155Purchase.load(purchaseID);
+  if (purchase) {
+    purchase.purchasedWithSwap = true;
+    purchase.swapTokenIn = event.params.tokenIn;
+    // swapAmountIn not available in this event; leave null
+    purchase.swapGhstReceived = event.params.ghstReceived;
+    purchase.save();
+  }
+}
+
+export function handleTokenSwapped(event: TokenSwapped): void {
+  const id = event.transaction.hash.toHex() + "-" + event.logIndex.toString();
+  let action = new SwapAction(id);
+  action.tokenIn = event.params.tokenIn;
+  action.tokenOut = event.params.tokenOut;
+  action.amountIn = event.params.amountIn;
+  action.amountOut = event.params.amountOut;
+  action.recipient = event.params.recipient;
+  action.createdAt = event.block.timestamp;
+  action.txHash = event.transaction.hash;
+  action.save();
 }
 
 export function handleWhitelistAccessRightSet(
