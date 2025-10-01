@@ -1345,14 +1345,28 @@ export function handleSwapAndPurchaseERC1155(
   if (purchase) {
     purchase.purchasedWithSwap = true;
     purchase.swapTokenIn = event.params.tokenIn;
-    // swapAmountIn not available in this event; leave null
     purchase.swapGhstReceived = event.params.ghstReceived;
+    // Lookup SwapAction by derivable id <txHash>-<tokenIn>-<ghstReceived>
+    let swapId =
+      event.transaction.hash.toHex() +
+      "-" +
+      event.params.tokenIn.toHexString() +
+      "-" +
+      event.params.ghstReceived.toString();
+    let swap = SwapAction.load(swapId);
+    if (swap) purchase.swapAmountIn = swap.amountIn;
     purchase.save();
   }
 }
 
 export function handleTokenSwapped(event: TokenSwapped): void {
-  const id = event.transaction.hash.toHex() + "-" + event.logIndex.toString();
+  // Derivable id: <txHash>-<tokenIn>-<amountOut>
+  const id =
+    event.transaction.hash.toHex() +
+    "-" +
+    event.params.tokenIn.toHexString() +
+    "-" +
+    event.params.amountOut.toString();
   let action = new SwapAction(id);
   action.tokenIn = event.params.tokenIn;
   action.tokenOut = event.params.tokenOut;
