@@ -106,6 +106,7 @@ import {
   handleWearableReplacing,
   resyncEquippedWearableOwners,
   updateEquippedWearableOwnersOnTransfer,
+  fixGhstPriceForBadges,
 } from "../utils/helpers/aavegotchi";
 
 import { getOrCreateParcel } from "../utils/helpers/realm";
@@ -986,7 +987,10 @@ export function handleAddItemType(event: AddItemType): void {
   itemType.traitModifiers = itemInfo.traitModifiers;
 
   itemType.slotPositions = itemInfo.slotPositions;
-  itemType.ghstPrice = itemInfo.ghstPrice;
+  itemType.ghstPrice = fixGhstPriceForBadges(
+    itemInfo.svgId,
+    itemInfo.ghstPrice
+  );
   itemType.maxQuantity = itemInfo.maxQuantity;
   itemType.totalQuantity = itemInfo.totalQuantity;
   itemType.rarityScoreModifier = itemInfo.rarityScoreModifier;
@@ -1137,7 +1141,10 @@ export function handleERC1155ListingUpdated(event: UpdateERC1155Listing): void {
 
 export function handleUpdateItemPrice(event: UpdateItemPrice): void {
   let item = getOrCreateItemType(event.params._itemId.toString())!;
-  item.ghstPrice = event.params._priceInWei;
+  item.ghstPrice = fixGhstPriceForBadges(
+    BigInt.fromString(item.id),
+    event.params._priceInWei
+  );
   item.save();
 }
 
@@ -1401,7 +1408,10 @@ export function handleUpdateItemType(event: UpdateItemType): void {
   item.author = event.params._itemType.author;
   item.traitModifiers = event.params._itemType.traitModifiers;
   item.slotPositions = event.params._itemType.slotPositions;
-  item.ghstPrice = event.params._itemType.ghstPrice;
+  item.ghstPrice = fixGhstPriceForBadges(
+    event.params._itemType.svgId,
+    event.params._itemType.ghstPrice
+  );
   item.maxQuantity = event.params._itemType.maxQuantity;
   item.totalQuantity = event.params._itemType.totalQuantity;
   item.rarityScoreModifier = event.params._itemType.rarityScoreModifier;

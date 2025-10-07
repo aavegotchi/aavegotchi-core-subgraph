@@ -47,6 +47,19 @@ export function getOrCreatePortal(
   return portal as Portal;
 }
 
+// ghstPrice special-case adjustment
+export function fixGhstPriceForBadges(
+  svgId: BigInt,
+  ghstPrice: BigInt
+): BigInt {
+  // Set price to 0 for svgIds in [316, 349] and [388, 403]
+  let id = svgId.toI32();
+  if ((id >= 316 && id <= 349) || (id >= 388 && id <= 403)) {
+    return BigInt.fromI32(0);
+  }
+  return ghstPrice;
+}
+
 export function getOrCreateAavegotchiOption(
   portalId: string,
   i: i32,
@@ -523,7 +536,7 @@ export function updateItemTypeInfo(
     itemType.traitModifiers = itemInfo.traitModifiers;
 
     itemType.slotPositions = itemInfo.slotPositions;
-    itemType.ghstPrice = itemInfo.ghstPrice;
+    itemType.ghstPrice = fixGhstPriceForBadges(itemId, itemInfo.ghstPrice);
     itemType.maxQuantity = itemInfo.maxQuantity;
     itemType.totalQuantity = itemInfo.totalQuantity;
     itemType.rarityScoreModifier = itemInfo.rarityScoreModifier;
