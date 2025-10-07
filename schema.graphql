@@ -249,6 +249,12 @@ type ERC721Listing @entity {
   fakeGotchi_artist: User
   fakeGotchi_artistName: String
   fakeGotchi_editions: Int
+
+  # Swap metadata when purchased via swap-and-buy
+  purchasedWithSwap: Boolean
+  swapTokenIn: Bytes
+  swapAmountIn: BigInt
+  swapGhstReceived: BigInt
 }
 
 type ERC1155Listing @entity {
@@ -293,6 +299,12 @@ type ERC1155Purchase @entity {
   timeLastPurchased: BigInt! # Time when the listing was purchased
   #sold: Boolean!
   rarityLevel: BigInt
+
+  # Swap metadata when purchased via swap-and-buy
+  purchasedWithSwap: Boolean
+  swapTokenIn: Bytes
+  swapAmountIn: BigInt
+  swapGhstReceived: BigInt
 }
 
 type Statistic @entity {
@@ -537,6 +549,18 @@ type ERC1155BuyOrderExecution @entity {
   priceInWei: BigInt!
   executedQuantity: BigInt!
   executedAt: BigInt
+}
+
+# Swap audit trail
+type SwapAction @entity {
+  id: ID!
+  tokenIn: Bytes!
+  tokenOut: Bytes!
+  amountIn: BigInt!
+  amountOut: BigInt!
+  createdAt: BigInt!
+  fromAddress: Bytes!
+  txHash: Bytes!
 }
 
 # Cards

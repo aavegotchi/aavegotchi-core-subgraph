@@ -71,6 +71,9 @@ import {
   ResyncAavegotchis,
   ClaimedAt,
   EscrowUpdated,
+  SwapAndPurchase,
+  SwapAndPurchaseERC1155,
+  TokenSwapped,
 } from "../../generated/AavegotchiDiamond/AavegotchiDiamond";
 import {
   getOrCreateUser,
@@ -103,6 +106,7 @@ import {
   handleWearableReplacing,
   resyncEquippedWearableOwners,
   updateEquippedWearableOwnersOnTransfer,
+  fixGhstPriceForBadges,
 } from "../utils/helpers/aavegotchi";
 
 import { getOrCreateParcel } from "../utils/helpers/realm";
@@ -118,7 +122,13 @@ import {
 } from "../utils/constants";
 import { Address, BigInt, log, Bytes } from "@graphprotocol/graph-ts";
 
-import { Parcel, TokenCommitment, ERC721Listing } from "../../generated/schema";
+import {
+  Parcel,
+  TokenCommitment,
+  ERC721Listing,
+  ERC1155Purchase,
+  SwapAction,
+} from "../../generated/schema";
 
 import { updatePermissionsFromBitmap } from "../utils/decimals";
 import * as erc7589 from "./erc-7589";
@@ -977,7 +987,10 @@ export function handleAddItemType(event: AddItemType): void {
   itemType.traitModifiers = itemInfo.traitModifiers;
 
   itemType.slotPositions = itemInfo.slotPositions;
-  itemType.ghstPrice = itemInfo.ghstPrice;
+  itemType.ghstPrice = fixGhstPriceForBadges(
+    itemInfo.svgId,
+    itemInfo.ghstPrice
+  );
   itemType.maxQuantity = itemInfo.maxQuantity;
   itemType.totalQuantity = itemInfo.totalQuantity;
   itemType.rarityScoreModifier = itemInfo.rarityScoreModifier;
@@ -1128,7 +1141,10 @@ export function handleERC1155ListingUpdated(event: UpdateERC1155Listing): void {
 
 export function handleUpdateItemPrice(event: UpdateItemPrice): void {
   let item = getOrCreateItemType(event.params._itemId.toString())!;
-  item.ghstPrice = event.params._priceInWei;
+  item.ghstPrice = fixGhstPriceForBadges(
+    BigInt.fromString(item.id),
+    event.params._priceInWei
+  );
   item.save();
 }
 
@@ -1308,6 +1324,67 @@ export function handleERC721ExecutedToRecipient(
   listing.save();
 }
 
+// Swap-and-buy helpers
+export function handleSwapAndPurchase(event: SwapAndPurchase): void {
+  let listing = getOrCreateERC721Listing(event.params.listingId.toString());
+  listing = updateERC721ListingInfo(listing, event.params.listingId, event);
+
+  listing.purchasedWithSwap = true;
+  listing.swapTokenIn = event.params.tokenIn;
+  listing.swapAmountIn = event.params.swapAmount;
+  listing.swapGhstReceived = event.params.ghstReceived;
+
+  listing.save();
+}
+
+export function handleSwapAndPurchaseERC1155(
+  event: SwapAndPurchaseERC1155
+): void {
+  // Purchase id mirrors the id created in handleERC1155ExecutedListing
+  let purchaseID =
+    event.params.listingId.toString() +
+    "_" +
+    event.params.buyer.toHexString() +
+    "_" +
+    event.block.timestamp.toString();
+
+  let purchase = ERC1155Purchase.load(purchaseID);
+  if (purchase) {
+    purchase.purchasedWithSwap = true;
+    purchase.swapTokenIn = event.params.tokenIn;
+    purchase.swapGhstReceived = event.params.ghstReceived;
+    // Lookup SwapAction by derivable id <txHash>-<tokenIn>-<ghstReceived>
+    let swapId =
+      event.transaction.hash.toHex() +
+      "-" +
+      event.params.tokenIn.toHexString() +
+      "-" +
+      event.params.ghstReceived.toString();
+    let swap = SwapAction.load(swapId);
+    if (swap) purchase.swapAmountIn = swap.amountIn;
+    purchase.save();
+  }
+}
+
+export function handleTokenSwapped(event: TokenSwapped): void {
+  // Derivable id: <txHash>-<tokenIn>-<amountOut>
+  const id =
+    event.transaction.hash.toHex() +
+    "-" +
+    event.params.tokenIn.toHexString() +
+    "-" +
+    event.params.amountOut.toString();
+  let action = new SwapAction(id);
+  action.tokenIn = event.params.tokenIn;
+  action.tokenOut = event.params.tokenOut;
+  action.amountIn = event.params.amountIn;
+  action.amountOut = event.params.amountOut;
+  action.createdAt = event.block.timestamp;
+  action.txHash = event.transaction.hash;
+  action.fromAddress = event.transaction.from;
+  action.save();
+}
+
 export function handleWhitelistAccessRightSet(
   event: WhitelistAccessRightSet
 ): void {
@@ -1331,7 +1408,10 @@ export function handleUpdateItemType(event: UpdateItemType): void {
   item.author = event.params._itemType.author;
   item.traitModifiers = event.params._itemType.traitModifiers;
   item.slotPositions = event.params._itemType.slotPositions;
-  item.ghstPrice = event.params._itemType.ghstPrice;
+  item.ghstPrice = fixGhstPriceForBadges(
+    event.params._itemType.svgId,
+    event.params._itemType.ghstPrice
+  );
   item.maxQuantity = event.params._itemType.maxQuantity;
   item.totalQuantity = event.params._itemType.totalQuantity;
   item.rarityScoreModifier = event.params._itemType.rarityScoreModifier;
